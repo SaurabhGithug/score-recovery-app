@@ -43,9 +43,8 @@ export function ScoreBreakdown({ review }: { review: BankReview }) {
   );
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-      <h2 className="text-sm font-bold text-slate-900">{t({ en: "By section", hi: "खंड अनुसार" })}</h2>
-      <p className="mt-1 text-xs leading-5 text-slate-500">
+    <div>
+      <p className="text-xs leading-5 text-slate-500">
         {t({
           en: `Guessing breaks even at ${breakEvenPct}% accuracy on this paper: below that, attempting a question you're unsure of costs marks on average. Unattempted questions left ${totalLeftOnTable.toFixed(2)} marks on the table.`,
           hi: `इस पेपर में अनुमान ${breakEvenPct}% सटीकता पर बराबर पड़ता है। बिना प्रयास छूटे प्रश्नों में ${totalLeftOnTable.toFixed(2)} अंक रह गए।`,

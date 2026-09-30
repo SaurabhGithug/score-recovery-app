@@ -17,7 +17,8 @@ export default function BankReviewPage() {
 
   const [review, setReview] = useState<BankReview | null>(null);
   const [error, setError] = useState("");
-  const [filter, setFilter] = useState<QuestionFilter>("all");
+  // Opens on what needs work: wrong answers first, else unattempted, else everything.
+  const [filter, setFilter] = useState<QuestionFilter | null>(null);
 
   const load = useCallback(() => {
     setError("");
@@ -32,8 +33,19 @@ export default function BankReviewPage() {
     })();
   }, [load]);
 
+  const counts = useMemo(() => {
+    const c = { all: 0, wrong: 0, unattempted: 0, unscored: 0 };
+    for (const q of review?.questions ?? []) {
+      c.all++;
+      if (q.outcome === "wrong" || q.outcome === "unattempted" || q.outcome === "unscored") c[q.outcome]++;
+    }
+    return c;
+  }, [review]);
+  const activeFilter: QuestionFilter = filter ?? (counts.wrong ? "wrong" : counts.unattempted ? "unattempted" : "all");
+
   const filtered = useMemo(() => {
     if (!review) return [];
+    const filter = activeFilter;
     if (filter === "all") return review.questions;
     const map: Record<Exclude<QuestionFilter, "all">, BankOutcome> = {
       wrong: "wrong",
@@ -41,7 +53,7 @@ export default function BankReviewPage() {
       unscored: "unscored",
     };
     return review.questions.filter((q) => q.outcome === map[filter as Exclude<QuestionFilter, "all">]);
-  }, [review, filter]);
+  }, [review, activeFilter]);
 
   function handleExplained(questionId: string, explanation: BankExplanation) {
     setReview((prev) => {
@@ -97,32 +109,36 @@ export default function BankReviewPage() {
         )}
       </div>
 
-      {/* One section table; the score card above holds the totals. */}
-      <div className="mt-4">
-        <ScoreBreakdown review={review} />
-      </div>
+      {/* One section table, on request; the score card above holds the totals. */}
+      <details className="mt-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+        <summary className="cursor-pointer text-sm font-semibold text-slate-700">{t({ en: "Section breakdown", hi: "खंड अनुसार विवरण" })}</summary>
+        <div className="mt-3">
+          <ScoreBreakdown review={review} />
+        </div>
+      </details>
 
       {/* Question-wise review */}
       <div className="mt-6">
         <div className="mb-3 flex flex-wrap gap-1.5">
-          {(["all", "wrong", "unattempted", "unscored"] as const).map((f) => (
+          {(["wrong", "unattempted", "all", "unscored"] as const).filter((f) => f === "all" || counts[f] > 0).map((f) => (
             <button
               key={f}
               type="button"
               onClick={() => setFilter(f)}
-              className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${filter === f ? "border-blue-600 bg-blue-50 text-blue-700" : "border-slate-200 bg-white text-slate-500"}`}
+              aria-pressed={activeFilter === f}
+              className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${activeFilter === f ? "border-blue-600 bg-blue-50 text-blue-700" : "border-slate-200 bg-white text-slate-500"}`}
             >
               {{
                 all: t({ en: "All", hi: "सभी" }),
                 wrong: t({ en: "Wrong", hi: "गलत" }),
                 unattempted: t({ en: "Unattempted", hi: "अनुत्तरित" }),
                 unscored: t({ en: "Not scored", hi: "स्कोर नहीं" }),
-              }[f]}
+              }[f]} ({counts[f]})
             </button>
           ))}
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
           {filtered.map((q) => (
             <ReviewQuestion key={q.id} attemptId={review.attempt.id} question={q} onExplained={handleExplained} onResolved={load} />
           ))}

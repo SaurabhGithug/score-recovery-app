@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { BankExplanation, BankOutcome, BankReviewQuestion } from "@/lib/bank/api-types";
 import { useLang } from "@/lib/i18n";
 import { BankApiRequestError, explainQuestion, resolveQuestion } from "./api";
-import { displayLabel, displayOrder, imageLed, optionRef, textReliable, type OptionLayout } from "./optionOrder";
+import { displayLabel, displayOrder, imageLed, optionLabel, optionRef, textReliable, type OptionLayout } from "./optionOrder";
 import { KeyProvenance } from "./KeyProvenance";
 import { AiGeneratedBadge, AskFollowUp } from "../ai/AskFollowUp";
 
@@ -34,6 +34,8 @@ export function ReviewQuestion({
   onResolved: () => void;
 }) {
   const { t } = useLang();
+  // One compact line per question; details (image, options, sources, explanation, Ask AI) on tap.
+  const [open, setOpen] = useState(false);
   const led = imageLed(question);
   const [showOriginal, setShowOriginal] = useState(led);
   const [explainLoading, setExplainLoading] = useState(false);
@@ -73,15 +75,28 @@ export function ReviewQuestion({
     }
   }
 
+  const yours = question.response?.answer ? optionLabel(question, question.response.answer) : null;
+  const correct = question.scored && question.key.answer ? optionLabel(question, question.key.answer) : null;
+  const preview = textReliable(question) && question.stem.trim() ? question.stem.trim() : t({ en: "Question with a figure", hi: "चित्र वाला प्रश्न" });
+
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2 text-xs text-slate-400">
-          <span>{question.section} · Q{question.position}</span>
-          <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${OUTCOME_STYLE[question.outcome]}`}>
-            {t(OUTCOME_LABEL[question.outcome])}
+    <div className="rounded-xl border border-slate-200 bg-white">
+      <button type="button" aria-expanded={open} onClick={() => setOpen((v) => !v)} className="flex w-full items-start gap-3 p-3 text-left sm:p-4">
+        <span className={`mt-0.5 shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${OUTCOME_STYLE[question.outcome]}`}>
+          {t(OUTCOME_LABEL[question.outcome])}
+        </span>
+        <span className="min-w-0 flex-1">
+          {/* Open, the full question is shown below; the row keeps only its number. */}
+          <span className="line-clamp-2 text-sm text-slate-900">Q{question.position}{open ? "" : `. ${preview}`}</span>
+          <span className="mt-1 block text-xs text-slate-500">
+            {yours ? t({ en: `Your answer ${yours}`, hi: `आपका उत्तर ${yours}` }) : t({ en: "Not answered", hi: "उत्तर नहीं दिया" })}
+            {correct && <> · {t({ en: `Correct ${correct}`, hi: `सही ${correct}` })}</>}
           </span>
-        </div>
+        </span>
+        <span aria-hidden="true" className={`mt-1 shrink-0 text-slate-400 transition ${open ? "rotate-90" : ""}`}>›</span>
+      </button>
+      {open && <div className="border-t border-slate-100 p-4 sm:p-5">
+      <div className="mb-2 flex justify-end">
         {question.imageUrl && (
           <button
             type="button"
@@ -166,11 +181,14 @@ export function ReviewQuestion({
         </div>
       )}
 
-      {/* Provenance. An unavailable question has no key to show: the notice above says why. */}
+      {/* Provenance, one line; the source list on request. An unavailable question has no key to show. */}
       {!question.unavailable && (
-        <div className="mt-3 rounded-lg border border-slate-100 bg-slate-50 p-3">
-          <KeyProvenance keyView={question.key} question={question} />
-        </div>
+        <details className="mt-3 text-xs text-slate-500">
+          <summary className="cursor-pointer">{t({ en: "Answer key: ", hi: "उत्तर कुंजी: " })}{question.key.statusLabel}</summary>
+          <div className="mt-2 rounded-lg border border-slate-100 bg-slate-50 p-3">
+            <KeyProvenance keyView={question.key} question={question} showStatus={false} />
+          </div>
+        </details>
       )}
 
       {question.sourceSolution && (
@@ -246,6 +264,7 @@ export function ReviewQuestion({
           )}
         </div>
       )}
+      </div>}
     </div>
   );
 }

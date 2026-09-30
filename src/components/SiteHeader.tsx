@@ -16,6 +16,36 @@ const PRIMARY = [
   { href: "/syllabus", en: "Syllabus", hi: "पाठ्यक्रम", icon: "list" },
 ];
 
+/** Which main destination the current page belongs to ("My results" is the Tests page's past view). */
+function isActive(href: string, pathname: string, pastView: boolean): boolean {
+  if (href === "/papers?view=past") return (pathname === "/papers" && pastView) || pathname.startsWith("/papers/attempts") || pathname.startsWith("/recovery-lab/");
+  if (href === "/papers") return (pathname.startsWith("/papers") && !pastView && !pathname.startsWith("/papers/attempts")) || pathname.startsWith("/recovery-lab/testbook");
+  return pathname.startsWith(href);
+}
+
+/** The main destinations, always visible: links in the header on wider screens, a tab bar at the bottom on phones. */
+function MainNavLinks({ variant }: { variant: "top" | "bottom" }) {
+  const { lang } = useLang();
+  const pathname = usePathname();
+  const pastView = useSearchParams().get("view") === "past";
+  return <>{PRIMARY.map(item => {
+    const active = isActive(item.href, pathname, pastView);
+    const label = lang === "hi" ? item.hi : item.en;
+    return variant === "top"
+      ? <Link key={item.href} href={item.href} aria-current={active ? "page" : undefined} className={`flex min-h-11 items-center rounded-lg px-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-blue-600 ${active ? "bg-blue-50 text-blue-700" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"}`}>{label}</Link>
+      : <Link key={item.href} href={item.href} aria-current={active ? "page" : undefined} className={`flex min-h-14 flex-1 flex-col items-center justify-center gap-0.5 text-[11px] font-medium focus-visible:outline-2 focus-visible:outline-blue-600 ${active ? "text-blue-700" : "text-slate-500"}`}><NavIcon name={item.icon} />{label}</Link>;
+  })}</>;
+}
+
+/** Phone tab bar. Rendered last in the layout and sticky, so it never covers page content. Hidden during tests and drills. */
+export function MobileTabBar() {
+  const { kind } = useAttemptMode();
+  if (kind !== null) return null;
+  return <nav aria-label="Main" className="sticky bottom-0 z-30 flex border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)] sm:hidden">
+    <Suspense fallback={null}><MainNavLinks variant="bottom" /></Suspense>
+  </nav>;
+}
+
 function NavIcon({ name }: { name: string }) {
   return <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
     {name === "book" ? <><path d="M12 5v15M12 5C8 2 3 4 3 4v15s5-2 9 1c4-3 9-1 9-1V4s-5-2-9 1Z" /></> : name === "list" ? <><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" /></> : name === "paper" ? <><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h4" /></> : <><path d="M4 4v16h16M8 16v-4M13 16V8M18 16V5" /></>}
@@ -50,11 +80,7 @@ function NavigationDrawer({ onClose }: { onClose: () => void }) {
       </div>
       <nav aria-label="Main navigation" className="space-y-2 py-6">
         {PRIMARY.map(item => {
-          const active = item.href === "/papers?view=past"
-            ? (pathname === "/papers" && pastView) || pathname.startsWith("/papers/attempts")
-            : item.href === "/papers"
-              ? (pathname.startsWith("/papers") && !pastView && !pathname.startsWith("/papers/attempts")) || pathname.startsWith("/recovery-lab/testbook")
-              : pathname.startsWith(item.href);
+          const active = isActive(item.href, pathname, pastView);
           return <Link key={item.href} href={item.href} onClick={onClose} aria-current={active ? "page" : undefined} className={`flex min-h-14 items-center gap-4 rounded-xl px-4 py-3 text-base font-medium focus-visible:outline-2 focus-visible:outline-blue-600 ${active ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}><NavIcon name={item.icon} />{lang === "hi" ? item.hi : item.en}{active && <span aria-hidden="true" className="ml-auto h-1.5 w-1.5 rounded-full bg-blue-600" />}</Link>;
         })}
       </nav>
@@ -84,6 +110,7 @@ export function SiteHeader() {
         <span className="hidden lg:inline">Score Recovery</span>
       </Link>
       {kind === null ? <>
+        <nav aria-label="Main" className="hidden flex-1 items-center justify-center gap-1 sm:flex"><Suspense fallback={null}><MainNavLinks variant="top" /></Suspense></nav>
         <button type="button" aria-expanded={menuOpen} aria-haspopup="dialog" aria-controls="app-navigation" onClick={() => setMenuOpen(true)} className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>{lang === "hi" ? "मेन्यू" : "Menu"}</button>
         {menuOpen && <Suspense fallback={null}><NavigationDrawer onClose={() => setMenuOpen(false)} /></Suspense>}
       </> : <span className="text-sm text-slate-500">{lang === "hi" ? "एक बार में एक प्रश्न" : "One question at a time"}</span>}

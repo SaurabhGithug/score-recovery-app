@@ -2,19 +2,22 @@
 
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
-import { ExamFamilySelector } from "@/components/ExamFamilySelector";
 
+/** Home: the two things people come to do, one tap each. Everything else is in the tabs. */
 export default function Home() {
   const { t } = useLang();
-  return <div className="mx-auto w-full max-w-3xl px-5 py-14 sm:py-24">
+  return <div className="mx-auto w-full max-w-xl px-5 py-12 sm:py-20">
     <p className="text-sm font-medium text-slate-500">SSC JE · Civil Engineering</p>
-    <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">{t({en:"A little practice. Clear progress.",hi:"थोड़ा अभ्यास। स्पष्ट प्रगति।"})}</h1>
-    <p className="mt-4 max-w-lg text-base leading-7 text-slate-600">{t({en:"Work on one question at a time, understand your mistakes, and return when it is time to review.",hi:"एक बार में एक प्रश्न हल करें, अपनी गलतियाँ समझें और समय पर दोहराएँ।"})}</p>
-    <Link href="/learn" className="mt-8 inline-flex rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-700">{t({en:"Start learning →",hi:"सीखना शुरू करें →"})}</Link>
-    <div className="mt-10 flex flex-wrap gap-x-7 gap-y-3 border-t border-slate-200 pt-6 text-sm text-slate-600">
-      <Link href="/papers" className="hover:text-slate-950 hover:underline">{t({en:"Browse papers",hi:"पेपर देखें"})}</Link>
-      <Link href="/recovery-lab/testbook/import" className="hover:text-slate-950 hover:underline">{t({en:"Import questions",hi:"प्रश्न इम्पोर्ट करें"})}</Link>
+    <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{t({ en: "What would you like to do?", hi: "आप क्या करना चाहेंगे?" })}</h1>
+    <div className="mt-8 grid gap-3">
+      <Link href="/learn" className="rounded-2xl bg-slate-900 px-5 py-4 text-white hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-blue-600">
+        <span className="block text-base font-semibold">{t({ en: "Practise today's questions →", hi: "आज के प्रश्न हल करें →" })}</span>
+        <span className="mt-0.5 block text-sm text-slate-300">{t({ en: "A few questions at a time, with reviews when they're due", hi: "कुछ प्रश्न एक बार में, समय पर दोहराव के साथ" })}</span>
+      </Link>
+      <Link href="/papers" className="rounded-2xl border border-slate-300 bg-white px-5 py-4 text-slate-900 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-blue-600">
+        <span className="block text-base font-semibold">{t({ en: "Take a test →", hi: "टेस्ट दें →" })}</span>
+        <span className="mt-0.5 block text-sm text-slate-500">{t({ en: "SSC previous-year papers and mock tests", hi: "SSC पिछले वर्ष के पेपर और मॉक टेस्ट" })}</span>
+      </Link>
     </div>
-    <details className="mt-12 text-sm text-slate-500"><summary className="cursor-pointer">{t({en:"Other preparation goals",hi:"अन्य तैयारी लक्ष्य"})}</summary><div className="mt-5"><ExamFamilySelector /></div></details>
   </div>;
 }

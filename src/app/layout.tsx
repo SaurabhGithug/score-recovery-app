@@ -4,7 +4,7 @@ import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n";
 import { AttemptModeProvider } from "@/lib/attempt-mode";
 import { UserProvider } from "@/lib/user-context";
-import { SiteHeader } from "@/components/SiteHeader";
+import { MobileTabBar, SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { UserProfileModal } from "@/components/UserProfileModal";
 import { OnboardingModal } from "@/components/OnboardingModal";
@@ -61,6 +61,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <SiteHeader />
               <div className="min-w-0 flex-1 flex flex-col pb-6">{children}</div>
               <SiteFooter />
+              <MobileTabBar />
               <UserProfileModal />
               <OnboardingModal />
             </AttemptModeProvider>
