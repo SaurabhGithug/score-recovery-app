@@ -8,9 +8,9 @@ import { handle, requireUser } from "@/lib/server/bank/http";
  */
 export async function GET(req: Request, props: { params: Promise<{ path: string[] }> }) {
   return handle(async () => {
-    const user = requireUser(req);
+    const user = await requireUser(req);
     const { path } = await props.params;
-    const { bytes, kind } = readCrop(path, user.id);
+    const { bytes, kind } = await readCrop(path, user.id);
     return new Response(new Uint8Array(bytes), {
       status: 200,
       headers: {

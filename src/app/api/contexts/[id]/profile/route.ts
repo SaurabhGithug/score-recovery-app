@@ -9,13 +9,13 @@ export async function GET(
   props: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User session required" }, { status: 401 });
     }
 
     const { id: contextId } = await props.params;
-    const profile = ExamProfileRepository.findByContextId(contextId, user.id);
+    const profile = await ExamProfileRepository.findByContextId(contextId, user.id);
 
     return NextResponse.json({ profile: profile ? { ...profile, target_posts: JSON.parse(profile.target_posts) } : null });
   } catch (err: unknown) {
@@ -29,13 +29,13 @@ export async function POST(
   props: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User session required" }, { status: 401 });
     }
 
     const { id: contextId } = await props.params;
-    const context = PreparationContextRepository.findById(contextId, user.id);
+    const context = await PreparationContextRepository.findById(contextId, user.id);
     if (!context) {
       return NextResponse.json({ error: "Preparation context not found" }, { status: 404 });
     }
@@ -48,7 +48,7 @@ export async function POST(
     const exServicemanStatus = Boolean(body.exServicemanStatus);
     const targetPosts = body.targetPosts;
 
-    const profile = ExamProfileRepository.upsert({
+    const profile = await ExamProfileRepository.upsert({
       userId: user.id,
       preparationContextId: contextId,
       category,

@@ -6,8 +6,8 @@ import { canReadMadeEasy, madeEasyOverview } from "@/lib/server/made-easy";
  * Only the account the import belongs to may read it (403 for anyone else, 401 signed out).
  */
 export async function GET(req: Request) {
-  return handle(() => {
-    const user = requireUser(req);
+  return handle(async () => {
+    const user = await requireUser(req);
     if (!canReadMadeEasy(user.id)) throw new HttpError(403, "These Made Easy results belong to another account.");
     return jsonOk(madeEasyOverview());
   });

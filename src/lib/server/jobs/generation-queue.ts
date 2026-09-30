@@ -31,13 +31,13 @@ export class GenerationQueue {
   }
 
   /** Dollars left under the rolling 24-hour limit. */
-  public static dailyRemainingUsd(): number {
+  public static async dailyRemainingUsd(): Promise<number> {
     const { maxUsdPerDay } = getLlmSetup();
-    return Math.max(0, maxUsdPerDay - SpendRepository.totalSince(new Date(Date.now() - DAY_MS)));
+    return Math.max(0, maxUsdPerDay - await SpendRepository.totalSince(new Date(Date.now() - DAY_MS)));
   }
 
   /** Why a run can't start right now, or null if it can. */
-  public static checkCanStart(documentId: string): StartBlock | null {
+  public static async checkCanStart(documentId: string): Promise<StartBlock | null> {
     const setup = getLlmSetup();
     if (!setup.configured || !setup.provider) {
       return { status: 503, error: setup.unavailableReason ?? "Question generation is not configured" };
@@ -48,7 +48,7 @@ export class GenerationQueue {
     if (activeJobs.size > 0) {
       return { status: 409, error: "Another document is generating questions right now. Try again when it finishes." };
     }
-    const remaining = this.dailyRemainingUsd();
+    const remaining = await this.dailyRemainingUsd();
     if (remaining < 0.01) {
       return {
         status: 429,
@@ -76,8 +76,8 @@ export class GenerationQueue {
   }
 
   /** Starts a run, or returns why it can't (re-checked here so concurrent requests can't both start). */
-  public static start(request: GenerationRequest): StartBlock | null {
-    const block = this.checkCanStart(request.documentId);
+  public static async start(request: GenerationRequest): Promise<StartBlock | null> {
+    const block = await this.checkCanStart(request.documentId);
     if (block) return block;
 
     const setup = getLlmSetup();
@@ -86,14 +86,14 @@ export class GenerationQueue {
       generationModel: setup.generationModel,
       checkModel: setup.checkModel,
       checkEffort: setup.checkEffort,
-      budgetUsd: Math.min(setup.maxUsdPerRun, this.dailyRemainingUsd()),
+      budgetUsd: Math.min(setup.maxUsdPerRun, await this.dailyRemainingUsd()),
     };
     const persist = (summary: GenerationSummary) => {
       if (summary.status === "RUNNING") activeJobs.set(request.documentId, summary);
-      DocumentRepository.setMetadataKey(request.documentId, METADATA_KEY, summary);
+      void DocumentRepository.setMetadataKey(request.documentId, METADATA_KEY, summary);
     };
     const onSpend = (model: string, usd: number) =>
-      SpendRepository.add({ userId: request.userId, documentId: request.documentId, model, costUsd: usd });
+      void SpendRepository.add({ userId: request.userId, documentId: request.documentId, model, costUsd: usd });
 
     // Reserve the slot synchronously so a double-click can't start two runs.
     persist({ ...createSummary(request, deps, 0), message: "Starting…" });
@@ -103,7 +103,7 @@ export class GenerationQueue {
         .catch((err) => {
           console.error(`[Generation] Run for ${request.documentId} crashed:`, err);
           const current = activeJobs.get(request.documentId);
-          DocumentRepository.setMetadataKey(request.documentId, METADATA_KEY, {
+          void DocumentRepository.setMetadataKey(request.documentId, METADATA_KEY, {
             ...current,
             status: "FAILED",
             message: err instanceof Error ? err.message : "Generation crashed",

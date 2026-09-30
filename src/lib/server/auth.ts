@@ -14,13 +14,13 @@ export function getSessionTokenFromRequest(req: Request | NextRequest): string |
   return null;
 }
 
-export function getCurrentUser(req: Request | NextRequest): UserRecord | null {
+export async function getCurrentUser(req: Request | NextRequest): Promise<UserRecord | null> {
   const token = getSessionTokenFromRequest(req);
   return token ? SessionRepository.findUser(token) : null;
 }
 
-export function requireCurrentUser(req: Request | NextRequest): UserRecord {
-  const user = getCurrentUser(req);
+export async function requireCurrentUser(req: Request | NextRequest): Promise<UserRecord> {
+  const user = await getCurrentUser(req);
   if (!user) {
     throw new Error("Unauthorized: Active user profile required");
   }

@@ -36,12 +36,12 @@ const MAX_NOTE_CHARS = 1000;
 const MODES: ReadonlySet<string> = new Set(["full", "section", "practice"]);
 
 // ------------------------------------------------------------------ papers
-export function listPapers(userId: string, filter: { kind?: BankPaperKind; paper?: BankPaperCode }): BankPaperSummary[] {
-  const papers = BankRepository.listPapers(userId, filter);
+export async function listPapers(userId: string, filter: { kind?: BankPaperKind; paper?: BankPaperCode }): Promise<BankPaperSummary[]> {
+  const papers = await BankRepository.listPapers(userId, filter);
   const ids = papers.map((p) => p.id);
-  const questions = BankRepository.listQuestionsForPapers(ids);
-  const keys = BankRepository.resolveKeysForQuestions(questions, userId);
-  const attempts = BankRepository.listAttemptsForUser(userId, ids);
+  const questions = await BankRepository.listQuestionsForPapers(ids);
+  const keys = await BankRepository.resolveKeysForQuestions(questions, userId);
+  const attempts = await BankRepository.listAttemptsForUser(userId, ids);
   const byPaper = new Map<string, BankQuestionRecord[]>();
   for (const q of questions) {
     const list = byPaper.get(q.paperId);
@@ -53,12 +53,12 @@ export function listPapers(userId: string, filter: { kind?: BankPaperKind; paper
   );
 }
 
-export function paperDetail(paperId: string, userId: string): BankPaperDetail {
-  const paper = BankRepository.getPaperFor(paperId, userId);
+export async function paperDetail(paperId: string, userId: string): Promise<BankPaperDetail> {
+  const paper = await BankRepository.getPaperFor(paperId, userId);
   if (!paper) throw new HttpError(404, "Paper not found.");
-  const questions = BankRepository.listQuestions(paperId);
-  const keys = BankRepository.resolveKeysForQuestions(questions, userId);
-  const attempts = BankRepository.listAttemptsForUser(userId, [paperId]);
+  const questions = await BankRepository.listQuestions(paperId);
+  const keys = await BankRepository.resolveKeysForQuestions(questions, userId);
+  const attempts = await BankRepository.listAttemptsForUser(userId, [paperId]);
   return {
     paper: toPaperSummary(paper, questions, keys, attempts),
     sections: sectionsOf(questions),
@@ -67,14 +67,14 @@ export function paperDetail(paperId: string, userId: string): BankPaperDetail {
 }
 
 // ------------------------------------------------------------------ attempts
-export function startAttempt(userId: string, body: unknown): BankAttempt {
+export async function startAttempt(userId: string, body: unknown): Promise<BankAttempt> {
   if (!isRecord(body)) throw new HttpError(400, "Expected { paperId, mode, section? }.");
   const { paperId, mode, section } = body;
   if (!validId(paperId)) throw new HttpError(400, "paperId is required.");
   if (typeof mode !== "string" || !MODES.has(mode)) throw new HttpError(400, 'mode must be "full", "section" or "practice".');
-  const paper = BankRepository.getPaperFor(paperId, userId);
+  const paper = await BankRepository.getPaperFor(paperId, userId);
   if (!paper) throw new HttpError(404, "Paper not found.");
-  const questions = BankRepository.listQuestions(paperId);
+  const questions = await BankRepository.listQuestions(paperId);
   if (!questions.length) throw new HttpError(409, "This paper has no questions yet.");
   let sectionName: string | null = null;
   if (mode === "section") {
@@ -86,7 +86,7 @@ export function startAttempt(userId: string, body: unknown): BankAttempt {
   }
   const m = mode as BankAttemptMode;
   const inScope = questionsInScope(questions, m, sectionName);
-  const attempt = BankRepository.createAttempt({
+  const attempt = await BankRepository.createAttempt({
     userId,
     paperId,
     mode: m,
@@ -97,20 +97,20 @@ export function startAttempt(userId: string, body: unknown): BankAttempt {
   return toAttemptView(attempt);
 }
 
-function ownAttempt(attemptId: string, userId: string): BankAttemptRecord {
+async function ownAttempt(attemptId: string, userId: string): Promise<BankAttemptRecord> {
   // 404, not 403, for someone else's attempt: never confirm that it exists.
-  const attempt = validId(attemptId) ? BankRepository.getAttemptForUser(attemptId, userId) : null;
+  const attempt = validId(attemptId) ? await BankRepository.getAttemptForUser(attemptId, userId) : null;
   if (!attempt) throw new HttpError(404, "Attempt not found.");
   return attempt;
 }
 
-export function getAttempt(attemptId: string, userId: string): { attempt: BankAttempt; responses: BankResponses; result: BankAttemptResult | null } {
-  const attempt = ownAttempt(attemptId, userId);
+export async function getAttempt(attemptId: string, userId: string): Promise<{ attempt: BankAttempt; responses: BankResponses; result: BankAttemptResult | null }> {
+  const attempt = await ownAttempt(attemptId, userId);
   return { attempt: toAttemptView(attempt), responses: attempt.responses, result: attempt.stored?.result ?? null };
 }
 
-function scopeOf(attempt: BankAttemptRecord): BankQuestionRecord[] {
-  return questionsInScope(BankRepository.listQuestions(attempt.paperId), attempt.mode, attempt.section);
+async function scopeOf(attempt: BankAttemptRecord): Promise<BankQuestionRecord[]> {
+  return questionsInScope(await BankRepository.listQuestions(attempt.paperId), attempt.mode, attempt.section);
 }
 
 /**
@@ -169,26 +169,26 @@ function pastDeadline(attempt: BankAttemptRecord, now = Date.now()): boolean {
   return now > deadline;
 }
 
-export function autosave(attemptId: string, userId: string, body: unknown): void {
-  const attempt = ownAttempt(attemptId, userId);
+export async function autosave(attemptId: string, userId: string, body: unknown): Promise<void> {
+  const attempt = await ownAttempt(attemptId, userId);
   if (attempt.submittedAt) throw new HttpError(409, "This attempt has already been submitted.");
   if (pastDeadline(attempt)) throw new HttpError(409, "Time is up for this attempt: submit it to see your result.");
-  const responses = applyLocks(parseResponses(body, scopeOf(attempt)), attempt);
-  if (!BankRepository.saveResponses(attempt.id, userId, responses)) {
+  const responses = applyLocks(parseResponses(body, await scopeOf(attempt)), attempt);
+  if (!(await BankRepository.saveResponses(attempt.id, userId, responses))) {
     throw new HttpError(409, "This attempt has already been submitted.");
   }
 }
 
-export function submit(attemptId: string, userId: string, body: unknown): BankAttemptResult {
-  const attempt = ownAttempt(attemptId, userId);
+export async function submit(attemptId: string, userId: string, body: unknown): Promise<BankAttemptResult> {
+  const attempt = await ownAttempt(attemptId, userId);
   if (attempt.submittedAt) throw new HttpError(409, "This attempt has already been submitted.");
-  const paper = BankRepository.getPaper(attempt.paperId);
+  const paper = await BankRepository.getPaper(attempt.paperId);
   if (!paper) throw new HttpError(404, "Paper not found.");
-  const scope = scopeOf(attempt);
+  const scope = await scopeOf(attempt);
   const parsed = parseResponses(body, scope);
   // Past the timer (plus grace), score what was autosaved in time, not what arrives now.
   const responses = applyLocks(pastDeadline(attempt) ? attempt.responses : parsed, attempt);
-  const keys = BankRepository.resolveKeysForQuestions(scope, userId);
+  const keys = await BankRepository.resolveKeysForQuestions(scope, userId);
   const scored = scoreAttempt({
     attemptId: attempt.id,
     paperId: attempt.paperId,
@@ -199,8 +199,8 @@ export function submit(attemptId: string, userId: string, body: unknown): BankAt
     submittedAt: new Date().toISOString(),
     seenFps: attempt.contentFps,
   });
-  scored.result.priorExposure = keysSeenBefore(attempt, scope, userId, scored.keySnapshot);
-  if (!BankRepository.submitAttempt(attempt.id, userId, responses, scored)) {
+  scored.result.priorExposure = await keysSeenBefore(attempt, scope, userId, scored.keySnapshot);
+  if (!(await BankRepository.submitAttempt(attempt.id, userId, responses, scored))) {
     throw new HttpError(409, "This attempt has already been submitted.");
   }
   return scored.result;
@@ -211,36 +211,36 @@ export function submit(attemptId: string, userId: string, body: unknown): BankAt
  * in any other practice attempt, covered by another attempt they had submitted (its review shows
  * every key), or resolved by them in a dispute.
  */
-function keysSeenBefore(
+async function keysSeenBefore(
   attempt: BankAttemptRecord,
   scope: BankQuestionRecord[],
   userId: string,
   snapshot: Record<string, { answer: string | null }>
-): number {
+): Promise<number> {
   const seen = new Set<string>();
-  const inPaper = BankRepository.listQuestions(attempt.paperId);
-  for (const other of BankRepository.listAttemptsForUser(userId, [attempt.paperId])) {
+  const inPaper = await BankRepository.listQuestions(attempt.paperId);
+  for (const other of await BankRepository.listAttemptsForUser(userId, [attempt.paperId])) {
     if (other.id === attempt.id) continue;
     for (const id of Object.keys(other.checked)) seen.add(id);
     if (other.submittedAt) for (const q of questionsInScope(inPaper, other.mode, other.section)) seen.add(q.id);
   }
-  const evidence = BankRepository.loadEvidenceForPapers([attempt.paperId], userId);
+  const evidence = await BankRepository.loadEvidenceForPapers([attempt.paperId], userId);
   const byId = new Map(inPaper.map((q) => [q.id, q]));
   for (const [questionId, rows] of evidence) {
     const q = byId.get(questionId);
     if (q && currentEvidence(q, rows).some((e) => e.authority === "human_review" && e.userId === userId)) seen.add(questionId);
   }
   // The adaptive-learning loop (/learn) reveals a question's key when the learner checks it there.
-  for (const id of BankRepository.questionsSeenInLearning(userId, scope.map((q) => q.id))) seen.add(id);
+  for (const id of await BankRepository.questionsSeenInLearning(userId, scope.map((q) => q.id))) seen.add(id);
   return scope.filter((q) => snapshot[q.id]?.answer != null && seen.has(q.id)).length;
 }
 
-export function check(attemptId: string, userId: string, body: unknown): BankCheckResult {
-  const attempt = ownAttempt(attemptId, userId);
+export async function check(attemptId: string, userId: string, body: unknown): Promise<BankCheckResult> {
+  const attempt = await ownAttempt(attemptId, userId);
   if (attempt.mode !== "practice") throw new HttpError(409, "Answers can only be checked in practice mode.");
   if (attempt.submittedAt) throw new HttpError(409, "This attempt has already been submitted: open the review.");
   if (!isRecord(body) || !validId(body.questionId)) throw new HttpError(400, "Expected { questionId, answer }.");
-  const question = scopeOf(attempt).find((q) => q.id === body.questionId);
+  const question = (await scopeOf(attempt)).find((q) => q.id === body.questionId);
   if (!question) throw new HttpError(400, "That question is not part of this attempt.");
   if (changedSinceStart(attempt, question)) {
     throw new HttpError(409, "This question was corrected after you started this attempt, so it cannot be checked here. Start a new practice attempt to see the corrected version.");
@@ -261,28 +261,28 @@ export function check(attemptId: string, userId: string, body: unknown): BankChe
       ...attempt.responses,
       [question.id]: { ...(prev ?? { seconds: 0, visits: 1, changes: 0, marked: false }), answer },
     };
-    if (!BankRepository.saveChecked(attempt.id, userId, responses, checked)) {
+    if (!(await BankRepository.saveChecked(attempt.id, userId, responses, checked))) {
       throw new HttpError(409, "This attempt has already been submitted.");
     }
   }
 
-  const key = BankRepository.resolveKeyFor(question.id, userId)!;
+  const key = (await BankRepository.resolveKeyFor(question.id, userId))!;
   return {
     questionId: question.id,
     outcome: outcomeFor(snapshotOf(key, presentable(question)), { answer, seconds: 0, visits: 0, changes: 0, marked: false }),
     key: toKeyView(key),
     sourceSolution: question.sourceSolution,
-    explanation: explanationFor(BankRepository.getExplanation(question.id), key),
+    explanation: explanationFor(await BankRepository.getExplanation(question.id), key),
     imageUrl: imageUrlFor(question, true),
   };
 }
 
-export function review(attemptId: string, userId: string): BankReview {
-  const attempt = ownAttempt(attemptId, userId);
+export async function review(attemptId: string, userId: string): Promise<BankReview> {
+  const attempt = await ownAttempt(attemptId, userId);
   if (!attempt.submittedAt || !attempt.stored) throw new HttpError(409, "The review opens after you submit the attempt.");
-  const scope = scopeOf(attempt);
-  const keys = BankRepository.resolveKeysForQuestions(scope, userId);
-  const explanations = BankRepository.getExplanationsForPaper(attempt.paperId);
+  const scope = await scopeOf(attempt);
+  const keys = await BankRepository.resolveKeysForQuestions(scope, userId);
+  const explanations = await BankRepository.getExplanationsForPaper(attempt.paperId);
   const snapshot = attempt.stored.keySnapshot ?? {};
   const questions: BankReviewQuestion[] = scope.map((q) => {
     const key = keys.get(q.id)!;
@@ -307,12 +307,12 @@ export function review(attemptId: string, userId: string): BankReview {
 }
 
 // ------------------------------------------------------------------ disputes
-export function resolveDispute(questionId: string, userId: string, body: unknown): { key: BankKeyView } {
-  const question = validId(questionId) ? BankRepository.getQuestionFor(questionId, userId) : null;
+export async function resolveDispute(questionId: string, userId: string, body: unknown): Promise<{ key: BankKeyView }> {
+  const question = validId(questionId) ? await BankRepository.getQuestionFor(questionId, userId) : null;
   if (!question) throw new HttpError(404, "Question not found.");
   // Resolving shows every source's answer and makes the learner's pick their key: only after
   // they have answered the question themselves.
-  if (!learnerCommitted(userId, question)) {
+  if (!(await learnerCommitted(userId, question))) {
     throw new HttpError(403, "A disputed question can be resolved once you have submitted it or checked it in practice.");
   }
   if (!isRecord(body) || !("answer" in body)) throw new HttpError(400, "Expected { answer: optionId | null, note? }.");
@@ -323,7 +323,7 @@ export function resolveDispute(questionId: string, userId: string, body: unknown
   if (note !== undefined && note !== null && (typeof note !== "string" || note.length > MAX_NOTE_CHARS)) {
     throw new HttpError(400, `note must be text of at most ${MAX_NOTE_CHARS} characters.`);
   }
-  const evidence = currentEvidence(question, BankRepository.loadEvidenceForQuestion(question.id, userId));
+  const evidence = currentEvidence(question, await BankRepository.loadEvidenceForQuestion(question.id, userId));
   const optionIds = question.options.map((o) => o.id);
   const current = resolveAnswerKey(evidence, optionIds);
   if (current.status !== "disputed") {
@@ -343,6 +343,6 @@ export function resolveDispute(questionId: string, userId: string, body: unknown
   if (withReview.status === "disputed") {
     throw new HttpError(409, "The SSC sources for this question disagree with each other; a review cannot override SSC evidence.");
   }
-  BankRepository.upsertHumanReview(question, userId, answer as string | null, typeof note === "string" ? note : null);
-  return { key: toKeyView(BankRepository.resolveKeyFor(question.id, userId)!) };
+  await BankRepository.upsertHumanReview(question, userId, answer as string | null, typeof note === "string" ? note : null);
+  return { key: toKeyView((await BankRepository.resolveKeyFor(question.id, userId))!) };
 }

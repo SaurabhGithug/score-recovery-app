@@ -46,18 +46,18 @@ export function getOfficialMinimumQualifyingMarks(
  * Computes transparent, explainable Personal Preparation Target.
  * STRICT RULE: Never mix Official Qualifying Marks, Historical Cutoff, and Preparation Target.
  */
-export function calculatePersonalTarget(params: {
+export async function calculatePersonalTarget(params: {
   examDefinitionId: string;
   branch?: string | null;
   category: CandidateCategory;
   stage?: string;
-}): TargetCalculationResult {
+}): Promise<TargetCalculationResult> {
   const stage = params.stage ?? "PAPER_I";
   const totalMarks = 200; // SSC JE Paper-I standard
   const officialMin = getOfficialMinimumQualifyingMarks(params.examDefinitionId, params.category, totalMarks);
 
   // Retrieve verified historical cutoffs
-  const history: HistoricalCutoffRecord[] = HistoricalCutoffRepository.findComparable({
+  const history: HistoricalCutoffRecord[] = await HistoricalCutoffRepository.findComparable({
     examDefinitionId: params.examDefinitionId,
     branch: params.branch,
     category: params.category,

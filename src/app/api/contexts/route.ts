@@ -4,13 +4,13 @@ import { PreparationContextRepository } from "@/lib/server/repositories/preparat
 
 export async function GET(req: NextRequest) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User session required" }, { status: 401 });
     }
 
-    const contexts = PreparationContextRepository.listByUserId(user.id);
-    const activeContext = PreparationContextRepository.getActiveContext(user.id);
+    const contexts = await PreparationContextRepository.listByUserId(user.id);
+    const activeContext = await PreparationContextRepository.getActiveContext(user.id);
 
     return NextResponse.json({
       contexts,
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User session required" }, { status: 401 });
     }
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Context name is required" }, { status: 400 });
     }
 
-    const context = PreparationContextRepository.createContext({
+    const context = await PreparationContextRepository.createContext({
       userId: user.id,
       name: name.trim(),
       type: type || "COMPETITIVE_EXAM",

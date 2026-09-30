@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useLang } from "@/lib/i18n";
 import { StudyPack, TopicTag, type StudyPackData } from "./StudyPack";
 import { AiGeneratedBadge } from "./AiGeneratedBadge";
@@ -81,6 +81,158 @@ type Turn = { role: "user"; text: string } | ({ role: "model"; text: string } & 
 
 const MAX_HISTORY = 8;
 
+type AnswerBlock =
+  | { type: "heading"; text: string }
+  | { type: "paragraph"; text: string }
+  | { type: "list"; ordered: boolean; items: string[] };
+
+const SUPERSCRIPT: Record<string, string> = {
+  "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵",
+  "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹", "+": "⁺", "-": "⁻",
+};
+
+const SUBSCRIPT: Record<string, string> = {
+  "0": "₀", "1": "₁", "2": "₂", "3": "₃", "4": "₄", "5": "₅",
+  "6": "₆", "7": "₇", "8": "₈", "9": "₉", "+": "₊", "-": "₋",
+};
+
+function scriptText(value: string, characters: Record<string, string>, fallback: "^" | "_"): string {
+  const converted = [...value].map((character) => characters[character] ?? "").join("");
+  return converted.length === value.length ? converted : `${fallback}(${value})`;
+}
+
+/** Turn the small subset of LaTeX commonly returned by the tutor into readable study-note math. */
+function readableMath(source: string): string {
+  return source
+    .trim()
+    .replace(/\\(?:dfrac|tfrac|frac)\s*\{([^{}]+)\}\s*\{([^{}]+)\}/g, "($1) ÷ ($2)")
+    .replace(/\\sqrt\s*\{([^{}]+)\}/g, "√($1)")
+    .replace(/\\text\s*\{([^{}]*)\}/g, "$1")
+    .replace(/\\mathrm\s*\{([^{}]*)\}/g, "$1")
+    .replace(/\\(?:left|right)\b/g, "")
+    .replace(/\\(?:quad|qquad)\b/g, " ")
+    .replace(/\\Delta\b/g, "Δ")
+    .replace(/\\theta\b/g, "θ")
+    .replace(/\\rho\b/g, "ρ")
+    .replace(/\\gamma\b/g, "γ")
+    .replace(/\\pi\b/g, "π")
+    .replace(/\\times\b/g, "×")
+    .replace(/\\cdot\b/g, "·")
+    .replace(/\\leq\b/g, "≤")
+    .replace(/\\geq\b/g, "≥")
+    .replace(/\\neq\b/g, "≠")
+    .replace(/\^\{([^{}]+)\}/g, (_, value: string) => scriptText(value, SUPERSCRIPT, "^"))
+    .replace(/\^([0-9+-]+)/g, (_, value: string) => scriptText(value, SUPERSCRIPT, "^"))
+    .replace(/_\{([^{}]+)\}/g, (_, value: string) => scriptText(value, SUBSCRIPT, "_"))
+    .replace(/_([0-9+-]+)/g, (_, value: string) => scriptText(value, SUBSCRIPT, "_"))
+    .replace(/\\([0-9])/g, "$1")
+    .replace(/\\[,;!]/g, " ")
+    .replace(/\\([A-Za-z]+)/g, "$1")
+    .replace(/[{}]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function inlineAnswer(text: string, keyPrefix: string): ReactNode[] {
+  const parts = text.split(/(\*\*[^*]+?\*\*|`[^`]+?`|\$\$[^$\n]+?\$\$|\$[^$\n]+?\$|\\\([^\n]+?\\\)|\\\[[^\n]+?\\\])/g);
+  return parts.filter(Boolean).map((part, index) => {
+    const key = `${keyPrefix}-${index}`;
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={key} className="rounded bg-amber-100 px-1 font-bold text-slate-950">{inlineAnswer(part.slice(2, -2), key)}</strong>;
+    }
+    if (part.startsWith("`") && part.endsWith("`")) {
+      return <code key={key} className="rounded bg-slate-100 px-1 py-0.5 font-mono text-[0.92em] text-slate-900">{part.slice(1, -1)}</code>;
+    }
+    const displayMath = part.startsWith("$$") || part.startsWith("\\[");
+    if (displayMath || (part.startsWith("$") && part.endsWith("$")) || (part.startsWith("\\(") && part.endsWith("\\)"))) {
+      const math = displayMath || part.startsWith("\\(") ? part.slice(2, -2) : part.slice(1, -1);
+      return <span key={key} className="font-mono font-semibold text-violet-900">{readableMath(math)}</span>;
+    }
+    return part;
+  });
+}
+
+function answerBlocks(answer: string): AnswerBlock[] {
+  const blocks: AnswerBlock[] = [];
+  let paragraph: string[] = [];
+  let activeList: Extract<AnswerBlock, { type: "list" }> | null = null;
+
+  const flushParagraph = () => {
+    if (paragraph.length) blocks.push({ type: "paragraph", text: paragraph.join(" ") });
+    paragraph = [];
+  };
+
+  for (const rawLine of answer.replace(/\r\n?/g, "\n").split("\n")) {
+    const line = rawLine.trim();
+    if (!line) {
+      flushParagraph();
+      activeList = null;
+      continue;
+    }
+
+    const markdownHeading = line.match(/^#{1,6}\s+(.+)$/)?.[1];
+    const boldHeading = line.match(/^\*\*(.+?)\*\*:?$/)?.[1];
+    const plainHeading = /^(also asked in the exam|possible key error):?$/i.test(line) ? line.replace(/:$/, "") : null;
+    const heading = markdownHeading ?? boldHeading ?? plainHeading;
+    if (heading) {
+      flushParagraph();
+      activeList = null;
+      blocks.push({ type: "heading", text: heading.replace(/:$/, "") });
+      continue;
+    }
+
+    const unordered = line.match(/^[-*•]\s+(.+)$/);
+    const ordered = line.match(/^\d+[.)]\s+(.+)$/);
+    if (unordered || ordered) {
+      flushParagraph();
+      const isOrdered = Boolean(ordered);
+      const item = (unordered ?? ordered)?.[1] ?? "";
+      if (!activeList || activeList.ordered !== isOrdered) {
+        activeList = { type: "list", ordered: isOrdered, items: [] };
+        blocks.push(activeList);
+      }
+      activeList.items.push(item);
+      continue;
+    }
+
+    if (activeList?.items.length) {
+      const last = activeList.items.length - 1;
+      activeList.items[last] = `${activeList.items[last]} ${line}`;
+    } else {
+      paragraph.push(line);
+    }
+  }
+  flushParagraph();
+  return blocks;
+}
+
+export function StructuredAnswer({ answer }: { answer: string }) {
+  return (
+    <div className="mt-3 space-y-3 text-sm leading-6 text-slate-800">
+      {answerBlocks(answer).map((block, index) => {
+        if (block.type === "heading") {
+          return (
+            <h5 key={index} className="border-t border-violet-100 pt-3 text-xs font-bold uppercase tracking-wide text-violet-900">
+              {inlineAnswer(block.text, `heading-${index}`)}
+            </h5>
+          );
+        }
+        if (block.type === "list") {
+          const List = block.ordered ? "ol" : "ul";
+          return (
+            <List key={index} className={`${block.ordered ? "list-decimal" : "list-disc"} space-y-2 pl-5 marker:font-semibold marker:text-violet-600`}>
+              {block.items.map((item, itemIndex) => (
+                <li key={itemIndex} className="pl-1">{inlineAnswer(item, `list-${index}-${itemIndex}`)}</li>
+              ))}
+            </List>
+          );
+        }
+        return <p key={index}>{inlineAnswer(block.text, `paragraph-${index}`)}</p>;
+      })}
+    </div>
+  );
+}
+
 function providerLabel(meta: Answer): string {
   const who = meta.provider === "google" ? `Google ${meta.model.replace(/^gemini-/, "Gemini ")}` : `DeepSeek ${meta.model.replace(/^deepseek-/, "")}`;
   return meta.grounded ? `${who}, checked with Google Search` : `${who}, not web-checked`;
@@ -113,6 +265,25 @@ export function AskFollowUp({ kind, id }: { kind: "made_easy" | "bank"; id: stri
   const [pack, setPack] = useState<StudyPackData | null>(null);
   const [packPending, setPackPending] = useState(false);
   const [packError, setPackError] = useState("");
+  const [saved, setSaved] = useState<Record<number, "saving" | "saved" | "error">>({});
+
+  async function saveRevisionNote(index: number, answer: Turn & { role: "model" }) {
+    const title = index > 0 && turns[index - 1]?.role === "user" ? turns[index - 1].text : "AI revision note";
+    setSaved((current) => ({ ...current, [index]: "saving" }));
+    const response = await fetch("/api/revision-notes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sourceKind: kind,
+        sourceId: id,
+        title,
+        body: answer.text,
+        model: answer.meta.model,
+        evidence: pack?.evidence ?? [],
+      }),
+    });
+    setSaved((current) => ({ ...current, [index]: response.ok ? "saved" : "error" }));
+  }
 
   function applyStatus(status: PackStatus) {
     if (status.pack) setPack(status.pack);
@@ -234,8 +405,22 @@ export function AskFollowUp({ kind, id }: { kind: "made_easy" | "bank"; id: stri
                   <AiGeneratedBadge detail={providerLabel(turn.meta)} />
                   {pack?.topic && <TopicTag pack={pack} />}
                 </div>
-                <p className="mt-2 whitespace-pre-line leading-6">{turn.text}</p>
+                <StructuredAnswer answer={turn.text} />
                 <CheckNote check={turn.meta.check?.id ? checks[turn.meta.check.id] : turn.meta.check?.status === "unavailable" ? { status: "unavailable" } : undefined} />
+                <button
+                  type="button"
+                  onClick={() => void saveRevisionNote(i, turn)}
+                  disabled={saved[i] === "saving" || saved[i] === "saved"}
+                  className="mt-3 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-bold text-amber-950 disabled:opacity-70"
+                >
+                  {saved[i] === "saving"
+                    ? t({ en: "Saving…", hi: "सहेज रहे हैं…" })
+                    : saved[i] === "saved"
+                      ? t({ en: "Saved to revision notes ✓", hi: "रिविज़न नोट्स में सहेजा ✓" })
+                      : saved[i] === "error"
+                        ? t({ en: "Could not save — try again", hi: "सहेजा नहीं गया — फिर कोशिश करें" })
+                        : t({ en: "Save to revision notes", hi: "रिविज़न नोट्स में सहेजें" })}
+                </button>
                 {turn.meta.sources.length > 0 && (
                   <div className="mt-2 text-xs text-slate-500">
                     <p className="font-semibold">{t({ en: "Web sources the AI used:", hi: "AI ने उपयोग किए वेब स्रोत:" })}</p>

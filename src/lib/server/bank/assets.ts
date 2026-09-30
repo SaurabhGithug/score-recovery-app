@@ -72,50 +72,70 @@ export function resolveUnderRoot(rel: string, root = cropRoot()): string {
  * True when `userId` has committed to at least one question that uses this crop, and the importer
  * recorded the crop as servable (one question, no candidate response data, URLs or timestamps).
  */
-export function learnerMayView(rel: string, userId: string): boolean {
-  return BankRepository.findQuestionsByVisualPath(rel).some(
-    (q) => q.metadata.original_crop_ok === true && BankRepository.getPaperFor(q.paperId, userId) !== null && learnerCommitted(userId, q)
-  );
+export async function learnerMayView(rel: string, userId: string): Promise<boolean> {
+  for (const q of await BankRepository.findQuestionsByVisualPath(rel)) {
+    if (q.metadata.original_crop_ok === true && await BankRepository.getPaperFor(q.paperId, userId) && await learnerCommitted(userId, q)) return true;
+  }
+  return false;
 }
 
 /** True when some question records `rel` as its verified key-free crop. */
-export function cleanCropRegistered(rel: string): boolean {
-  return BankRepository.findQuestionsByVisualPath(rel).some((q) => q.metadata.clean_crop === rel);
+export async function cleanCropRegistered(rel: string): Promise<boolean> {
+  return (await BankRepository.findQuestionsByVisualPath(rel)).some((q) => q.metadata.clean_crop === rel);
 }
 
 /** The sha256s the importer verified for `rel`, per kind. */
-function verifiedHashes(rel: string, kind: "clean" | "original", userId: string): Set<string> {
+async function verifiedHashes(rel: string, kind: "clean" | "original", userId: string): Promise<Set<string>> {
   const questions =
     kind === "clean"
-      ? BankRepository.findQuestionsByVisualPath(rel).filter((q) => q.metadata.clean_crop === rel)
-      : learnerMayView(rel, userId)
-        ? BankRepository.findQuestionsByVisualPath(rel).filter((q) => q.metadata.original_crop_ok === true)
+      ? (await BankRepository.findQuestionsByVisualPath(rel)).filter((q) => q.metadata.clean_crop === rel)
+      : await learnerMayView(rel, userId)
+        ? (await BankRepository.findQuestionsByVisualPath(rel)).filter((q) => q.metadata.original_crop_ok === true)
         : [];
   const field = kind === "clean" ? "clean_sha256" : "original_sha256";
   return new Set(questions.map((q) => q.metadata[field]).filter((h): h is string => typeof h === "string" && h.length === 64));
 }
 
-export function readCrop(segments: unknown, userId: string): { bytes: Buffer; kind: "clean" | "original" } {
-  let file: string;
+export async function readCrop(segments: unknown, userId: string): Promise<{ bytes: Buffer; kind: "clean" | "original" }> {
   let kind: "clean" | "original";
   let rel: string;
   if (Array.isArray(segments) && segments[0] === CLEAN_SEGMENT) {
     kind = "clean";
     rel = safeAssetPath(segments.slice(1));
-    file = resolveUnderRoot(rel, cleanCropRoot());
   } else {
     kind = "original";
     rel = safeAssetPath(segments);
-    file = resolveUnderRoot(rel);
   }
-  const expected = verifiedHashes(rel, kind, userId);
+  const expected = await verifiedHashes(rel, kind, userId);
   if (!expected.size) throw new HttpError(404, "Not found.");
-  const st = fs.statSync(file);
-  if (st.size > MAX_ASSET_BYTES) throw new HttpError(404, "Not found.");
-  const bytes = fs.readFileSync(file);
+  const bytes = await cropBytes(kind, rel);
   if (bytes.length < PNG_MAGIC.length || !bytes.subarray(0, PNG_MAGIC.length).equals(PNG_MAGIC)) {
     throw new HttpError(404, "Not found.");
   }
   if (![...expected].some((sha) => bytesMatch(bytes, sha))) throw new HttpError(404, "Not found.");
   return { bytes, kind };
+}
+
+async function cropBytes(kind: "clean" | "original", rel: string): Promise<Buffer> {
+  const url = process.env.SUPABASE_URL?.replace(/\/$/, "");
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const bucket = process.env.SUPABASE_STORAGE_BUCKET || "question-assets";
+  if (url && key) {
+    const objectPath = `${kind}/${rel}`.split("/").map(encodeURIComponent).join("/");
+    const response = await fetch(`${url}/storage/v1/object/${encodeURIComponent(bucket)}/${objectPath}`, {
+      headers: { Authorization: `Bearer ${key}`, apikey: key },
+      cache: "no-store",
+      signal: AbortSignal.timeout(15_000),
+    }).catch(() => null);
+    if (!response?.ok) throw new HttpError(404, "Not found.");
+    const length = Number(response.headers.get("content-length") || 0);
+    if (length > MAX_ASSET_BYTES) throw new HttpError(404, "Not found.");
+    const bytes = Buffer.from(await response.arrayBuffer());
+    if (bytes.length > MAX_ASSET_BYTES) throw new HttpError(404, "Not found.");
+    return bytes;
+  }
+  const file = resolveUnderRoot(rel, kind === "clean" ? cleanCropRoot() : cropRoot());
+  const st = fs.statSync(file);
+  if (st.size > MAX_ASSET_BYTES) throw new HttpError(404, "Not found.");
+  return fs.readFileSync(file);
 }

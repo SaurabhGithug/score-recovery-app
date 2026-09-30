@@ -9,7 +9,7 @@ import { SyllabusRepository } from "@/lib/server/repositories/syllabus-repo";
  */
 export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
   return handle(async () => {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) throw new HttpError(401, "Sign in to view the syllabus.");
     const { id } = await props.params;
     let decoded: string;

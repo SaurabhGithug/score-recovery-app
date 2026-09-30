@@ -63,6 +63,7 @@ function parseJson<T>(raw: unknown, fallback: T): T {
 }
 const str = (v: unknown): string | null => (typeof v === "string" ? v : null);
 const num = (v: unknown): number => (typeof v === "number" ? v : typeof v === "bigint" ? Number(v) : 0);
+const placeholders = (values: readonly unknown[]): string => values.map(() => "?").join(", ");
 
 function toNode(r: Row): SyllabusNodeRecord {
   return {
@@ -168,36 +169,27 @@ export interface ConceptImportResult {
 const PAPER_LEVEL_METHODS = ["printed_section_heading", "p1_scheme_order_position"];
 
 export class SyllabusRepository {
-  public static transaction<T>(fn: () => T): T {
-    const db = getDatabase();
-    db.exec("BEGIN IMMEDIATE");
-    try {
-      const out = fn();
-      db.exec("COMMIT");
-      return out;
-    } catch (err) {
-      db.exec("ROLLBACK");
-      throw err;
-    }
+  public static async transaction<T>(fn: () => Promise<T>): Promise<T> {
+    return getDatabase().transaction(fn);
   }
 
   // ------------------------------------------------------------------ seed
   /** Validates, then upserts the whole seed in one transaction. Never deletes nodes. */
-  public static applySeed(seed: SyllabusSeed): SeedStats {
+  public static async applySeed(seed: SyllabusSeed): Promise<SeedStats> {
     const problems = validateNodes(seed.nodes);
     if (problems.length) throw new SyllabusValidationError(problems);
     const db = getDatabase();
-    return this.transaction(() => {
+    return this.transaction(async () => {
       const now = new Date().toISOString();
       for (const e of seed.exams) {
-        db.prepare(
+        await db.prepare(
           `INSERT INTO exams (id, name, conducting_body) VALUES (?, ?, ?)
            ON CONFLICT(id) DO UPDATE SET name = excluded.name, conducting_body = excluded.conducting_body,
-             updated_at = CASE WHEN exams.name IS NOT excluded.name OR exams.conducting_body IS NOT excluded.conducting_body THEN ? ELSE exams.updated_at END`
+             updated_at = CASE WHEN exams.name IS DISTINCT FROM excluded.name OR exams.conducting_body IS DISTINCT FROM excluded.conducting_body THEN ? ELSE exams.updated_at END`
         ).run(e.id, e.name, e.conductingBody, now);
       }
       for (const c of seed.cycles) {
-        db.prepare(
+        await db.prepare(
           `INSERT INTO exam_cycles (id, exam_id, year, title, status, notice_number, notice_url, notice_sha256, published_on, notes)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT(id) DO UPDATE SET title = excluded.title, status = excluded.status, notice_number = excluded.notice_number,
@@ -205,7 +197,7 @@ export class SyllabusRepository {
         ).run(c.id, c.examId, c.year, c.title, c.status, c.noticeNumber, c.noticeUrl, c.noticeSha256, c.publishedOn, c.notes);
       }
       for (const p of seed.papers) {
-        db.prepare(
+        await db.prepare(
           `INSERT INTO exam_papers (id, cycle_id, code, title, position) VALUES (?, ?, ?, ?, ?)
            ON CONFLICT(id) DO UPDATE SET title = excluded.title, position = excluded.position`
         ).run(p.id, p.cycleId, p.code, p.title, p.position);
@@ -215,13 +207,13 @@ export class SyllabusRepository {
       let unchanged = 0;
       const select = db.prepare("SELECT * FROM syllabus_nodes WHERE id = ?");
       for (const n of seed.nodes) {
-        const before = select.get(n.id) as Row | undefined;
+        const before = await select.get<Row>(n.id);
         const values = [
           n.cycleId, JSON.stringify(n.papers), n.parentId, n.kind, n.name, n.officialText, n.origin, n.splitNote, n.citation,
           n.sourceVersion, n.reviewStatus, n.parentLinkOrigin, n.parentLinkReviewStatus, n.parentLinkNote, n.position, JSON.stringify(n.metadata),
         ];
         if (!before) {
-          db.prepare(
+          await db.prepare(
             `INSERT INTO syllabus_nodes (id, cycle_id, papers, parent_id, kind, name, official_text, origin, split_note, citation,
                source_version, review_status, parent_link_origin, parent_link_review_status, parent_link_note, position, metadata)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
@@ -241,7 +233,7 @@ export class SyllabusRepository {
           unchanged++;
           continue;
         }
-        db.prepare(
+        await db.prepare(
           `UPDATE syllabus_nodes SET cycle_id = ?, papers = ?, parent_id = ?, kind = ?, name = ?, official_text = ?, origin = ?,
              split_note = ?, citation = ?, source_version = ?, review_status = ?, parent_link_origin = ?, parent_link_review_status = ?,
              parent_link_note = ?, position = ?, metadata = ?, updated_at = ? WHERE id = ?`
@@ -253,7 +245,7 @@ export class SyllabusRepository {
         updated++;
       }
       for (const s of seed.schemeRows) {
-        db.prepare(
+        await db.prepare(
           `INSERT INTO exam_scheme_rows (id, paper_id, part_node_id, part_or_section, questions, marks, duration, negative_marking, citation, position)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT(id) DO UPDATE SET paper_id = excluded.paper_id, part_node_id = excluded.part_node_id, part_or_section = excluded.part_or_section,
@@ -263,39 +255,39 @@ export class SyllabusRepository {
       }
       const keep = new Set(seed.nodes.map((n) => n.id));
       const cycles = seed.cycles.map((c) => c.id);
-      const existing = db
-        .prepare(`SELECT id FROM syllabus_nodes WHERE origin = 'official' AND cycle_id IN (SELECT value FROM json_each(?))`)
-        .all(JSON.stringify(cycles)) as Row[];
+      const existing = cycles.length
+        ? await db.prepare(`SELECT id FROM syllabus_nodes WHERE origin = 'official' AND cycle_id IN (${placeholders(cycles)})`).all<Row>(...cycles)
+        : [];
       const orphanNodeIds = existing.map((r) => String(r.id)).filter((id) => !keep.has(id));
       return { nodesInserted: inserted, nodesUpdated: updated, nodesUnchanged: unchanged, orphanNodeIds };
     });
   }
 
   // ------------------------------------------------------------------ reads
-  public static getCycle(id: string): ExamCycleRecord | null {
-    const r = getDatabase().prepare("SELECT * FROM exam_cycles WHERE id = ?").get(id) as Row | undefined;
+  public static async getCycle(id: string): Promise<ExamCycleRecord | null> {
+    const r = await getDatabase().prepare("SELECT * FROM exam_cycles WHERE id = ?").get<Row>(id);
     return r ? toCycle(r) : null;
   }
 
-  public static getCycleByYear(examId: string, year: number): ExamCycleRecord | null {
-    const r = getDatabase().prepare("SELECT * FROM exam_cycles WHERE exam_id = ? AND year = ?").get(examId, year) as Row | undefined;
+  public static async getCycleByYear(examId: string, year: number): Promise<ExamCycleRecord | null> {
+    const r = await getDatabase().prepare("SELECT * FROM exam_cycles WHERE exam_id = ? AND year = ?").get<Row>(examId, year);
     return r ? toCycle(r) : null;
   }
 
-  public static listCycles(examId: string): ExamCycleRecord[] {
-    return (getDatabase().prepare("SELECT * FROM exam_cycles WHERE exam_id = ? ORDER BY year DESC").all(examId) as Row[]).map(toCycle);
+  public static async listCycles(examId: string): Promise<ExamCycleRecord[]> {
+    return (await getDatabase().prepare("SELECT * FROM exam_cycles WHERE exam_id = ? ORDER BY year DESC").all<Row>(examId)).map(toCycle);
   }
 
-  public static listPapers(cycleId: string): (ExamPaperRecord & { scheme: SchemeRowRecord[] })[] {
+  public static async listPapers(cycleId: string): Promise<(ExamPaperRecord & { scheme: SchemeRowRecord[] })[]> {
     const db = getDatabase();
-    const papers = db.prepare("SELECT * FROM exam_papers WHERE cycle_id = ? ORDER BY position").all(cycleId) as Row[];
-    return papers.map((p) => ({
+    const papers = await db.prepare("SELECT * FROM exam_papers WHERE cycle_id = ? ORDER BY position").all<Row>(cycleId);
+    return Promise.all(papers.map(async (p) => ({
       id: String(p.id),
       cycleId: String(p.cycle_id),
       code: p.code as PaperCode,
       title: String(p.title),
       position: num(p.position),
-      scheme: (db.prepare("SELECT * FROM exam_scheme_rows WHERE paper_id = ? ORDER BY position").all(String(p.id)) as Row[]).map((s) => ({
+      scheme: (await db.prepare("SELECT * FROM exam_scheme_rows WHERE paper_id = ? ORDER BY position").all<Row>(String(p.id))).map((s) => ({
         id: String(s.id),
         paperId: String(s.paper_id),
         partNodeId: str(s.part_node_id),
@@ -307,28 +299,28 @@ export class SyllabusRepository {
         citation: String(s.citation),
         position: num(s.position),
       })),
-    }));
+    })));
   }
 
-  public static listNodes(cycleId: string): SyllabusNodeRecord[] {
-    return (getDatabase().prepare("SELECT * FROM syllabus_nodes WHERE cycle_id = ? ORDER BY position, id").all(cycleId) as Row[]).map(toNode);
+  public static async listNodes(cycleId: string): Promise<SyllabusNodeRecord[]> {
+    return (await getDatabase().prepare("SELECT * FROM syllabus_nodes WHERE cycle_id = ? ORDER BY position, id").all<Row>(cycleId)).map(toNode);
   }
 
-  public static getNode(id: string): SyllabusNodeRecord | null {
-    const r = getDatabase().prepare("SELECT * FROM syllabus_nodes WHERE id = ?").get(id) as Row | undefined;
+  public static async getNode(id: string): Promise<SyllabusNodeRecord | null> {
+    const r = await getDatabase().prepare("SELECT * FROM syllabus_nodes WHERE id = ?").get<Row>(id);
     return r ? toNode(r) : null;
   }
 
-  private static nodeIndex(cycleId?: string): Map<string, SyllabusNodeRecord> {
+  private static async nodeIndex(cycleId?: string): Promise<Map<string, SyllabusNodeRecord>> {
     const rows = cycleId
-      ? (getDatabase().prepare("SELECT * FROM syllabus_nodes WHERE cycle_id = ?").all(cycleId) as Row[])
-      : (getDatabase().prepare("SELECT * FROM syllabus_nodes").all() as Row[]);
+      ? await getDatabase().prepare("SELECT * FROM syllabus_nodes WHERE cycle_id = ?").all<Row>(cycleId)
+      : await getDatabase().prepare("SELECT * FROM syllabus_nodes").all<Row>();
     return new Map(rows.map((r) => [String(r.id), toNode(r)]));
   }
 
-  private static endpointExists(type: EndpointType, id: string): boolean {
+  private static async endpointExists(type: EndpointType, id: string): Promise<boolean> {
     const table = { node: "syllabus_nodes", formula: "formulas", theory_note: "theory_notes", worked_example: "worked_examples", question: "bank_questions" }[type];
-    return !!getDatabase().prepare(`SELECT 1 FROM ${table} WHERE id = ?`).get(id);
+    return !!(await getDatabase().prepare(`SELECT 1 FROM ${table} WHERE id = ?`).get(id));
   }
 
   // ------------------------------------------------------------------ relations
@@ -336,7 +328,7 @@ export class SyllabusRepository {
    * Adds one typed relation. prerequisite_of is refused if it would close a cycle;
    * commonly_confused_with is symmetric and stored once (lower id first). Idempotent.
    */
-  public static addRelation(input: {
+  public static async addRelation(input: {
     relation: RelationType;
     fromType: EndpointType;
     fromId: string;
@@ -345,11 +337,11 @@ export class SyllabusRepository {
     origin: "official" | "editorial" | "source";
     evidence?: string | null;
     reviewStatus?: ReviewStatus;
-  }): { created: boolean } {
+  }): Promise<{ created: boolean }> {
     const problems = validateRelationEndpoints(input.relation, input.fromType, input.toType);
     if (input.fromType === input.toType && input.fromId === input.toId) problems.push("a relation cannot point at itself");
-    if (!this.endpointExists(input.fromType, input.fromId)) problems.push(`${input.fromType} ${input.fromId} does not exist`);
-    if (!this.endpointExists(input.toType, input.toId)) problems.push(`${input.toType} ${input.toId} does not exist`);
+    if (!(await this.endpointExists(input.fromType, input.fromId))) problems.push(`${input.fromType} ${input.fromId} does not exist`);
+    if (!(await this.endpointExists(input.toType, input.toId))) problems.push(`${input.toType} ${input.toId} does not exist`);
     if (input.relation === "commonly_confused_with" && !input.evidence?.trim()) problems.push("commonly_confused_with needs evidence (e.g. a PYP option pattern or source)");
     if (input.origin === "editorial" && input.reviewStatus === "verified") problems.push("an editorial relation starts unreviewed");
     if (problems.length) throw new SyllabusValidationError(problems);
@@ -358,9 +350,9 @@ export class SyllabusRepository {
       [fromType, fromId, toType, toId] = [toType, toId, fromType, fromId];
     }
     const db = getDatabase();
-    return this.transaction(() => {
+    return this.transaction(async () => {
       if (input.relation === "prerequisite_of") {
-        const edges = (db.prepare("SELECT from_type, from_id, to_type, to_id FROM syllabus_relations WHERE relation = 'prerequisite_of'").all() as Row[]).map((r) => ({
+        const edges = (await db.prepare("SELECT from_type, from_id, to_type, to_id FROM syllabus_relations WHERE relation = 'prerequisite_of'").all<Row>()).map((r) => ({
           from: `${r.from_type}:${r.from_id}`,
           to: `${r.to_type}:${r.to_id}`,
         }));
@@ -369,7 +361,7 @@ export class SyllabusRepository {
         if (cycle) throw new SyllabusValidationError([`prerequisite_of would create a cycle: ${cycle.join(" → ")}`]);
       }
       const id = `${input.relation}:${fromType}:${fromId}->${toType}:${toId}`;
-      const res = db
+      const res = await db
         .prepare(
           `INSERT INTO syllabus_relations (id, from_type, from_id, to_type, to_id, relation, origin, evidence, review_status)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(from_type, from_id, to_type, to_id, relation) DO NOTHING`
@@ -386,20 +378,20 @@ export class SyllabusRepository {
    * order (origin 'editorial', needs review). Idempotent: rows produced by these methods that no
    * longer apply are removed; rows from other methods are never touched.
    */
-  public static tagPaperLevel(): PaperTagStats {
+  public static async tagPaperLevel(): Promise<PaperTagStats> {
     const db = getDatabase();
-    const rows = db
+    const rows = await db
       .prepare(
         `SELECT q.id, q.section, q.position, p.paper, p.question_count,
                 (SELECT COUNT(*) FROM bank_questions q2 WHERE q2.paper_id = p.id) AS actual_count
            FROM bank_questions q JOIN bank_papers p ON p.id = q.paper_id`
       )
-      .all() as Row[];
+      .all<Row>();
     const stats: PaperTagStats = { questionsSeen: rows.length, tagged: 0, bySource: 0, byEditorialPosition: 0, untagged: 0, untaggedSections: {}, removedStale: 0, byPart: {} };
-    return this.transaction(() => {
-      const existing = db
-        .prepare(`SELECT question_id, node_id FROM question_concepts WHERE method IN (SELECT value FROM json_each(?))`)
-        .all(JSON.stringify(PAPER_LEVEL_METHODS)) as Row[];
+    return this.transaction(async () => {
+      const existing = await db
+        .prepare(`SELECT question_id, node_id FROM question_concepts WHERE method IN (${placeholders(PAPER_LEVEL_METHODS)})`)
+        .all<Row>(...PAPER_LEVEL_METHODS);
       const wanted = new Set<string>();
       const upsert = db.prepare(
         `INSERT INTO question_concepts (question_id, node_id, node_kind, role, origin, confidence, method, model, review_status)
@@ -407,7 +399,7 @@ export class SyllabusRepository {
          ON CONFLICT(question_id, node_id) DO UPDATE SET
            origin = excluded.origin, method = excluded.method, role = 'primary',
            review_status = CASE WHEN question_concepts.review_status = 'verified' AND question_concepts.method = excluded.method THEN 'verified' ELSE excluded.review_status END,
-           updated_at = CASE WHEN question_concepts.method IS excluded.method AND question_concepts.origin IS excluded.origin THEN question_concepts.updated_at ELSE CURRENT_TIMESTAMP END`
+           updated_at = CASE WHEN question_concepts.method IS NOT DISTINCT FROM excluded.method AND question_concepts.origin IS NOT DISTINCT FROM excluded.origin THEN question_concepts.updated_at ELSE CURRENT_TIMESTAMP END`
       );
       const del = db.prepare("DELETE FROM question_concepts WHERE question_id = ? AND node_id = ?");
       // Drop stale paper-level rows first so a changed part never trips the one-primary index.
@@ -428,19 +420,19 @@ export class SyllabusRepository {
       }
       for (const e of existing) {
         if (!wanted.has(`${e.question_id}\u0000${e.node_id}`)) {
-          del.run(String(e.question_id), String(e.node_id));
+          await del.run(String(e.question_id), String(e.node_id));
           stats.removedStale++;
         }
       }
       // A different-method primary part (e.g. a human fix) wins over ours.
       const otherPrimary = db.prepare(
-        `SELECT node_id FROM question_concepts WHERE question_id = ? AND node_kind = 'part' AND role = 'primary' AND method NOT IN (SELECT value FROM json_each(?))`
+        `SELECT node_id FROM question_concepts WHERE question_id = ? AND node_kind = 'part' AND role = 'primary' AND method NOT IN (${placeholders(PAPER_LEVEL_METHODS)})`
       );
       for (const [qid, tag] of plan) {
         if (!tag) continue;
-        const other = otherPrimary.get(qid, JSON.stringify(PAPER_LEVEL_METHODS)) as Row | undefined;
+        const other = await otherPrimary.get<Row>(qid, ...PAPER_LEVEL_METHODS);
         if (other && String(other.node_id) !== tag.nodeId) continue;
-        upsert.run(qid, tag.nodeId, tag.origin, tag.method, tag.reviewStatus);
+        await upsert.run(qid, tag.nodeId, tag.origin, tag.method, tag.reviewStatus);
         stats.tagged++;
         if (tag.origin === "source") stats.bySource++;
         else stats.byEditorialPosition++;
@@ -459,10 +451,10 @@ export class SyllabusRepository {
    * With `replaceSuggestions`, unreviewed ai_suggested/keyword rows of the file's questions are
    * replaced; without it they conflict.
    */
-  public static importQuestionConcepts(raw: unknown, opts: { cycleId: string; replaceSuggestions?: boolean; dryRun?: boolean }): ConceptImportResult {
+  public static async importQuestionConcepts(raw: unknown, opts: { cycleId: string; replaceSuggestions?: boolean; dryRun?: boolean }): Promise<ConceptImportResult> {
     const problems: Problems = [];
     if (!Array.isArray(raw)) return { ok: false, problems: ["the file must be a JSON array of rows"], written: 0, replaced: 0 };
-    const nodes = this.nodeIndex(opts.cycleId);
+    const nodes = await this.nodeIndex(opts.cycleId);
     if (nodes.size === 0) return { ok: false, problems: [`cycle ${opts.cycleId} has no nodes — seed it first`], written: 0, replaced: 0 };
     const rows: ConceptCandidate[] = [];
     raw.forEach((r, i) => {
@@ -479,30 +471,30 @@ export class SyllabusRepository {
       return cur ? cur.id : null;
     };
     const seenPair = new Set<string>();
-    rows.forEach((r, i) => {
+    for (const [i, r] of rows.entries()) {
       const at = `row ${i + 1}`;
       const pair = `${r.questionId}\u0000${r.nodeId}`;
       if (seenPair.has(pair)) problems.push(`${at}: duplicate question/node pair`);
       seenPair.add(pair);
-      if (!qExists.get(r.questionId)) problems.push(`${at}: unknown questionId ${r.questionId}`);
+      if (!(await qExists.get(r.questionId))) problems.push(`${at}: unknown questionId ${r.questionId}`);
       const n = nodes.get(r.nodeId);
       if (!n) {
         problems.push(`${at}: unknown nodeId ${r.nodeId} (not in cycle ${opts.cycleId})`);
-        return;
+        continue;
       }
       if (n.kind === "part") problems.push(`${at}: part-level tags come only from the printed paper section`);
-      const part = partTagOf.get(r.questionId) as Row | undefined;
+      const part = await partTagOf.get<Row>(r.questionId);
       if (part) {
         const allowedRoot = TAGGABLE_SUBTREE_OF_PART[String(part.node_id)] ?? String(part.node_id);
         if (topPart(r.nodeId) !== allowedRoot) problems.push(`${at}: node ${r.nodeId} is outside the question's part (${String(part.node_id)})`);
       }
-    });
+    }
     // one-primary rule across stored + incoming rows
     const questionIds = [...new Set(rows.map((r) => r.questionId))];
     const stored = questionIds.length
-      ? (db
-          .prepare(`SELECT question_id, node_id, node_kind, role, origin, review_status FROM question_concepts WHERE question_id IN (SELECT value FROM json_each(?))`)
-          .all(JSON.stringify(questionIds)) as Row[])
+      ? await db
+          .prepare(`SELECT question_id, node_id, node_kind, role, origin, review_status FROM question_concepts WHERE question_id IN (${placeholders(questionIds)})`)
+          .all<Row>(...questionIds)
       : [];
     const replaceable = (r: Row) => opts.replaceSuggestions && (r.origin === "ai_suggested" || r.origin === "keyword") && r.review_status !== "verified";
     const kept = stored.filter((r) => !replaceable(r) && !seenPair.has(`${r.question_id}\u0000${r.node_id}`));
@@ -516,11 +508,11 @@ export class SyllabusRepository {
     problems.push(...validatePrimaryRule(combined, (id) => nodes.get(id)?.parentId ?? null));
     if (problems.length) return { ok: false, problems, written: 0, replaced: 0 };
     if (opts.dryRun) return { ok: true, problems, written: 0, replaced: 0 };
-    return this.transaction(() => {
+    return this.transaction(async () => {
       let replaced = 0;
       if (opts.replaceSuggestions) {
         for (const r of stored.filter(replaceable)) {
-          db.prepare("DELETE FROM question_concepts WHERE question_id = ? AND node_id = ?").run(String(r.question_id), String(r.node_id));
+          await db.prepare("DELETE FROM question_concepts WHERE question_id = ? AND node_id = ?").run(String(r.question_id), String(r.node_id));
           replaced++;
         }
       }
@@ -533,19 +525,19 @@ export class SyllabusRepository {
            updated_at = CURRENT_TIMESTAMP`
       );
       // secondaries first cannot matter; primaries of the same level were proven unique above
-      for (const r of rows) up.run(r.questionId, r.nodeId, nodes.get(r.nodeId)!.kind, r.role, r.origin as QuestionConceptOrigin, r.confidence ?? null, r.method, r.model ?? null);
+      for (const r of rows) await up.run(r.questionId, r.nodeId, nodes.get(r.nodeId)!.kind, r.role, r.origin as QuestionConceptOrigin, r.confidence ?? null, r.method, r.model ?? null);
       return { ok: true, problems: [], written: rows.length, replaced };
     });
   }
 
   // ------------------------------------------------------------------ formulas / theory / examples
   /** Imports one formula (validated; gaps recorded, never completed). Returns the gaps. */
-  public static upsertFormula(input: FormulaInput): { gaps: string[] } {
+  public static async upsertFormula(input: FormulaInput): Promise<{ gaps: string[] }> {
     const { problems, gaps, record } = validateFormula(input);
     if (!record) throw new SyllabusValidationError(problems);
     const db = getDatabase();
-    this.transaction(() => {
-      db.prepare(
+    await this.transaction(async () => {
+      await db.prepare(
         `INSERT INTO formulas (id, name, expression, latex, dimensional_notes, assumptions, applicability, exclusions, conventions,
            equivalent_forms, source_title, source_locator, source_edition, verification_status, gaps)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -559,13 +551,13 @@ export class SyllabusRepository {
         JSON.stringify(record.exclusions), record.conventions, JSON.stringify(record.equivalentForms), record.sourceTitle, record.sourceLocator,
         record.sourceEdition, record.verificationStatus, JSON.stringify(record.gaps)
       );
-      db.prepare("DELETE FROM formula_symbols WHERE formula_id = ?").run(record.id);
-      record.symbols.forEach((s, i) =>
-        db.prepare("INSERT INTO formula_symbols (formula_id, position, symbol, meaning, unit, dimension) VALUES (?, ?, ?, ?, ?, ?)").run(record.id, i + 1, s.symbol, s.meaning, s.unit, s.dimension)
-      );
+      await db.prepare("DELETE FROM formula_symbols WHERE formula_id = ?").run(record.id);
+      for (const [i, s] of record.symbols.entries()) {
+        await db.prepare("INSERT INTO formula_symbols (formula_id, position, symbol, meaning, unit, dimension) VALUES (?, ?, ?, ?, ?, ?)").run(record.id, i + 1, s.symbol, s.meaning, s.unit, s.dimension);
+      }
     });
     for (const l of input.links ?? []) {
-      this.addRelation({
+      await this.addRelation({
         relation: l.relation,
         fromType: l.direction === "out" ? "formula" : l.otherType,
         fromId: l.direction === "out" ? record.id : l.otherId,
@@ -579,23 +571,23 @@ export class SyllabusRepository {
     return { gaps };
   }
 
-  public static getFormula(id: string): FormulaRecord | null {
+  public static async getFormula(id: string): Promise<FormulaRecord | null> {
     const db = getDatabase();
-    const r = db.prepare("SELECT * FROM formulas WHERE id = ?").get(id) as Row | undefined;
+    const r = await db.prepare("SELECT * FROM formulas WHERE id = ?").get<Row>(id);
     if (!r) return null;
-    return toFormula(r, db.prepare("SELECT * FROM formula_symbols WHERE formula_id = ? ORDER BY position").all(id) as Row[]);
+    return toFormula(r, await db.prepare("SELECT * FROM formula_symbols WHERE formula_id = ? ORDER BY position").all<Row>(id));
   }
 
   /** Adds a theory note. Source extracts are immutable once written (DB trigger). */
-  public static addTheoryNote(n: Omit<TheoryNoteRecord, "position"> & { position?: number }): void {
+  public static async addTheoryNote(n: Omit<TheoryNoteRecord, "position"> & { position?: number }): Promise<void> {
     const problems = validateTheoryNote(n);
-    if (!this.getNode(n.nodeId)) problems.push(`theory note ${n.id}: node ${n.nodeId} does not exist`);
+    if (!(await this.getNode(n.nodeId))) problems.push(`theory note ${n.id}: node ${n.nodeId} does not exist`);
     for (const d of n.derivedFrom) {
-      const src = getDatabase().prepare("SELECT kind FROM theory_notes WHERE id = ?").get(d) as Row | undefined;
+      const src = await getDatabase().prepare("SELECT kind FROM theory_notes WHERE id = ?").get<Row>(d);
       if (!src || src.kind !== "source_extract") problems.push(`theory note ${n.id}: derivedFrom ${d} is not a source extract`);
     }
     if (problems.length) throw new SyllabusValidationError(problems);
-    getDatabase()
+    await getDatabase()
       .prepare(
         `INSERT INTO theory_notes (id, node_id, kind, layer, body, derived_from, diagrams, source_title, source_locator, source_edition, verification_status, position)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
@@ -603,15 +595,15 @@ export class SyllabusRepository {
       .run(n.id, n.nodeId, n.kind, n.layer, n.body, JSON.stringify(n.derivedFrom), JSON.stringify(n.diagrams), n.sourceTitle, n.sourceLocator, n.sourceEdition, n.verificationStatus, n.position ?? 0);
   }
 
-  public static addWorkedExample(w: WorkedExampleRecord): void {
-    if (!this.getNode(w.nodeId)) throw new SyllabusValidationError([`worked example ${w.id}: node ${w.nodeId} does not exist`]);
+  public static async addWorkedExample(w: WorkedExampleRecord): Promise<void> {
+    if (!(await this.getNode(w.nodeId))) throw new SyllabusValidationError([`worked example ${w.id}: node ${w.nodeId} does not exist`]);
     let fp: string | null = null;
     if (w.bankQuestionId) {
-      const question = BankRepository.getQuestion(w.bankQuestionId);
+      const question = await BankRepository.getQuestion(w.bankQuestionId);
       if (!question) throw new SyllabusValidationError([`worked example ${w.id}: bank question ${w.bankQuestionId} does not exist`]);
       fp = contentFingerprint(question);
     }
-    getDatabase()
+    await getDatabase()
       .prepare(
         `INSERT INTO worked_examples (id, node_id, title, problem, steps, answer, bank_question_id, bank_content_fp, source_title, source_locator, verification_status)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
@@ -624,18 +616,18 @@ export class SyllabusRepository {
    * content, so drop them (part tags are re-derived by seed-syllabus from the printed section; AI
    * tags must be re-suggested for the new text). Returns the number of rows removed.
    */
-  public static forgetConceptsOf(questionIds: string[]): number {
+  public static async forgetConceptsOf(questionIds: string[]): Promise<number> {
     if (!questionIds.length) return 0;
     const del = getDatabase().prepare("DELETE FROM question_concepts WHERE question_id = ?");
     let n = 0;
-    for (const id of questionIds) n += Number(del.run(id).changes);
+    for (const id of questionIds) n += Number((await del.run(id)).changes);
     return n;
   }
 
   // ------------------------------------------------------------------ learner views
   /** node id → set of visible PYP question ids linked directly to it. */
-  private static directLinks(cycleId: string, userId: string): Map<string, Set<string>> {
-    const rows = getDatabase()
+  private static async directLinks(cycleId: string, userId: string): Promise<Map<string, Set<string>>> {
+    const rows = await getDatabase()
       .prepare(
         `SELECT qc.node_id, qc.question_id FROM question_concepts qc
            JOIN syllabus_nodes n ON n.id = qc.node_id
@@ -643,7 +635,7 @@ export class SyllabusRepository {
            JOIN bank_papers p ON p.id = q.paper_id
           WHERE n.cycle_id = ? AND p.kind = 'pyp' AND (p.owner_user_id = '' OR p.owner_user_id = ?)`
       )
-      .all(cycleId, userId) as Row[];
+      .all<Row>(cycleId, userId);
     const out = new Map<string, Set<string>>();
     for (const r of rows) {
       const k = String(r.node_id);
@@ -653,11 +645,11 @@ export class SyllabusRepository {
     return out;
   }
 
-  public static tree(cycleId: string, userId: string): SyllabusTreeResponse | null {
-    const cycle = this.getCycle(cycleId);
+  public static async tree(cycleId: string, userId: string): Promise<SyllabusTreeResponse | null> {
+    const cycle = await this.getCycle(cycleId);
     if (!cycle) return null;
-    const nodes = this.listNodes(cycleId);
-    const direct = this.directLinks(cycleId, userId);
+    const nodes = await this.listNodes(cycleId);
+    const direct = await this.directLinks(cycleId, userId);
     const byParent = new Map<string | null, SyllabusNodeRecord[]>();
     for (const n of nodes) {
       if (!byParent.has(n.parentId)) byParent.set(n.parentId, []);
@@ -706,12 +698,12 @@ export class SyllabusRepository {
       }
     }
     const roots = builtRoots.map((r) => r.node);
-    const pyp = getDatabase()
+    const pyp = await getDatabase()
       .prepare(`SELECT COUNT(*) AS c FROM bank_questions q JOIN bank_papers p ON p.id = q.paper_id WHERE p.kind = 'pyp' AND (p.owner_user_id = '' OR p.owner_user_id = ?)`)
-      .get(userId) as Row;
+      .get<Row>(userId) as Row;
     return {
       cycle,
-      papers: this.listPapers(cycleId),
+      papers: await this.listPapers(cycleId),
       roots,
       totals: { nodes: nodes.length, taggedQuestions: allTagged.size, pypQuestions: num(pyp.c) },
       mappingNote:
@@ -720,11 +712,11 @@ export class SyllabusRepository {
   }
 
   /** Everything the node page needs. Counts only — never answer keys, stems or solutions. */
-  public static nodeDetail(id: string, userId: string): SyllabusNodeDetail | null {
-    const node = this.getNode(id);
+  public static async nodeDetail(id: string, userId: string): Promise<SyllabusNodeDetail | null> {
+    const node = await this.getNode(id);
     if (!node) return null;
-    const cycle = this.getCycle(node.cycleId)!;
-    const index = this.nodeIndex(node.cycleId);
+    const cycle = (await this.getCycle(node.cycleId))!;
+    const index = await this.nodeIndex(node.cycleId);
     const ancestors: SyllabusNodeDetail["ancestors"] = [];
     let cur = node.parentId ? index.get(node.parentId) : undefined;
     while (cur) {
@@ -743,16 +735,16 @@ export class SyllabusRepository {
     }
     for (const n of index.values()) if (n.metadata.sharesSubjectTreeWith === id) subtree.add(n.id);
     const db = getDatabase();
-    const rel = db
+    const rel = await db
       .prepare(`SELECT * FROM syllabus_relations WHERE (from_type = 'node' AND from_id = ?) OR (to_type = 'node' AND to_id = ?) ORDER BY relation, id`)
-      .all(id, id) as Row[];
-    const nameOf = (type: EndpointType, oid: string): string | null => {
-      if (type === "node") return index.get(oid)?.name ?? this.getNode(oid)?.name ?? null;
-      if (type === "formula") return str((db.prepare("SELECT name FROM formulas WHERE id = ?").get(oid) as Row | undefined)?.name);
-      if (type === "worked_example") return str((db.prepare("SELECT title FROM worked_examples WHERE id = ?").get(oid) as Row | undefined)?.title);
+      .all<Row>(id, id);
+    const nameOf = async (type: EndpointType, oid: string): Promise<string | null> => {
+      if (type === "node") return index.get(oid)?.name ?? (await this.getNode(oid))?.name ?? null;
+      if (type === "formula") return str((await db.prepare("SELECT name FROM formulas WHERE id = ?").get<Row>(oid))?.name);
+      if (type === "worked_example") return str((await db.prepare("SELECT title FROM worked_examples WHERE id = ?").get<Row>(oid))?.title);
       return null;
     };
-    const relations: SyllabusNodeDetail["relations"] = rel.map((r) => {
+    const relations: SyllabusNodeDetail["relations"] = await Promise.all(rel.map(async (r) => {
       const out = r.from_type === "node" && r.from_id === id;
       const otherType = (out ? r.to_type : r.from_type) as EndpointType;
       const otherId = String(out ? r.to_id : r.from_id);
@@ -761,32 +753,35 @@ export class SyllabusRepository {
         direction: out ? "out" : "in",
         otherType,
         otherId,
-        otherName: nameOf(otherType, otherId),
+        otherName: await nameOf(otherType, otherId),
         origin: String(r.origin),
         reviewStatus: r.review_status as ReviewStatus,
         evidence: str(r.evidence),
       };
-    });
+    }));
     const formulaIds = new Set<string>();
-    for (const r of db
+    for (const r of await db
       .prepare(
         `SELECT to_id AS fid FROM syllabus_relations WHERE from_type = 'node' AND from_id = ? AND to_type = 'formula'
          UNION SELECT from_id AS fid FROM syllabus_relations WHERE to_type = 'node' AND to_id = ? AND from_type = 'formula'`
       )
-      .all(id, id) as Row[])
+      .all<Row>(id, id))
       formulaIds.add(String(r.fid));
-    const formulas = [...formulaIds].map((f) => this.getFormula(f)).filter((f): f is FormulaRecord => f !== null);
-    const theoryNotes = (db.prepare("SELECT * FROM theory_notes WHERE node_id = ? ORDER BY CASE layer WHEN 'concise' THEN 0 ELSE 1 END, position, id").all(id) as Row[]).map(toTheory);
+    const formulas = (await Promise.all([...formulaIds].map((f) => this.getFormula(f)))).filter((f): f is FormulaRecord => f !== null);
+    const theoryNotes = (await db.prepare("SELECT * FROM theory_notes WHERE node_id = ? ORDER BY CASE layer WHEN 'concise' THEN 0 ELSE 1 END, position, id").all<Row>(id)).map(toTheory);
     // A worked example built on a bank question is that question's solution: it is shown only for
     // the content it was written for, and only to a learner who can see the question and has
     // already answered that content (checked or submitted).
-    const committedTo = (questionId: string | null, fp: string | null): boolean => {
+    const committedTo = async (questionId: string | null, fp: string | null): Promise<boolean> => {
       if (!questionId) return true;
-      const question = BankRepository.getQuestionFor(questionId, userId);
-      return question !== null && fp === contentFingerprint(question) && learnerCommitted(userId, question);
+      const question = await BankRepository.getQuestionFor(questionId, userId);
+      return question !== null && fp === contentFingerprint(question) && (await learnerCommitted(userId, question));
     };
-    const workedExamples = (db.prepare("SELECT * FROM worked_examples WHERE node_id = ? ORDER BY id").all(id) as Row[])
-      .filter((w) => committedTo(str(w.bank_question_id), str(w.bank_content_fp)))
+    const allWorkedExamples = await db.prepare("SELECT * FROM worked_examples WHERE node_id = ? ORDER BY id").all<Row>(id);
+    const workedExamples = (await Promise.all(allWorkedExamples.map(async (w) =>
+      (await committedTo(str(w.bank_question_id), str(w.bank_content_fp))) ? w : null
+    )))
+      .filter((w): w is Row => w !== null)
       .map((w) => ({
       id: String(w.id),
       nodeId: String(w.node_id),
@@ -798,16 +793,16 @@ export class SyllabusRepository {
       sourceLocator: str(w.source_locator),
       verificationStatus: w.verification_status as WorkedExampleRecord["verificationStatus"],
     }));
-    const ids = JSON.stringify([...subtree]);
+    const ids = [...subtree];
     const visible = `JOIN bank_questions q ON q.id = qc.question_id JOIN bank_papers p ON p.id = q.paper_id
-       WHERE qc.node_id IN (SELECT value FROM json_each(?)) AND p.kind = 'pyp' AND (p.owner_user_id = '' OR p.owner_user_id = ?)`;
-    const total = db.prepare(`SELECT COUNT(DISTINCT qc.question_id) AS c FROM question_concepts qc ${visible}`).get(ids, userId) as Row;
-    const byPaperYear = (db
+       WHERE qc.node_id IN (${placeholders(ids)}) AND p.kind = 'pyp' AND (p.owner_user_id = '' OR p.owner_user_id = ?)`;
+    const total = await db.prepare(`SELECT COUNT(DISTINCT qc.question_id) AS c FROM question_concepts qc ${visible}`).get<Row>(...ids, userId) as Row;
+    const byPaperYear = (await db
       .prepare(`SELECT p.paper, p.cycle_year, COUNT(DISTINCT qc.question_id) AS c FROM question_concepts qc ${visible} GROUP BY p.paper, p.cycle_year ORDER BY p.paper, p.cycle_year`)
-      .all(ids, userId) as Row[]).map((r) => ({ paper: String(r.paper), year: r.cycle_year === null ? null : num(r.cycle_year), count: num(r.c) }));
-    const byOrigin = (db
+      .all<Row>(...ids, userId)).map((r) => ({ paper: String(r.paper), year: r.cycle_year === null ? null : num(r.cycle_year), count: num(r.c) }));
+    const byOrigin = (await db
       .prepare(`SELECT qc.origin, COUNT(DISTINCT qc.question_id) AS c FROM question_concepts qc ${visible} GROUP BY qc.origin ORDER BY qc.origin`)
-      .all(ids, userId) as Row[]).map((r) => ({ origin: r.origin as QuestionConceptOrigin, count: num(r.c) }));
+      .all<Row>(...ids, userId)).map((r) => ({ origin: r.origin as QuestionConceptOrigin, count: num(r.c) }));
     const { metadata, ...rest } = node;
     return {
       node: { ...rest, printedLabel: typeof metadata.printedLabel === "string" ? metadata.printedLabel : null },
@@ -823,11 +818,11 @@ export class SyllabusRepository {
   }
 
   /** Counts for reporting: nodes by cycle/kind/origin, and tags by origin/kind. */
-  public static stats(): { nodes: Row[]; tags: Row[] } {
+  public static async stats(): Promise<{ nodes: Row[]; tags: Row[] }> {
     const db = getDatabase();
     return {
-      nodes: db.prepare("SELECT cycle_id, kind, origin, review_status, COUNT(*) AS n FROM syllabus_nodes GROUP BY 1, 2, 3, 4 ORDER BY 1, 2").all() as Row[],
-      tags: db.prepare("SELECT node_kind, origin, method, review_status, COUNT(*) AS n FROM question_concepts GROUP BY 1, 2, 3, 4 ORDER BY 1, 2").all() as Row[],
+      nodes: await db.prepare("SELECT cycle_id, kind, origin, review_status, COUNT(*) AS n FROM syllabus_nodes GROUP BY 1, 2, 3, 4 ORDER BY 1, 2").all<Row>(),
+      tags: await db.prepare("SELECT node_kind, origin, method, review_status, COUNT(*) AS n FROM question_concepts GROUP BY 1, 2, 3, 4 ORDER BY 1, 2").all<Row>(),
     };
   }
 }

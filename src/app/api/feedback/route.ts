@@ -15,7 +15,7 @@ const ALLOWED_CATEGORIES = new Set<FeedbackCategory>([
 
 export async function POST(req: NextRequest) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User session required" }, { status: 401 });
     }
@@ -38,17 +38,17 @@ export async function POST(req: NextRequest) {
     const documentId = typeof body.documentId === "string" ? body.documentId : null;
     const questionId = typeof body.questionId === "string" ? body.questionId : null;
     const contextId = typeof body.contextId === "string" ? body.contextId : null;
-    if (contextId && !PreparationContextRepository.findById(contextId, user.id)) {
+    if (contextId && !(await PreparationContextRepository.findById(contextId, user.id))) {
       return NextResponse.json({ error: "Preparation context not found" }, { status: 404 });
     }
-    if (documentId && !DocumentRepository.findById(documentId, user.id)) {
+    if (documentId && !(await DocumentRepository.findById(documentId, user.id))) {
       return NextResponse.json({ error: "Document not found" }, { status: 404 });
     }
-    if (questionId && !QuestionRepository.findById(questionId, user.id)) {
+    if (questionId && !(await QuestionRepository.findById(questionId, user.id))) {
       return NextResponse.json({ error: "Question not found" }, { status: 404 });
     }
 
-    const feedback = FeedbackRepository.create({
+    const feedback = await FeedbackRepository.create({
       userId: user.id,
       preparationContextId: contextId,
       documentId,

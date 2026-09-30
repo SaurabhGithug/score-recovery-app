@@ -32,14 +32,14 @@ function parseRange(
 /** Setup state, a cost estimate for the chosen range, and the current or last run. */
 export async function GET(req: NextRequest, props: { params: Promise<{ id: string }> }) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) return NextResponse.json({ error: "User session required" }, { status: 401 });
 
     const { id } = await props.params;
-    const document = DocumentRepository.findById(id, user.id);
+    const document = await DocumentRepository.findById(id, user.id);
     if (!document) return NextResponse.json({ error: "Document not found" }, { status: 404 });
 
-    const pageNumbers = DocumentRepository.getPages(id).map((p) => p.page_number);
+    const pageNumbers = (await DocumentRepository.getPages(id)).map((p) => p.page_number);
     const firstPage = pageNumbers.length ? Math.min(...pageNumbers) : 1;
     const lastPage = pageNumbers.length ? Math.max(...pageNumbers) : 1;
     const setup = getLlmSetup();
@@ -53,7 +53,7 @@ export async function GET(req: NextRequest, props: { params: Promise<{ id: strin
 
     let estimate = null;
     if (typeof range !== "string" && pageNumbers.length > 0) {
-      const chunks = chunkPages(loadSourcePages(id, range.pageFrom, range.pageTo));
+      const chunks = chunkPages(await loadSourcePages(id, range.pageFrom, range.pageTo));
       const questions = chunks.reduce((sum, c) => sum + questionTarget(c, range.questionsPerPage), 0);
       const chars = chunks.reduce((sum, c) => sum + c.charCount, 0);
       estimate = {
@@ -72,7 +72,7 @@ export async function GET(req: NextRequest, props: { params: Promise<{ id: strin
       checkModel: setup.checkModel,
       maxUsdPerRun: setup.maxUsdPerRun,
       maxUsdPerDay: setup.maxUsdPerDay,
-      dailyRemainingUsd: GenerationQueue.dailyRemainingUsd(),
+      dailyRemainingUsd: await GenerationQueue.dailyRemainingUsd(),
       pages: { first: firstPage, last: lastPage, count: pageNumbers.length },
       rangeError: typeof range === "string" ? range : null,
       estimate,
@@ -87,17 +87,23 @@ export async function GET(req: NextRequest, props: { params: Promise<{ id: strin
 /** Starts a generation run for the chosen page range. */
 export async function POST(req: NextRequest, props: { params: Promise<{ id: string }> }) {
   try {
-    const user = getCurrentUser(req);
+    if (process.env.NODE_ENV === "production" && process.env.ENABLE_DOCUMENT_PARSER !== "true") {
+      return NextResponse.json(
+        { error: "Online document generation is disabled. Import prepared questions from the offline workspace." },
+        { status: 410 }
+      );
+    }
+    const user = await getCurrentUser(req);
     if (!user) return NextResponse.json({ error: "User session required" }, { status: 401 });
 
     const { id } = await props.params;
-    const document = DocumentRepository.findById(id, user.id);
+    const document = await DocumentRepository.findById(id, user.id);
     if (!document) return NextResponse.json({ error: "Document not found" }, { status: 404 });
 
-    const block = GenerationQueue.checkCanStart(id);
+    const block = await GenerationQueue.checkCanStart(id);
     if (block) return NextResponse.json({ error: block.error }, { status: block.status });
 
-    const pageNumbers = DocumentRepository.getPages(id).map((p) => p.page_number);
+    const pageNumbers = (await DocumentRepository.getPages(id)).map((p) => p.page_number);
     if (pageNumbers.length === 0) {
       return NextResponse.json({ error: "This document has no readable pages yet" }, { status: 400 });
     }
@@ -107,10 +113,10 @@ export async function POST(req: NextRequest, props: { params: Promise<{ id: stri
     if (typeof range === "string") return NextResponse.json({ error: range }, { status: 400 });
 
     const context = document.preparation_context_id
-      ? PreparationContextRepository.findById(document.preparation_context_id, user.id)
+      ? await PreparationContextRepository.findById(document.preparation_context_id, user.id)
       : null;
 
-    const refused = GenerationQueue.start({
+    const refused = await GenerationQueue.start({
       documentId: id,
       userId: user.id,
       preparationContextId: document.preparation_context_id,

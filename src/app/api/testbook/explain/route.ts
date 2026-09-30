@@ -47,7 +47,7 @@ function toTeachingNote(x: BankExplanation): TeachingNote {
 }
 
 export async function POST(req: NextRequest) {
-  const user = getCurrentUser(req);
+  const user = await getCurrentUser(req);
   if (!user) return NextResponse.json({ error: "Sign in to generate a teaching note." }, { status: 401 });
 
   const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;

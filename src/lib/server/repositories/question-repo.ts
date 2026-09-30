@@ -58,7 +58,7 @@ export interface ImportedQuestionRecord {
 }
 
 export class QuestionRepository {
-  public static createMany(
+  public static async createMany(
     questions: {
       documentId: string;
       userId: string;
@@ -81,7 +81,7 @@ export class QuestionRepository {
       reviewReason?: string | null;
       metadata?: Record<string, unknown>;
     }[]
-  ): void {
+  ): Promise<void> {
     if (questions.length === 0) return;
     const db = getDatabase();
     const now = new Date().toISOString();
@@ -98,7 +98,7 @@ export class QuestionRepository {
 
     for (const q of questions) {
       const qId = `iq_${crypto.randomUUID().replace(/-/g, "").slice(0, 16)}`;
-      stmt.run(
+      await stmt.run(
         qId,
         q.documentId,
         q.userId,
@@ -126,27 +126,27 @@ export class QuestionRepository {
     }
   }
 
-  public static listByDocumentId(documentId: string, userId: string): ImportedQuestionRecord[] {
+  public static async listByDocumentId(documentId: string, userId: string): Promise<ImportedQuestionRecord[]> {
     const db = getDatabase();
     const stmt = db.prepare(`
       SELECT * FROM imported_questions
       WHERE document_id = ? AND user_id = ?
       ORDER BY source_page ASC, question_number ASC, id ASC
     `);
-    return stmt.all(documentId, userId) as unknown as ImportedQuestionRecord[];
+    return stmt.all<ImportedQuestionRecord>(documentId, userId);
   }
 
-  public static listReadyForPractice(documentId: string, userId: string): ImportedQuestionRecord[] {
+  public static async listReadyForPractice(documentId: string, userId: string): Promise<ImportedQuestionRecord[]> {
     const db = getDatabase();
     const stmt = db.prepare(`
       SELECT * FROM imported_questions
       WHERE document_id = ? AND user_id = ? AND verification_status IN ('AUTO_ACCEPTED', 'VERIFIED')
       ORDER BY source_page ASC, question_number ASC, id ASC
     `);
-    return stmt.all(documentId, userId) as unknown as ImportedQuestionRecord[];
+    return stmt.all<ImportedQuestionRecord>(documentId, userId);
   }
 
-  public static findById(id: string, userId?: string): ImportedQuestionRecord | null {
+  public static async findById(id: string, userId?: string): Promise<ImportedQuestionRecord | null> {
     const db = getDatabase();
     let query = "SELECT * FROM imported_questions WHERE id = ?";
     const params: string[] = [id];
@@ -155,11 +155,11 @@ export class QuestionRepository {
       params.push(userId);
     }
     const stmt = db.prepare(query);
-    const row = stmt.get(...params) as unknown as ImportedQuestionRecord | undefined;
+    const row = await stmt.get<ImportedQuestionRecord>(...params);
     return row ?? null;
   }
 
-  public static updateVerification(
+  public static async updateVerification(
     id: string,
     userId: string,
     update: {
@@ -170,8 +170,8 @@ export class QuestionRepository {
       explanation?: string | null;
       reviewReason?: string | null;
     }
-  ): ImportedQuestionRecord | null {
-    const current = this.findById(id, userId);
+  ): Promise<ImportedQuestionRecord | null> {
+    const current = await this.findById(id, userId);
     if (!current) return null;
 
     if (update.status === "VERIFIED" || update.status === "AUTO_ACCEPTED") {
@@ -195,7 +195,7 @@ export class QuestionRepository {
       WHERE id = ? AND user_id = ?
     `);
 
-    stmt.run(
+    await stmt.run(
       update.status,
       update.questionText ?? null,
       update.options ? JSON.stringify(update.options) : null,
@@ -208,12 +208,12 @@ export class QuestionRepository {
     );
 
     // Refresh study document counts
-    this.refreshDocumentCounts(current.document_id, userId);
+    await this.refreshDocumentCounts(current.document_id, userId);
 
     return this.findById(id, userId);
   }
 
-  public static refreshDocumentCounts(documentId: string, userId: string): void {
+  public static async refreshDocumentCounts(documentId: string, userId: string): Promise<void> {
     const db = getDatabase();
     const statsStmt = db.prepare(`
       SELECT
@@ -223,14 +223,14 @@ export class QuestionRepository {
       FROM imported_questions
       WHERE document_id = ? AND user_id = ?
     `);
-    const stats = statsStmt.get(documentId, userId) as unknown as { total: number; ready: number; review: number };
+    const stats = await statsStmt.get<{ total: number; ready: number; review: number }>(documentId, userId);
     if (stats) {
       const updateStmt = db.prepare(`
         UPDATE study_documents
         SET questions_count = ?, ready_questions_count = ?, review_questions_count = ?, updated_at = ?
         WHERE id = ?
       `);
-      updateStmt.run(stats.total || 0, stats.ready || 0, stats.review || 0, new Date().toISOString(), documentId);
+      await updateStmt.run(stats.total || 0, stats.ready || 0, stats.review || 0, new Date().toISOString(), documentId);
     }
   }
 }

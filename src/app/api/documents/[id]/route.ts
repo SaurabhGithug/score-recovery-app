@@ -9,19 +9,19 @@ export async function GET(
   props: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User session required" }, { status: 401 });
     }
 
     const { id } = await props.params;
-    const document = DocumentRepository.findById(id, user.id);
+    const document = await DocumentRepository.findById(id, user.id);
     if (!document) {
       return NextResponse.json({ error: "Document not found" }, { status: 404 });
     }
 
-    const pages = DocumentRepository.getPages(id);
-    const questions = QuestionRepository.listByDocumentId(id, user.id);
+    const pages = await DocumentRepository.getPages(id);
+    const questions = await QuestionRepository.listByDocumentId(id, user.id);
 
     return NextResponse.json({
       document,
@@ -39,13 +39,13 @@ export async function DELETE(
   props: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User session required" }, { status: 401 });
     }
 
     const { id } = await props.params;
-    const document = DocumentRepository.findById(id, user.id);
+    const document = await DocumentRepository.findById(id, user.id);
     if (!document) {
       return NextResponse.json({ error: "Document not found" }, { status: 404 });
     }
@@ -54,7 +54,7 @@ export async function DELETE(
       await documentStorage.deleteFile(document.storage_path).catch(() => {});
     }
 
-    DocumentRepository.delete(id, user.id);
+    await DocumentRepository.delete(id, user.id);
     return NextResponse.json({ success: true });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to delete document";

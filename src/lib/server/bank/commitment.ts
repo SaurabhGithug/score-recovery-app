@@ -10,11 +10,11 @@
 import { BankRepository, type BankQuestionRecord } from "../repositories/bank-repo";
 import { contentFingerprint } from "./content-fp";
 
-export function learnerCommitted(userId: string, q: Pick<BankQuestionRecord, "id" | "paperId" | "section" | "stem" | "options">): boolean {
-  const paper = BankRepository.getPaper(q.paperId);
+export async function learnerCommitted(userId: string, q: Pick<BankQuestionRecord, "id" | "paperId" | "section" | "stem" | "options">): Promise<boolean> {
+  const paper = await BankRepository.getPaper(q.paperId);
   if (paper && paper.ownerUserId === userId && paper.kind === "mock") return true;
   const fp = contentFingerprint(q);
-  return BankRepository.listAttemptsForUser(userId, [q.paperId]).some((a) => {
+  return (await BankRepository.listAttemptsForUser(userId, [q.paperId])).some((a) => {
     if (Object.prototype.hasOwnProperty.call(a.checked, q.id)) return a.contentFps[q.id] === fp;
     if (!a.submittedAt) return false;
     // In scope at submit (it has a snapshot entry) and answered as this very content.

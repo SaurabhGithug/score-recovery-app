@@ -25,6 +25,13 @@ export interface TopicCandidate {
 
 export interface SimilarPyp {
   questionId: string;
+  paperId: string;
+  paperTitle: string;
+  paperCode: string;
+  examDate: string | null;
+  shift: string | null;
+  position: number;
+  sourceUrl: string | null;
   year: number | null;
   stem: string;
   score: number;
@@ -39,6 +46,13 @@ export interface SyllabusContext {
 
 interface Doc {
   id: string;
+  paperId: string;
+  paperTitle: string;
+  paperCode: string;
+  examDate: string | null;
+  shift: string | null;
+  position: number;
+  sourceUrl: string | null;
   year: number | null;
   stem: string;
   vector: Map<string, number>;
@@ -71,6 +85,7 @@ interface Index {
 }
 
 let cache: Index | null = null;
+let building: Promise<Index> | null = null;
 
 const STOP = new Set(
   "the a an of to in is are was were be been by for on at as with from that this which what when where who whom whose why how and or not no it its into than then there their these those such can may shall should will would could has have had do does did if but so also any all each other only same both between about above below under over per used use using given following correct incorrect statement statements option options choose select find value approximately nearly respectively".split(" ")
@@ -89,26 +104,27 @@ function termFreq(text: string): Map<string, number> {
   return tf;
 }
 
-function build(): Index {
+async function build(): Promise<Index> {
   const db = getDatabase();
-  const rows = db
+  const rows = await db
     .prepare(
-      `SELECT q.id, q.stem, q.options, p.exam_date FROM bank_questions q JOIN bank_papers p ON p.id = q.paper_id
+      `SELECT q.id, q.paper_id, q.position, q.stem, q.options, p.title, p.paper, p.exam_date, p.shift, p.source_url
+         FROM bank_questions q JOIN bank_papers p ON p.id = q.paper_id
        WHERE p.kind = 'pyp' AND p.owner_user_id = ''`
     )
-    .all() as unknown as { id: string; stem: string; options: string; exam_date: string | null }[];
-  const tagRows = db
+    .all<{ id: string; paper_id: string; position: number; stem: string; options: string; title: string; paper: string; exam_date: string | null; shift: string | null; source_url: string | null }>();
+  const tagRows = await db
     .prepare(`SELECT question_id, node_id, node_kind FROM question_concepts WHERE role = 'primary' AND node_id LIKE ?`)
-    .all(`${CYCLE_PREFIX}%`) as unknown as { question_id: string; node_id: string; node_kind: string }[];
+    .all<{ question_id: string; node_id: string; node_kind: string }>(`${CYCLE_PREFIX}%`);
   const tags = new Map<string, { nodeId: string; kind: string }[]>();
   for (const r of tagRows) {
     const list = tags.get(r.question_id) ?? [];
     list.push({ nodeId: r.node_id, kind: r.node_kind });
     tags.set(r.question_id, list);
   }
-  const nodeRows = db
+  const nodeRows = await db
     .prepare(`SELECT id, parent_id, kind, name, official_text FROM syllabus_nodes WHERE id LIKE ?`)
-    .all(`${CYCLE_PREFIX}%`) as unknown as { id: string; parent_id: string | null; kind: string; name: string; official_text: string | null }[];
+    .all<{ id: string; parent_id: string | null; kind: string; name: string; official_text: string | null }>(`${CYCLE_PREFIX}%`);
   const nodes = new Map<string, Node>(nodeRows.map((n) => [n.id, { id: n.id, parentId: n.parent_id, kind: n.kind, name: n.name, officialText: n.official_text ?? "" }]));
 
   const df = new Map<string, number>();
@@ -122,7 +138,19 @@ function build(): Index {
     const tf = termFreq(`${r.stem} ${optionText}`);
     for (const t of tf.keys()) df.set(t, (df.get(t) ?? 0) + 1);
     const year = r.exam_date ? Number(r.exam_date.slice(0, 4)) : null;
-    return { id: r.id, stem: r.stem, year: Number.isFinite(year) ? year : null, tf };
+    return {
+      id: r.id,
+      paperId: r.paper_id,
+      paperTitle: r.title,
+      paperCode: r.paper,
+      examDate: r.exam_date,
+      shift: r.shift,
+      position: Number(r.position),
+      sourceUrl: r.source_url,
+      stem: r.stem,
+      year: Number.isFinite(year) ? year : null,
+      tf,
+    };
   });
   const n = Math.max(1, raw.length);
   const idf = new Map<string, number>();
@@ -144,7 +172,7 @@ function build(): Index {
       if (r.year) c.years.add(r.year);
       counts.set(tag.nodeId, c);
     }
-    return { id: r.id, year: r.year, stem: r.stem, vector, norm: Math.sqrt(sq) || 1, tags: docTags };
+    return { ...r, vector, norm: Math.sqrt(sq) || 1, tags: docTags };
   });
   const nodeVectors: NodeVector[] = [...nodes.values()]
     .filter((node) => node.kind === "topic" || node.kind === "chapter")
@@ -170,14 +198,21 @@ function cosine(query: Map<string, number>, qNorm: number, vector: Map<string, n
   return dot / (qNorm * norm);
 }
 
-function index(): Index {
-  if (!cache || Date.now() - cache.builtAt > CACHE_MS) cache = build();
-  return cache;
+async function index(): Promise<Index> {
+  if (cache && Date.now() - cache.builtAt <= CACHE_MS) return cache;
+  building ??= build().then((value) => {
+    cache = value;
+    return value;
+  }).finally(() => {
+    building = null;
+  });
+  return building;
 }
 
 /** Drops the cached index (tests, and after a re-import or re-tagging). */
 export function resetSyllabusIndex(): void {
   cache = null;
+  building = null;
 }
 
 function pathOf(ix: Index, nodeId: string): string {
@@ -213,8 +248,8 @@ const KIND_RANK: Record<string, number> = { topic: 3, chapter: 2, subject: 1, pa
  * first; similar PYP questions are always listed (never including the question itself).
  * `subjectHint` (e.g. a mock test's title, "Irrigation Engineering") adds that subject's topics.
  */
-export function syllabusContext(text: string, ownQuestionId?: string, subjectHint?: string): SyllabusContext {
-  const ix = index();
+export async function syllabusContext(text: string, ownQuestionId?: string, subjectHint?: string): Promise<SyllabusContext> {
+  const ix = await index();
   const tf = termFreq(text);
   const query = new Map<string, number>();
   let sq = 0;
@@ -238,7 +273,7 @@ export function syllabusContext(text: string, ownQuestionId?: string, subjectHin
   scored.sort((a, b) => b.score - a.score);
   const top = scored.slice(0, 12).filter((s) => s.score >= 0.12);
 
-  const own = ownQuestionId ? ix.docs.find((d) => d.id === ownQuestionId)?.tags ?? ownTags(ownQuestionId) : [];
+  const own = ownQuestionId ? ix.docs.find((d) => d.id === ownQuestionId)?.tags ?? (await ownTags(ownQuestionId)) : [];
   const weights = new Map<string, number>();
   if (own.length) {
     for (const tag of own) weights.set(tag.nodeId, 10 + (KIND_RANK[tag.kind] ?? 0));
@@ -281,13 +316,25 @@ export function syllabusContext(text: string, ownQuestionId?: string, subjectHin
     .slice(0, 12);
   return {
     candidates,
-    similar: top.slice(0, 5).map(({ doc, score }) => ({ questionId: doc.id, year: doc.year, stem: doc.stem.slice(0, 300), score: Math.round(score * 100) / 100 })),
+    similar: top.slice(0, 5).map(({ doc, score }) => ({
+      questionId: doc.id,
+      paperId: doc.paperId,
+      paperTitle: doc.paperTitle,
+      paperCode: doc.paperCode,
+      examDate: doc.examDate,
+      shift: doc.shift,
+      position: doc.position,
+      sourceUrl: doc.sourceUrl,
+      year: doc.year,
+      stem: doc.stem.slice(0, 300),
+      score: Math.round(score * 100) / 100,
+    })),
     fromOwnTags: own.length > 0,
   };
 }
 
-function ownTags(questionId: string): { nodeId: string; kind: string }[] {
+async function ownTags(questionId: string): Promise<{ nodeId: string; kind: string }[]> {
   return getDatabase()
     .prepare(`SELECT node_id AS nodeId, node_kind AS kind FROM question_concepts WHERE question_id = ? AND role = 'primary' AND node_id LIKE ?`)
-    .all(questionId, `${CYCLE_PREFIX}%`) as unknown as { nodeId: string; kind: string }[];
+    .all<{ nodeId: string; kind: string }>(questionId, `${CYCLE_PREFIX}%`);
 }

@@ -19,26 +19,27 @@ export interface CapturedTestbookTest {
 }
 
 export const testbookCatalogueAudit = {
-  observedAt: "2026-09-29",
+  observedAt: "2026-09-30",
   sourceUrl: "https://testbook.com/ssc-je-ce/test-series/my",
-  liveHeaderTotal: 1021,
-  observedProgress: "38/1021",
+  liveHeaderTotal: 1027,
+  observedProgress: "38/1027",
   solutionAccessibleAttemptHistory: 42,
   integrityWarning:
-    "The live catalogue header reports 1,021 tests. Older marketing text on the same page reports 1,069 and contains Electrical wording on the Civil page. Only live cards are accepted as inventory evidence.",
+    "The live catalogue header reports 1,027 tests. Marketing text on the same page reports 1,069 and sometimes uses Electrical wording on the Civil page. Live cards and live counters take priority over promotional copy.",
   categories: [
-    { name: "Ultimate Live Tests", liveCount: 3 },
-    { name: "Full Test", liveCount: 15 },
-    { name: "Subject Test", liveCount: 50 },
-    { name: "Chapter Test", liveCount: 197 },
-    { name: "Current Affairs", liveCount: 33 },
-    { name: "Sectional Test (GA & Reasoning)", liveCount: 16 },
+    { name: "Previous Year Papers", liveCount: 39 },
+    { name: "Official Chapter Tests", liveCount: 52 },
+    { name: "Official Subject Tests", liveCount: 127 },
+    { name: "SSC JE Technical PYQs", liveCount: 37 },
+    { name: "SSC Non-Tech Basic PYPs", liveCount: 254 },
+    { name: "SSC Non-Tech Advanced PYPs", liveCount: 182 },
+    { name: "SSC CGL Similar 2025 PYPs", liveCount: 16 },
   ],
   blockers: [
     "The catalogue's View More control did not reveal the remaining cards in this browser session.",
-    "The PYP tab is marked Pro and did not open in this browser session; it has not been bypassed.",
+    "Subscription-locked cards are inventoried by their visible metadata only; their protected contents are not bypassed.",
     "Unattempted tests are not submitted blank merely to unlock solutions, because that would corrupt portal performance history.",
-    "Testbook ended the signed-in session with an active-on-another-device alert while an authentic 2025 paper was being captured. Capture is paused until the account is signed in again.",
+    "The full commercial question bank is not duplicated. Only learner-accessible attempt material with a legitimate study purpose can be imported privately.",
   ],
 } as const;
 

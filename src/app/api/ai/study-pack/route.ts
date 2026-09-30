@@ -19,7 +19,7 @@ function sameHost(origin: string, host: string): boolean {
 
 export async function POST(req: Request) {
   return handle(async () => {
-    const user = requireUser(req);
+    const user = await requireUser(req);
     const origin = req.headers.get("origin");
     const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
     if (origin && host && !sameHost(origin, host)) throw new HttpError(403, "Ask from within the app.");

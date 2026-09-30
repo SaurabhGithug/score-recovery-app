@@ -10,6 +10,7 @@ export interface StudyPackData {
   similarPastQuestions: { count: number; years: number[] };
   scope: string;
   examPoints: string[];
+  evidence?: { id: string; label: string; questionId: string; stem: string; sourceUrl: string | null }[];
   practice: { question: string; options: { id: string; text: string }[]; answer: string; explanation: string; crossChecked: boolean }[];
   generatedBy: string;
   checkedBy: string | null;
@@ -19,6 +20,60 @@ export interface StudyPackData {
 function years(list: number[]): string {
   if (!list.length) return "";
   return list.length === 1 ? ` (${list[0]})` : ` (${list[0]}–${list[list.length - 1]})`;
+}
+
+type RecallKind = "definition" | "formula" | "rule" | "fact";
+
+function recallKind(point: string): RecallKind {
+  if (point.includes("=") || /formula|return period|risk \(/i.test(point)) return "formula";
+  if (/designed for|as per|typically|must|should|major dams/i.test(point)) return "rule";
+  if (/\([A-Z]{2,6}\) is| is derived from| represents /i.test(point)) return "definition";
+  return "fact";
+}
+
+function recallTitle(point: string, index: number): { title: string; body: string } {
+  const colon = point.indexOf(":");
+  if (colon > 2 && colon < 88) {
+    return { title: point.slice(0, colon).trim(), body: point.slice(colon + 1).trim() };
+  }
+  const definition = point.match(/^(.{2,78}?\([A-Z]{2,6}\))\s+(is\s+.+)$/);
+  if (definition) return { title: definition[1].trim(), body: definition[2].trim() };
+  if (/^Major dams/i.test(point)) return { title: "Dam design selection", body: point };
+  return { title: `Exam fact ${index + 1}`, body: point };
+}
+
+const RECALL_TONE: Record<RecallKind, { label: string; shell: string; badge: string }> = {
+  definition: { label: "Definition", shell: "border-blue-200 bg-blue-50/60", badge: "bg-blue-100 text-blue-800" },
+  formula: { label: "Formula", shell: "border-violet-200 bg-violet-50/60", badge: "bg-violet-100 text-violet-800" },
+  rule: { label: "Selection rule", shell: "border-amber-200 bg-amber-50/60", badge: "bg-amber-100 text-amber-800" },
+  fact: { label: "Exam fact", shell: "border-slate-200 bg-white", badge: "bg-slate-100 text-slate-700" },
+};
+
+function RecallCard({ point, index }: { point: string; index: number }) {
+  const kind = recallKind(point);
+  const tone = RECALL_TONE[kind];
+  const { title, body } = recallTitle(point, index);
+  const formulaLines = kind === "formula"
+    ? body.split(/,\s+(?=(?:[A-Z][A-Za-z']+(?:'s)? formula|[A-Za-z][A-Za-z ]+\s*=))/)
+    : [body];
+  return (
+    <li className={`overflow-hidden rounded-xl border ${tone.shell}`}>
+      <div className="flex items-center gap-3 border-b border-black/5 px-3.5 py-3">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-950 text-xs font-black text-white">{index + 1}</span>
+        <h5 className="min-w-0 flex-1 text-sm font-black leading-5 text-slate-950">{title}</h5>
+        <span className={`hidden rounded-full px-2 py-1 text-[10px] font-black uppercase tracking-wide sm:inline ${tone.badge}`}>{tone.label}</span>
+      </div>
+      <div className="p-3.5">
+        {kind === "formula" ? (
+          <div className="space-y-2">
+            {formulaLines.map((line, lineIndex) => (
+              <p key={lineIndex} className="rounded-lg border border-violet-100 bg-white/80 px-3 py-2 font-mono text-[13px] leading-6 text-slate-800">{line}</p>
+            ))}
+          </div>
+        ) : <p className="text-sm leading-6 text-slate-700">{body}</p>}
+      </div>
+    </li>
+  );
 }
 
 /** The syllabus topic as a tag, with how often SSC asked it (from the past papers in this app). */
@@ -79,37 +134,82 @@ function PracticeQuestion({ item, index }: { item: StudyPackData["practice"][num
 export function StudyPack({ pack }: { pack: StudyPackData }) {
   const { t } = useLang();
   const checkedLabel = pack.checkedBy ? t({ en: `answers checked by a second AI (${pack.checkedBy})`, hi: `उत्तर दूसरे AI (${pack.checkedBy}) से जाँचे गए` }) : t({ en: "answers not cross-checked", hi: "उत्तर दूसरे AI से नहीं जाँचे गए" });
+  const scopeParts = pack.scope.split(/(?<=[.!?])\s+/).filter(Boolean);
   return (
-    <section aria-label={t({ en: "Topic and practice", hi: "विषय और अभ्यास" })} className="mt-3 rounded-xl border border-teal-200 bg-teal-50/40 p-3 sm:p-4">
+    <section aria-label={t({ en: "Topic and practice", hi: "विषय और अभ्यास" })} className="mt-3 overflow-hidden rounded-2xl border border-teal-200 bg-white shadow-sm">
+      <div className="border-b border-teal-100 bg-gradient-to-r from-teal-50 to-cyan-50 p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h4 className="text-xs font-bold uppercase tracking-wide text-teal-900">{t({ en: "Syllabus topic and practice", hi: "पाठ्यक्रम विषय और अभ्यास" })}</h4>
+        <h4 className="text-xs font-black uppercase tracking-[0.14em] text-teal-900">{t({ en: "Learn this in small chunks", hi: "छोटे भागों में सीखें" })}</h4>
         <AiGeneratedBadge detail={pack.generatedBy} />
       </div>
-      <div className="mt-2">
+      <div className="mt-3">
         {pack.topic ? <TopicTag pack={pack} /> : <p className="text-xs text-slate-600">{t({ en: "No single syllabus topic could be matched from the past papers.", hi: "पिछले पेपरों से कोई एक विषय नहीं मिला।" })}</p>}
-        <p className="mt-1 text-[11px] text-slate-500">
+        <p className="mt-2 text-[11px] leading-5 text-slate-500">
           {pack.topicBasis === "own_tags"
             ? t({ en: "Topic from this question's syllabus tags (AI-suggested, not yet reviewed).", hi: "विषय इस प्रश्न के टैग से (AI-सुझाया, समीक्षा बाकी)।" })
             : t({ en: `Topic matched through ${pack.similarPastQuestions.count} similar past SSC questions${years(pack.similarPastQuestions.years)}; their tags are AI-suggested.`, hi: `विषय ${pack.similarPastQuestions.count} मिलते-जुलते पिछले SSC प्रश्नों से${years(pack.similarPastQuestions.years)}; उनके टैग AI-सुझाए हैं।` })}
         </p>
       </div>
-      <p className="mt-3 text-sm leading-6 text-slate-800"><span className="font-semibold">{t({ en: "Scope: ", hi: "दायरा: " })}</span>{pack.scope}</p>
+      </div>
+
+      <div className="space-y-5 p-4 sm:p-5">
+      <section aria-labelledby="study-pack-scope">
+        <h5 id="study-pack-scope" className="text-xs font-black uppercase tracking-wide text-slate-500">{t({ en: "First, know the scope", hi: "पहले दायरा समझें" })}</h5>
+        <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          {scopeParts.map((part, index) => (
+            <div key={index} className={`rounded-xl border p-3.5 ${index === 0 ? "border-cyan-200 bg-cyan-50" : "border-amber-200 bg-amber-50"}`}>
+              <p className="text-[10px] font-black uppercase tracking-wide text-slate-500">{index === 0 ? t({ en: "What it covers", hi: "क्या शामिल है" }) : t({ en: "What SSC usually asks", hi: "SSC क्या पूछता है" })}</p>
+              <p className="mt-1.5 text-sm leading-6 text-slate-800">{part}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {pack.examPoints.length > 0 && (
-        <div className="mt-3">
-          <p className="text-xs font-semibold text-slate-700">{t({ en: "Worth remembering for the exam", hi: "परीक्षा के लिए याद रखें" })}</p>
-          <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-800">{pack.examPoints.map((p, i) => <li key={i}>{p}</li>)}</ul>
-        </div>
+        <section aria-labelledby="study-pack-recall">
+          <div className="flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <h5 id="study-pack-recall" className="text-base font-black text-slate-950">{t({ en: "Quick-recall cards", hi: "त्वरित याद कार्ड" })}</h5>
+              <p className="mt-0.5 text-xs text-slate-500">{t({ en: "Read the heading, recall the idea, then check the short answer.", hi: "शीर्षक पढ़ें, विचार याद करें, फिर छोटा उत्तर देखें।" })}</p>
+            </div>
+            <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-600">{pack.examPoints.length} {t({ en: "must-remember points", hi: "मुख्य बिंदु" })}</span>
+          </div>
+          <ol className="mt-3 grid gap-3 lg:grid-cols-2">{pack.examPoints.map((point, index) => <RecallCard key={index} point={point} index={index} />)}</ol>
+        </section>
       )}
-      {pack.practice.length > 0 ? (
-        <div className="mt-3">
-          <p className="text-xs font-semibold text-slate-700">
-            {t({ en: "Practise this topic", hi: "इस विषय का अभ्यास" })} <span className="font-normal text-slate-500">· {checkedLabel}</span>
+
+      {(pack.evidence?.length ?? 0) > 0 && (
+        <details className="rounded-xl border border-blue-200 bg-blue-50/50 p-3.5">
+          <summary className="cursor-pointer text-sm font-black text-blue-950">
+            {t({ en: "Past-paper evidence and citations", hi: "पिछले पेपर के प्रमाण और संदर्भ" })}
+          </summary>
+          <p className="mt-2 text-xs leading-5 text-slate-600">
+            {t({ en: "E1, E2… in the cards refer to these stored exam questions. A point marked GENERAL THEORY is not claimed as a past SSC occurrence.", hi: "कार्ड में E1, E2… इन संग्रहित परीक्षा प्रश्नों को दर्शाते हैं। GENERAL THEORY को पिछला SSC प्रश्न नहीं माना गया है।" })}
           </p>
-          <ol className="mt-2 space-y-2">{pack.practice.map((item, i) => <PracticeQuestion key={i} item={item} index={i} />)}</ol>
-        </div>
+          <ol className="mt-3 space-y-2">
+            {pack.evidence!.map((item) => (
+              <li key={item.id} className="rounded-lg border border-blue-100 bg-white p-3 text-xs leading-5 text-slate-700">
+                <p className="font-bold text-slate-950">{item.id} · {item.label}</p>
+                <p className="mt-1">{item.stem}</p>
+                {item.sourceUrl && <a href={item.sourceUrl} target="_blank" rel="noreferrer" className="mt-1 inline-block font-semibold text-blue-700 underline">{t({ en: "Open source", hi: "स्रोत खोलें" })} ↗</a>}
+              </li>
+            ))}
+          </ol>
+        </details>
+      )}
+
+      {pack.practice.length > 0 ? (
+        <details className="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5">
+          <summary className="cursor-pointer list-none text-sm font-black text-slate-900 marker:hidden">
+            <span className="flex items-center justify-between gap-3"><span>{t({ en: "Now test your recall", hi: "अब अपनी याददाश्त जाँचें" })}</span><span aria-hidden="true" className="text-blue-700">＋</span></span>
+          </summary>
+          <p className="mt-2 text-xs text-slate-500">{checkedLabel}</p>
+          <ol className="mt-3 space-y-2">{pack.practice.map((item, i) => <PracticeQuestion key={i} item={item} index={i} />)}</ol>
+        </details>
       ) : (
         <p className="mt-3 text-xs text-slate-500">{t({ en: "No practice questions passed the second AI's check this time.", hi: "इस बार कोई अभ्यास प्रश्न दूसरे AI की जाँच में पास नहीं हुआ।" })}</p>
       )}
+      </div>
     </section>
   );
 }

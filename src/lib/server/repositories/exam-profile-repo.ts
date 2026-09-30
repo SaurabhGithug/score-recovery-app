@@ -20,10 +20,10 @@ export interface ExamProfileRecord {
 }
 
 export class ExamProfileRepository {
-  public static findByContextId(
+  public static async findByContextId(
     preparationContextId: string,
     userId?: string
-  ): ExamProfileRecord | null {
+  ): Promise<ExamProfileRecord | null> {
     const db = getDatabase();
     let query = "SELECT * FROM exam_profiles WHERE preparation_context_id = ?";
     const params: string[] = [preparationContextId];
@@ -32,11 +32,11 @@ export class ExamProfileRepository {
       params.push(userId);
     }
     const stmt = db.prepare(query);
-    const row = stmt.get(...params) as unknown as ExamProfileRecord | undefined;
+    const row = await stmt.get<ExamProfileRecord>(...params);
     return row ?? null;
   }
 
-  public static upsert(data: {
+  public static async upsert(data: {
     userId: string;
     preparationContextId: string;
     category: CandidateCategory;
@@ -46,9 +46,9 @@ export class ExamProfileRepository {
     pwbdType?: string | null;
     exServicemanStatus?: boolean;
     targetPosts?: string[];
-  }): ExamProfileRecord {
+  }): Promise<ExamProfileRecord> {
     const db = getDatabase();
-    const existing = this.findByContextId(data.preparationContextId, data.userId);
+    const existing = await this.findByContextId(data.preparationContextId, data.userId);
     const now = new Date().toISOString();
     const birth = data.dateOfBirth === undefined ? existing?.date_of_birth ?? null : data.dateOfBirth;
     const gender = data.gender === undefined ? existing?.gender ?? null : data.gender;
@@ -74,7 +74,7 @@ export class ExamProfileRepository {
             updated_at = ?
         WHERE id = ?
       `);
-      stmt.run(
+      await stmt.run(
         data.category,
         birth,
         gender,
@@ -85,7 +85,7 @@ export class ExamProfileRepository {
         now,
         existing.id
       );
-      return this.findByContextId(data.preparationContextId, data.userId)!;
+      return (await this.findByContextId(data.preparationContextId, data.userId))!;
     }
 
     const id = `prof_${crypto.randomUUID().replace(/-/g, "").slice(0, 16)}`;
@@ -97,7 +97,7 @@ export class ExamProfileRepository {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    stmt.run(
+    await stmt.run(
       id,
       data.userId,
       data.preparationContextId,
@@ -112,6 +112,6 @@ export class ExamProfileRepository {
       now
     );
 
-    return this.findByContextId(data.preparationContextId, data.userId)!;
+    return (await this.findByContextId(data.preparationContextId, data.userId))!;
   }
 }

@@ -62,7 +62,7 @@ function validate(value: unknown): TestbookImport {
   return data;
 }
 
-export function importTestbook(value: unknown, userId: string): BankTestbookImportResult {
+export async function importTestbook(value: unknown, userId: string): Promise<BankTestbookImportResult> {
   if (!userId) throw new HttpError(401, "Sign in to import a Testbook capture.");
   const data = validate(value);
   const result: BankTestbookImportResult = { paperIds: [], questions: 0, keyed: 0, heldOut: 0 };
@@ -120,8 +120,8 @@ export function importTestbook(value: unknown, userId: string): BankTestbookImpo
       }
     });
 
-    BankRepository.transaction(() => {
-      BankRepository.upsertPaper({
+    await BankRepository.transaction(async () => {
+      await BankRepository.upsertPaper({
         id: paperId,
         kind: "mock",
         paper: paperCodeFromTitle(test.title),
@@ -149,19 +149,19 @@ export function importTestbook(value: unknown, userId: string): BankTestbookImpo
         },
       });
       // upsertPaper never re-owns an existing paper; refuse rather than write into someone else's.
-      if (BankRepository.getPaper(paperId)?.ownerUserId !== userId) {
+      if ((await BankRepository.getPaper(paperId))?.ownerUserId !== userId) {
         throw new HttpError(409, "This capture's paper id belongs to another owner.");
       }
-      BankRepository.parkPositions(paperId);
-      for (const q of questions) BankRepository.upsertQuestion(q);
-      BankRepository.deleteQuestionsNotIn(paperId, questions.map((q) => q.id));
+      await BankRepository.parkPositions(paperId);
+      for (const q of questions) await BankRepository.upsertQuestion(q);
+      await BankRepository.deleteQuestionsNotIn(paperId, questions.map((q) => q.id));
       const wanted = new Set(evidence.map((e) => `${e.questionId}\u0000${e.sourceLabel}`));
-      for (const row of BankRepository.listScopedEvidenceForPaper(paperId, userId)) {
+      for (const row of await BankRepository.listScopedEvidenceForPaper(paperId, userId)) {
         if (row.authority === "testbook_portal" && !wanted.has(`${row.questionId}\u0000${row.sourceLabel}`)) {
-          BankRepository.deleteEvidence(row.id);
+          await BankRepository.deleteEvidence(row.id);
         }
       }
-      for (const e of evidence) BankRepository.upsertScopedEvidence(e, userId);
+      for (const e of evidence) await BankRepository.upsertScopedEvidence(e, userId);
     });
 
     result.paperIds.push(paperId);

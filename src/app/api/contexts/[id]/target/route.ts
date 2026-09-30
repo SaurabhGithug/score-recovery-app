@@ -11,26 +11,26 @@ export async function GET(
   props: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User session required" }, { status: 401 });
     }
 
     const { id: contextId } = await props.params;
-    const context = PreparationContextRepository.findById(contextId, user.id);
+    const context = await PreparationContextRepository.findById(contextId, user.id);
     if (!context) {
       return NextResponse.json({ error: "Preparation context not found" }, { status: 404 });
     }
 
     // Retrieve or default exam profile
-    const profile = ExamProfileRepository.findByContextId(contextId, user.id);
+    const profile = await ExamProfileRepository.findByContextId(contextId, user.id);
     const category = profile?.category || "UR";
 
     const examId = context.exam_id || "ssc-je";
     const branch = context.branch || "civil";
 
     // Calculate personal target with full explanation
-    const targetResult = calculatePersonalTarget({
+    const targetResult = await calculatePersonalTarget({
       examDefinitionId: examId,
       branch,
       category,
@@ -46,7 +46,7 @@ export async function GET(
     );
 
     // Save target record in DB for provenance
-    TargetScoreRepository.upsert({
+    await TargetScoreRepository.upsert({
       userId: user.id,
       preparationContextId: contextId,
       score: targetResult.planningTargetScore,

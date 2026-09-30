@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     const category = req.nextUrl.searchParams.get("category") || "UR";
     const stage = req.nextUrl.searchParams.get("stage") || "PAPER_I";
 
-    const cutoffs = HistoricalCutoffRepository.findComparable({
+    const cutoffs = await HistoricalCutoffRepository.findComparable({
       examDefinitionId: examId,
       branch,
       category,

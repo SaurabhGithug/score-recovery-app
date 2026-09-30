@@ -3,14 +3,16 @@
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
+  --font-app-sans: Inter, "Noto Sans Devanagari", "Nirmala UI", "Mangal", ui-sans-serif, system-ui, sans-serif;
+  --font-app-mono: "SFMono-Regular", Consolas, "Liberation Mono", ui-monospace, monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-devanagari: var(--font-devanagari);
+  --font-sans: var(--font-app-sans);
+  --font-mono: var(--font-app-mono);
+  --font-devanagari: var(--font-app-sans);
 }
 
 body {
@@ -20,12 +22,12 @@ body {
      the browser picks per-character within this stack, so mixed Hindi/English
      text (very common in this product) renders correctly without any
      language-conditional class switching. */
-  font-family: var(--font-geist-sans), var(--font-devanagari), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-app-sans);
 }
 
 /* Keep monospace contexts (timers, marks) on the mono stack. */
 .font-mono {
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-family: var(--font-app-mono);
 }
 
 :where(a, button, summary, input, select, textarea):focus-visible {
@@ -77,4 +79,10 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+@media print {
+  header, footer, nav, .mobile-action-bar { display: none !important; }
+  details > * { display: block !important; }
+  body { background: white !important; }
+  article { break-inside: avoid; }
 }

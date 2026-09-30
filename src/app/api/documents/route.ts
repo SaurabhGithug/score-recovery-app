@@ -18,13 +18,13 @@ const SUPPORTED_EXTENSIONS = new Set([
 
 export async function GET(req: NextRequest) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User session required" }, { status: 401 });
     }
 
     const contextId = req.nextUrl.searchParams.get("contextId") || req.headers.get("x-context-id") || null;
-    const documents = DocumentRepository.listByUserId(user.id, contextId);
+    const documents = await DocumentRepository.listByUserId(user.id, contextId);
     return NextResponse.json({ documents });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to fetch documents";
@@ -34,7 +34,13 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const user = getCurrentUser(req);
+    if (process.env.NODE_ENV === "production" && process.env.ENABLE_DOCUMENT_PARSER !== "true") {
+      return NextResponse.json(
+        { error: "Online document parsing is disabled. Import prepared content from the offline workspace." },
+        { status: 410 }
+      );
+    }
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User profile required before uploading" }, { status: 401 });
     }
@@ -72,7 +78,7 @@ export async function POST(req: NextRequest) {
     const storagePath = await documentStorage.saveFile(storageKey, buffer, file.type || "application/octet-stream");
 
     // Create StudyDocument in database with preparationContextId
-    const docRecord = DocumentRepository.create({
+    const docRecord = await DocumentRepository.create({
       userId: user.id,
       preparationContextId: contextId,
       originalName,
@@ -82,7 +88,7 @@ export async function POST(req: NextRequest) {
     });
 
     // Enqueue background processing job with context
-    ProcessingQueue.enqueueDocument(docRecord.id, user.id, storagePath, contextId);
+    await ProcessingQueue.enqueueDocument(docRecord.id, user.id, storagePath, contextId);
 
     return NextResponse.json({
       documentId: docRecord.id,

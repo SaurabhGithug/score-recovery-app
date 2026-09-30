@@ -8,13 +8,13 @@ export async function GET(
   props: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User session required" }, { status: 401 });
     }
 
     const { id } = await props.params;
-    const document = DocumentRepository.findById(id, user.id);
+    const document = await DocumentRepository.findById(id, user.id);
     if (!document) {
       return NextResponse.json({ error: "Document not found" }, { status: 404 });
     }

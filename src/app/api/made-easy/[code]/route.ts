@@ -8,7 +8,7 @@ import { canReadMadeEasy, madeEasyTest } from "@/lib/server/made-easy";
  */
 export async function GET(req: Request, props: { params: Promise<{ code: string }> }) {
   return handle(async () => {
-    const user = requireUser(req);
+    const user = await requireUser(req);
     if (!canReadMadeEasy(user.id)) throw new HttpError(403, "These Made Easy results belong to another account.");
     const { code } = await props.params;
     const detail = /^test-\d{1,3}$/.test(code) ? madeEasyTest(code) : null;

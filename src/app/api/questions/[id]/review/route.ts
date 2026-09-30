@@ -7,7 +7,7 @@ export async function PATCH(
   props: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User session required" }, { status: 401 });
     }
@@ -20,7 +20,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Invalid status value" }, { status: 400 });
     }
 
-    const updated = QuestionRepository.updateVerification(id, user.id, {
+    const updated = await QuestionRepository.updateVerification(id, user.id, {
       status,
       questionText: body.questionText,
       options: body.options,

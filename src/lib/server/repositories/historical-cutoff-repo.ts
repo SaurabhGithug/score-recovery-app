@@ -20,14 +20,14 @@ export interface HistoricalCutoffRecord {
 }
 
 export class HistoricalCutoffRepository {
-  public static findComparable(params: {
+  public static async findComparable(params: {
     examDefinitionId: string;
     branch?: string | null;
     category: string;
     stage?: string;
-  }): HistoricalCutoffRecord[] {
+  }): Promise<HistoricalCutoffRecord[]> {
     const db = getDatabase();
-    this.ensureSeeded();
+    await this.ensureSeeded();
 
     const stage = params.stage ?? "PAPER_I";
     const branch = params.branch ? params.branch.toLowerCase() : null;
@@ -48,12 +48,13 @@ export class HistoricalCutoffRepository {
     query += " ORDER BY exam_year DESC";
 
     const stmt = db.prepare(query);
-    return stmt.all(...queryParams) as unknown as HistoricalCutoffRecord[];
+    return stmt.all<HistoricalCutoffRecord>(...queryParams);
   }
 
-  public static ensureSeeded(): void {
+  public static async ensureSeeded(): Promise<void> {
     const db = getDatabase();
-    const countRow = db.prepare("SELECT count(*) as count FROM historical_cutoffs").get() as { count: number };
+    const countRow = await db.prepare("SELECT count(*) as count FROM historical_cutoffs").get<{ count: number }>();
+    if (!countRow) throw new Error("Could not inspect historical cutoffs.");
     if (countRow.count > 0) return;
 
     const sourceUrl = "https://ssc.gov.in";
@@ -120,7 +121,7 @@ export class HistoricalCutoffRepository {
     `);
 
     for (const s of seeds) {
-      stmt.run(
+      await stmt.run(
         s.id,
         s.exam_id,
         s.year,

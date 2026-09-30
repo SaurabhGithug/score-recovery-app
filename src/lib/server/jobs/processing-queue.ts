@@ -24,7 +24,7 @@ export class ProcessingQueue {
     setImmediate(() => {
       this.processJob(documentId, userId, filePath, preparationContextId).catch((err) => {
         console.error(`[Queue] Failed processing job for ${documentId}:`, err);
-        DocumentRepository.updateStatus(documentId, "FAILED", err.message);
+        void DocumentRepository.updateStatus(documentId, "FAILED", err.message);
         this.activeJobs.delete(documentId);
       });
     });
@@ -38,7 +38,7 @@ export class ProcessingQueue {
   ) {
     try {
       // 1. Mark PROCESSING
-      DocumentRepository.updateStatus(documentId, "PROCESSING", "Inspecting document structure...");
+      await DocumentRepository.updateStatus(documentId, "PROCESSING", "Inspecting document structure...");
       this.activeJobs.set(documentId, { status: "INSPECTING", progress: 20 });
 
       const pythonScript = path.resolve(process.cwd(), "services", "document-intelligence", "run_pipeline.py");
@@ -55,7 +55,7 @@ export class ProcessingQueue {
       let targetBranch = "";
       let contextName = "";
       if (preparationContextId) {
-        const ctx = PreparationContextRepository.findById(preparationContextId, userId);
+        const ctx = await PreparationContextRepository.findById(preparationContextId, userId);
         if (ctx) {
           targetBranch = ctx.branch || "";
           contextName = ctx.name || "";
@@ -64,7 +64,7 @@ export class ProcessingQueue {
 
       // 2. Invoke Python Document Intelligence CLI
       this.activeJobs.set(documentId, { status: "EXTRACTING", progress: 45 });
-      DocumentRepository.updateStatus(documentId, "PROCESSING", "Extracting content & parsing layout...");
+      await DocumentRepository.updateStatus(documentId, "PROCESSING", "Extracting content & parsing layout...");
 
       const args = [
         pythonScript,
@@ -105,7 +105,7 @@ export class ProcessingQueue {
 
       // 3. Read output JSON and ingest into SQLite
       this.activeJobs.set(documentId, { status: "INGESTING", progress: 85 });
-      DocumentRepository.updateStatus(documentId, "PROCESSING", "Validating questions & writing to library...");
+      await DocumentRepository.updateStatus(documentId, "PROCESSING", "Validating questions & writing to library...");
 
       if (!fs.existsSync(outputFile)) {
         throw new Error("Pipeline output file not generated");
@@ -116,7 +116,7 @@ export class ProcessingQueue {
 
       // Insert pages
       if (data.pages && Array.isArray(data.pages)) {
-        DocumentRepository.insertPages(data.pages);
+        await DocumentRepository.insertPages(data.pages);
       }
 
       // Insert questions with preparationContextId
@@ -125,7 +125,7 @@ export class ProcessingQueue {
           ...q,
           preparationContextId: preparationContextId ?? null,
         }));
-        QuestionRepository.createMany(questionsWithContext);
+        await QuestionRepository.createMany(questionsWithContext);
       }
 
       // Update study document summary
@@ -134,8 +134,8 @@ export class ProcessingQueue {
         ? "Document processed: learning material detected without structured questions."
         : `Ready for practice (${data.readyCount} ready, ${data.reviewCount} need review).`;
 
-      DocumentRepository.updateStatus(documentId, finalStatus, statusMessage, data.parserUsed);
-      DocumentRepository.updateCountsAndDetails(documentId, {
+      await DocumentRepository.updateStatus(documentId, finalStatus, statusMessage, data.parserUsed);
+      await DocumentRepository.updateCountsAndDetails(documentId, {
         pageCount: data.pageCount,
         questionsCount: data.questionsCount,
         readyQuestionsCount: data.readyCount,
@@ -157,7 +157,7 @@ export class ProcessingQueue {
       }, 10000);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Processing failed";
-      DocumentRepository.updateStatus(documentId, "FAILED", message);
+      await DocumentRepository.updateStatus(documentId, "FAILED", message);
       this.activeJobs.delete(documentId);
       throw err;
     }

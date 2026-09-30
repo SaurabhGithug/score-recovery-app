@@ -42,31 +42,34 @@ function formatClock(totalSeconds: number): string {
   return `${mm}:${ss}`;
 }
 
-type PaletteState = "unvisited" | "answered" | "marked" | "answered-marked";
+type PaletteState = "unvisited" | "not-answered" | "answered" | "marked" | "answered-marked";
 
 function paletteState(r: BankResponse | undefined): PaletteState {
   if (!r) return "unvisited";
   if (r.answer != null && r.marked) return "answered-marked";
   if (r.answer != null) return "answered";
   if (r.marked) return "marked";
-  return "unvisited";
+  return r.visits > 0 ? "not-answered" : "unvisited";
 }
 
 const PALETTE_STYLE: Record<PaletteState, string> = {
-  unvisited: "bg-slate-50 border-slate-200 text-slate-500",
-  answered: "bg-emerald-100 border-emerald-400 text-emerald-800",
-  marked: "bg-amber-100 border-amber-400 text-amber-800",
-  "answered-marked": "bg-violet-100 border-violet-400 text-violet-800",
+  unvisited: "bg-white border-slate-300 text-slate-700",
+  "not-answered": "bg-red-600 border-red-600 text-white",
+  answered: "bg-emerald-600 border-emerald-600 text-white",
+  marked: "bg-violet-600 border-violet-600 text-white",
+  "answered-marked": "bg-violet-600 border-violet-600 text-white",
 };
 
 export function BankRunner({
   paper,
   attempt,
   initialResponses,
+  initialLanguage = "en",
 }: {
   paper: BankPaperDetail;
   attempt: BankAttempt;
   initialResponses: BankResponses;
+  initialLanguage?: "en" | "hi";
 }) {
   const router = useRouter();
   const { t } = useLang();
@@ -99,7 +102,8 @@ export function BankRunner({
 
   const [index, setIndex] = useState(0);
   const [responses, setResponses] = useState<BankResponses>(() => withDefaults(questions, initialResponses));
-  const [contentLang, setContentLang] = useState<"en" | "hi">("en");
+  const [draftAnswers, setDraftAnswers] = useState<Record<string, string | null>>(() => Object.fromEntries(questions.map((question) => [question.id, initialResponses[question.id]?.answer ?? null])));
+  const [contentLang, setContentLang] = useState<"en" | "hi">(initialLanguage);
   const [viewOriginalOverride, setViewOriginalOverride] = useState<Record<string, boolean>>({});
   const [checked, setChecked] = useState<Record<string, BankCheckResult>>({});
   const [restoreErrors, setRestoreErrors] = useState<Record<string, string>>({});
@@ -133,6 +137,7 @@ export function BankRunner({
 
   const currentId = visibleIds[index];
   const q = questions.find((qq) => qq.id === currentId) ?? questions[0];
+  const isPractice = attempt.mode === "practice";
   const imageUrl = q?.imageUrl;
   const rememberImage = useCallback((image: HTMLImageElement | null) => {
     // A cached image may finish before hydration attaches onLoad.
@@ -190,15 +195,34 @@ export function BankRunner({
   function goTo(newIndex: number) {
     if (!q) return;
     const flushed = flushSeconds(q.id, responsesRef.current);
+    if (!isPractice) {
+      setDraftAnswers((prev) => ({ ...prev, [q.id]: flushed[q.id]?.answer ?? null }));
+    }
+    responsesRef.current = flushed;
     setResponses(flushed);
-    doSave(flushed);
+    void doSave(flushed);
     setIndex(Math.max(0, Math.min(visibleIds.length - 1, newIndex)));
+  }
+
+  function switchSection(name: string) {
+    if (!q) return;
+    const flushed = flushSeconds(q.id, responsesRef.current);
+    if (!isPractice) setDraftAnswers((prev) => ({ ...prev, [q.id]: flushed[q.id]?.answer ?? null }));
+    responsesRef.current = flushed;
+    setResponses(flushed);
+    void doSave(flushed);
+    setActiveSection(name);
+    setIndex(0);
   }
 
   function selectOption(optionId: string | null) {
     if (!q) return;
     if (committedNow || checking || submitting) return;
     if (optionId !== null && (q.unavailable || (imageLed(q) && imageStates[q.imageUrl ?? ""] !== "loaded"))) return;
+    if (!isPractice) {
+      setDraftAnswers((prev) => ({ ...prev, [q.id]: optionId }));
+      return;
+    }
     const prev = responsesRef.current;
     const cur = prev[q.id] ?? emptyResponse();
     const changed = cur.answer !== null && cur.answer !== optionId;
@@ -210,10 +234,31 @@ export function BankRunner({
 
   function toggleMark() {
     if (!q) return;
-    setResponses((prev) => {
-      const cur = prev[q.id] ?? emptyResponse();
-      return { ...prev, [q.id]: { ...cur, marked: !cur.marked } };
-    });
+    const prev = responsesRef.current;
+    const cur = prev[q.id] ?? emptyResponse();
+    const next = { ...prev, [q.id]: { ...cur, marked: !cur.marked } };
+    responsesRef.current = next;
+    setResponses(next);
+    void doSave(next);
+  }
+
+  function saveAndAdvance(marked: boolean) {
+    if (!q || checking || submitting) return;
+    const source = responsesRef.current;
+    const cur = source[q.id] ?? emptyResponse();
+    const answer = draftAnswers[q.id] ?? null;
+    const changed = cur.answer !== null && cur.answer !== answer;
+    let next: BankResponses = {
+      ...source,
+      [q.id]: { ...cur, answer, marked, changes: changed ? cur.changes + 1 : cur.changes },
+    };
+    next = flushSeconds(q.id, next);
+    responsesRef.current = next;
+    setResponses(next);
+    setDraftAnswers((prev) => ({ ...prev, [q.id]: answer }));
+    void doSave(next);
+    if (index < visibleIds.length - 1) setIndex(index + 1);
+    else setConfirmSubmit(true);
   }
 
   // Answers checked before a reload are locked on the server (attempt.checkedQuestionIds).
@@ -313,7 +358,8 @@ export function BankRunner({
       } else if (key === "p") {
         goTo(index - 1);
       } else if (key === "m") {
-        toggleMark();
+        if (isPractice) toggleMark();
+        else saveAndAdvance(true);
       }
     }
     window.addEventListener("keydown", onKey);
@@ -326,7 +372,7 @@ export function BankRunner({
   }
 
   const response = responses[q.id];
-  const isPractice = attempt.mode === "practice";
+  const displayedAnswer = isPractice ? response?.answer ?? null : draftAnswers[q.id] ?? null;
   const isChecked = committedNow;
   const originalDefault = imageLed(q);
   const showOriginal = originalDefault || viewOriginalOverride[q.id];
@@ -383,10 +429,7 @@ export function BankRunner({
             <button
               key={name}
               type="button"
-              onClick={() => {
-                setActiveSection(name);
-                setIndex(0);
-              }}
+              onClick={() => switchSection(name)}
               className={`shrink-0 rounded-lg border px-3 py-1.5 text-xs font-semibold ${
                 name === activeSection ? "border-blue-600 bg-blue-50 text-blue-700" : "border-slate-200 bg-white text-slate-500"
               }`}
@@ -480,7 +523,7 @@ export function BankRunner({
 
           <div className="flex flex-col gap-2.5">
             {orderedOptions.map((opt, pos) => {
-              const selected = response?.answer === opt.id;
+              const selected = displayedAnswer === opt.id;
               const result = checked[q.id];
               let cls = "flex min-h-[44px] items-center gap-3 rounded-lg border px-4 py-3 text-left text-sm transition-colors";
               if (result) {
@@ -518,7 +561,7 @@ export function BankRunner({
               );
             })}
           </div>
-          {!isChecked && <button type="button" disabled={response?.answer == null || checking || submitting} onClick={() => selectOption(null)} className="mt-3 self-start rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 disabled:opacity-40">{t({ en: "Clear answer", hi: "उत्तर हटाएँ" })}</button>}
+          {!isChecked && <button type="button" disabled={displayedAnswer == null || checking || submitting} onClick={() => selectOption(null)} className="mt-3 self-start rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 disabled:opacity-40">{t({ en: "Clear response", hi: "उत्तर हटाएँ" })}</button>}
 
           {isPractice && !isChecked && (
             <div className="mt-4 flex items-center gap-2">
@@ -546,15 +589,17 @@ export function BankRunner({
           )}
 
           <div className="mt-6 hidden items-center justify-between gap-2 border-t border-slate-100 pt-4 sm:flex">
-            <button
+            {isPractice ? <button
               type="button"
               onClick={toggleMark}
               className={`rounded-md border px-3 py-1.5 text-xs font-medium ${
-                response?.marked ? "border-amber-400 bg-amber-50 text-amber-700" : "border-slate-200 text-slate-500"
+                response?.marked ? "border-violet-400 bg-violet-50 text-violet-700" : "border-slate-200 text-slate-500"
               }`}
             >
               {response?.marked ? t({ en: "★ Marked", hi: "★ चिह्नित" }) : t({ en: "☆ Mark for review", hi: "☆ समीक्षा हेतु चिह्नित करें" })}
-            </button>
+            </button> : <button type="button" onClick={() => saveAndAdvance(true)} className="rounded-md border border-violet-300 bg-violet-50 px-3 py-2 text-xs font-semibold text-violet-800">
+              {t({ en: "Mark for Review & Next", hi: "समीक्षा हेतु चिह्नित करें और आगे" })}
+            </button>}
             <div className="flex gap-2">
               <button
                 type="button"
@@ -564,14 +609,12 @@ export function BankRunner({
               >
                 {t({ en: "Previous", hi: "पिछला" })}
               </button>
-              {index < visibleIds.length - 1 ? (
-                <button type="button" onClick={() => goTo(index + 1)} className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white">
-                  {t({ en: "Next", hi: "अगला" })}
-                </button>
+              {isPractice ? (index < visibleIds.length - 1 ? (
+                <button type="button" onClick={() => goTo(index + 1)} className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white">{t({ en: "Next", hi: "अगला" })}</button>
               ) : (
-                <button type="button" onClick={() => setConfirmSubmit(true)} className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white">
-                  {t({ en: "Submit", hi: "सबमिट करें" })}
-                </button>
+                <button type="button" onClick={() => setConfirmSubmit(true)} className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white">{t({ en: "Submit", hi: "सबमिट करें" })}</button>
+              )) : (
+                <button type="button" onClick={() => saveAndAdvance(false)} className="rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white">{t({ en: "Save & Next", hi: "सहेजें और आगे" })}</button>
               )}
             </div>
           </div>
@@ -593,16 +636,7 @@ export function BankRunner({
 
       {/* Sticky bottom nav (mobile) */}
       <div className="mobile-action-bar fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-2 border-t border-slate-200 bg-white/95 px-3 py-2 backdrop-blur sm:hidden">
-        <button
-          type="button"
-          onClick={toggleMark}
-          aria-label={t({ en: "Mark for review", hi: "समीक्षा हेतु चिह्नित करें" })}
-          className={`flex h-11 w-11 items-center justify-center rounded-lg border text-lg ${
-            response?.marked ? "border-amber-400 bg-amber-50" : "border-slate-200"
-          }`}
-        >
-          {response?.marked ? "★" : "☆"}
-        </button>
+        <button type="button" onClick={isPractice ? toggleMark : () => saveAndAdvance(true)} aria-label={t({ en: "Mark for review and continue", hi: "समीक्षा हेतु चिह्नित करें और आगे" })} className={`flex h-11 w-11 items-center justify-center rounded-lg border text-lg ${response?.marked ? "border-violet-400 bg-violet-50" : "border-slate-200"}`}>{response?.marked ? "★" : "☆"}</button>
         <button
           type="button"
           onClick={() => goTo(index - 1)}
@@ -612,7 +646,9 @@ export function BankRunner({
         >
           {t({ en: "Prev", hi: "पिछला" })}
         </button>
-        {index < visibleIds.length - 1 ? (
+        {!isPractice ? (
+          <button type="button" onClick={() => saveAndAdvance(false)} aria-label={t({ en: "Save answer and go to next question", hi: "उत्तर सहेजें और अगले प्रश्न पर जाएँ" })} className="flex h-11 flex-1 items-center justify-center rounded-lg bg-emerald-700 text-sm font-semibold text-white">{t({ en: "Save & Next", hi: "सहेजें और आगे" })}</button>
+        ) : index < visibleIds.length - 1 ? (
           <button
             type="button"
             onClick={() => goTo(index + 1)}
@@ -668,18 +704,20 @@ function Palette({
               aria-current={active ? "step" : undefined}
               className={`flex min-h-11 w-full items-center justify-center rounded border text-xs font-semibold ${PALETTE_STYLE[state]} ${
                 active ? "ring-2 ring-blue-400" : ""
-              }`}
+              } relative`}
             >
               {i + 1}
+              {state === "answered-marked" && <span aria-hidden="true" className="absolute bottom-1 right-1 h-2 w-2 rounded-full border border-white bg-emerald-300" />}
             </button>
           );
         })}
       </div>
       <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-slate-500">
         <Legend swatch="bg-slate-50 border-slate-200" label={t({ en: "Not visited", hi: "अदेखा" })} />
-        <Legend swatch="bg-emerald-100 border-emerald-400" label={t({ en: "Answered", hi: "उत्तरित" })} />
-        <Legend swatch="bg-amber-100 border-amber-400" label={t({ en: "Marked", hi: "चिह्नित" })} />
-        <Legend swatch="bg-violet-100 border-violet-400" label={t({ en: "Answered + marked", hi: "उत्तरित + चिह्नित" })} />
+        <Legend swatch="bg-red-600 border-red-600" label={t({ en: "Not answered", hi: "अनुत्तरित" })} />
+        <Legend swatch="bg-emerald-600 border-emerald-600" label={t({ en: "Answered", hi: "उत्तरित" })} />
+        <Legend swatch="bg-violet-600 border-violet-600" label={t({ en: "Marked", hi: "चिह्नित" })} />
+        <Legend swatch="bg-violet-600 border-violet-600" label={t({ en: "Answered + marked", hi: "उत्तरित + चिह्नित" })} />
       </div>
     </div>
   );

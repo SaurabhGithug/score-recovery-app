@@ -62,6 +62,8 @@ export interface StudyPack {
   similarPastQuestions: { count: number; years: number[] };
   scope: string;
   examPoints: string[];
+  /** Exact stored past-paper questions; E1, E2… match references in generated text. */
+  evidence: { id: string; label: string; questionId: string; stem: string; sourceUrl: string | null }[];
   practice: StudyPackQuestion[];
   generatedBy: string;
   checkedBy: string | null;
@@ -164,17 +166,17 @@ function madeEasyFacts(userId: string, id: string): Facts {
   };
 }
 
-function bankFacts(userId: string, id: string): Facts {
-  const q = BankRepository.getQuestionFor(id, userId);
+async function bankFacts(userId: string, id: string): Promise<Facts> {
+  const q = await BankRepository.getQuestionFor(id, userId);
   if (!q) throw new HttpError(404, "No such question.");
-  if (!learnerCommitted(userId, q)) throw new HttpError(403, "Answer this question first; follow-up questions open after you check or submit it.");
-  const key: ResolvedKey = BankRepository.resolveKeysForQuestions([q], userId).get(q.id)!;
+  if (!(await learnerCommitted(userId, q))) throw new HttpError(403, "Answer this question first; follow-up questions open after you check or submit it.");
+  const key: ResolvedKey = (await BankRepository.resolveKeysForQuestions([q], userId)).get(q.id)!;
   const view = toQuestionForAttempt(q, key, true);
   const label = (optionId: string) => optionLabel(view, optionId);
   const options = q.options.map((o) => ({ label: label(o.id), text: o.text }));
   const scored = isScored(key.status) && key.answer !== null;
   const keyText = scored ? options.find((o) => o.label === label(key.answer!))?.text ?? "" : "";
-  const paper = BankRepository.getPaperFor(q.paperId, userId);
+  const paper = await BankRepository.getPaperFor(q.paperId, userId);
   const keySource = !scored
     ? `no settled key: ${key.status}`
     : key.status === "reviewed"
@@ -198,7 +200,7 @@ function bankFacts(userId: string, id: string): Facts {
   };
 }
 
-function factsFor(userId: string, kind: unknown, id: unknown): Facts {
+async function factsFor(userId: string, kind: unknown, id: unknown): Promise<Facts> {
   if (kind !== "made_easy" && kind !== "bank") throw new HttpError(400, "Unknown question source.");
   if (typeof id !== "string" || !/^[A-Za-z0-9_.:-]{1,200}$/.test(id)) throw new HttpError(400, "Question id required.");
   return kind === "made_easy" ? madeEasyFacts(userId, id) : bankFacts(userId, id);
@@ -232,11 +234,20 @@ function yearsText(years: number[]): string {
 }
 
 function syllabusBlock(ctx: SyllabusContext): string {
-  if (!ctx.candidates.length) return "SSC JE SYLLABUS (2026): no matching topic was found in the previous-year papers.";
-  return [
-    "SSC JE SYLLABUS (2026 notice): likely topic(s), from the previous-year papers in the learner's app:",
-    ...ctx.candidates.slice(0, 3).map((c) => `- ${c.path}: SSC asked about ${c.pypCount} question(s) on it${yearsText(c.years)}.`),
-  ].join("\n");
+  const topics = ctx.candidates.length
+    ? [
+        "SSC JE SYLLABUS (2026 notice): likely topic(s), from the previous-year papers in the learner's app:",
+        ...ctx.candidates.slice(0, 3).map((c) => `- ${c.path}: ${c.pypCount} stored matching question(s)${yearsText(c.years)}.`),
+      ]
+    : ["SSC JE SYLLABUS (2026): no matching topic was found in the previous-year papers."];
+  const evidence = ctx.similar.slice(0, 5).map((q, i) =>
+    `E${i + 1} — ${citationLabel(q)}\nQuestion: ${q.stem}${q.sourceUrl ? `\nSource: ${q.sourceUrl}` : ""}`
+  );
+  return [...topics, "", "STORED PAST-PAPER EVIDENCE (cite only these as exam occurrences):", ...(evidence.length ? evidence : ["None matched reliably."])].join("\n");
+}
+
+function citationLabel(q: SyllabusContext["similar"][number]): string {
+  return `${q.paperTitle}; ${q.examDate ?? q.year ?? "date unknown"}${q.shift ? `, ${q.shift}` : ""}; Q${q.position}`;
 }
 
 const SYSTEM = [
@@ -244,10 +255,12 @@ const SYSTEM = [
   "Rules:",
   "- Answer the learner's question directly and concisely, focused on what the SSC JE exam tests. For numericals, show the formula, units and steps.",
   "- Stay within the SSC JE syllabus topic given below. After answering, add a short part headed \"Also asked in the exam:\" with 2-4 closely related facts, values or distinctions SSC asks on this topic, so the learner can score on similar questions.",
+  "- Evidence rule: every bullet under \"Also asked in the exam:\" must be directly supported by a STORED PAST-PAPER EVIDENCE question and end with its id, for example [E2]. Never say SSC asked something without that evidence. If none supports a useful bullet, say \"No matched past-paper evidence in this library.\" General theory may be explained elsewhere but must not be presented as an exam occurrence.",
   "- The answer key given is from the named source. Do not replace it. If you are confident it is wrong, add one separate line starting \"Possible key error:\" with your reason; never present your own choice as the key.",
   "- If the question is marked incomplete (a table, figure or options missing), say what is missing and do not invent it.",
   "- If you are not sure, say so rather than guess. Do not invent IS-code clause numbers, page numbers, book titles or quotations.",
-  "- Reply in the language the learner writes in (English or Hindi). Plain text only, no Markdown tables. Keep it under about 300 words unless a derivation needs more.",
+  "- Format like clean short notes: use short paragraphs and simple bullet lines. Use **bold** sparingly for the key definition, formula, final contrast, or exam trap. Write math with readable Unicode symbols (such as Δ, ×, ² and ³) and plain formulas. Do not use Markdown tables or LaTeX delimiters.",
+  "- Reply in the language the learner writes in (English or Hindi). Keep it under about 300 words unless a derivation needs more.",
 ].join("\n");
 
 // ---------------------------------------------------------------- money and providers
@@ -275,8 +288,8 @@ export function geminiWorstUsd(model: string, request: Pick<GeminiRequest, "syst
   return ((Math.ceil(promptChars / 3) + imageTokens) * rate.input + outputTokens * rate.output) / 1_000_000 + (request.grounded ? WORST_CASE_SEARCHES * SEARCH_USD : 0);
 }
 
-function reserve(userId: string, model: string, usd: number, capUsd: number): string {
-  const id = SpendRepository.reserve({ userId, model, usd, capUsd, since: new Date(Date.now() - DAY_MS) });
+async function reserve(userId: string, model: string, usd: number, capUsd: number): Promise<string> {
+  const id = await SpendRepository.reserve({ userId, model, usd, capUsd, since: new Date(Date.now() - DAY_MS) });
   if (!id) throw new HttpError(429, `The server's $${capUsd.toFixed(2)} 24-hour AI spending limit is used up. Try again later.`);
   return id;
 }
@@ -353,7 +366,7 @@ async function callGemini(deps: FollowUpDeps, userId: string, request: GeminiReq
   if (!deps.googleKey) throw notSetUp("google");
   const retry = retryWithoutSearch && request.grounded;
   const worst = geminiWorstUsd(request.model, request) + (retry ? geminiWorstUsd(request.model, { ...request, grounded: false }) : 0);
-  const reservation = reserve(userId, request.model, worst, deps.capUsd);
+  const reservation = await reserve(userId, request.model, worst, deps.capUsd);
   let usageKnown = true;
   let billed = 0;
   try {
@@ -368,12 +381,12 @@ async function callGemini(deps: FollowUpDeps, userId: string, request: GeminiReq
     billed += geminiCostUsd(request.model, result.usage);
     usageKnown = result.usageKnown;
     // A reply without usage figures keeps the worst case: what it billed is unknown.
-    if (usageKnown) SpendRepository.settle(reservation, billed);
+    if (usageKnown) await SpendRepository.settle(reservation, billed);
     return result;
   } catch (err) {
     if (err instanceof GeminiError) {
       // Unknown billing (timeout, unreadable reply) keeps the worst case reserved.
-      if (!err.billingUnknown) SpendRepository.settle(reservation, billed + (err.usage ? geminiCostUsd(request.model, err.usage) : 0));
+      if (!err.billingUnknown) await SpendRepository.settle(reservation, billed + (err.usage ? geminiCostUsd(request.model, err.usage) : 0));
       if (err.keyRejected) {
         throw new HttpError(503, "Google rejected the API key (it may be invalid, deleted, or not a Gemini API key). Create one at aistudio.google.com/app/apikey, put it in .env.local as GOOGLE_GENERATIVE_AI_API_KEY and restart the app.");
       }
@@ -390,14 +403,14 @@ async function callDeepSeek(deps: FollowUpDeps, userId: string, system: string, 
   const request = { model: deps.deepseekModel, system, user, thinking: true, maxTokens: MAX_OUTPUT_TOKENS };
   const peak = new Date(Date.UTC(2026, 0, 5, 7));
   const worst: LlmUsage = { promptCacheHitTokens: 0, promptCacheMissTokens: Math.ceil((system.length + user.length) / 3), completionTokens: MAX_OUTPUT_TOKENS, reasoningTokens: 0 };
-  const reservation = reserve(userId, request.model, DEEPSEEK_MAX_ATTEMPTS * costUsd(request.model, worst, peak, true), deps.capUsd);
+  const reservation = await reserve(userId, request.model, DEEPSEEK_MAX_ATTEMPTS * costUsd(request.model, worst, peak, true), deps.capUsd);
   try {
     const result = await deps.deepseek.completeJson(request);
-    SpendRepository.settle(reservation, costUsd(request.model, result.usage));
+    await SpendRepository.settle(reservation, costUsd(request.model, result.usage));
     return { json: result.json, model: result.model };
   } catch (err) {
     if (err instanceof LlmError) {
-      SpendRepository.settle(reservation, err.usage ? costUsd(request.model, err.usage) : 0);
+      await SpendRepository.settle(reservation, err.usage ? costUsd(request.model, err.usage) : 0);
       throw new HttpError(err.fatal ? 503 : 502, `DeepSeek could not answer: ${err.message}`);
     }
     throw err;
@@ -483,6 +496,7 @@ const VERIFY_SYSTEM = [
   "You check a tutor's answer to a learner's follow-up question for India's SSC JE Civil Engineering exam. Output JSON only.",
   'Return exactly: {"verdict": "consistent" | "issues" | "cannot_verify", "issues": [{"claim": "<the tutor\'s statement, quoted briefly>", "problem": "<what is wrong>", "correction": "<the correct statement, or null>"}], "keyConcern": true | false}',
   "Check: (1) Does the answer contradict the given answer key or source explanation? (2) Factual, numerical, unit or formula errors. (3) Invented standards, IS-code clause numbers, values or sources. List only real problems, at most 5; do not nitpick wording or style.",
+  "For every claim under 'Also asked in the exam', require an [E#] citation and verify that the cited stored question actually tests that claim. Missing, mismatched or invented exam citations are issues. General theory must not be described as asked by SSC without evidence.",
   'verdict "consistent" means you found no problems. Use "cannot_verify" only when the answer depends on something you cannot see or check (for example an image). Set keyConcern to true only if you are confident the source answer key itself is wrong.',
 ].join("\n");
 
@@ -507,7 +521,7 @@ function parseCheck(json: unknown): Omit<AnswerCheck, "status" | "checkedBy"> {
 }
 
 /** Starts the second AI's check of an answer in the background; returns its id, or null when no second model is set up. */
-function startCheck(deps: FollowUpDeps, userId: string, facts: Facts, question: string, answer: string, answeredBy: ProviderName): string | null {
+function startCheck(deps: FollowUpDeps, userId: string, facts: Facts, ctx: SyllabusContext, question: string, answer: string, answeredBy: ProviderName): string | null {
   const now = Date.now();
   for (const [id, c] of checks) if (now - c.createdAt > CHECK_TTL_MS) checks.delete(id);
   if (!checkers(deps, answeredBy).length) return null;
@@ -518,7 +532,7 @@ function startCheck(deps: FollowUpDeps, userId: string, facts: Facts, question: 
       const checked = await runCheck(deps, answeredBy, userId, VERIFY_SYSTEM, async (checker) => {
         const images = checker.provider === "google" ? await loadImages(deps, facts) : null;
         const attached = images !== null && images.length > 0;
-        return { user: `${factsBlock(facts, attached)}\n\nLEARNER'S QUESTION: ${question}\n\nTUTOR'S ANSWER TO CHECK:\n${answer}`, images: attached ? images! : [] };
+        return { user: `${factsBlock(facts, attached)}\n\n${syllabusBlock(ctx)}\n\nLEARNER'S QUESTION: ${question}\n\nTUTOR'S ANSWER TO CHECK:\n${answer}`, images: attached ? images! : [] };
       });
       entry.result = { status: "done", ...parseCheck(checked.json), checkedBy: checked.model, independence: checked.independence };
     } catch (err) {
@@ -548,8 +562,8 @@ const PACK_SYSTEM = [
   "You prepare study material for India's SSC JE Civil Engineering exam (2026 syllabus). Output JSON only.",
   "You get: a question the learner has answered (with its source key), the SSC JE syllabus topics it most likely belongs to (with how often SSC asked each in previous years), and similar previous-year SSC questions.",
   "Return exactly this JSON shape:",
-  '{"topicId": "<one id copied from the TOPICS list, or null if none fits>", "scope": "<2-3 sentences: what this topic covers in the SSC JE syllabus and what kinds of questions SSC asks on it>", "examPoints": ["<3-6 short, exam-relevant facts, values, formulas or distinctions for this topic that are often asked>"], "practice": [{"question": "...", "options": ["...", "...", "...", "..."], "answer": "A|B|C|D", "explanation": "<why the answer is right and the others wrong, briefly>"}]}',
-  "Rules: exactly 3 practice questions, each with exactly 4 options and one correct answer, in SSC JE style and on the same topic but not copies of the given questions. Only facts you are sure of; standard values and textbook results only; no invented IS-code clause numbers. If the question is marked incomplete, do not invent the missing part.",
+  '{"topicId": "<one id copied from the TOPICS list, or null if none fits>", "scope": "<2-3 sentences: what this topic covers; only describe what SSC asks when supported by E# evidence>", "examPoints": ["<short fact or formula ending with [E1] when directly tested there; otherwise ending with [GENERAL THEORY]>"], "practice": [{"question": "...", "options": ["...", "...", "...", "..."], "answer": "A|B|C|D", "explanation": "<why the answer is right and the others wrong, briefly>"}]}',
+  "Rules: exactly 3 practice questions, each with exactly 4 options and one correct answer, in SSC JE style and on the same topic but not copies of the given questions. Never claim SSC asked a fact unless an E# question directly supports it. Use [GENERAL THEORY] for uncited learning facts. Only facts you are sure of; standard values and textbook results only; no invented IS-code clause numbers. If the question is marked incomplete, do not invent the missing part.",
 ].join("\n");
 
 const CHECK_SYSTEM = [
@@ -561,7 +575,9 @@ function packPrompt(f: Facts, ctx: SyllabusContext, imagesAttached: boolean): st
   const topics = ctx.candidates.length
     ? ctx.candidates.map((c: TopicCandidate) => `- id: ${c.nodeId}\n  path: ${c.path}\n  official wording: ${c.officialText || "(none)"}\n  SSC asked: ${c.pypCount} question(s)${yearsText(c.years)}`).join("\n")
     : "(no topics found)";
-  const similar = ctx.similar.filter((s) => s.stem.trim()).slice(0, 4).map((s) => `- (${s.year ?? "year unknown"}) ${s.stem.replace(/\s+/g, " ").slice(0, 260)}`).join("\n");
+  const similar = ctx.similar.filter((s) => s.stem.trim()).slice(0, 5).map((s, i) =>
+    `- E${i + 1}: ${citationLabel(s)}\n  Question: ${s.stem.replace(/\s+/g, " ").slice(0, 300)}${s.sourceUrl ? `\n  Source: ${s.sourceUrl}` : ""}`
+  ).join("\n");
   return `${factsBlock(f, imagesAttached)}\n\nTOPICS\n${topics}\n\nSIMILAR PREVIOUS-YEAR SSC QUESTIONS\n${similar || "(none found)"}`;
 }
 
@@ -592,19 +608,21 @@ function parsePack(json: unknown, ctx: SyllabusContext): { topicId: string | nul
   return { topicId, scope, examPoints, practice };
 }
 
-function cachedPack(f: Facts): StudyPack | null {
-  const row = getDatabase()
+async function cachedPack(f: Facts): Promise<StudyPack | null> {
+  const row = await getDatabase()
     .prepare("SELECT pack FROM ai_study_packs WHERE kind = ? AND question_id = ? AND content_fp = ?")
-    .get(f.kind, f.id, f.contentFp) as { pack: string } | undefined;
+    .get<{ pack: string }>(f.kind, f.id, f.contentFp);
   if (!row) return null;
   try {
-    return JSON.parse(row.pack) as StudyPack;
+    const pack = JSON.parse(row.pack) as StudyPack;
+    // Packs created before evidence-backed citations are intentionally regenerated.
+    return Array.isArray(pack.evidence) ? pack : null;
   } catch {
     return null;
   }
 }
 
-function contextFor(f: Facts): SyllabusContext {
+async function contextFor(f: Facts): Promise<SyllabusContext> {
   const text = `${f.question} ${f.options.map((o) => o.text).join(" ")} ${f.explanation ?? ""}`;
   return syllabusContext(text, f.ownQuestionId, f.subjectHint);
 }
@@ -645,6 +663,13 @@ async function generatePack(deps: FollowUpDeps, userId: string, f: Facts, ctx: S
     similarPastQuestions: { count: ctx.similar.length, years },
     scope: parsed.scope,
     examPoints: parsed.examPoints,
+    evidence: ctx.similar.slice(0, 5).map((q, i) => ({
+      id: `E${i + 1}`,
+      label: citationLabel(q),
+      questionId: q.questionId,
+      stem: q.stem,
+      sourceUrl: q.sourceUrl,
+    })),
     practice,
     generatedBy: made.model,
     checkedBy,
@@ -652,8 +677,11 @@ async function generatePack(deps: FollowUpDeps, userId: string, f: Facts, ctx: S
   };
   // A pack with no usable practice questions is shown but not kept, so the next request tries again.
   if (practice.length) {
-    getDatabase()
-      .prepare("INSERT OR REPLACE INTO ai_study_packs (kind, question_id, content_fp, pack, model, checker, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)")
+    await getDatabase()
+      .prepare(`INSERT INTO ai_study_packs (kind, question_id, content_fp, pack, model, checker, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(kind, question_id) DO UPDATE SET content_fp = excluded.content_fp, pack = excluded.pack,
+          model = excluded.model, checker = excluded.checker, created_at = excluded.created_at`)
       .run(f.kind, f.id, f.contentFp, JSON.stringify(pack), made.model, checkedBy, pack.createdAt);
   }
   return pack;
@@ -679,7 +707,7 @@ function startPack(deps: FollowUpDeps, userId: string, f: Facts, ctx?: SyllabusC
   const running = inFlight.get(k);
   if (running) return running;
   recentFailures.delete(k);
-  const job = generatePack(deps, userId, f, ctx ?? contextFor(f))
+  const job = (async () => generatePack(deps, userId, f, ctx ?? (await contextFor(f))))()
     .catch((err: unknown) => {
       recentFailures.set(k, { message: publicMessage(err), at: Date.now() });
       if (!(err instanceof HttpError)) console.error("[study pack]", err);
@@ -714,8 +742,8 @@ export async function studyPack(
   deps: FollowUpDeps = followUpDeps(),
   options: { wait?: boolean } = {}
 ): Promise<StudyPackStatus> {
-  const f = factsFor(userId, input.kind, input.id);
-  const cached = cachedPack(f);
+  const f = await factsFor(userId, input.kind, input.id);
+  const cached = await cachedPack(f);
   if (cached) return { pack: cached, pending: false, error: null };
   const k = packKey(f);
   if (!inFlight.has(k) && input.generate === true) {
@@ -780,9 +808,15 @@ export async function askFollowUp(
   if (history.length % 2 !== 0 || history.some((t, i) => t.role !== (i % 2 === 0 ? "user" : "model"))) {
     throw new HttpError(400, "History must alternate learner and AI turns, starting with the learner.");
   }
-  const facts = factsFor(userId, input.kind, input.id);
+  const facts = await factsFor(userId, input.kind, input.id);
   if (!available(deps, deps.provider)) throw notSetUp(deps.provider);
-  const ctx = contextFor(facts);
+  const ctx = await contextFor(facts);
+  const savedNotes = await getDatabase().prepare(
+    "SELECT title, body FROM revision_notes WHERE user_id = ? AND source_kind = ? AND source_id = ? ORDER BY updated_at DESC LIMIT 3"
+  ).all<{ title: string; body: string }>(userId, facts.kind, facts.id);
+  const savedNotesBlock = savedNotes.length
+    ? `\n\nLEARNER-SAVED REVISION NOTES (prior AI answers the learner chose to keep; use as context, but re-check them and do not treat them as authoritative):\n${savedNotes.map((n) => `- ${n.title}: ${n.body}`).join("\n")}`
+    : "";
 
   // The source facts and syllabus ride on the first learner turn; the model never gets them from the browser.
   // Gemini also gets the question's source images (Made Easy tables and figures); DeepSeek is told it can't see them.
@@ -791,16 +825,16 @@ export async function askFollowUp(
   const asked = [...history, { role: "user" as const, text: input.message.trim() }];
   const turns: GeminiTurn[] = asked.map((t, i) =>
     i === 0
-      ? { role: "user", text: `${factsBlock(facts, attached)}\n\n${syllabusBlock(ctx)}\n\nLEARNER'S QUESTION: ${t.text}`, images: attached ? images! : undefined }
+      ? { role: "user", text: `${factsBlock(facts, attached)}\n\n${syllabusBlock(ctx)}${savedNotesBlock}\n\nLEARNER'S QUESTION: ${t.text}`, images: attached ? images! : undefined }
       : t
   );
 
   // The study pack is made in the background the first time; the answer never waits for it.
-  const existing = cachedPack(facts);
+  const existing = await cachedPack(facts);
   if (!existing) startPack(deps, userId, facts, ctx);
   const answer = await answerWith(deps, userId, turns);
   // A second AI checks the answer in the background; the learner sees the answer at once.
-  const checkId = startCheck(deps, userId, facts, input.message.trim(), answer.answer, answer.provider);
+  const checkId = startCheck(deps, userId, facts, ctx, input.message.trim(), answer.answer, answer.provider);
   return {
     ...answer,
     pack: existing,

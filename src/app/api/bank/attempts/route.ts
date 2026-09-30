@@ -4,8 +4,8 @@ import { handle, jsonOk, readJsonBody, requireUser } from "@/lib/server/bank/htt
 /** POST /api/bank/attempts { paperId, mode, section? } → { attempt: BankAttempt } */
 export async function POST(req: Request) {
   return handle(async () => {
-    const user = requireUser(req);
+    const user = await requireUser(req);
     const body = await readJsonBody(req, 16 * 1024);
-    return jsonOk({ attempt: startAttempt(user.id, body) }, 201);
+    return jsonOk({ attempt: await startAttempt(user.id, body) }, 201);
   });
 }

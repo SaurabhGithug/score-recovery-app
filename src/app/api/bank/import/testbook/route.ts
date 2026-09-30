@@ -9,8 +9,8 @@ const MAX_IMPORT_BYTES = 25 * 1024 * 1024;
  */
 export async function POST(req: Request) {
   return handle(async () => {
-    const user = requireUser(req);
+    const user = await requireUser(req);
     const body = await readJsonBody(req, MAX_IMPORT_BYTES);
-    return jsonOk(importTestbook(body, user.id));
+    return jsonOk(await importTestbook(body, user.id));
   });
 }

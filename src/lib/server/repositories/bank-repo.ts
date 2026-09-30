@@ -308,22 +308,13 @@ export interface GlobalEvidenceUpsert {
 
 export class BankRepository {
   // ------------------------------------------------------------------ transactions
-  public static transaction<T>(fn: () => T): T {
-    const db = getDatabase();
-    db.exec("BEGIN IMMEDIATE");
-    try {
-      const out = fn();
-      db.exec("COMMIT");
-      return out;
-    } catch (err) {
-      db.exec("ROLLBACK");
-      throw err;
-    }
+  public static transaction<T>(fn: () => Promise<T>): Promise<T> {
+    return getDatabase().transaction(fn);
   }
 
   // ------------------------------------------------------------------ papers
   /** Papers visible to `userId`: shared ones plus that learner's own private imports. */
-  public static listPapers(userId: string, filter: { kind?: BankPaperKind; paper?: BankPaperCode } = {}): BankPaperRecord[] {
+  public static async listPapers(userId: string, filter: { kind?: BankPaperKind; paper?: BankPaperCode } = {}): Promise<BankPaperRecord[]> {
     const where: string[] = ["exam = 'SSC_JE'", "branch = 'CIVIL'", "(owner_user_id = '' OR owner_user_id = ?)"];
     const args: string[] = [userId];
     if (filter.kind) {
@@ -334,27 +325,27 @@ export class BankRepository {
       where.push("paper = ?");
       args.push(filter.paper);
     }
-    const rows = getDatabase()
+    const rows = await getDatabase()
       .prepare(`SELECT * FROM bank_papers WHERE ${where.join(" AND ")} ORDER BY kind, paper, exam_date DESC, shift, title`)
-      .all(...args) as Row[];
+      .all<Row>(...args);
     return rows.map(toPaper);
   }
 
   /** Unchecked lookup, for importers and internal jobs. Learner-facing code uses getPaperFor. */
-  public static getPaper(id: string): BankPaperRecord | null {
-    const row = getDatabase().prepare("SELECT * FROM bank_papers WHERE id = ?").get(id) as Row | undefined;
+  public static async getPaper(id: string): Promise<BankPaperRecord | null> {
+    const row = await getDatabase().prepare("SELECT * FROM bank_papers WHERE id = ?").get<Row>(id);
     return row ? toPaper(row) : null;
   }
 
   /** The paper if `userId` may see it, else null (callers answer 404: never confirm it exists). */
-  public static getPaperFor(id: string, userId: string): BankPaperRecord | null {
-    const paper = BankRepository.getPaper(id);
+  public static async getPaperFor(id: string, userId: string): Promise<BankPaperRecord | null> {
+    const paper = await BankRepository.getPaper(id);
     return paper && paperVisibleTo(paper, userId) ? paper : null;
   }
 
-  public static upsertPaper(p: PaperUpsert): void {
+  public static async upsertPaper(p: PaperUpsert): Promise<void> {
     const now = new Date().toISOString();
-    getDatabase()
+    await getDatabase()
       .prepare(
         `INSERT INTO bank_papers (id, kind, exam, branch, paper, cycle_year, exam_date, shift, title, question_count,
            duration_minutes, fidelity, publisher, source_url, source_file, source_sha256, captured_on, rights_note,
@@ -394,35 +385,35 @@ export class BankRepository {
   }
 
   // ------------------------------------------------------------------ questions
-  public static listQuestions(paperId: string): BankQuestionRecord[] {
-    const rows = getDatabase()
+  public static async listQuestions(paperId: string): Promise<BankQuestionRecord[]> {
+    const rows = await getDatabase()
       .prepare("SELECT * FROM bank_questions WHERE paper_id = ? ORDER BY position")
-      .all(paperId) as Row[];
+      .all<Row>(paperId);
     return rows.map(toQuestion);
   }
 
-  public static listQuestionsForPapers(paperIds: string[]): BankQuestionRecord[] {
+  public static async listQuestionsForPapers(paperIds: string[]): Promise<BankQuestionRecord[]> {
     if (!paperIds.length) return [];
-    const rows = getDatabase()
+    const rows = await getDatabase()
       .prepare(`SELECT * FROM bank_questions WHERE paper_id IN (${placeholders(paperIds.length)}) ORDER BY paper_id, position`)
-      .all(...paperIds) as Row[];
+      .all<Row>(...paperIds);
     return rows.map(toQuestion);
   }
 
   /** Unchecked lookup, for importers and internal jobs. Learner-facing code uses getQuestionFor. */
-  public static getQuestion(id: string): BankQuestionRecord | null {
-    const row = getDatabase().prepare("SELECT * FROM bank_questions WHERE id = ?").get(id) as Row | undefined;
+  public static async getQuestion(id: string): Promise<BankQuestionRecord | null> {
+    const row = await getDatabase().prepare("SELECT * FROM bank_questions WHERE id = ?").get<Row>(id);
     return row ? toQuestion(row) : null;
   }
 
   /** The question if `userId` may see its paper, else null. */
-  public static getQuestionFor(id: string, userId: string): BankQuestionRecord | null {
-    const question = BankRepository.getQuestion(id);
-    return question && BankRepository.getPaperFor(question.paperId, userId) ? question : null;
+  public static async getQuestionFor(id: string, userId: string): Promise<BankQuestionRecord | null> {
+    const question = await BankRepository.getQuestion(id);
+    return question && await BankRepository.getPaperFor(question.paperId, userId) ? question : null;
   }
 
-  public static findQuestionsByVisualPath(visualPath: string): BankQuestionRecord[] {
-    const rows = getDatabase().prepare("SELECT * FROM bank_questions WHERE visual_path = ?").all(visualPath) as Row[];
+  public static async findQuestionsByVisualPath(visualPath: string): Promise<BankQuestionRecord[]> {
+    const rows = await getDatabase().prepare("SELECT * FROM bank_questions WHERE visual_path = ?").all<Row>(visualPath);
     return rows.map(toQuestion);
   }
 
@@ -430,12 +421,12 @@ export class BankRepository {
    * Moves every question of a paper to a negative position so a re-import can reorder
    * positions without tripping UNIQUE(paper_id, position). Call inside a transaction.
    */
-  public static parkPositions(paperId: string): void {
-    getDatabase().prepare("UPDATE bank_questions SET position = -1000000 - position WHERE paper_id = ?").run(paperId);
+  public static async parkPositions(paperId: string): Promise<void> {
+    await getDatabase().prepare("UPDATE bank_questions SET position = -1000000 - position WHERE paper_id = ?").run(paperId);
   }
 
-  public static upsertQuestion(q: QuestionUpsert): void {
-    getDatabase()
+  public static async upsertQuestion(q: QuestionUpsert): Promise<void> {
+    await getDatabase()
       .prepare(
         `INSERT INTO bank_questions (id, paper_id, position, section, stem, options, has_visual, visual_path, source_page,
            source_solution, topic, topic_evidence, metadata, created_at)
@@ -464,29 +455,29 @@ export class BankRepository {
   }
 
   /** Deletes questions of `paperId` whose id is not in `keep` (cascades their evidence). Returns the count. */
-  public static deleteQuestionsNotIn(paperId: string, keep: string[]): number {
+  public static async deleteQuestionsNotIn(paperId: string, keep: string[]): Promise<number> {
     const db = getDatabase();
-    const existing = db.prepare("SELECT id FROM bank_questions WHERE paper_id = ?").all(paperId) as Row[];
+    const existing = await db.prepare("SELECT id FROM bank_questions WHERE paper_id = ?").all<Row>(paperId);
     const keepSet = new Set(keep);
     const stale = existing.map((row) => String(row.id)).filter((id) => !keepSet.has(id));
     const del = db.prepare("DELETE FROM bank_questions WHERE id = ?");
-    for (const id of stale) del.run(id);
+    for (const id of stale) await del.run(id);
     return stale.length;
   }
 
   // ------------------------------------------------------------------ evidence
   /** Global evidence plus `userId`'s own rows for every question of the given papers, grouped by question. */
-  public static loadEvidenceForPapers(paperIds: string[], userId: string): Map<string, BankEvidenceRecord[]> {
+  public static async loadEvidenceForPapers(paperIds: string[], userId: string): Promise<Map<string, BankEvidenceRecord[]>> {
     const out = new Map<string, BankEvidenceRecord[]>();
     if (!paperIds.length) return out;
-    const rows = getDatabase()
+    const rows = await getDatabase()
       .prepare(
         `SELECT e.* FROM bank_answer_evidence e
          JOIN bank_questions q ON q.id = e.question_id
          WHERE q.paper_id IN (${placeholders(paperIds.length)}) AND (e.user_id = '' OR e.user_id = ?)
          ORDER BY e.observed_at, e.id`
       )
-      .all(...paperIds, userId) as Row[];
+      .all<Row>(...paperIds, userId);
     for (const row of rows) {
       const ev = toEvidence(row);
       const list = out.get(ev.questionId);
@@ -496,35 +487,35 @@ export class BankRepository {
     return out;
   }
 
-  public static loadEvidenceForQuestion(questionId: string, userId: string): BankEvidenceRecord[] {
-    const rows = getDatabase()
+  public static async loadEvidenceForQuestion(questionId: string, userId: string): Promise<BankEvidenceRecord[]> {
+    const rows = await getDatabase()
       .prepare(
         `SELECT * FROM bank_answer_evidence WHERE question_id = ? AND (user_id = '' OR user_id = ?)
          ORDER BY observed_at, id`
       )
-      .all(questionId, userId) as Row[];
+      .all<Row>(questionId, userId);
     return rows.map(toEvidence);
   }
 
   /** Global evidence rows of one paper (every learner's view shares these), for importers. */
-  public static listGlobalEvidenceForPaper(paperId: string): BankEvidenceRecord[] {
+  public static async listGlobalEvidenceForPaper(paperId: string): Promise<BankEvidenceRecord[]> {
     return BankRepository.listScopedEvidenceForPaper(paperId, "");
   }
 
   /** Evidence rows of one paper with exactly this scope ('' = global, else one learner's rows). */
-  public static listScopedEvidenceForPaper(paperId: string, scopeUserId: string): BankEvidenceRecord[] {
-    const rows = getDatabase()
+  public static async listScopedEvidenceForPaper(paperId: string, scopeUserId: string): Promise<BankEvidenceRecord[]> {
+    const rows = await getDatabase()
       .prepare(
         `SELECT e.* FROM bank_answer_evidence e JOIN bank_questions q ON q.id = e.question_id
          WHERE q.paper_id = ? AND e.user_id = ?`
       )
-      .all(paperId, scopeUserId) as Row[];
+      .all<Row>(paperId, scopeUserId);
     return rows.map(toEvidence);
   }
 
   /** Insert or update one global (user_id '') evidence row, identified by (question, authority, label). */
-  public static upsertGlobalEvidence(ev: GlobalEvidenceUpsert, observedAt = new Date().toISOString()): void {
-    BankRepository.upsertScopedEvidence(ev, "", observedAt);
+  public static async upsertGlobalEvidence(ev: GlobalEvidenceUpsert, observedAt = new Date().toISOString()): Promise<void> {
+    await BankRepository.upsertScopedEvidence(ev, "", observedAt);
   }
 
   /**
@@ -532,14 +523,14 @@ export class BankRepository {
    * evidence only that learner supplied (e.g. their own Testbook capture), which must never
    * reach another learner's key.
    */
-  public static upsertScopedEvidence(ev: GlobalEvidenceUpsert, scopeUserId: string, observedAt = new Date().toISOString()): void {
-    getDatabase()
+  public static async upsertScopedEvidence(ev: GlobalEvidenceUpsert, scopeUserId: string, observedAt = new Date().toISOString()): Promise<void> {
+    await getDatabase()
       .prepare(
         `INSERT INTO bank_answer_evidence (id, question_id, user_id, authority, source_group, source_label, answer, dropped, detail, observed_at)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(question_id, authority, source_label, user_id) DO UPDATE SET source_group = excluded.source_group,
            answer = excluded.answer, dropped = excluded.dropped, detail = excluded.detail,
-           observed_at = CASE WHEN bank_answer_evidence.answer IS excluded.answer
+           observed_at = CASE WHEN bank_answer_evidence.answer IS NOT DISTINCT FROM excluded.answer
                                AND bank_answer_evidence.dropped = excluded.dropped
                               THEN bank_answer_evidence.observed_at ELSE excluded.observed_at END`
       )
@@ -557,24 +548,24 @@ export class BankRepository {
       );
   }
 
-  public static deleteEvidence(id: string): void {
-    getDatabase().prepare("DELETE FROM bank_answer_evidence WHERE id = ?").run(id);
+  public static async deleteEvidence(id: string): Promise<void> {
+    await getDatabase().prepare("DELETE FROM bank_answer_evidence WHERE id = ?").run(id);
   }
 
   /**
    * Records a learner's own resolution of a disputed question (authority human_review,
    * user_id = that learner). One row per learner per question; a later call replaces it.
    */
-  public static upsertHumanReview(
+  public static async upsertHumanReview(
     question: Pick<BankQuestionRecord, "id" | "stem" | "options">,
     userId: string,
     answer: string | null,
     note: string | null
-  ): void {
+  ): Promise<void> {
     if (!userId) throw new Error("A human review must belong to a learner.");
     const questionId = question.id;
     const now = new Date().toISOString();
-    getDatabase()
+    await getDatabase()
       .prepare(
         `INSERT INTO bank_answer_evidence (id, question_id, user_id, authority, source_group, source_label, answer, dropped, detail, observed_at)
          VALUES (?, ?, ?, 'human_review', ?, 'Your review', ?, ?, ?, ?)
@@ -600,16 +591,16 @@ export class BankRepository {
   }
 
   /** The key `userId` is scored against: global evidence + that learner's own rows only. */
-  public static resolveKeyFor(questionId: string, userId: string): ResolvedKey | null {
-    const question = BankRepository.getQuestion(questionId);
+  public static async resolveKeyFor(questionId: string, userId: string): Promise<ResolvedKey | null> {
+    const question = await BankRepository.getQuestion(questionId);
     if (!question) return null;
-    return BankRepository.resolveFrom(question, BankRepository.loadEvidenceForQuestion(questionId, userId));
+    return BankRepository.resolveFrom(question, await BankRepository.loadEvidenceForQuestion(questionId, userId));
   }
 
   /** Keys for every question of the given papers, for one learner, with one evidence query. */
-  public static resolveKeysForQuestions(questions: BankQuestionRecord[], userId: string): Map<string, ResolvedKey> {
+  public static async resolveKeysForQuestions(questions: BankQuestionRecord[], userId: string): Promise<Map<string, ResolvedKey>> {
     const paperIds = [...new Set(questions.map((q) => q.paperId))];
-    const evidence = BankRepository.loadEvidenceForPapers(paperIds, userId);
+    const evidence = await BankRepository.loadEvidenceForPapers(paperIds, userId);
     const out = new Map<string, ResolvedKey>();
     for (const q of questions) out.set(q.id, BankRepository.resolveFrom(q, evidence.get(q.id)));
     return out;
@@ -617,23 +608,23 @@ export class BankRepository {
 
   // ------------------------------------------------------------------ explanations
   /** The question's teaching note, or null when there is none or it was written for other content. */
-  public static getExplanation(questionId: string): BankExplanationRecord | null {
-    const row = getDatabase()
+  public static async getExplanation(questionId: string): Promise<BankExplanationRecord | null> {
+    const row = await getDatabase()
       .prepare("SELECT x.*, q.stem AS q_stem, q.options AS q_options FROM bank_explanations x JOIN bank_questions q ON q.id = x.question_id WHERE x.question_id = ?")
-      .get(questionId) as Row | undefined;
+      .get<Row>(questionId);
     if (!row) return null;
     const x = toExplanation(row);
     return freshFor(x, { stem: String(row.q_stem ?? ""), options: parseJson<BankOption[]>(row.q_options, []) }) ? x : null;
   }
 
   /** Fresh notes (see getExplanation) of every question of a paper. */
-  public static getExplanationsForPaper(paperId: string): Map<string, BankExplanationRecord> {
-    const rows = getDatabase()
+  public static async getExplanationsForPaper(paperId: string): Promise<Map<string, BankExplanationRecord>> {
+    const rows = await getDatabase()
       .prepare(
         `SELECT x.*, q.stem AS q_stem, q.options AS q_options FROM bank_explanations x
          JOIN bank_questions q ON q.id = x.question_id WHERE q.paper_id = ?`
       )
-      .all(paperId) as Row[];
+      .all<Row>(paperId);
     const out = new Map<string, BankExplanationRecord>();
     for (const row of rows) {
       const x = toExplanation(row);
@@ -642,9 +633,9 @@ export class BankRepository {
     return out;
   }
 
-  public static saveExplanation(x: BankExplanationRecord): void {
+  public static async saveExplanation(x: BankExplanationRecord): Promise<void> {
     if (!x.contentFp) throw new Error("A teaching note must record the content it was written for.");
-    getDatabase()
+    await getDatabase()
       .prepare(
         `INSERT INTO bank_explanations (question_id, locked_answer, note, model, created_at, content_fp) VALUES (?, ?, ?, ?, ?, ?)
          ON CONFLICT(question_id) DO UPDATE SET locked_answer = excluded.locked_answer, note = excluded.note,
@@ -654,7 +645,7 @@ export class BankRepository {
   }
 
   // ------------------------------------------------------------------ attempts
-  public static createAttempt(input: {
+  public static async createAttempt(input: {
     userId: string;
     paperId: string;
     mode: BankAttemptMode;
@@ -662,10 +653,10 @@ export class BankRepository {
     durationSeconds: number | null;
     /** Content fingerprints of the in-scope questions as the learner is about to see them. */
     contentFps: Record<string, string>;
-  }): BankAttemptRecord {
+  }): Promise<BankAttemptRecord> {
     const id = `bat_${crypto.randomUUID().replace(/-/g, "").slice(0, 20)}`;
     const startedAt = new Date().toISOString();
-    getDatabase()
+    await getDatabase()
       .prepare(
         `INSERT INTO bank_attempts (id, user_id, paper_id, mode, section, duration_seconds, started_at, responses, checked, content_fps)
          VALUES (?, ?, ?, ?, ?, ?, ?, '{}', '{}', ?)`
@@ -688,16 +679,16 @@ export class BankRepository {
   }
 
   /** The attempt, only when it belongs to `userId` (callers answer 404 otherwise). */
-  public static getAttemptForUser(id: string, userId: string): BankAttemptRecord | null {
-    const row = getDatabase()
+  public static async getAttemptForUser(id: string, userId: string): Promise<BankAttemptRecord | null> {
+    const row = await getDatabase()
       .prepare("SELECT * FROM bank_attempts WHERE id = ? AND user_id = ?")
-      .get(id, userId) as Row | undefined;
+      .get<Row>(id, userId);
     return row ? toAttempt(row) : null;
   }
 
-  public static listAttemptsForUser(userId: string, paperIds?: string[]): BankAttemptRecord[] {
+  public static async listAttemptsForUser(userId: string, paperIds?: string[]): Promise<BankAttemptRecord[]> {
     const db = getDatabase();
-    const rows = (
+    const rows = await (
       paperIds
         ? paperIds.length
           ? db
@@ -716,12 +707,12 @@ export class BankRepository {
    * Of `questionIds`, those the learner has met in the adaptive-learning loop (learning_events,
    * owned by src/lib/server/learning), where checking an item shows its key. Read-only.
    */
-  public static questionsSeenInLearning(userId: string, questionIds: string[]): string[] {
+  public static async questionsSeenInLearning(userId: string, questionIds: string[]): Promise<string[]> {
     if (!questionIds.length) return [];
     try {
-      const rows = getDatabase()
+      const rows = await getDatabase()
         .prepare(`SELECT DISTINCT question_id FROM learning_events WHERE user_id = ? AND question_id IN (${placeholders(questionIds.length)})`)
-        .all(userId, ...questionIds) as Row[];
+        .all<Row>(userId, ...questionIds);
       return rows.map((r) => String(r.question_id));
     } catch {
       return []; // learning tables not migrated in this database
@@ -729,23 +720,23 @@ export class BankRepository {
   }
 
   /** Saves responses of an unsubmitted attempt. Returns false when it was already submitted. */
-  public static saveResponses(id: string, userId: string, responses: BankResponses): boolean {
-    const r = getDatabase()
+  public static async saveResponses(id: string, userId: string, responses: BankResponses): Promise<boolean> {
+    const r = await getDatabase()
       .prepare("UPDATE bank_attempts SET responses = ? WHERE id = ? AND user_id = ? AND submitted_at IS NULL")
       .run(JSON.stringify(responses), id, userId);
     return Number(r.changes) === 1;
   }
 
-  public static saveChecked(id: string, userId: string, responses: BankResponses, checked: Record<string, string | null>): boolean {
-    const r = getDatabase()
+  public static async saveChecked(id: string, userId: string, responses: BankResponses, checked: Record<string, string | null>): Promise<boolean> {
+    const r = await getDatabase()
       .prepare("UPDATE bank_attempts SET responses = ?, checked = ? WHERE id = ? AND user_id = ? AND submitted_at IS NULL")
       .run(JSON.stringify(responses), JSON.stringify(checked), id, userId);
     return Number(r.changes) === 1;
   }
 
   /** Marks the attempt submitted with its result. Returns false if it was already submitted (no overwrite). */
-  public static submitAttempt(id: string, userId: string, responses: BankResponses, stored: StoredAttemptResult): boolean {
-    const r = getDatabase()
+  public static async submitAttempt(id: string, userId: string, responses: BankResponses, stored: StoredAttemptResult): Promise<boolean> {
+    const r = await getDatabase()
       .prepare(
         `UPDATE bank_attempts SET responses = ?, result = ?, submitted_at = ?
          WHERE id = ? AND user_id = ? AND submitted_at IS NULL`

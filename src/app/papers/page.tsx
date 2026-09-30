@@ -91,6 +91,10 @@ function TestsPage() {
   }, [filtered, kind]);
 
   async function start(paperId: string, mode: "full" | "practice") {
+    if (mode === "full") {
+      router.push(`/papers/${paperId}/instructions?mode=full`);
+      return;
+    }
     setBusyId(paperId);
     setActionError("");
     try {
@@ -121,15 +125,7 @@ function TestsPage() {
   }
 
   async function startSection(paperId: string, section: string) {
-    setBusyId(paperId);
-    setActionError("");
-    try {
-      const { attempt } = await createAttempt({ paperId, mode: "section", section });
-      router.push(`/papers/${paperId}/attempt/${attempt.id}`);
-    } catch (err) {
-      setActionError(err instanceof BankApiRequestError ? err.message : "Could not start this attempt.");
-      setBusyId(null);
-    }
+    router.push(`/papers/${paperId}/instructions?mode=section&section=${encodeURIComponent(section)}`);
   }
 
   if (!userLoading && !currentUser) {

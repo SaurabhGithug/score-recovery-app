@@ -11,7 +11,7 @@ import { handle, HttpError, jsonOk, readJsonBody, requireUser, validId } from "@
  */
 export async function POST(req: Request, props: { params: Promise<{ id: string }> }) {
   return handle(async () => {
-    const user = requireUser(req);
+    const user = await requireUser(req);
     const { id } = await props.params;
     let limit: number | undefined;
     if (req.headers.get("content-length") !== "0" && req.body) {
@@ -27,13 +27,13 @@ export async function POST(req: Request, props: { params: Promise<{ id: string }
         limit = raw;
       }
     }
-    return jsonOk({ job: ExplainQueue.start(id, user.id, { limit }) }, 202);
+    return jsonOk({ job: await ExplainQueue.start(id, user.id, { limit }) }, 202);
   });
 }
 
 export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
   return handle(async () => {
-    requireUser(req);
+    await requireUser(req);
     const { id } = await props.params;
     if (!validId(id)) throw new HttpError(404, "Paper not found.");
     const job = ExplainQueue.get(id, new URL(req.url).searchParams.get("job"));

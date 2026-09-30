@@ -21,7 +21,7 @@ export function normalizeName(name: string): string {
 }
 
 export class UserRepository {
-  public static register(rawName: string, password: string): { user: UserRecord; claimedLegacyProfile: boolean } {
+  public static async register(rawName: string, password: string): Promise<{ user: UserRecord; claimedLegacyProfile: boolean }> {
     const trimmed = rawName.trim();
     if (trimmed.length < 2 || trimmed.length > 60) {
       throw new Error("Name must be between 2 and 60 characters.");
@@ -29,9 +29,9 @@ export class UserRepository {
     const normalized = normalizeName(trimmed);
     const db = getDatabase();
 
-    const existing = db.prepare(
+    const existing = await db.prepare(
       `SELECT ${PUBLIC_USER_COLUMNS}, password_hash FROM users WHERE normalized_name = ? LIMIT 1`
-    ).get(normalized) as unknown as UserWithPassword | undefined;
+    ).get<UserWithPassword>(normalized);
 
     if (existing) {
       if (existing.password_hash) {
@@ -42,7 +42,7 @@ export class UserRepository {
 
     const id = `usr_${crypto.randomUUID().replace(/-/g, "").slice(0, 16)}`;
     const now = new Date().toISOString();
-    db.prepare(`
+    await db.prepare(`
       INSERT INTO users (id, name, normalized_name, password_hash, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?)
     `).run(id, trimmed, normalized, hashPassword(password), now, now);
@@ -53,11 +53,11 @@ export class UserRepository {
     };
   }
 
-  public static authenticate(rawName: string, password: string): UserRecord | null {
+  public static async authenticate(rawName: string, password: string): Promise<UserRecord | null> {
     const normalized = normalizeName(rawName);
-    const existing = getDatabase().prepare(
+    const existing = await getDatabase().prepare(
       `SELECT ${PUBLIC_USER_COLUMNS}, password_hash FROM users WHERE normalized_name = ? LIMIT 1`
-    ).get(normalized) as unknown as UserWithPassword | undefined;
+    ).get<UserWithPassword>(normalized);
     if (!existing?.password_hash || !verifyPassword(password, existing.password_hash)) return null;
     return {
       id: existing.id,
@@ -68,16 +68,16 @@ export class UserRepository {
     };
   }
 
-  public static findById(id: string): UserRecord | null {
+  public static async findById(id: string): Promise<UserRecord | null> {
     const db = getDatabase();
     const stmt = db.prepare(`SELECT ${PUBLIC_USER_COLUMNS} FROM users WHERE id = ?`);
-    const user = stmt.get(id) as unknown as UserRecord | undefined;
+    const user = await stmt.get<UserRecord>(id);
     return user ?? null;
   }
 
-  public static listAll(): UserRecord[] {
+  public static async listAll(): Promise<UserRecord[]> {
     const db = getDatabase();
     const stmt = db.prepare(`SELECT ${PUBLIC_USER_COLUMNS} FROM users ORDER BY updated_at DESC`);
-    return stmt.all() as unknown as UserRecord[];
+    return stmt.all<UserRecord>();
   }
 }

@@ -16,8 +16,8 @@ export function jsonOk(body: unknown, status = 200): Response {
   return Response.json(body, { status, headers: { "Cache-Control": "private, no-store" } });
 }
 
-export function requireUser(req: Request): UserRecord {
-  const user = getCurrentUser(req);
+export async function requireUser(req: Request): Promise<UserRecord> {
+  const user = await getCurrentUser(req);
   if (!user) throw new HttpError(401, "Sign in to use the question bank.");
   return user;
 }

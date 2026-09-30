@@ -7,10 +7,13 @@
     "dev:lan": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start -H 127.0.0.1",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:migrate:supabase": "node scripts/migrate-sqlite-to-postgres.mjs",
+    "storage:upload:supabase": "node scripts/upload-question-assets.mjs"
   },
   "dependencies": {
     "next": "16.3.4",
+    "postgres": "^3.4.9",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },

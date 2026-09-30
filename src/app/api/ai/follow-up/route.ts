@@ -18,7 +18,7 @@ function sameHost(origin: string, host: string): boolean {
 
 export async function POST(req: Request) {
   return handle(async () => {
-    const user = requireUser(req);
+    const user = await requireUser(req);
     // Same-site only. Compared by host: behind an HTTPS tunnel req.url can say http while Origin says https.
     const origin = req.headers.get("origin");
     const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");

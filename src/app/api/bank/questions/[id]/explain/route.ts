@@ -12,7 +12,7 @@ import { handle, jsonOk, requireUser } from "@/lib/server/bank/http";
  */
 export async function POST(req: Request, props: { params: Promise<{ id: string }> }) {
   return handle(async () => {
-    const user = requireUser(req);
+    const user = await requireUser(req);
     const { id } = await props.params;
     return jsonOk(await explainForLearner(id, user.id));
   });

@@ -81,8 +81,8 @@ const CHECK_BATCH_SIZE = 5;
 const CHARS_PER_BOOK_PAGE = 2500;
 const MAX_REJECTED_SAMPLES = 8;
 
-export function loadSourcePages(documentId: string, pageFrom: number, pageTo: number): SourcePage[] {
-  return DocumentRepository.getPages(documentId)
+export async function loadSourcePages(documentId: string, pageFrom: number, pageTo: number): Promise<SourcePage[]> {
+  return (await DocumentRepository.getPages(documentId))
     .filter((p) => p.page_number >= pageFrom && p.page_number <= pageTo)
     .map((p) => ({
       pageNumber: p.page_number,
@@ -136,7 +136,7 @@ export function createSummary(
 }
 
 export async function runGeneration(req: GenerationRequest, deps: GenerationDeps): Promise<GenerationSummary> {
-  const chunks = chunkPages(loadSourcePages(req.documentId, req.pageFrom, req.pageTo));
+  const chunks = chunkPages(await loadSourcePages(req.documentId, req.pageFrom, req.pageTo));
 
   const summary = createSummary(req, deps, chunks.length);
   const publish = () => deps.onUpdate?.({ ...summary });
@@ -150,7 +150,7 @@ export async function runGeneration(req: GenerationRequest, deps: GenerationDeps
   }
   publish();
 
-  const existing = QuestionRepository.listByDocumentId(req.documentId, req.userId);
+  const existing = await QuestionRepository.listByDocumentId(req.documentId, req.userId);
   const seenStems = new Set(existing.map((q) => normalizeForMatch(q.question_text)));
   let nextNumber = existing.reduce((max, q) => Math.max(max, q.question_number ?? 0), 0) + 1;
   // Held in an object so closures and the final status read the same, un-narrowed values.
@@ -328,8 +328,8 @@ export async function runGeneration(req: GenerationRequest, deps: GenerationDeps
       };
     });
 
-    QuestionRepository.createMany(rows);
-    QuestionRepository.refreshDocumentCounts(req.documentId, req.userId);
+    await QuestionRepository.createMany(rows);
+    await QuestionRepository.refreshDocumentCounts(req.documentId, req.userId);
     return true;
   }
 

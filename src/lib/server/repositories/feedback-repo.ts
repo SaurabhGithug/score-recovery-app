@@ -19,7 +19,7 @@ export interface FeedbackRecord {
 }
 
 export class FeedbackRepository {
-  static create(input: {
+  static async create(input: {
     userId: string;
     preparationContextId?: string | null;
     documentId?: string | null;
@@ -29,12 +29,12 @@ export class FeedbackRepository {
     message: string;
     placement?: string;
     metadata?: Record<string, unknown>;
-  }): FeedbackRecord {
+  }): Promise<FeedbackRecord> {
     const db = getDatabase();
     const id = `feedback_${crypto.randomUUID().replace(/-/g, "").slice(0, 16)}`;
     const createdAt = new Date().toISOString();
 
-    db.prepare(`
+    await db.prepare(`
       INSERT INTO product_feedback (
         id, user_id, preparation_context_id, document_id, question_id,
         category, rating, message, placement, metadata, status, created_at
@@ -53,6 +53,6 @@ export class FeedbackRepository {
       createdAt
     );
 
-    return db.prepare("SELECT * FROM product_feedback WHERE id = ?").get(id) as unknown as FeedbackRecord;
+    return (await db.prepare("SELECT * FROM product_feedback WHERE id = ?").get<FeedbackRecord>(id))!;
   }
 }

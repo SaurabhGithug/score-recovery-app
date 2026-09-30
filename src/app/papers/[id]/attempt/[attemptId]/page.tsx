@@ -1,17 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import type { BankAttempt, BankPaperDetail, BankResponses } from "@/lib/bank/api-types";
 import { useLang } from "@/lib/i18n";
 import { BankApiRequestError, getAttempt, getPaper } from "@/components/bank/api";
 import { BankRunner } from "@/components/bank/BankRunner";
 
 export default function BankAttemptPage() {
+  return <Suspense fallback={<div className="p-6 text-center text-sm text-slate-400">Loading attempt…</div>}><BankAttempt /></Suspense>;
+}
+
+function BankAttempt() {
   const { t } = useLang();
   const router = useRouter();
   const params = useParams<{ id: string; attemptId: string }>();
+  const search = useSearchParams();
+  const initialLanguage = search.get("lang") === "hi" ? "hi" : "en";
 
   const [paper, setPaper] = useState<BankPaperDetail | null>(null);
   const [attempt, setAttempt] = useState<BankAttempt | null>(null);
@@ -60,5 +66,5 @@ export default function BankAttemptPage() {
     return <div className="mx-auto flex-1 px-4 py-16 text-center text-sm text-slate-400">{t({ en: "Loading attempt…", hi: "प्रयास लोड हो रहा है…" })}</div>;
   }
 
-  return <BankRunner paper={paper} attempt={attempt} initialResponses={responses} />;
+  return <BankRunner paper={paper} attempt={attempt} initialResponses={responses} initialLanguage={initialLanguage} />;
 }

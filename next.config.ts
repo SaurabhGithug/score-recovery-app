@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   devIndicators: false,
+  // Prepared source documents and verified crops are uploaded to Supabase for production.
+  // Keeping the 1+ GB offline corpus out of server-function traces is essential for Vercel.
+  outputFileTracingExcludes: {
+    "/*": ["data/**", "docs/**", "output/**", "services/**"],
+  },
   async headers() {
     return [
       {

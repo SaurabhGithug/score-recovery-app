@@ -3,10 +3,10 @@ import crypto from "node:crypto";
 
 /** Ledger of billed LLM calls, used for the server-wide daily spending limit. */
 export class SpendRepository {
-  public static add(entry: { userId: string; documentId: string | null; model: string; costUsd: number }): void {
+  public static async add(entry: { userId: string; documentId: string | null; model: string; costUsd: number }): Promise<void> {
     if (!(entry.costUsd > 0)) return;
     const db = getDatabase();
-    db.prepare(
+    await db.prepare(
       "INSERT INTO llm_spend (id, user_id, document_id, model, cost_usd, created_at) VALUES (?, ?, ?, ?, ?, ?)"
     ).run(
       `spend_${crypto.randomUUID().replace(/-/g, "").slice(0, 16)}`,
@@ -25,37 +25,31 @@ export class SpendRepository {
    * null when refused. Settle it to the real cost with settle() once the call returns; a crash
    * leaves the worst case recorded, which errs on the side of the limit.
    */
-  public static reserve(entry: { userId: string; model: string; usd: number; capUsd: number; since: Date }): string | null {
+  public static async reserve(entry: { userId: string; model: string; usd: number; capUsd: number; since: Date }): Promise<string | null> {
     const db = getDatabase();
     const id = `spend_${crypto.randomUUID().replace(/-/g, "").slice(0, 16)}`;
-    db.exec("BEGIN IMMEDIATE");
-    try {
-      if (SpendRepository.totalSince(entry.since) + entry.usd > entry.capUsd) {
-        db.exec("ROLLBACK");
+    return db.transaction(async () => {
+      if ((await SpendRepository.totalSince(entry.since)) + entry.usd > entry.capUsd) {
         return null;
       }
-      db.prepare(
+      await db.prepare(
         "INSERT INTO llm_spend (id, user_id, document_id, model, cost_usd, created_at) VALUES (?, ?, NULL, ?, ?, ?)"
       ).run(id, entry.userId, entry.model, Math.max(0, entry.usd), new Date().toISOString());
-      db.exec("COMMIT");
       return id;
-    } catch (err) {
-      db.exec("ROLLBACK");
-      throw err;
-    }
+    });
   }
 
   /** Replaces a reservation with what the call actually billed. */
-  public static settle(id: string, usd: number): void {
-    getDatabase().prepare("UPDATE llm_spend SET cost_usd = ? WHERE id = ?").run(Math.max(0, usd), id);
+  public static async settle(id: string, usd: number): Promise<void> {
+    await getDatabase().prepare("UPDATE llm_spend SET cost_usd = ? WHERE id = ?").run(Math.max(0, usd), id);
   }
 
   /** Total spend across all users since the given time. */
-  public static totalSince(since: Date): number {
+  public static async totalSince(since: Date): Promise<number> {
     const db = getDatabase();
-    const row = db
+    const row = await db
       .prepare("SELECT COALESCE(SUM(cost_usd), 0) AS total FROM llm_spend WHERE created_at >= ?")
-      .get(since.toISOString()) as unknown as { total: number };
-    return row?.total ?? 0;
+      .get<{ total: number | string }>(since.toISOString());
+    return Number(row?.total ?? 0);
   }
 }

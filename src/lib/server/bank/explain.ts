@@ -128,24 +128,24 @@ export function blindSolvePayload(q: BankQuestionRecord): BlindSolvePayload {
 }
 
 /** The key and the evidence it rests on; content-bound rows made for other content are dropped. */
-function resolve(q: BankQuestionRecord, evidenceUserId: string): { key: ResolvedKey; evidence: BankEvidenceRecord[] } {
-  const all = BankRepository.loadEvidenceForQuestion(q.id, evidenceUserId);
+async function resolve(q: BankQuestionRecord, evidenceUserId: string): Promise<{ key: ResolvedKey; evidence: BankEvidenceRecord[] }> {
+  const all = await BankRepository.loadEvidenceForQuestion(q.id, evidenceUserId);
   // Batch runs use global evidence only, whatever loadEvidenceForQuestion does with ''.
   const evidence = currentEvidence(q, evidenceUserId ? all : all.filter((e) => e.userId === ""));
   return { key: BankRepository.resolveFrom(q, evidence), evidence };
 }
 
-function spentToday(): number {
+async function spentToday(): Promise<number> {
   return SpendRepository.totalSince(new Date(Date.now() - DAY_MS));
 }
 
-function checkMoney(deps: ExplainDeps, money: RunMoney): boolean {
+async function checkMoney(deps: ExplainDeps, money: RunMoney): Promise<boolean> {
   if (money.stop) return false;
   if (money.spentUsd >= deps.budgetUsd) {
     money.stop = { kind: "run_limit", reason: `Stopped at this run's $${deps.budgetUsd.toFixed(2)} spending limit.` };
     return false;
   }
-  if (spentToday() >= deps.maxUsdPerDay) {
+  if ((await spentToday()) >= deps.maxUsdPerDay) {
     money.stop = { kind: "daily_limit", reason: `Stopped: the server's $${deps.maxUsdPerDay.toFixed(2)} 24-hour AI spending limit is used up.` };
     return false;
   }
@@ -177,7 +177,7 @@ async function callModel(
     money.stop = { kind: "run_limit", reason: `Stopped at this run's $${deps.budgetUsd.toFixed(2)} spending limit.` };
     return { ok: false, message: money.stop.reason };
   }
-  const reservation = SpendRepository.reserve({
+  const reservation = await SpendRepository.reserve({
     userId: deps.spendUserId,
     model: request.model,
     usd: worst,
@@ -189,18 +189,18 @@ async function callModel(
     return { ok: false, message: money.stop.reason };
   }
   money.spentUsd += worst;
-  const settle = (usage: LlmUsage | null) => {
+  const settle = async (usage: LlmUsage | null) => {
     const usd = usage ? costUsd(request.model, usage) : 0;
-    SpendRepository.settle(reservation, usd);
+    await SpendRepository.settle(reservation, usd);
     money.spentUsd += usd - worst;
   };
   try {
     const result = await deps.provider.completeJson(request);
-    settle(result.usage);
+    await settle(result.usage);
     return { ok: true, json: result.json, usage: result.usage, model: result.model };
   } catch (err) {
     if (err instanceof LlmError) {
-      settle(err.usage);
+      await settle(err.usage);
       if (err.fatal) money.stop = { kind: "fatal", reason: err.message };
       return { ok: false, message: err.message };
     }
@@ -213,13 +213,13 @@ async function callModel(
  * Stores a note unless it would displace a note that matches the global key with one written
  * against a single learner's own review (bank_explanations is shared by every learner).
  */
-function shouldStore(questionId: string, lockedAnswer: string, evidenceUserId: string): boolean {
+async function shouldStore(questionId: string, lockedAnswer: string, evidenceUserId: string): Promise<boolean> {
   if (!evidenceUserId) return true;
-  const existing = BankRepository.getExplanation(questionId);
+  const existing = await BankRepository.getExplanation(questionId);
   if (!existing || existing.lockedAnswer === lockedAnswer) return true;
-  const question = BankRepository.getQuestion(questionId);
+  const question = await BankRepository.getQuestion(questionId);
   if (!question) return false;
-  const global = resolve(question, "").key;
+  const global = (await resolve(question, "")).key;
   return !(isScored(global.status) && global.answer === existing.lockedAnswer);
 }
 
@@ -229,13 +229,13 @@ export async function explainQuestion(run: QuestionRun, options: { reuseFreshNot
 
   if (needsFigureOrCleanText(q)) return { result: "skipped", reason: SKIP.needsFigure };
 
-  const before = resolve(q, evidenceUserId);
+  const before = await resolve(q, evidenceUserId);
   if (!isScored(before.key.status) || before.key.answer === null) {
     return { result: "skipped", reason: SKIP.noScoredKey(before.key.status) };
   }
   if (before.key.status === "reviewed") return { result: "skipped", reason: SKIP.learnerReviewedKey };
   const fp = contentFingerprint(q);
-  const existingNote = BankRepository.getExplanation(q.id);
+  const existingNote = await BankRepository.getExplanation(q.id);
   if (existingNote && existingNote.lockedAnswer === before.key.answer) {
     return options.reuseFreshNote ? { result: "cached", key: before.key } : { result: "skipped", reason: SKIP.alreadyExplained };
   }
@@ -244,7 +244,7 @@ export async function explainQuestion(run: QuestionRun, options: { reuseFreshNot
   const label = blindSolveLabel(deps.checkModel);
   const hasSolve = before.evidence.some((e) => e.authority === "ai_blind_solve" && e.userId === "" && e.sourceLabel === label);
   if (!hasSolve) {
-    if (!checkMoney(deps, money)) return { result: "stopped", reason: money.stop!.reason, kind: money.stop!.kind };
+    if (!(await checkMoney(deps, money))) return { result: "stopped", reason: money.stop!.reason, kind: money.stop!.kind };
     const call = await callModel(deps, money, {
       model: deps.checkModel,
       system: BLIND_SOLVE_SYSTEM_PROMPT,
@@ -259,7 +259,7 @@ export async function explainQuestion(run: QuestionRun, options: { reuseFreshNot
     }
     const parsed = parseBlindSolve(call.json, q.options.map((o) => o.id));
     if (parsed.ok) {
-      BankRepository.upsertGlobalEvidence({
+      await BankRepository.upsertGlobalEvidence({
         questionId: q.id,
         authority: "ai_blind_solve",
         sourceGroup: `ai:${deps.checkModel}`,
@@ -281,7 +281,7 @@ export async function explainQuestion(run: QuestionRun, options: { reuseFreshNot
   }
 
   // ---- re-resolve: the blind solve may have disputed a non-SSC key
-  const after = resolve(q, evidenceUserId);
+  const after = await resolve(q, evidenceUserId);
   if (!isScored(after.key.status) || after.key.answer === null) {
     const disputedByAi = after.key.status === "disputed" && after.key.dissent.some((e) => e.authority === "ai_blind_solve");
     return disputedByAi
@@ -298,7 +298,7 @@ export async function explainQuestion(run: QuestionRun, options: { reuseFreshNot
   if (!agreeing || aiDissent) return { result: "skipped", reason: SKIP.noAgreeingSolve };
 
   // ---- teaching note against the locked key
-  if (!checkMoney(deps, money)) return { result: "stopped", reason: money.stop!.reason, kind: money.stop!.kind };
+  if (!(await checkMoney(deps, money))) return { result: "stopped", reason: money.stop!.reason, kind: money.stop!.kind };
   const payload: TeachingNotePayload = {
     ...blindSolvePayload(q),
     lockedAnswer: key,
@@ -320,9 +320,9 @@ export async function explainQuestion(run: QuestionRun, options: { reuseFreshNot
   if (!gated.ok) return { result: "skipped", reason: SKIP.noteRejected, detail: gated.reason };
 
   const createdAt = new Date().toISOString();
-  const stored = shouldStore(q.id, key, evidenceUserId);
+  const stored = await shouldStore(q.id, key, evidenceUserId);
   if (stored) {
-    BankRepository.saveExplanation({
+    await BankRepository.saveExplanation({
       questionId: q.id,
       lockedAnswer: key,
       note: JSON.stringify(noteJson(gated.value)),
@@ -401,8 +401,8 @@ export function createProgress(paperId: string, total: number, budgetUsd: number
   };
 }
 
-function paperQuestions(paperId: string, limit?: number): BankQuestionRecord[] {
-  const all = questionsInScope(BankRepository.listQuestions(paperId), "full", null);
+async function paperQuestions(paperId: string, limit?: number): Promise<BankQuestionRecord[]> {
+  const all = questionsInScope(await BankRepository.listQuestions(paperId), "full", null);
   return limit && limit > 0 ? all.slice(0, limit) : all;
 }
 
@@ -413,7 +413,7 @@ export async function runExplainBatch(
   options: BatchOptions = {},
   progress?: ExplainJobProgress
 ): Promise<ExplainJobProgress> {
-  const questions = paperQuestions(paperId, options.limit);
+  const questions = await paperQuestions(paperId, options.limit);
   const p = progress ?? createProgress(paperId, questions.length, deps.budgetUsd);
   p.total = questions.length;
   const money: RunMoney = { spentUsd: 0, stop: null };
@@ -476,15 +476,26 @@ export function estimateQuestionCostUsd(q: BankQuestionRecord, checkModel: strin
 }
 
 /** What a run would do without calling a model (no spend). */
-export function planPaper(paperId: string, limit?: number): { position: number; questionId: string; action: string }[] {
-  return paperQuestions(paperId, limit).map((q) => {
-    if (needsFigureOrCleanText(q)) return { position: q.position, questionId: q.id, action: SKIP.needsFigure };
-    const { key } = resolve(q, "");
-    if (!isScored(key.status)) return { position: q.position, questionId: q.id, action: SKIP.noScoredKey(key.status) };
-    const note = BankRepository.getExplanation(q.id);
-    if (note && note.lockedAnswer === key.answer) return { position: q.position, questionId: q.id, action: SKIP.alreadyExplained };
-    return { position: q.position, questionId: q.id, action: "send" };
-  });
+export async function planPaper(paperId: string, limit?: number): Promise<{ position: number; questionId: string; action: string }[]> {
+  const plan: { position: number; questionId: string; action: string }[] = [];
+  for (const q of await paperQuestions(paperId, limit)) {
+    if (needsFigureOrCleanText(q)) {
+      plan.push({ position: q.position, questionId: q.id, action: SKIP.needsFigure });
+      continue;
+    }
+    const { key } = await resolve(q, "");
+    if (!isScored(key.status)) {
+      plan.push({ position: q.position, questionId: q.id, action: SKIP.noScoredKey(key.status) });
+      continue;
+    }
+    const note = await BankRepository.getExplanation(q.id);
+    plan.push({
+      position: q.position,
+      questionId: q.id,
+      action: note && note.lockedAnswer === key.answer ? SKIP.alreadyExplained : "send",
+    });
+  }
+  return plan;
 }
 
 // ------------------------------------------------------------------ server-wide job registry
@@ -497,16 +508,16 @@ const holder = globalThis as unknown as { __bankExplainJobs?: Registry };
 const registry = (holder.__bankExplainJobs ??= { active: null, jobs: new Map() });
 const MAX_KEPT_JOBS = 20;
 
-function dailyRemainingUsd(maxUsdPerDay: number): number {
-  return Math.max(0, maxUsdPerDay - spentToday());
+async function dailyRemainingUsd(maxUsdPerDay: number): Promise<number> {
+  return Math.max(0, maxUsdPerDay - (await spentToday()));
 }
 
-export function depsFromSetup(spendUserId: string): ExplainDeps {
+export async function depsFromSetup(spendUserId: string): Promise<ExplainDeps> {
   const setup = getLlmSetup();
   if (!setup.configured || !setup.provider) {
     throw new HttpError(503, setup.unavailableReason ?? "AI is not configured on this server.");
   }
-  const remaining = dailyRemainingUsd(setup.maxUsdPerDay);
+  const remaining = await dailyRemainingUsd(setup.maxUsdPerDay);
   if (remaining < 0.0001) {
     throw new HttpError(429, `Today's $${setup.maxUsdPerDay.toFixed(2)} AI spending limit is used up. It frees up over the next 24 hours.`);
   }
@@ -527,8 +538,8 @@ export class ExplainQueue {
   }
 
   /** Starts a batch for a paper, or throws HttpError (404 / 503 / 409 / 429). */
-  public static start(paperId: string, userId: string, options: { limit?: number; deps?: ExplainDeps } = {}): ExplainJobProgress {
-    const paper = validId(paperId) ? BankRepository.getPaperFor(paperId, userId) : null;
+  public static async start(paperId: string, userId: string, options: { limit?: number; deps?: ExplainDeps } = {}): Promise<ExplainJobProgress> {
+    const paper = validId(paperId) ? await BankRepository.getPaperFor(paperId, userId) : null;
     if (!paper) throw new HttpError(404, "Paper not found.");
     // Batch runs resolve keys from shared evidence only; a private paper's keys belong to its owner.
     if (paper.ownerUserId !== "") {
@@ -537,8 +548,8 @@ export class ExplainQueue {
     if (registry.active) {
       throw new HttpError(409, "Another explanation run is in progress. Try again when it finishes.");
     }
-    const deps = options.deps ?? depsFromSetup(userId);
-    const total = paperQuestions(paperId, options.limit).length;
+    const deps = options.deps ?? (await depsFromSetup(userId));
+    const total = (await paperQuestions(paperId, options.limit)).length;
     const progress = createProgress(paperId, total, deps.budgetUsd);
     // Reserve the slot synchronously so a double-click can't start two runs.
     registry.active = progress.jobId;
@@ -580,16 +591,16 @@ const inFlight = new Map<string, Promise<ExplainOutcome>>();
  * Only after the learner has committed to the question (the note reveals the key).
  */
 export async function explainForLearner(questionId: string, userId: string, depsOverride?: ExplainDeps): Promise<{ explanation: BankExplanation }> {
-  const question = validId(questionId) ? BankRepository.getQuestionFor(questionId, userId) : null;
+  const question = validId(questionId) ? await BankRepository.getQuestionFor(questionId, userId) : null;
   if (!question) throw new HttpError(404, "Question not found.");
-  if (!learnerCommitted(userId, question)) {
+  if (!(await learnerCommitted(userId, question))) {
     throw new HttpError(403, "Explanations open once you have submitted this question or checked it in practice.");
   }
-  const { key } = resolve(question, userId);
-  const cached = explanationFor(BankRepository.getExplanation(question.id), key);
+  const { key } = await resolve(question, userId);
+  const cached = explanationFor(await BankRepository.getExplanation(question.id), key);
   if (cached) return { explanation: cached };
 
-  const deps = depsOverride ?? depsFromSetup(userId); // 503 unconfigured / 429 daily cap
+  const deps = depsOverride ?? (await depsFromSetup(userId)); // 503 unconfigured / 429 daily cap
   if (!isScored(key.status) || key.answer === null) {
     throw new HttpError(409, "This question has no scored answer key for you, so it cannot be explained.");
   }
@@ -610,12 +621,12 @@ export async function explainForLearner(questionId: string, userId: string, deps
 
   switch (outcome.result) {
     case "cached": {
-      const explanation = explanationFor(BankRepository.getExplanation(question.id), outcome.key);
+      const explanation = explanationFor(await BankRepository.getExplanation(question.id), outcome.key);
       if (explanation) return { explanation };
       throw new HttpError(409, "The answer key changed while explaining. Try again.");
     }
     case "explained": {
-      const now = resolve(question, userId).key;
+      const now = (await resolve(question, userId)).key;
       const explanation = explanationFor(
         {
           questionId: question.id,

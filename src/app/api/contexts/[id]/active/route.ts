@@ -7,19 +7,19 @@ export async function POST(
   props: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = getCurrentUser(req);
+    const user = await getCurrentUser(req);
     if (!user) {
       return NextResponse.json({ error: "User session required" }, { status: 401 });
     }
 
     const { id } = await props.params;
-    const success = PreparationContextRepository.setActiveContext(user.id, id);
+    const success = await PreparationContextRepository.setActiveContext(user.id, id);
 
     if (!success) {
       return NextResponse.json({ error: "Preparation context not found" }, { status: 404 });
     }
 
-    const activeContext = PreparationContextRepository.getActiveContext(user.id);
+    const activeContext = await PreparationContextRepository.getActiveContext(user.id);
     return NextResponse.json({ success: true, activeContext });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to activate context";

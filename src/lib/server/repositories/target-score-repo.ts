@@ -15,10 +15,10 @@ export interface TargetScoreRecord {
 }
 
 export class TargetScoreRepository {
-  public static findByContextId(
+  public static async findByContextId(
     preparationContextId: string,
     userId?: string
-  ): TargetScoreRecord | null {
+  ): Promise<TargetScoreRecord | null> {
     const db = getDatabase();
     let query = "SELECT * FROM target_scores WHERE preparation_context_id = ?";
     const params: string[] = [preparationContextId];
@@ -27,11 +27,11 @@ export class TargetScoreRepository {
       params.push(userId);
     }
     const stmt = db.prepare(query);
-    const row = stmt.get(...params) as unknown as TargetScoreRecord | undefined;
+    const row = await stmt.get<TargetScoreRecord>(...params);
     return row ?? null;
   }
 
-  public static upsert(data: {
+  public static async upsert(data: {
     userId: string;
     preparationContextId: string;
     score: number;
@@ -40,9 +40,9 @@ export class TargetScoreRepository {
     safetyMargin: number;
     evidence: Record<string, unknown>;
     historicalYears: { year: number; cutoff: number; source?: string }[];
-  }): TargetScoreRecord {
+  }): Promise<TargetScoreRecord> {
     const db = getDatabase();
-    const existing = this.findByContextId(data.preparationContextId, data.userId);
+    const existing = await this.findByContextId(data.preparationContextId, data.userId);
     const now = new Date().toISOString();
     const evidenceJson = JSON.stringify(data.evidence);
     const yearsJson = JSON.stringify(data.historicalYears);
@@ -59,7 +59,7 @@ export class TargetScoreRepository {
             calculated_at = ?
         WHERE id = ?
       `);
-      stmt.run(
+      await stmt.run(
         data.score,
         data.methodVersion ?? "v1_historical_trend",
         data.officialQualifyingMark,
@@ -69,7 +69,7 @@ export class TargetScoreRepository {
         now,
         existing.id
       );
-      return this.findByContextId(data.preparationContextId, data.userId)!;
+      return (await this.findByContextId(data.preparationContextId, data.userId))!;
     }
 
     const id = `tgt_${crypto.randomUUID().replace(/-/g, "").slice(0, 16)}`;
@@ -81,7 +81,7 @@ export class TargetScoreRepository {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    stmt.run(
+    await stmt.run(
       id,
       data.userId,
       data.preparationContextId,
@@ -94,6 +94,6 @@ export class TargetScoreRepository {
       now
     );
 
-    return this.findByContextId(data.preparationContextId, data.userId)!;
+    return (await this.findByContextId(data.preparationContextId, data.userId))!;
   }
 }

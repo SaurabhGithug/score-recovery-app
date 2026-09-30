@@ -7,6 +7,7 @@ import type { LearningOverview, LearningSessionView, LearningMode } from "@/lib/
 import type { SyllabusTreeResponse, SyllabusTreeNode, SyllabusNodeDetail } from "@/lib/syllabus/types";
 import { LearningProgress } from "@/components/LearningProgress";
 import { NoticeHighlights } from "@/components/syllabus/NoticeHighlights";
+import { StructuredAnswer } from "@/components/ai/AskFollowUp";
 import Link from "next/link";
 
 const button="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-40 hover:bg-slate-700";
@@ -32,7 +33,10 @@ function LearningWorkspace() {
   const [session,setSession]=useState<LearningSessionView|null>(null);
   useDeclareAttemptMode(session ? "drill" : null);
   // Rendered only after the account loads (never on the server), so the URL can pick the first tab: /learn?tab=progress.
-  const [tab,setTab]=useState<"today"|"syllabus"|"progress">(()=>typeof window!=="undefined"&&new URLSearchParams(window.location.search).get("tab")==="progress"?"progress":"today");
+  const [tab,setTab]=useState<"today"|"revision"|"syllabus"|"progress">(()=>{
+    const selected=typeof window!=="undefined"?new URLSearchParams(window.location.search).get("tab"):null;
+    return selected==="progress"||selected==="revision"||selected==="syllabus"?selected:"today";
+  });
   const [error,setError]=useState("");const [busy,setBusy]=useState(false);
   const [group,setGroup]=useState("");const mounted=useRef(true);
   const refresh=useCallback(async()=>{const next=await api<LearningOverview>();if(mounted.current)setData(next);},[]);
@@ -50,7 +54,7 @@ function LearningWorkspace() {
   const total=data?.groups.reduce((a,g)=>({fresh:a.fresh+g.newAttempts,correct:a.correct+g.newCorrect,due:a.due+g.due}),{fresh:0,correct:0,due:0});
   return <main className="mx-auto w-full max-w-4xl space-y-6 px-4 py-8 text-slate-900">
     {!session&&<header><p className="text-sm text-slate-500">SSC JE · Civil Engineering</p><h1 className="mt-1 text-2xl font-semibold tracking-tight">Learn</h1></header>}
-    {!session&&<nav className="flex flex-wrap gap-5 border-b border-slate-200" aria-label="Learning views">{(["today","syllabus","progress"] as const).map(t=><button key={t} onClick={()=>setTab(t)} aria-pressed={tab===t} className={"border-b-2 pb-3 text-sm "+(tab===t?"border-slate-900 font-semibold text-slate-900":"border-transparent text-slate-500")}>{t==="today"?"Today":t==="syllabus"?"Study material":"Practice results"}</button>)}</nav>}
+    {!session&&<nav className="flex flex-wrap gap-5 border-b border-slate-200" aria-label="Learning views">{(["today","revision","syllabus","progress"] as const).map(t=><button key={t} onClick={()=>setTab(t)} aria-pressed={tab===t} className={"border-b-2 pb-3 text-sm "+(tab===t?"border-slate-900 font-semibold text-slate-900":"border-transparent text-slate-500")}>{t==="today"?"Today":t==="revision"?"Revision notes":t==="syllabus"?"Study material":"Practice results"}</button>)}</nav>}
     {error&&<div role="alert" className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm">{error}</div>}
     {session?<Runner key={session.id} initial={session} onLeave={leave}/>:!data?<p>Loading your practice…</p>:<>
       {tab==="today"&&<>
@@ -70,10 +74,35 @@ function LearningWorkspace() {
         {data.nextDueAt&&<p className="text-xs text-slate-500">Next scheduled review: {date(data.nextDueAt)}</p>}
       </>}
       {tab==="syllabus"&&<><Link href="/library" className="inline-block text-sm text-slate-600 underline">My study documents →</Link><SyllabusLibrary/></>}
+      {tab==="revision"&&<RevisionNotes/>}
       {tab==="progress"&&<LearningProgress data={data} busy={busy} onPractice={id=>open("learn",id??"")} onResume={resume}/>}
 
     </>}
   </main>;
+}
+
+interface RevisionNote {
+  id:string;sourceKind:"bank"|"made_easy";sourceId:string;title:string;body:string;model:string|null;
+  evidence:{id:string;label:string;stem:string;sourceUrl:string|null}[];updatedAt:string;
+}
+
+function RevisionNotes() {
+  const [notes,setNotes]=useState<RevisionNote[]|null>(null),[error,setError]=useState(""),[hidden,setHidden]=useState<Record<string,boolean>>({});
+  const load=useCallback(()=>fetch("/api/revision-notes",{cache:"no-store"}).then(async r=>{const data=await r.json();if(!r.ok)throw new Error(data.error||"Could not load notes.");setNotes(data.notes);}),[]);
+  useEffect(()=>{void load().catch(e=>setError(e.message));},[load]);
+  async function remove(id:string){if(!window.confirm("Remove this revision note?"))return;await fetch(`/api/revision-notes?id=${encodeURIComponent(id)}`,{method:"DELETE"});setNotes(current=>current?.filter(n=>n.id!==id)??[]);}
+  const source=(note:RevisionNote)=>note.sourceKind==="made_easy"?`/recovery-lab/${note.sourceId.match(/test-\d+/)?.[0]??"testbook"}`:"/papers";
+  return <section className={`${panel} print:border-0 print:p-0`}>
+    <div className="flex flex-wrap items-start justify-between gap-3 print:hidden"><div><h2 className="text-xl font-bold">Revision notes</h2><p className="mt-1 text-sm text-slate-600">Read your saved short notes, hide the answer to recall it, or reopen the source question for another attempt.</p></div><button type="button" onClick={()=>window.print()} className={secondary}>Print revision notes</button></div>
+    {error&&<p className="mt-4 text-sm text-rose-700">{error}</p>}
+    {notes===null&&!error&&<p className="mt-5 text-sm text-slate-500">Loading notes…</p>}
+    {notes?.length===0&&<p className="mt-5 rounded-xl bg-slate-50 p-5 text-sm text-slate-600">No saved notes yet. Use “Save to revision notes” below a useful AI answer.</p>}
+    <div className="mt-5 space-y-5">{notes?.map(note=><article key={note.id} className="break-inside-avoid rounded-xl border border-slate-200 p-5 print:border-slate-400">
+      <div className="flex flex-wrap justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-wide text-violet-700">Revision note · {new Date(note.updatedAt).toLocaleDateString()}</p><h3 className="mt-1 text-lg font-bold">{note.title}</h3></div><div className="flex gap-2 print:hidden"><button className={secondary} onClick={()=>setHidden(v=>({...v,[note.id]:!v[note.id]}))}>{hidden[note.id]?"Reveal answer":"Recall first"}</button><Link className={secondary} href={source(note)}>Practice question again</Link><button className="text-xs text-rose-700 underline" onClick={()=>void remove(note.id)}>Remove</button></div></div>
+      {hidden[note.id]?<div className="mt-5 rounded-xl border border-dashed border-amber-300 bg-amber-50 p-6 text-center text-sm font-semibold text-amber-950 print:hidden">Try to recall the answer, then press “Reveal answer”.</div>:<StructuredAnswer answer={note.body}/>}
+      {note.evidence?.length>0&&<details className="mt-4 print:open"><summary className="cursor-pointer text-xs font-bold text-blue-800">Past-paper citations</summary><ul className="mt-2 space-y-2 text-xs text-slate-600">{note.evidence.map(e=><li key={e.id}><b>{e.id} · {e.label}</b><br/>{e.stem}{e.sourceUrl&&<> · <a className="underline" href={e.sourceUrl}>source</a></>}</li>)}</ul></details>}
+    </article>)}</div>
+  </section>;
 }
 
 function Runner({initial,onLeave}:{initial:LearningSessionView;onLeave:()=>Promise<void>}) {

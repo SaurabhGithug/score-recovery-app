@@ -754,7 +754,7 @@ function buildCluster(cluster: Cluster, cwd: string, unmatched: UnmatchedItem[],
 }
 
 // ------------------------------------------------------------------ entry point
-export function importPypDirectory(options: { dir?: string; cwd?: string } = {}): PypImportReport {
+export async function importPypDirectory(options: { dir?: string; cwd?: string } = {}): Promise<PypImportReport> {
   const cwd = options.cwd ?? process.cwd();
   const dir = options.dir ?? path.join(cwd, PYP_PARSED_DIR);
   const skippedFiles: UnmatchedItem[] = [];
@@ -834,9 +834,9 @@ export function importPypDirectory(options: { dir?: string; cwd?: string } = {})
 
       let deleted = 0;
       let conceptsForgotten = 0;
-      BankRepository.transaction(() => {
-        const before = new Map(BankRepository.listQuestions(cluster.id).map((q) => [q.id, contentFingerprint(q)]));
-        BankRepository.upsertPaper({
+      await BankRepository.transaction(async () => {
+        const before = new Map((await BankRepository.listQuestions(cluster.id)).map((q) => [q.id, contentFingerprint(q)]));
+        await BankRepository.upsertPaper({
           id: cluster.id,
           kind: "pyp",
           paper: P.paper,
@@ -855,26 +855,26 @@ export function importPypDirectory(options: { dir?: string; cwd?: string } = {})
           rightsNote: RIGHTS_NOTE,
           metadata,
         });
-        BankRepository.parkPositions(cluster.id);
-        for (const q of built.questions) BankRepository.upsertQuestion(q);
-        deleted = BankRepository.deleteQuestionsNotIn(cluster.id, built.questions.map((q) => q.id));
+        await BankRepository.parkPositions(cluster.id);
+        for (const q of built.questions) await BankRepository.upsertQuestion(q);
+        deleted = await BankRepository.deleteQuestionsNotIn(cluster.id, built.questions.map((q) => q.id));
         // Same id, different content: tags written for the old content no longer apply. (AI solves,
         // notes, reviews and attempt answers are content-bound already; see bank/content-fp.ts.)
         const changed = built.questions.filter((q) => before.has(q.id) && before.get(q.id) !== contentFingerprint(q)).map((q) => q.id);
-        conceptsForgotten = SyllabusRepository.forgetConceptsOf(changed);
+        conceptsForgotten = await SyllabusRepository.forgetConceptsOf(changed);
         const wanted = new Set(built.evidence.map((e) => `${e.questionId}\u0000${e.sourceLabel}`));
-        for (const row of BankRepository.listGlobalEvidenceForPaper(cluster.id)) {
+        for (const row of await BankRepository.listGlobalEvidenceForPaper(cluster.id)) {
           // Only rows this importer writes; keys from other sources (e.g. AI solves) are left alone.
           if ((row.authority === "ssc_response_sheet" || row.authority === "publisher_key") && !wanted.has(`${row.questionId}\u0000${row.sourceLabel}`)) {
-            BankRepository.deleteEvidence(row.id);
+            await BankRepository.deleteEvidence(row.id);
           }
         }
-        for (const e of built.evidence) BankRepository.upsertGlobalEvidence(e);
+        for (const e of built.evidence) await BankRepository.upsertGlobalEvidence(e);
       });
 
       // Report key status as a learner with no reviews of their own would see it.
-      const stored = BankRepository.listQuestions(cluster.id);
-      const ev = BankRepository.loadEvidenceForPapers([cluster.id], "");
+      const stored = await BankRepository.listQuestions(cluster.id);
+      const ev = await BankRepository.loadEvidenceForPapers([cluster.id], "");
       const keyStatus: Partial<Record<KeyStatus, number>> = {};
       for (const q of stored) {
         const status = BankRepository.resolveFrom(q, ev.get(q.id)).status;

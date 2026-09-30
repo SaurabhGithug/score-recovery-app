@@ -7,9 +7,9 @@ import { handle, jsonOk, readJsonBody, requireUser } from "@/lib/server/bank/htt
  */
 export async function POST(req: Request, props: { params: Promise<{ id: string }> }) {
   return handle(async () => {
-    const user = requireUser(req);
+    const user = await requireUser(req);
     const { id } = await props.params;
     const body = await readJsonBody(req, 16 * 1024);
-    return jsonOk(check(id, user.id, body));
+    return jsonOk(await check(id, user.id, body));
   });
 }
