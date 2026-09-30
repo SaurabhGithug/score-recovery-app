@@ -238,6 +238,8 @@ const SYSTEM = [
 
 const DEFAULT_GEMINI_MODEL = "gemini-3.8-flash";
 const DEFAULT_DEEPSEEK_MODEL = "deepseek-v4-pro";
+/** Listed for this key on 2026-09-30 (preview; $2/$12 per 1M tokens). */
+const DEFAULT_GEMINI_CHECK_MODEL = "gemini-3.1-pro-preview";
 
 /** USD per 1M tokens. Source: ai.google.dev/gemini-api/docs/pricing, checked 2026-09-30. */
 const GEMINI_PRICES: Record<string, { input: number; output: number; introUntil?: string; intro?: { input: number; output: number } }> = {
@@ -282,6 +284,8 @@ export interface FollowUpDeps {
   geminiModel: string;
   deepseek: LlmProvider | null;
   deepseekModel: string;
+  /** A second Google model that checks practice questions when DeepSeek isn't set up (null: none). */
+  geminiCheckModel: string | null;
   capUsd: number;
   gemini: (apiKey: string, request: GeminiRequest) => Promise<GeminiResult>;
   /** Fetches one source image (allowlisted host only); null when it can't be used. */
@@ -321,6 +325,7 @@ export function followUpDeps(): FollowUpDeps {
     geminiModel: process.env.GEMINI_FOLLOWUP_MODEL?.trim() || DEFAULT_GEMINI_MODEL,
     deepseek: deepseekKey ? new DeepSeekProvider(deepseekKey) : null,
     deepseekModel: process.env.DEEPSEEK_FOLLOWUP_MODEL?.trim() || DEFAULT_DEEPSEEK_MODEL,
+    geminiCheckModel: process.env.GEMINI_CHECK_MODEL?.trim() || DEFAULT_GEMINI_CHECK_MODEL,
     capUsd: setup.maxUsdPerDay,
     gemini: geminiGenerate,
     fetchImage: fetchSourceImage,
@@ -344,8 +349,8 @@ function notSetUp(provider: ProviderName): HttpError {
 async function callGemini(deps: FollowUpDeps, userId: string, request: GeminiRequest, retryWithoutSearch: boolean): Promise<GeminiResult> {
   if (!deps.googleKey) throw notSetUp("google");
   const retry = retryWithoutSearch && request.grounded;
-  const worst = geminiWorstUsd(deps.geminiModel, request) + (retry ? geminiWorstUsd(deps.geminiModel, { ...request, grounded: false }) : 0);
-  const reservation = reserve(userId, deps.geminiModel, worst, deps.capUsd);
+  const worst = geminiWorstUsd(request.model, request) + (retry ? geminiWorstUsd(request.model, { ...request, grounded: false }) : 0);
+  const reservation = reserve(userId, request.model, worst, deps.capUsd);
   let usageKnown = true;
   let billed = 0;
   try {
@@ -354,10 +359,10 @@ async function callGemini(deps: FollowUpDeps, userId: string, request: GeminiReq
       result = await deps.gemini(deps.googleKey, request);
     } catch (err) {
       if (!(err instanceof GeminiError) || !err.groundingUnavailable || !retry) throw err;
-      billed += err.usage ? geminiCostUsd(deps.geminiModel, err.usage) : 0;
+      billed += err.usage ? geminiCostUsd(request.model, err.usage) : 0;
       result = await deps.gemini(deps.googleKey, { ...request, grounded: false });
     }
-    billed += geminiCostUsd(deps.geminiModel, result.usage);
+    billed += geminiCostUsd(request.model, result.usage);
     usageKnown = result.usageKnown;
     // A reply without usage figures keeps the worst case: what it billed is unknown.
     if (usageKnown) SpendRepository.settle(reservation, billed);
@@ -365,7 +370,7 @@ async function callGemini(deps: FollowUpDeps, userId: string, request: GeminiReq
   } catch (err) {
     if (err instanceof GeminiError) {
       // Unknown billing (timeout, unreadable reply) keeps the worst case reserved.
-      if (!err.billingUnknown) SpendRepository.settle(reservation, billed + (err.usage ? geminiCostUsd(deps.geminiModel, err.usage) : 0));
+      if (!err.billingUnknown) SpendRepository.settle(reservation, billed + (err.usage ? geminiCostUsd(request.model, err.usage) : 0));
       if (err.keyRejected) {
         throw new HttpError(503, "Google rejected the API key (it may be invalid, deleted, or not a Gemini API key). Create one at aistudio.google.com/app/apikey, put it in .env.local as GOOGLE_GENERATIVE_AI_API_KEY and restart the app.");
       }
@@ -396,11 +401,11 @@ async function callDeepSeek(deps: FollowUpDeps, userId: string, system: string, 
 }
 
 /** A JSON reply from either provider (no web search). Images go to Gemini only. */
-async function askJson(deps: FollowUpDeps, provider: ProviderName, userId: string, system: string, user: string, images: GeminiImage[] = []): Promise<{ json: unknown; model: string }> {
+async function askJson(deps: FollowUpDeps, provider: ProviderName, userId: string, system: string, user: string, images: GeminiImage[] = [], model = deps.geminiModel): Promise<{ json: unknown; model: string }> {
   if (provider === "deepseek") return callDeepSeek(deps, userId, system, user);
-  const result = await callGemini(deps, userId, { model: deps.geminiModel, system, turns: [{ role: "user", text: user, images }], grounded: false, json: true, maxOutputTokens: MAX_OUTPUT_TOKENS, thinkingLevel: "MEDIUM" }, false);
+  const result = await callGemini(deps, userId, { model, system, turns: [{ role: "user", text: user, images }], grounded: false, json: true, maxOutputTokens: MAX_OUTPUT_TOKENS, thinkingLevel: "MEDIUM" }, false);
   try {
-    return { json: JSON.parse(result.text.replace(/^```(?:json)?\s*|\s*```$/g, "")), model: deps.geminiModel };
+    return { json: JSON.parse(result.text.replace(/^```(?:json)?\s*|\s*```$/g, "")), model };
   } catch {
     throw new HttpError(502, "Google returned a study pack that was not valid JSON.");
   }
@@ -481,13 +486,17 @@ async function generatePack(deps: FollowUpDeps, userId: string, f: Facts, ctx: S
   const parsed = parsePack(made.json, ctx);
 
   // A second AI answers the practice questions blind; only questions it answers the same way stay.
-  const checker: ProviderName = generator === "google" ? "deepseek" : "google";
+  // The checker is the other provider; without it, a different Google model (less independent, still a second model).
+  const checker: { provider: ProviderName; model?: string } | null =
+    generator === "google"
+      ? deps.deepseek ? { provider: "deepseek" } : deps.geminiCheckModel && deps.geminiCheckModel !== deps.geminiModel ? { provider: "google", model: deps.geminiCheckModel } : null
+      : deps.googleKey ? { provider: "google" } : null;
   let practice: StudyPackQuestion[] = parsed.practice.map((p) => ({ ...p, crossChecked: false }));
   let checkedBy: string | null = null;
-  if (parsed.practice.length && available(deps, checker)) {
+  if (parsed.practice.length && checker) {
     try {
       const questions = parsed.practice.map((p, i) => `Q${i + 1}. ${p.question}\n${p.options.map((o) => `${o.id}. ${o.text}`).join("\n")}`).join("\n\n");
-      const checked = await askJson(deps, checker, userId, CHECK_SYSTEM, questions);
+      const checked = await askJson(deps, checker.provider, userId, CHECK_SYSTEM, questions, [], checker.model);
       const answers = (checked.json as { answers?: unknown })?.answers;
       if (Array.isArray(answers)) {
         practice = parsed.practice.filter((p, i) => answers[i] === p.answer).map((p) => ({ ...p, crossChecked: true }));

@@ -9,7 +9,7 @@ import fs from "node:fs";
 import crypto from "node:crypto";
 
 const N = Math.max(1, Math.min(20, Number(process.argv[2] ?? 8)));
-const { askFollowUp, followUpDeps } = await import("../src/lib/server/followup/followup.ts");
+const { askFollowUp, followUpDeps, waitForStudyPacks } = await import("../src/lib/server/followup/followup.ts");
 const { madeEasyOverview, madeEasyTest, madeEasyOwner } = await import("../src/lib/server/made-easy.ts");
 
 const owner = madeEasyOwner();
@@ -19,7 +19,7 @@ if (!base.googleKey || !base.deepseek) throw new Error("Both GOOGLE_GENERATIVE_A
 
 // Spread across the tests; wrong answers first, as a learner would ask about those.
 const questions = madeEasyOverview().tests
-  .flatMap((t) => madeEasyTest(t.code).questions.filter((q) => q.sourceQuality === "verified_text"))
+  .flatMap((t) => madeEasyTest(t.code).questions.filter((q) => q.sourceQuality !== "visual_review_required"))
   .sort((a, b) => (a.status === b.status ? 0 : a.status === "incorrect" ? -1 : 1))
   .filter((q, i, all) => all.findIndex((x) => x.testCode === q.testCode) === i || i % 3 === 0)
   .slice(0, N);
@@ -56,7 +56,12 @@ for (const [i, q] of questions.entries()) {
   console.log(`${i + 1}/${questions.length} ${q.id}`);
 }
 
-const out = `output/followup-comparison-${new Date().toISOString().slice(0, 10)}.json`;
+// Study packs started by these asks run in the background; let them settle their reservations before exiting.
+await waitForStudyPacks();
+const stamp = new Date().toISOString().slice(0, 10);
 fs.mkdirSync("output", { recursive: true });
-fs.writeFileSync(out, JSON.stringify(rows, null, 2));
-console.log(`Wrote ${out}. Judge X vs Y blind (correctness vs the key and explanation, no invented facts, exam usefulness), then read _reveal.`);
+const blind = `output/followup-comparison-${stamp}.json`;
+const reveal = `output/followup-comparison-${stamp}.reveal.json`;
+fs.writeFileSync(blind, JSON.stringify(rows.map(({ _reveal, ...row }) => row), null, 2));
+fs.writeFileSync(reveal, JSON.stringify(rows.map((row) => ({ questionId: row.questionId, ...row._reveal })), null, 2));
+console.log(`Wrote ${blind} (blind) and ${reveal}. Judge X vs Y blind (correctness vs the key and explanation, no invented facts, exam usefulness), then read the reveal file.`);

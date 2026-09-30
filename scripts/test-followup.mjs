@@ -108,7 +108,7 @@ function fakeDeepSeek(answers) {
 const fakeImage = async (url) => (url.startsWith("https://cdnstatic.madeeasyprime.com/") ? { mimeType: "image/png", data: Buffer.from(url).toString("base64") } : null);
 
 function deps(overrides = {}) {
-  return { provider: "google", googleKey: "test-key-not-real", geminiModel: "gemini-3.8-flash", deepseek: null, deepseekModel: "deepseek-v4-pro", capUsd: 5, gemini: fakeGemini(), fetchImage: fakeImage, ...overrides };
+  return { provider: "google", googleKey: "test-key-not-real", geminiModel: "gemini-3.8-flash", deepseek: null, deepseekModel: "deepseek-v4-pro", geminiCheckModel: null, capUsd: 5, gemini: fakeGemini(), fetchImage: fakeImage, ...overrides };
 }
 
 const spentSince = (since) => SpendRepository.totalSince(since);
@@ -294,6 +294,28 @@ await test("study pack: an invented topic id is dropped; without a second AI the
   assert.equal(pack.practice.length, 3);
   assert.ok(pack.practice.every((p) => !p.crossChecked));
   assert.equal(pack.checkedBy, null);
+});
+
+await test("study pack: without DeepSeek a different Google model checks the practice questions, priced as that model", async () => {
+  const flash = fakeGemini({ topicId: VALUATION });
+  const gemini = async (key, request) => {
+    if (request.model === "gemini-3.1-pro-preview") {
+      flash.calls.push(request);
+      return { text: JSON.stringify({ answers: ["A", "B", "C"] }), finishReason: "STOP", usage: { promptTokens: 400, outputTokens: 300, searchQueries: 0 }, grounded: false, sources: [], searchEntryPointHtml: null, usageKnown: true };
+    }
+    return flash(key, request);
+  };
+  paper("fu-mock-g", "mock", { ownerUserId: learner });
+  question("fu-g", "fu-mock-g", "Depreciation of an old building bought for Rs 50,000 by the straight line method?", ["W", "X", "Y", "Z"], { metadata: { text_quality: "text_layer", testbook_question_id: "tb-g" } });
+  B.upsertGlobalEvidence({ questionId: "fu-g", authority: "testbook_portal", sourceGroup: "testbook", sourceLabel: "Testbook solution", answer: "A", detail: {} });
+  const before = spentSince(new Date(0));
+  const { pack } = await studyPack(learner, { kind: "bank", id: "fu-g", generate: true }, deps({ gemini, geminiCheckModel: "gemini-3.1-pro-preview" }), { wait: true });
+  assert.equal(pack.checkedBy, "gemini-3.1-pro-preview");
+  assert.deepEqual(pack.practice.map((p) => p.question), ["Depreciation by straight line method is", "Scrap value of a building is its value"], "only questions both models answered the same way (Q3: B vs C dropped)");
+  const checkCall = flash.calls.find((c) => c.model === "gemini-3.1-pro-preview");
+  assert.doesNotMatch(checkCall.turns[0].text, /"answer"|Answer:/, "the checker never sees the answers");
+  const expected = geminiCostUsd("gemini-3.8-flash", { promptTokens: 2000, outputTokens: 900, searchQueries: 0 }) + geminiCostUsd("gemini-3.1-pro-preview", { promptTokens: 400, outputTokens: 300, searchQueries: 0 });
+  assert.ok(Math.abs(spentSince(new Date(0)) - before - expected) < 1e-9);
 });
 
 await test("study pack: nothing is generated without asking, and another learner can't see a private question's pack", async () => {
