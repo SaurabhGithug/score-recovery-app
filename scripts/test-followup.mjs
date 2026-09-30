@@ -115,6 +115,8 @@ function deps(overrides = {}) {
 }
 
 const spentSince = (since) => SpendRepository.totalSince(since);
+/** Background study packs and answer checks from earlier asks must finish before spend is measured. */
+const settled = async () => { await waitForStudyPacks(); await waitForAnswerChecks(); };
 
 // ---------------------------------------------------------------- Made Easy access
 await test("Made Easy: only the recorded owner account can read it", () => {
@@ -218,6 +220,7 @@ await test("follow-up: history must alternate and stay short; long messages are 
 });
 
 await test("follow-up: no Google key means a clear 503, and no money is reserved", async () => {
+  await settled();
   const before = spentSince(new Date(0));
   await rejectsWith(askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why?" }, deps({ googleKey: null })), 503, /GOOGLE_GENERATIVE_AI_API_KEY/);
   assert.equal(spentSince(new Date(0)), before);
@@ -242,7 +245,7 @@ await test("follow-up: only a Search-tool refusal is retried without search, lab
 
 await test("follow-up: spend is reserved first and settled to the billed cost; the daily limit refuses", async () => {
   // Pack cached from earlier tests, so this ask makes one billed call.
-  await waitForStudyPacks();
+  await settled();
   const before = spentSince(new Date(0));
   await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why?" }, deps());
   const expected = geminiCostUsd("gemini-3.8-flash", { promptTokens: 1000, outputTokens: 500, searchQueries: 2 });
@@ -252,7 +255,7 @@ await test("follow-up: spend is reserved first and settled to the billed cost; t
 });
 
 await test("follow-up: a timeout keeps the worst case reserved (Google may have billed it)", async () => {
-  await waitForStudyPacks();
+  await settled();
   const before = spentSince(new Date(0));
   const gemini = fakeGemini({ throwError: (r) => (r.json ? null : new GeminiError("Could not reach Google: The operation was aborted due to timeout", 0, null, true)) });
   await rejectsWith(askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why?" }, deps({ gemini })), 502);
@@ -311,6 +314,7 @@ await test("study pack: without DeepSeek a different Google model checks the pra
   paper("fu-mock-g", "mock", { ownerUserId: learner });
   question("fu-g", "fu-mock-g", "Depreciation of an old building bought for Rs 50,000 by the straight line method?", ["W", "X", "Y", "Z"], { metadata: { text_quality: "text_layer", testbook_question_id: "tb-g" } });
   B.upsertGlobalEvidence({ questionId: "fu-g", authority: "testbook_portal", sourceGroup: "testbook", sourceLabel: "Testbook solution", answer: "A", detail: {} });
+  await settled();
   const before = spentSince(new Date(0));
   const { pack } = await studyPack(learner, { kind: "bank", id: "fu-g", generate: true }, deps({ gemini, geminiCheckModel: "gemini-3.1-pro-preview" }), { wait: true });
   assert.equal(pack.checkedBy, "gemini-3.1-pro-preview");
@@ -338,7 +342,7 @@ await test("study pack: the answer never waits for it; concurrent requests make 
   assert.deepEqual(joined, { pack: null, pending: true, error: null });
   release();
   await waitForStudyPacks();
-  assert.equal(gemini.calls.filter((c) => c.json).length, 1, "made once");
+  assert.equal(gemini.calls.filter((c) => c.json && c.system.startsWith("You prepare study material")).length, 1, "made once");
   const polled = await studyPack(OWNER, { kind: "made_easy", id: "test-09-q30" }, deps({ gemini }));
   assert.ok(polled.pack && polled.pack.practice.length === 3);
 });
@@ -361,7 +365,7 @@ await test("study pack: internal errors are not shown to the learner; an empty p
 });
 
 await test("follow-up: a reply without usage figures keeps the worst case reserved", async () => {
-  await waitForStudyPacks();
+  await settled();
   const before = spentSince(new Date(0));
   await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why?" }, deps({ gemini: fakeGemini({ usageKnown: false }) }));
   const kept = spentSince(new Date(0)) - before;
@@ -369,9 +373,31 @@ await test("follow-up: a reply without usage figures keeps the worst case reserv
 });
 
 // ---------------------------------------------------------------- answer checks
-await test("answer check: without a second model there is no check, and the answer says so", async () => {
-  const answer = await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why A?" }, deps());
-  assert.deepEqual(answer.check, { id: null, status: "unavailable" });
+await test("answer check: with only one Google model it checks itself at high thinking, labelled as the same model; with no second AI at all there is no check", async () => {
+  const gemini = fakeGemini();
+  const answer = await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why A?" }, deps({ gemini }));
+  await settled();
+  const result = answerCheck(OWNER, answer.check.id);
+  assert.equal(result.checkedBy, "gemini-3.8-flash");
+  assert.equal(result.independence, "same_model", "shown as a re-check by the same AI, not a second AI");
+  assert.equal(gemini.calls.find((c) => c.system.startsWith("You check a tutor's answer")).thinkingLevel, "HIGH");
+  const deepseekOnly = { name: "fake", async completeJson() { return { json: { answer: "Because." }, usage: { promptCacheHitTokens: 0, promptCacheMissTokens: 10, completionTokens: 10, reasoningTokens: 0 }, model: "deepseek-v4-pro", finishReason: "stop" }; } };
+  const alone = await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why A?" }, deps({ provider: "deepseek", googleKey: null, deepseek: deepseekOnly }));
+  assert.deepEqual(alone.check, { id: null, status: "unavailable" });
+});
+
+await test("answer check: when the second Google model hits its quota, the next checker is used", async () => {
+  const base = fakeGemini();
+  const gemini = async (key, request) => {
+    if (request.model === "gemini-3.1-pro-preview") throw new GeminiError("You exceeded your current quota", 429);
+    return base(key, request);
+  };
+  const answer = await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why A?" }, deps({ gemini, geminiCheckModel: "gemini-3.1-pro-preview" }));
+  await settled();
+  const result = answerCheck(OWNER, answer.check.id);
+  assert.equal(result.status, "done");
+  assert.equal(result.checkedBy, "gemini-3.8-flash");
+  assert.equal(result.independence, "same_model");
 });
 
 await test("answer check: a second Google model checks the answer in the background, with the key and images; only the asker can read it", async () => {
@@ -384,6 +410,7 @@ await test("answer check: a second Google model checks the answer in the backgro
   assert.equal(result.status, "done");
   assert.equal(result.verdict, "consistent");
   assert.equal(result.checkedBy, "gemini-3.1-pro-preview");
+  assert.equal(result.independence, "same_vendor");
   const verify = gemini.calls.find((c) => c.model === "gemini-3.1-pro-preview");
   assert.match(verify.turns[0].text, /ANSWER KEY: A/);
   assert.match(verify.turns[0].text, /TUTOR'S ANSWER TO CHECK:\nBecause the lysimeter measures evapotranspiration\./);
@@ -409,6 +436,7 @@ await test("answer check: DeepSeek is preferred as the checker; its problems and
   const result = answerCheck(OWNER, answer.check.id);
   assert.equal(result.verdict, "issues");
   assert.equal(result.checkedBy, "deepseek-v4-pro");
+  assert.equal(result.independence, "other_provider");
   assert.equal(result.keyConcern, true);
   assert.equal(result.issues[0].correction, "A lysimeter measures actual evapotranspiration.");
   assert.match(deepseek.calls.find((c) => c.system.startsWith("You check"))?.user ?? "", /images you cannot see/, "DeepSeek is told it can't see the table");
@@ -454,6 +482,7 @@ await test("follow-up (bank): a learner's own dispute resolution is not presente
   assert.match(gemini.calls.find((c) => !c.json).turns[0].text, /learner's own resolution of a dispute/);
 });
 
+await settled();
 db.close?.();
 fs.rmSync(temp, { recursive: true, force: true });
 console.log(`\n${passed} tests passed`);

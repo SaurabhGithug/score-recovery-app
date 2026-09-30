@@ -158,7 +158,7 @@ const PEAK_AT = new Date(Date.UTC(2026, 0, 5, 7)); // a Monday, 07:00 UTC: peak 
 export function worstCaseUsd(request: JsonCompletionRequest): number {
   const promptTokens = Math.ceil((request.system.length + request.user.length) / 3);
   const usage: LlmUsage = { promptCacheHitTokens: 0, promptCacheMissTokens: promptTokens, completionTokens: request.maxTokens, reasoningTokens: 0 };
-  return DEEPSEEK_MAX_ATTEMPTS * costUsd(request.model, usage, PEAK_AT);
+  return DEEPSEEK_MAX_ATTEMPTS * costUsd(request.model, usage, PEAK_AT, true);
 }
 
 /**
@@ -512,7 +512,7 @@ export function depsFromSetup(spendUserId: string): ExplainDeps {
   }
   return {
     provider: setup.provider,
-    checkModel: setup.checkModel,
+    checkModel: setup.explainCheckModel,
     checkEffort: setup.checkEffort,
     generationModel: setup.generationModel,
     budgetUsd: Math.min(setup.maxUsdPerRun, remaining),

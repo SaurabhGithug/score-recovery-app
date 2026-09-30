@@ -386,8 +386,8 @@ await test("deepseek: 503 is retried and then succeeds", async () => {
 globalThis.fetch = realFetch;
 
 // ---------------------------------------------------------------- full run on a temp database
-const owner = UserRepository.findOrCreateByName(`GenOwner_${Date.now()}`);
-const outsider = UserRepository.findOrCreateByName(`GenOutsider_${Date.now()}`);
+const owner = UserRepository.register(`GenOwner_${Date.now()}`, "test-password-123").user;
+const outsider = UserRepository.register(`GenOutsider_${Date.now()}`, "test-password-123").user;
 const doc = DocumentRepository.create({
   userId: owner.id,
   originalName: "Secret_Personal_Notes_Filename.pdf",

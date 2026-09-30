@@ -51,7 +51,7 @@ if (dryRun) {
   const toSend = plan.filter((p) => p.action === "send");
   const cost = toSend.reduce(
     (sum, p) => {
-      const e = estimateQuestionCostUsd(byId.get(p.questionId), setup.checkModel, setup.generationModel);
+      const e = estimateQuestionCostUsd(byId.get(p.questionId), setup.explainCheckModel, setup.generationModel);
       return { offPeak: sum.offPeak + e.offPeak, peak: sum.peak + e.peak };
     },
     { offPeak: 0, peak: 0 }
@@ -63,7 +63,7 @@ if (dryRun) {
     title: paper.title,
     configured: setup.configured,
     unavailableReason: setup.unavailableReason,
-    models: { blindSolve: setup.checkModel, teachingNote: setup.generationModel },
+    models: { blindSolve: setup.explainCheckModel, teachingNote: setup.generationModel },
     counts,
     estimatedUsd: { offPeak: Number(cost.offPeak.toFixed(4)), peak: Number(cost.peak.toFixed(4)) },
     limits: { perRun: setup.maxUsdPerRun, perDay: setup.maxUsdPerDay },
@@ -73,7 +73,7 @@ if (dryRun) {
     console.log(JSON.stringify(out, null, 2));
   } else {
     console.log(`${paper.title} (${paperId}) — dry run, no model called`);
-    console.log(`Models: blind solve ${setup.checkModel}, teaching note ${setup.generationModel}${setup.configured ? "" : `  [not configured: ${setup.unavailableReason}]`}`);
+    console.log(`Models: blind solve ${setup.explainCheckModel}, teaching note ${setup.generationModel}${setup.configured ? "" : `  [not configured: ${setup.unavailableReason}]`}`);
     for (const [action, n] of Object.entries(counts)) console.log(`  ${String(n).padStart(4)}  ${action}`);
     console.log(`Estimated cost for ${toSend.length} question(s): $${out.estimatedUsd.offPeak} off-peak, $${out.estimatedUsd.peak} peak (limits: $${setup.maxUsdPerRun}/run, $${setup.maxUsdPerDay}/24h)`);
   }

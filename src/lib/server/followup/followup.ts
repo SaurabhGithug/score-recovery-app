@@ -32,7 +32,7 @@ import { optionLabel, textReliable } from "../../../components/bank/optionOrder"
 import { canReadMadeEasy, madeEasyQuestion } from "../made-easy";
 import { getLlmSetup } from "../llm";
 import { DeepSeekProvider, DEEPSEEK_MAX_ATTEMPTS } from "../llm/deepseek";
-import { costUsd } from "../generation/pricing";
+import { costUsd, geminiRate } from "../generation/pricing";
 import { LlmError, type LlmProvider, type LlmUsage } from "../llm/types";
 import { GeminiError, geminiGenerate, type GeminiImage, type GeminiRequest, type GeminiResult, type GeminiTurn, type GeminiUsage } from "./gemini";
 import { sourceHtmlImages } from "../source-html";
@@ -77,6 +77,8 @@ export interface AnswerCheck {
   /** The checker thinks the source's answer key itself may be wrong. */
   keyConcern?: boolean;
   checkedBy?: string;
+  /** How independent the checker is: another company's model, another Google model, or the same model re-checking. */
+  independence?: "other_provider" | "same_vendor" | "same_model";
   error?: string;
 }
 
@@ -255,31 +257,18 @@ const DEFAULT_DEEPSEEK_MODEL = "deepseek-v4-pro";
 /** Listed for this key on 2026-09-30 (preview; $2/$12 per 1M tokens). */
 const DEFAULT_GEMINI_CHECK_MODEL = "gemini-3.1-pro-preview";
 
-/** USD per 1M tokens. Source: ai.google.dev/gemini-api/docs/pricing, checked 2026-09-30. */
-const GEMINI_PRICES: Record<string, { input: number; output: number; introUntil?: string; intro?: { input: number; output: number } }> = {
-  "gemini-3.8-flash": { input: 1.5, output: 7.5, introUntil: "2027-01-01", intro: { input: 0.75, output: 3.75 } },
-  "gemini-3.7-flash": { input: 1.5, output: 7.5, introUntil: "2027-01-01", intro: { input: 0.75, output: 3.75 } },
-  "gemini-3.6-flash": { input: 1.5, output: 7.5, introUntil: "2027-01-01", intro: { input: 0.75, output: 3.75 } },
-  "gemini-3.5-flash": { input: 1.5, output: 9 },
-  "gemini-3.5-flash-lite": { input: 0.3, output: 2.5 },
-  "gemini-3.1-pro-preview": { input: 2, output: 12 },
-};
-/** Unknown models are costed at the dearest listed rate (3.1 Pro above 200k tokens). */
-const GEMINI_FALLBACK = { input: 4, output: 18 };
 /** Grounding: 5,000 free searches a month, then $14 per 1,000; the free quota isn't tracked, so every search is charged. */
 const SEARCH_USD = 0.014;
 const WORST_CASE_SEARCHES = 10;
 
 export function geminiCostUsd(model: string, usage: GeminiUsage, at: Date = new Date()): number {
-  const p = GEMINI_PRICES[model];
-  const rate = p ? (p.intro && p.introUntil && at < new Date(p.introUntil) ? p.intro : p) : GEMINI_FALLBACK;
+  const rate = geminiRate(model, at);
   return (usage.promptTokens * rate.input + usage.outputTokens * rate.output) / 1_000_000 + usage.searchQueries * SEARCH_USD;
 }
 
 /** The most one Gemini attempt can bill, at post-introductory rates: never under-reserve. */
 export function geminiWorstUsd(model: string, request: Pick<GeminiRequest, "system" | "turns" | "grounded" | "maxOutputTokens">): number {
-  const p = GEMINI_PRICES[model];
-  const rate = p ? { input: p.input, output: p.output } : GEMINI_FALLBACK;
+  const rate = geminiRate(model, new Date(), true);
   const promptChars = request.system.length + request.turns.reduce((n, t) => n + t.text.length, 0);
   const imageTokens = request.turns.reduce((n, t) => n + (t.images?.length ?? 0), 0) * IMAGE_TOKENS;
   const outputTokens = request.maxOutputTokens;
@@ -388,6 +377,7 @@ async function callGemini(deps: FollowUpDeps, userId: string, request: GeminiReq
       if (err.keyRejected) {
         throw new HttpError(503, "Google rejected the API key (it may be invalid, deleted, or not a Gemini API key). Create one at aistudio.google.com/app/apikey, put it in .env.local as GOOGLE_GENERATIVE_AI_API_KEY and restart the app.");
       }
+      if (err.status === 429) throw new HttpError(429, `Google's rate limit or quota for ${request.model} was reached. Try again in a minute.`);
       throw new HttpError(502, `Google could not answer: ${err.message}`);
     }
     throw err; // unknown failure: the reservation stays at the worst case
@@ -400,7 +390,7 @@ async function callDeepSeek(deps: FollowUpDeps, userId: string, system: string, 
   const request = { model: deps.deepseekModel, system, user, thinking: true, maxTokens: MAX_OUTPUT_TOKENS };
   const peak = new Date(Date.UTC(2026, 0, 5, 7));
   const worst: LlmUsage = { promptCacheHitTokens: 0, promptCacheMissTokens: Math.ceil((system.length + user.length) / 3), completionTokens: MAX_OUTPUT_TOKENS, reasoningTokens: 0 };
-  const reservation = reserve(userId, request.model, DEEPSEEK_MAX_ATTEMPTS * costUsd(request.model, worst, peak), deps.capUsd);
+  const reservation = reserve(userId, request.model, DEEPSEEK_MAX_ATTEMPTS * costUsd(request.model, worst, peak, true), deps.capUsd);
   try {
     const result = await deps.deepseek.completeJson(request);
     SpendRepository.settle(reservation, costUsd(request.model, result.usage));
@@ -415,9 +405,18 @@ async function callDeepSeek(deps: FollowUpDeps, userId: string, system: string, 
 }
 
 /** A JSON reply from either provider (no web search). Images go to Gemini only. */
-async function askJson(deps: FollowUpDeps, provider: ProviderName, userId: string, system: string, user: string, images: GeminiImage[] = [], model = deps.geminiModel): Promise<{ json: unknown; model: string }> {
+async function askJson(
+  deps: FollowUpDeps,
+  provider: ProviderName,
+  userId: string,
+  system: string,
+  user: string,
+  images: GeminiImage[] = [],
+  model = deps.geminiModel,
+  thinkingLevel: GeminiRequest["thinkingLevel"] = "MEDIUM"
+): Promise<{ json: unknown; model: string }> {
   if (provider === "deepseek") return callDeepSeek(deps, userId, system, user);
-  const result = await callGemini(deps, userId, { model, system, turns: [{ role: "user", text: user, images }], grounded: false, json: true, maxOutputTokens: MAX_OUTPUT_TOKENS, thinkingLevel: "MEDIUM" }, false);
+  const result = await callGemini(deps, userId, { model, system, turns: [{ role: "user", text: user, images }], grounded: false, json: true, maxOutputTokens: MAX_OUTPUT_TOKENS, thinkingLevel }, false);
   try {
     return { json: JSON.parse(result.text.replace(/^```(?:json)?\s*|\s*```$/g, "")), model };
   } catch {
@@ -425,17 +424,57 @@ async function askJson(deps: FollowUpDeps, provider: ProviderName, userId: strin
   }
 }
 
+interface Checker {
+  provider: ProviderName;
+  model?: string;
+  thinkingLevel?: GeminiRequest["thinkingLevel"];
+  /** The same model that did the work: least independent, used only when nothing else is available. */
+  sameModel?: boolean;
+}
+
 /**
- * The model that checks another model's work: the other provider (independent errors), else a
- * different Google model (same vendor, so less independent, but still a second model), else none.
+ * Who checks another model's work, in order of preference:
+ * 1. the other provider (independent errors);
+ * 2. a different Google model (same vendor, so less independent);
+ * 3. the same Google model with high thinking (least independent).
+ * The next one is tried when one is rate-limited or not set up.
  */
-function secondModel(deps: FollowUpDeps, primary: ProviderName): { provider: ProviderName; model?: string } | null {
+function checkers(deps: FollowUpDeps, primary: ProviderName): Checker[] {
+  const out: Checker[] = [];
   if (primary === "google") {
-    if (deps.deepseek) return { provider: "deepseek" };
-    if (deps.googleKey && deps.geminiCheckModel && deps.geminiCheckModel !== deps.geminiModel) return { provider: "google", model: deps.geminiCheckModel };
-    return null;
+    if (deps.deepseek) out.push({ provider: "deepseek" });
+    if (deps.googleKey && deps.geminiCheckModel && deps.geminiCheckModel !== deps.geminiModel) out.push({ provider: "google", model: deps.geminiCheckModel });
+    if (deps.googleKey) out.push({ provider: "google", model: deps.geminiModel, thinkingLevel: "HIGH", sameModel: true });
+  } else if (deps.googleKey) {
+    out.push({ provider: "google" });
   }
-  return deps.googleKey ? { provider: "google" } : null;
+  return out;
+}
+
+/**
+ * Runs a JSON check with the first checker that succeeds; any provider failure (rate limit, quota,
+ * outage, bad reply) moves on to the next. Every attempt reserves and settles its own cost.
+ */
+async function runCheck(
+  deps: FollowUpDeps,
+  primary: ProviderName,
+  userId: string,
+  system: string,
+  prompt: (checker: Checker) => Promise<{ user: string; images: GeminiImage[] }>
+): Promise<{ json: unknown; model: string; independence: NonNullable<AnswerCheck["independence"]> }> {
+  let last: unknown = new HttpError(503, "No second AI is set up.");
+  for (const checker of checkers(deps, primary)) {
+    try {
+      const { user, images } = await prompt(checker);
+      const result = await askJson(deps, checker.provider, userId, system, user, images, checker.model, checker.thinkingLevel ?? "MEDIUM");
+      const independence = checker.sameModel ? "same_model" : checker.provider !== primary ? "other_provider" : "same_vendor";
+      return { ...result, independence };
+    } catch (err) {
+      last = err;
+      if (!(err instanceof HttpError)) throw err;
+    }
+  }
+  throw last;
 }
 
 // ---------------------------------------------------------------- answer checks
@@ -471,17 +510,17 @@ function parseCheck(json: unknown): Omit<AnswerCheck, "status" | "checkedBy"> {
 function startCheck(deps: FollowUpDeps, userId: string, facts: Facts, question: string, answer: string, answeredBy: ProviderName): string | null {
   const now = Date.now();
   for (const [id, c] of checks) if (now - c.createdAt > CHECK_TTL_MS) checks.delete(id);
-  const checker = secondModel(deps, answeredBy);
-  if (!checker) return null;
+  if (!checkers(deps, answeredBy).length) return null;
   const id = `chk_${crypto.randomBytes(12).toString("hex")}`;
   const entry = { userId, createdAt: now, result: { status: "pending" } as AnswerCheck, job: Promise.resolve() };
   entry.job = (async () => {
     try {
-      const images = checker.provider === "google" ? await loadImages(deps, facts) : null;
-      const attached = images !== null && images.length > 0;
-      const prompt = `${factsBlock(facts, attached)}\n\nLEARNER'S QUESTION: ${question}\n\nTUTOR'S ANSWER TO CHECK:\n${answer}`;
-      const checked = await askJson(deps, checker.provider, userId, VERIFY_SYSTEM, prompt, attached ? images! : [], checker.model);
-      entry.result = { status: "done", ...parseCheck(checked.json), checkedBy: checked.model };
+      const checked = await runCheck(deps, answeredBy, userId, VERIFY_SYSTEM, async (checker) => {
+        const images = checker.provider === "google" ? await loadImages(deps, facts) : null;
+        const attached = images !== null && images.length > 0;
+        return { user: `${factsBlock(facts, attached)}\n\nLEARNER'S QUESTION: ${question}\n\nTUTOR'S ANSWER TO CHECK:\n${answer}`, images: attached ? images! : [] };
+      });
+      entry.result = { status: "done", ...parseCheck(checked.json), checkedBy: checked.model, independence: checked.independence };
     } catch (err) {
       if (!(err instanceof HttpError)) console.error("[answer check]", err);
       entry.result = { status: "failed", error: err instanceof HttpError ? err.message : "The second AI could not check this answer." };
@@ -579,17 +618,19 @@ async function generatePack(deps: FollowUpDeps, userId: string, f: Facts, ctx: S
 
   // A second AI answers the practice questions blind; only questions it answers the same way stay.
   // The checker is the other provider; without it, a different Google model (less independent, still a second model).
-  const checker = secondModel(deps, generator);
+  const canCheck = checkers(deps, generator).length > 0;
   let practice: StudyPackQuestion[] = parsed.practice.map((p) => ({ ...p, crossChecked: false }));
   let checkedBy: string | null = null;
-  if (parsed.practice.length && checker) {
+  if (parsed.practice.length && canCheck) {
     try {
       const questions = parsed.practice.map((p, i) => `Q${i + 1}. ${p.question}\n${p.options.map((o) => `${o.id}. ${o.text}`).join("\n")}`).join("\n\n");
-      const checked = await askJson(deps, checker.provider, userId, CHECK_SYSTEM, questions, [], checker.model);
+      const checked = await runCheck(deps, generator, userId, CHECK_SYSTEM, async () => ({ user: questions, images: [] }));
       const answers = (checked.json as { answers?: unknown })?.answers;
       if (Array.isArray(answers)) {
-        practice = parsed.practice.filter((p, i) => answers[i] === p.answer).map((p) => ({ ...p, crossChecked: true }));
-        checkedBy = checked.model;
+        // A same-model re-solve still filters out questions it answers differently, but isn't an independent check.
+        const independent = checked.independence !== "same_model";
+        practice = parsed.practice.filter((p, i) => answers[i] === p.answer).map((p) => ({ ...p, crossChecked: independent }));
+        checkedBy = independent ? checked.model : null;
       }
     } catch {
       // The checker failed: keep the questions, marked not cross-checked.

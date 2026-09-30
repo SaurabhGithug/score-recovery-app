@@ -16,6 +16,29 @@ const PEAK_PRICES: Record<string, { hit: number; miss: number; output: number }>
 /** Models we don't have prices for are costed at the most expensive known rate. */
 const FALLBACK = PEAK_PRICES["deepseek-v4-pro"];
 
+/**
+ * Google Gemini list prices in USD per 1M tokens (paid tier; thinking billed as output).
+ * Source: https://ai.google.dev/gemini-api/docs/pricing — checked 2026-09-30. No peak/off-peak.
+ * 3.8/3.7/3.6 Flash are at an introductory price until 2027-01-01.
+ */
+export const GEMINI_PRICES: Record<string, { input: number; output: number; introUntil?: string; intro?: { input: number; output: number } }> = {
+  "gemini-3.8-flash": { input: 1.5, output: 7.5, introUntil: "2027-01-01", intro: { input: 0.75, output: 3.75 } },
+  "gemini-3.7-flash": { input: 1.5, output: 7.5, introUntil: "2027-01-01", intro: { input: 0.75, output: 3.75 } },
+  "gemini-3.6-flash": { input: 1.5, output: 7.5, introUntil: "2027-01-01", intro: { input: 0.75, output: 3.75 } },
+  "gemini-3.5-flash": { input: 1.5, output: 9 },
+  "gemini-3.5-flash-lite": { input: 0.3, output: 2.5 },
+  "gemini-3.1-pro-preview": { input: 2, output: 12 },
+};
+/** Unknown Gemini models are costed at the dearest listed rate (3.1 Pro above 200k tokens). */
+export const GEMINI_FALLBACK = { input: 4, output: 18 };
+
+/** A Gemini model's rate at `at`; `worst` ignores introductory prices (for reservations). */
+export function geminiRate(model: string, at: Date = new Date(), worst = false): { input: number; output: number } {
+  const p = GEMINI_PRICES[model];
+  if (!p) return GEMINI_FALLBACK;
+  return !worst && p.intro && p.introUntil && at < new Date(p.introUntil) ? p.intro : { input: p.input, output: p.output };
+}
+
 export function isPeak(at: Date): boolean {
   const day = at.getUTCDay();
   if (day === 0 || day === 6) return false;
@@ -23,7 +46,13 @@ export function isPeak(at: Date): boolean {
   return (hour >= 1 && hour < 4) || (hour >= 6 && hour < 10);
 }
 
-export function costUsd(model: string, usage: LlmUsage, at: Date = new Date()): number {
+/** @param worst reservations: ignore introductory prices so a reservation never falls below the bill. */
+export function costUsd(model: string, usage: LlmUsage, at: Date = new Date(), worst = false): number {
+  if (model.startsWith("gemini-")) {
+    // Cached prompt tokens are charged at the full input rate: never under-counted.
+    const rate = geminiRate(model, at, worst);
+    return ((usage.promptCacheHitTokens + usage.promptCacheMissTokens) * rate.input + usage.completionTokens * rate.output) / 1_000_000;
+  }
   const p = PEAK_PRICES[model] ?? FALLBACK;
   const factor = isPeak(at) ? 1 : 0.5;
   return (

@@ -25,6 +25,7 @@ interface CheckResult {
   issues?: { claim: string; problem: string; correction: string | null }[];
   keyConcern?: boolean;
   checkedBy?: string;
+  independence?: "other_provider" | "same_vendor" | "same_model";
   error?: string;
 }
 
@@ -36,14 +37,18 @@ function CheckNote({ check }: { check: CheckResult | undefined }) {
   }
   if (check.status === "pending") return <p role="status" className="mt-2 text-xs text-slate-500">{t({ en: "A second AI is checking this answer…", hi: "दूसरा AI इस उत्तर की जाँच कर रहा है…" })}</p>;
   if (check.status === "failed") return <p className="mt-2 text-xs text-slate-500">{t({ en: `Not checked: ${check.error ?? "the second AI could not check it."}`, hi: "दूसरा AI इसकी जाँच नहीं कर सका।" })}</p>;
+  const same = check.independence === "same_model";
   const by = check.checkedBy ? ` (${check.checkedBy})` : "";
+  const who = same
+    ? t({ en: `The same AI re-checked this at higher effort (not an independent check)${by}`, hi: `उसी AI ने अधिक ध्यान से दोबारा जाँचा (स्वतंत्र जाँच नहीं)${by}` })
+    : t({ en: `A second AI${by}`, hi: `दूसरा AI${by}` });
   return (
     <div className={`mt-2 rounded-md border px-3 py-2 text-xs leading-5 ${check.verdict === "consistent" ? "border-emerald-200 bg-emerald-50 text-emerald-900" : check.verdict === "issues" ? "border-amber-300 bg-amber-50 text-amber-950" : "border-slate-200 bg-slate-50 text-slate-700"}`}>
-      {check.verdict === "consistent" && <p className="font-semibold">{t({ en: `✓ Checked by a second AI${by}: no problems found.`, hi: `✓ दूसरे AI${by} ने जाँचा: कोई गलती नहीं मिली।` })}</p>}
-      {check.verdict === "cannot_verify" && <p className="font-semibold">{t({ en: `A second AI${by} could not verify this answer (it may depend on a picture it can't see). Treat it with care.`, hi: `दूसरा AI${by} इस उत्तर की पुष्टि नहीं कर सका। सावधानी से लें।` })}</p>}
+      {check.verdict === "consistent" && <p className="font-semibold">✓ {who}: {t({ en: "no problems found.", hi: "कोई गलती नहीं मिली।" })}</p>}
+      {check.verdict === "cannot_verify" && <p className="font-semibold">{who}: {t({ en: "could not verify this answer (it may depend on a picture it can't see). Treat it with care.", hi: "इस उत्तर की पुष्टि नहीं हो सकी। सावधानी से लें।" })}</p>}
       {check.verdict === "issues" && (
         <>
-          <p className="font-semibold">{t({ en: `⚠ A second AI${by} found possible problems in this answer:`, hi: `⚠ दूसरे AI${by} को इस उत्तर में संभावित गलतियाँ मिलीं:` })}</p>
+          <p className="font-semibold">⚠ {who}: {t({ en: "found possible problems in this answer:", hi: "इस उत्तर में संभावित गलतियाँ मिलीं:" })}</p>
           <ul className="mt-1 list-disc space-y-1 pl-4">
             {check.issues?.map((issue, i) => (
               <li key={i}>
