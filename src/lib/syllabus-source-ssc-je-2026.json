@@ -1,0 +1,236 @@
+{
+  "notices": [
+    {
+      "cycle": "Junior Engineer Examination, 2026 (JE Civil/Mechanical/Electrical, IMD Scientific Assistant, DoT JE Telecom)",
+      "notice_number": "F. No. HQ-C-3019/1/2026-C-3",
+      "published_on": "2026-09-02",
+      "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_je_2026.pdf",
+      "sha256": "3efcdd945ddbd6b72d84ae5124ed5e4e3571e81d93c0910c51b5ad6119e0156d",
+      "status": "current",
+      "notes": "97-page notice downloaded directly from ssc.gov.in on 2026-09-29 (curl, HTTP 200, 3,497,956 bytes) and text-extracted with pdfplumber and pdftotext -layout. This is the source for every syllabus and scheme row below. Cross-checked against a second copy of the same notice re-served from ssc.gov.in under filename notice_16092026.pdf (linked from SSC's 16.09.2026 application-deadline reminder notice): the scheme and syllabus text is identical apart from one extra blank page, confirming no in-place revision to Paper-I/Paper-II scheme or the Civil & Structural syllabus as of 2026-09-29."
+    },
+    {
+      "cycle": "Junior Engineer Examination, 2026 — Addendum",
+      "notice_number": "Addendum to F. No. HQ-C-3019/1/2026-C-3",
+      "published_on": "2026-09-10",
+      "url": "",
+      "sha256": "",
+      "status": "amendment",
+      "notes": "NOT independently verified — I could not locate or open this PDF on ssc.gov.in despite trying several filename guesses under /api/attachment/uploads/masterData/NoticeBoards/. Per secondary-source reporting only (career.aglasem.com), it revised the Essential Educational Qualification for the Scientific Assistant (IMD) post; no source reports it touching the JE Civil syllabus or scheme of examination, and the 02.09.2026 notice text re-served on 16.09.2026 is unchanged on those points. Treat this row as a caveat, not a confirmed official reading."
+    },
+    {
+      "cycle": "Junior Engineer Examination, 2026 — Important Notice",
+      "notice_number": "Notice dated 16.09.2026 (reiteration of application deadline)",
+      "published_on": "2026-09-16",
+      "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/notice_16092026.pdf",
+      "sha256": "24ac529a6b2b5d3e321d1ad401163506c3faf9f5f09f6b467753f90beeae5a0d",
+      "status": "corrigendum",
+      "notes": "Downloaded and opened directly (98 pages, 3,650,347 bytes). Despite the filename, this is a re-post of the full original 02.09.2026 notice (same F.No. HQ-C-3019/1/2026-C-3, same scheme and syllabus text verbatim) with one extra blank page — used here only as independent confirmation that the scheme/syllabus were unchanged as of 16.09.2026, not as a separate substantive notice."
+    },
+    {
+      "cycle": "Junior Engineer Examination, 2025 (prior cycle — repo's existing reference)",
+      "notice_number": "referenced in repo as \"SSC Junior Engineer Examination, 2025 notice\"",
+      "published_on": "2025-09-01",
+      "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_je_2025.pdf",
+      "sha256": "",
+      "status": "superseded",
+      "notes": "Downloaded (88 pages, 11,168,566 bytes) and its Scheme of Examination (para 13) and Indicative Syllabus (para 14) text-extracted, solely to answer the 'differences' question below by comparing it against the 2026 notice. It is the notice src/lib/ssc-je-civil-syllabus.ts currently cites; for the 2026 recruitment cycle it is superseded by the notice above. I did not compute its sha256 since it is not being used as a current-cycle source of truth, only as a diff baseline."
+    }
+  ],
+  "scheme": [
+    {
+      "paper": "Paper-I",
+      "part_or_section": "(i) General Intelligence and Reasoning",
+      "questions": "50",
+      "marks": "50",
+      "duration": "2 Hours (2 hours and 40 minutes for candidates eligible for scribe as per Para 9.1, 9.2 and 9.3) — duration shared across all three Paper-I subjects, taken in a single sitting",
+      "negative_marking": "0.25 marks for each wrong answer (para 13.10)",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.20, para 13.1.1 table"
+    },
+    {
+      "paper": "Paper-I",
+      "part_or_section": "(ii) General Awareness",
+      "questions": "50",
+      "marks": "50",
+      "duration": "2 Hours (2 hours and 40 minutes for scribe-eligible candidates) — shared duration, see above",
+      "negative_marking": "0.25 marks for each wrong answer (para 13.10)",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.20, para 13.1.1 table"
+    },
+    {
+      "paper": "Paper-I",
+      "part_or_section": "(iii) For the post of JE (Civil): Part-A General Engineering (Civil & Structural)",
+      "questions": "100",
+      "marks": "100",
+      "duration": "2 Hours (2 hours and 40 minutes for scribe-eligible candidates) — shared duration, see above",
+      "negative_marking": "0.25 marks for each wrong answer (para 13.10); Paper-I overall is qualifying in nature (para 13.2)",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, pp.20-21, para 13.1.1 table"
+    },
+    {
+      "paper": "Paper-II",
+      "part_or_section": "For the post of JE (Civil): Part-A General Engineering (Civil & Structural)",
+      "questions": "100",
+      "marks": "300",
+      "duration": "2 Hours (2 hours and 40 minutes for candidates eligible for scribe as per Para 9.1, 9.2 and 9.3)",
+      "negative_marking": "1 (one) mark for each wrong answer (para 13.10); Paper-II is rank/final-merit deciding",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, pp.20-21, para 13.1.2 table"
+    }
+  ],
+  "syllabus": [
+    {
+      "paper": "Paper-I",
+      "part": "General Intelligence & Reasoning",
+      "heading": "",
+      "verbatim": "The Syllabus for General Intelligence would include questions of both verbal and non-verbal types. The test may include questions on analogies, similarities, differences, space visualization, problem-solving, analysis, judgment, decision-making, visual memory, discrimination, observation, relationship concepts, arithmetical reasoning, verbal and figure classification, arithmetical number series, etc. The test will also include questions designed to test the candidate's ability to deal with abstract ideas and symbols and their relationships, arithmetical computations, and other analytical functions.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.23, para 14.2.1"
+    },
+    {
+      "paper": "Paper-I",
+      "part": "General Awareness",
+      "heading": "",
+      "verbatim": "Questions will be aimed at testing the candidate's general awareness of the environment around him and its application to society. Questions will also be designed to test knowledge of current events and such matters of everyday observations and experience in their scientific aspect, as may be expected of any educated person. The test will also include questions relating to India and its neighboring countries, especially pertaining to History, Culture, Geography, Economic Scene, General Polity and Scientific Research, etc. These questions will be such that they do not require a special study of any discipline.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.23, para 14.2.2"
+    },
+    {
+      "paper": "Paper-I",
+      "part": "Part-A (Civil Engineering)",
+      "heading": "",
+      "verbatim": "Engineering Mechanics, Solid Mechanics, Structural Analysis, Construction Materials and Management, Estimating, Costing and Valuation, Concrete Structures, Steel Structures, Surveying, Soil Mechanics (Geotechnical Engineering), Fluid Mechanics and Hydraulics, Hydrology and Irrigation Engineering, Environmental Engineering, Transportation (Traffic) Engineering.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.23, para 14.2.3"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Engineering Mechanics",
+      "verbatim": "System of forces, free-body diagrams, equilibrium equations; Internal forces in structures; Friction and its applications; Centre of mass, Moment of Inertia.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.24, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Solid Mechanics",
+      "verbatim": "Bending moment and shear force in statically determinate beams; Simple stress and strain relationships; Simple bending theory, flexural and shear stresses, Uniform torsion, buckling of column, combined and direct bending stresses.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.24, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Structural Analysis",
+      "verbatim": "Introduction to Statically determinate and indeterminate structures; Method of superposition; Analysis of trusses, arches, beams, cables and frames; Slope deflection and moment distribution method; Influence lines.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, pp.24-25, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Construction Materials and Management",
+      "verbatim": "Construction materials: Bricks, Stones, Timber, Steel, Cement, Aggregates, Plastics, Polymers, Glass, Concrete, concrete mix design, testing of concrete. Construction Management: Types of construction projects; Project planning and network analysis - PERT and CPM.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.25, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Estimating, Costing and Valuation",
+      "verbatim": "Fundamentals of estimating, Cost Estimates for works, Rate Analysis, Valuation, Detailed Estimates.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.25, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Concrete Structures",
+      "verbatim": "Working stress and Limit State design concepts; Design of beams, slabs, columns; Foundation and Retaining Walls; Bond and development length.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.25, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Steel Structures",
+      "verbatim": "Working stress and Limit state design concepts; Bolted connections, Welds, Design of tension members, compression members and beams; Concept of plastic analysis - beams and frames.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.25, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Surveying",
+      "verbatim": "Principles of surveying; Errors and their adjustment; Maps - scale, coordinate system; Distance and angle measurement: Chain and Compass survey, Plane table surveying, Levelling and trigonometric levelling; Traversing and triangulation survey; Total station; Tacheometric surveying, Theodolite Surveying, Advanced surveying equipment.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.25, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Soil Mechanics",
+      "verbatim": "Three-phase system and phase relationships, index properties; Unified and Indian standard soil classification system; Permeability - one dimensional flow, Seepage through soils – two-dimensional flow, flow nets, uplift pressure, piping, capillarity, seepage force; Principle of effective stress and quicksand condition; Compaction of soils; One-dimensional consolidation, time rate of consolidation; Shear Strength, Mohr's circle, effective and total shear strength parameters, Stress-Strain characteristics of clays and sand.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.25, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Fluid Mechanics",
+      "verbatim": "Properties of fluids, fluid statics; Continuity, momentum and energy equations and their applications; Laminar and turbulent flow; Flow in pipes, pipe networks; Concept of lift and drag.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.25, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Hydraulics",
+      "verbatim": "Forces on immersed bodies; Flow measurement in channels and pipes; Channel Hydraulics - Energy-depth relationships, specific energy, critical flow, hydraulic jump, uniform flow.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.25, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Hydrology",
+      "verbatim": "Hydrologic cycle, precipitation, evaporation, evapo-transpiration, watershed, infiltration, unit hydrographs, hydrograph analysis, reservoir capacity, flood estimation and routing, groundwater hydrology - steady-state well hydraulics and aquifers; Application of Darcy's Law.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.25, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Irrigation",
+      "verbatim": "Types of irrigation systems and methods; Crop water requirements - Duty, delta, evapo-transpiration; Gravity Dams and Spillways; Lined and unlined canals, cross drainage structures.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.25, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Water and Wastewater Quality and Treatment",
+      "verbatim": "Basics of water quality standards – Physical, chemical and biological parameters; Water quality index; Unit processes and operations; Water requirement; Water distribution system; Drinking water treatment. Sewerage system design, quantity of domestic wastewater, primary and secondary treatment. Effluent discharge standards; Sludge disposal; Reuse of treated sewage for different applications.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, pp.25-26, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Air Pollution",
+      "verbatim": "Types of Pollutants, their sources and impacts, Air Pollution control, Air Quality Standards, Air Quality Index and limits.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.26, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Municipal Solid Wastes",
+      "verbatim": "Characteristics, generation, collection and transportation of solid wastes, engineered systems for solid waste management (reuse/recycle, energy recovery, treatment and disposal).",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.26, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Transportation Infrastructure",
+      "verbatim": "Geometric design of highways - cross-sectional elements, sight distances, horizontal and vertical alignments. Geometric design of railway Track – Speed and Cant.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.26, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Highway Pavements",
+      "verbatim": "Highway materials - desirable properties and tests; Desirable properties of bituminous paving mixes; Design factors for flexible and rigid pavements; Design of flexible and rigid pavement using IRC codes.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.26, para 14.3.1"
+    },
+    {
+      "paper": "Paper-II",
+      "part": "Part-A (Civil & Structural Engineering)",
+      "heading": "Traffic Engineering",
+      "verbatim": "Traffic studies on flow and speed, peak hour factor, accident study, fundamental relationships; Traffic signs; Signal design by Webster's method; Types of intersections; Highway capacity.",
+      "citation": "Notice F. No. HQ-C-3019/1/2026-C-3, p.26, para 14.3.1"
+    }
+  ],
+  "differences": "The repo's src/lib/ssc-je-civil-syllabus.ts is built from the 2025 notice (Notice_of_adv_je_2025.pdf) and is now superseded for the 2026 cycle. Comparing that 2025 notice against the 2026 notice I opened (both downloaded and extracted in this task):\n\n1. Scheme numbers unchanged: Paper-I is still 50/50 + 50/50 + 100/100 with 0.25 negative marking, qualifying only; Paper-II Civil & Structural is still 100 questions/300 marks with 1.0 negative marking, 2 hours (2h40m for scribe-eligible). One procedural change: the answer-key challenge fee dropped from ₹100/question (2025, para 13.8) to ₹50/question (2026, para 13.14).\n\n2. Paper-I syllabus restructured: 2025 listed Part-A (Civil Engineering) as two blocks — \"Building Materials, Estimating, Costing and Valuation, Surveying, Soil Mechanics, Hydraulics, Irrigation Engineering, Transportation Engineering, Environmental Engineering\" plus a separate \"Structural Engineering: Theory of Structures, Concrete Technology, RCC Design, Steel Design\" (this is exactly the flat 14-topic list the repo currently stores as SSC_JE_CIVIL_SYLLABUS_TOPICS). The 2026 notice replaces this with one flat, differently-named 13-item list: \"Engineering Mechanics, Solid Mechanics, Structural Analysis, Construction Materials and Management, Estimating, Costing and Valuation, Concrete Structures, Steel Structures, Surveying, Soil Mechanics (Geotechnical Engineering), Fluid Mechanics and Hydraulics, Hydrology and Irrigation Engineering, Environmental Engineering, Transportation (Traffic) Engineering.\" Several 2025 topic names (Building Materials, Theory of Structures, Concrete Technology, RCC Design, Steel Design) do not appear as such in 2026; they have been absorbed into or renamed as Construction Materials and Management, Structural Analysis, Concrete Structures, and Steel Structures.\n\n3. Paper-II Part-A syllabus was rewritten from a narrative, paragraph-style description per topic (Building Materials; Estimating, Costing and Valuation; Surveying; Soil Mechanics; Hydraulics; Irrigation Engineering; Transportation Engineering; Environmental Engineering; plus a separate 'Structural Engineering' block covering Theory of Structures, Concrete Technology, RCC Design, Steel Design) into a more granular, differently-organized 21-heading structure (see the syllabus rows above) with materially different content emphasis — e.g. explicit new sub-areas such as 'Construction Management: Types of construction projects; Project planning and network analysis – PERT and CPM', an explicit 'Air Pollution' heading with Air Quality Index language, 'Municipal Solid Wastes' as its own heading, and 'Traffic Engineering' naming 'Signal design by Webster's method' and 'Design of flexible and rigid pavement using IRC codes' — none of which are named the same way, if at all, in the 2025 text.\n\n4. Scope of the exam itself grew: the 2026 notice adds new streams not present in 2025 — Part-D (Computer Science & IT), Part-E (Electronics & Telecom), Part-F (Physics) for IMD Scientific Assistant posts, and Part-G (Telecommunications) for JE (Telecom) — reflected in its title 'Junior Engineer Examination, 2026 (Including IMD Scientific Assistant &amp; DoT Telecom)'. This doesn't affect Civil content but does affect the exam-wide scheme table structure (more OR-branches in Paper-I/Paper-II subject rows).\n\nNet effect for the app: src/lib/ssc-je-civil-syllabus.ts's SSC_JE_CIVIL_SYLLABUS_TOPICS list is stale for the 2026 cycle and should be replaced with the 2026 Paper-I Part-A topic list and/or the more detailed Paper-II Part-A heading structure above (the app should decide which granularity it wants to seed). src/lib/ssc-je/config.ts already correctly cites the 2026 notice number (HQ-C-3019/1/2026-C-3) in its header comment, so that file's citation is current; I did not audit whether its actual syllabus/scheme data (not shown to me — only the header comment) matches the verbatim text captured here.",
+  "caveats": "1. Notice board listing page (ssc.gov.in) is JavaScript-rendered, so WebFetch could not list entries directly; PDF discovery relied on (a) the URL pattern used by the existing 2025 reference in the repo, and (b) third-party news sites (career.aglasem.com, testbook.com, etc.) reporting the exact filename Notice_of_adv_je_2026.pdf and notice number. I only treat as \"verified\" what I actually opened via a direct https://ssc.gov.in/... PDF fetch with a captured HTTP 200 and byte size; the addendum row is explicitly flagged as unverified for this reason.\n\n2. I could not find or open the 10.09.2026 addendum PDF itself despite trying multiple plausible ssc.gov.in filenames (all returned HTTP 404). Its existence and scope (IMD Scientific Assistant EQ only, not touching Civil syllabus/scheme) rests on secondary-source reporting, not a primary document I opened. If precision here matters for the app (e.g. an audit trail), this should be resolved by locating the exact PDF before the app claims \"verified against addendum.\"\n\n3. PDF text extraction (pdfplumber) initially mangled a couple of characters via kerning artifacts (e.g. a decorative \"1.\" bullet before \"General Intelligence & Reasoning\", and \"G eneral\" with a spurious space) — I re-extracted the affected page with `pdftotext -layout` to confirm the clean, correct wording before reporting it verbatim; all syllabus text in this response has been checked this way, not taken from a single raw extraction pass.\n\n4. I did not attempt to read src/lib/ssc-je/config.ts's actual syllabus/scheme data structures (only its header comment, which already cites the correct 2026 notice number) — comparing that file's stored data against the verbatim text above is a follow-up the app team should do; I focused on getting the official verbatim text, per the task's objective.\n\n5. \"Marks\" and \"questions\" in the scheme table are reported as I read them from the notice's own table cell \"Number of Questions / Maximum Marks\" (e.g. \"50/50\" meaning 50 questions, max 50 marks — 1 mark per question, consistent throughout Paper-I; Paper-II Civil is 100 questions/300 marks, i.e. 3 marks per question). I split the combined cell into separate questions/marks fields for the schema; the citation still points to the single source table cell.\n\n6. I did not check for a Hindi-language version of the notice, or whether SSC published a separate short-syllabus/exam-pattern circular outside this notice (none found in searches); the 97-page notice's paras 13 and 14 appear to be SSC's complete and only statement of scheme and syllabus for this cycle.\n\n7. Scratchpad PDFs (je2026.pdf, je2025.pdf, notice_16092026.pdf, full_text.txt, full_text_16sep.txt, je2025_syllabus_pages.txt) were downloaded/written only to /private/tmp/.../scratchpad/ssc — never into the repo — per the task's instruction."
+}

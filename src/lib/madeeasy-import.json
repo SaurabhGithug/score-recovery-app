@@ -1,0 +1,4112 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "provider": "MADE EASY",
+    "series": "CE-SSC-JE 2026 CBT-1 Online Test Series",
+    "capturedOn": "2026-09-29",
+    "scope": "Attempt-level results plus incorrect and unattempted question content from four completed tests.",
+    "integrityPolicy": "Portal-visible facts only. Missing image/formula content is flagged visual_review_required and excluded from drills; it is never reconstructed or guessed."
+  },
+  "tests": [
+    {
+      "code": "test-02",
+      "title": "Indian Polity + Indian Economy",
+      "summary": {
+        "score": 20,
+        "maxScore": 50,
+        "correct": 21,
+        "incorrect": 4,
+        "unattempted": 25,
+        "rank": 4,
+        "participants": 8,
+        "percentile": 50,
+        "accuracy": 84,
+        "timeMinutes": 14,
+        "averageScore": 16.16,
+        "highestScore": 29.25,
+        "averageAccuracy": 60.87,
+        "medianScore": 16.25
+      },
+      "attentionQuestions": [
+        {
+          "id": "test-02-q01",
+          "number": 1,
+          "status": "incorrect",
+          "timeSeconds": 52,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 100,
+          "avgTimeSeconds": 22.63,
+          "question": "The Governor holds office",
+          "options": [
+            {
+              "id": "A",
+              "text": "for five years"
+            },
+            {
+              "id": "B",
+              "text": "for a period fixed by Parliament"
+            },
+            {
+              "id": "C",
+              "text": "during the pleasure of the President"
+            },
+            {
+              "id": "D",
+              "text": "till he enjoys the confidence of Parliament"
+            }
+          ],
+          "selectedOption": "A",
+          "correctOption": "C",
+          "explanation": "While the term is usually 5 years, the Governor serves at the pleasure of the President and can be\nremoved at any time.",
+          "deceptiveChoice": "A (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q02",
+          "number": 2,
+          "status": "unattempted",
+          "timeSeconds": 6,
+          "marksAwarded": 0,
+          "avgAttemptRate": 25,
+          "avgTimeSeconds": 13.5,
+          "question": "Which Article of Indian Constitution talks about adult suffrage?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Article 324"
+            },
+            {
+              "id": "B",
+              "text": "Article 326"
+            },
+            {
+              "id": "C",
+              "text": "Article 327"
+            },
+            {
+              "id": "D",
+              "text": "Article 323"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "Article 326 provides that elections to the Lok Sabha and State Assemblies shall be on the basis of\nadult suffrage.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q06",
+          "number": 6,
+          "status": "unattempted",
+          "timeSeconds": 14,
+          "marksAwarded": 0,
+          "avgAttemptRate": 25,
+          "avgTimeSeconds": 17.5,
+          "question": "Under which Article of the Indian Constitution did the President give his assent to the\nordinance on electoral reforms when it was sent back to him by the Union Cabinet without\nmaking any changes",
+          "options": [
+            {
+              "id": "A",
+              "text": "Article 121"
+            },
+            {
+              "id": "B",
+              "text": "Article 122"
+            },
+            {
+              "id": "C",
+              "text": "Article 123"
+            },
+            {
+              "id": "D",
+              "text": "Article 124"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Article 123 grants the President the power to promulgate Ordinances during the recess of\nParliament.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q07",
+          "number": 7,
+          "status": "unattempted",
+          "timeSeconds": 6,
+          "marksAwarded": 0,
+          "avgAttemptRate": 37.5,
+          "avgTimeSeconds": 7.63,
+          "question": "The concept of Public Interest Litigation (PIL) originated in",
+          "options": [
+            {
+              "id": "A",
+              "text": "UK"
+            },
+            {
+              "id": "B",
+              "text": "Australia"
+            },
+            {
+              "id": "C",
+              "text": "USA"
+            },
+            {
+              "id": "D",
+              "text": "Canada"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Public Interest Litigation (PIL) as a concept was first developed in the USA in the 1960s before\nbeing pioneered in India by Justice P.N. Bhagwati.",
+          "deceptiveChoice": "A (Chosen by 33.33% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q12",
+          "number": 12,
+          "status": "unattempted",
+          "timeSeconds": 18,
+          "marksAwarded": 0,
+          "avgAttemptRate": 62.5,
+          "avgTimeSeconds": 24.38,
+          "question": "In India, the power of judicial review is restricted because",
+          "options": [
+            {
+              "id": "A",
+              "text": "the Executive is supreme"
+            },
+            {
+              "id": "B",
+              "text": "the Legislature is supreme"
+            },
+            {
+              "id": "C",
+              "text": "the Constitution is supreme"
+            },
+            {
+              "id": "D",
+              "text": "the Judges are transferable"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Judicial review in India is governed by the principle of “Procedure Established by Law,” and\nsince the Constitution is the supreme law, the courts can only strike down laws that violate it.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 60% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q14",
+          "number": 14,
+          "status": "incorrect",
+          "timeSeconds": 23,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 87.5,
+          "avgTimeSeconds": 14.5,
+          "question": "The Constitutional Adviser to the Constituent Assembly was",
+          "options": [
+            {
+              "id": "A",
+              "text": "Sachidanand Sinha"
+            },
+            {
+              "id": "B",
+              "text": "B.N. Rau"
+            },
+            {
+              "id": "C",
+              "text": "N. Gopalaswamy"
+            },
+            {
+              "id": "D",
+              "text": "H.N. Kunzru"
+            }
+          ],
+          "selectedOption": "C",
+          "correctOption": "B",
+          "explanation": "Sir B.N. Rau was appointed as the Legal/Constitutional Adviser to the Constituent Assembly.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 42.86% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q17",
+          "number": 17,
+          "status": "incorrect",
+          "timeSeconds": 13,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 75,
+          "avgTimeSeconds": 20,
+          "question": "Prohibition of discrimination on grounds of religion, etc. (Article 15 of the Constitution of India) is\na Fundamental Right classified under",
+          "options": [
+            {
+              "id": "A",
+              "text": "the Right to Freedom of Religion"
+            },
+            {
+              "id": "B",
+              "text": "the Right against Exploitation"
+            },
+            {
+              "id": "C",
+              "text": "the Cultural and Educational Rights"
+            },
+            {
+              "id": "D",
+              "text": "the Right to Equality"
+            }
+          ],
+          "selectedOption": "A",
+          "correctOption": "D",
+          "explanation": "Article 15 specifically prohibits discrimination, which is a core component of the Right to Equality.",
+          "deceptiveChoice": "A (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q19",
+          "number": 19,
+          "status": "unattempted",
+          "timeSeconds": 13,
+          "marksAwarded": 0,
+          "avgAttemptRate": 75,
+          "avgTimeSeconds": 18,
+          "question": "How long can a Presidential ordinance remain in force?",
+          "options": [
+            {
+              "id": "A",
+              "text": "One year"
+            },
+            {
+              "id": "B",
+              "text": "Two months"
+            },
+            {
+              "id": "C",
+              "text": "Till the President revokes it"
+            },
+            {
+              "id": "D",
+              "text": "Six months"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "An ordinance lasts for six months (the max gap between sessions) plus six weeks once Parliament\nreassembles, unless approved or revoked earlier.",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 83.33% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q20",
+          "number": 20,
+          "status": "unattempted",
+          "timeSeconds": 18,
+          "marksAwarded": 0,
+          "avgAttemptRate": 75,
+          "avgTimeSeconds": 15.63,
+          "question": "Disputes regarding the election of the President and Vice President are settled",
+          "options": [
+            {
+              "id": "A",
+              "text": "in the Supreme Court"
+            },
+            {
+              "id": "B",
+              "text": "by the Election commission"
+            },
+            {
+              "id": "C",
+              "text": "by a Parliamentary Committee"
+            },
+            {
+              "id": "D",
+              "text": "in the Supreme Court or High Courts"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "As per Article 71, all doubts and disputes arising out of the election of a President or VicePresident\nare inquired into and decided by the Supreme Court.",
+          "deceptiveChoice": "C (Chosen by 66.67% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q21",
+          "number": 21,
+          "status": "unattempted",
+          "timeSeconds": 13,
+          "marksAwarded": 0,
+          "avgAttemptRate": 75,
+          "avgTimeSeconds": 25.5,
+          "question": "Who elects the Vice-President?",
+          "options": [
+            {
+              "id": "A",
+              "text": "The same electoral college which elects the President"
+            },
+            {
+              "id": "B",
+              "text": "Members of the Rajya Sabha"
+            },
+            {
+              "id": "C",
+              "text": "An electoral college consisting of member of Parliament"
+            },
+            {
+              "id": "D",
+              "text": "Members of Parliament and State Legislatures"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "The Vice-President is elected by an electoral college consisting of all members of both Houses of\nParliament (including nominated members).",
+          "deceptiveChoice": "B (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q23",
+          "number": 23,
+          "status": "incorrect",
+          "timeSeconds": 23,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 100,
+          "avgTimeSeconds": 16,
+          "question": "The Oath of office is conducted to the President by the",
+          "options": [
+            {
+              "id": "A",
+              "text": "Speaker of Lok Sabha"
+            },
+            {
+              "id": "B",
+              "text": "Chief Justice of India"
+            },
+            {
+              "id": "C",
+              "text": "Vice-President of India"
+            },
+            {
+              "id": "D",
+              "text": "None of the above"
+            }
+          ],
+          "selectedOption": "A",
+          "correctOption": "B",
+          "explanation": "The Oath of the President is administered by the Chief Justice of India or, in their absence, the senior-most Judge of the Supreme Court.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 62.5% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q26",
+          "number": 26,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 50,
+          "avgTimeSeconds": 5.13,
+          "question": "Which of the following is known as narrow money?",
+          "options": [
+            {
+              "id": "A",
+              "text": "M1"
+            },
+            {
+              "id": "B",
+              "text": "M2"
+            },
+            {
+              "id": "C",
+              "text": "M3"
+            },
+            {
+              "id": "D",
+              "text": "M4"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "M1 is called “Narrow Money” because it includes only the most liquid assets (currency with\npublic + demand deposits).",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 50% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q28",
+          "number": 28,
+          "status": "unattempted",
+          "timeSeconds": 11,
+          "marksAwarded": 0,
+          "avgAttemptRate": 25,
+          "avgTimeSeconds": 8.75,
+          "question": "The main aim of fifth five-year plan was",
+          "options": [
+            {
+              "id": "A",
+              "text": "Poverty elimination"
+            },
+            {
+              "id": "B",
+              "text": "Self reliance"
+            },
+            {
+              "id": "C",
+              "text": "Both (a) and (b)"
+            },
+            {
+              "id": "D",
+              "text": "None of the above"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "The 5th Five-Year Plan (1974–78) focused on “Garibi Hatao” (Poverty Elimination) and attaining self-reliance.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q30",
+          "number": 30,
+          "status": "unattempted",
+          "timeSeconds": 5,
+          "marksAwarded": 0,
+          "avgAttemptRate": 25,
+          "avgTimeSeconds": 8.63,
+          "question": "Which pair related to Five-Year Plans is not correct?",
+          "options": [
+            {
+              "id": "A",
+              "text": "First Plan: (1951-56)"
+            },
+            {
+              "id": "B",
+              "text": "Third Plan: (1966-71)"
+            },
+            {
+              "id": "C",
+              "text": "Sixth Plan: (1980-85)"
+            },
+            {
+              "id": "D",
+              "text": "Tenth Plan: (2002-2007)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "The Third Plan was 1961–66. The period 1966–69 was a “Plan Holiday,” and the Fourth Plan\nstarted in 1969.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 50% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q33",
+          "number": 33,
+          "status": "unattempted",
+          "timeSeconds": 20,
+          "marksAwarded": 0,
+          "avgAttemptRate": 50,
+          "avgTimeSeconds": 12.63,
+          "question": "National Income estimates in India is prepared by",
+          "options": [
+            {
+              "id": "A",
+              "text": "Planning Commission"
+            },
+            {
+              "id": "B",
+              "text": "RBI"
+            },
+            {
+              "id": "C",
+              "text": "Finance Ministry"
+            },
+            {
+              "id": "D",
+              "text": "CSO"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "The Central Statistics Office (CSO), now part of the NSO, is responsible for coordinating statistical activities and preparing National Income estimates.",
+          "deceptiveChoice": "B (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q34",
+          "number": 34,
+          "status": "unattempted",
+          "timeSeconds": 25,
+          "marksAwarded": 0,
+          "avgAttemptRate": 37.5,
+          "avgTimeSeconds": 17,
+          "question": "The Annual Financial Statement is laid before the two Houses of Parliament in accordance with",
+          "options": [
+            {
+              "id": "A",
+              "text": "Article 74"
+            },
+            {
+              "id": "B",
+              "text": "Article 112"
+            },
+            {
+              "id": "C",
+              "text": "Article 268"
+            },
+            {
+              "id": "D",
+              "text": "Article 370"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "Article 112 refers to the “Annual Financial Statement,” popularly known as the Union Budget.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 66.67% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q35",
+          "number": 35,
+          "status": "unattempted",
+          "timeSeconds": 10,
+          "marksAwarded": 0,
+          "avgAttemptRate": 75,
+          "avgTimeSeconds": 13.75,
+          "question": "The birth rate measures the number of births during a year per",
+          "options": [
+            {
+              "id": "A",
+              "text": "100 of population"
+            },
+            {
+              "id": "B",
+              "text": "1000 of population"
+            },
+            {
+              "id": "C",
+              "text": "millions of population"
+            },
+            {
+              "id": "D",
+              "text": "none of these"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "Birth rate is traditionally calculated as the number of live births per 1,000 persons in a year.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q36",
+          "number": 36,
+          "status": "unattempted",
+          "timeSeconds": 5,
+          "marksAwarded": 0,
+          "avgAttemptRate": 37.5,
+          "avgTimeSeconds": 8.63,
+          "question": "World Investment Report is an annual publication of",
+          "options": [
+            {
+              "id": "A",
+              "text": "UNCTAD"
+            },
+            {
+              "id": "B",
+              "text": "World Bank"
+            },
+            {
+              "id": "C",
+              "text": "WTO"
+            },
+            {
+              "id": "D",
+              "text": "IMF"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "The World Investment Report, which tracks global FDI trends, is published by UNCTAD.",
+          "deceptiveChoice": "D (Chosen by 66.67% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q37",
+          "number": 37,
+          "status": "unattempted",
+          "timeSeconds": 3,
+          "marksAwarded": 0,
+          "avgAttemptRate": 25,
+          "avgTimeSeconds": 6,
+          "question": "First Five Year Plan adopted",
+          "options": [
+            {
+              "id": "A",
+              "text": "Lewis-Fei model"
+            },
+            {
+              "id": "B",
+              "text": "Mahalanobis model"
+            },
+            {
+              "id": "C",
+              "text": "Harrod Domar Model"
+            },
+            {
+              "id": "D",
+              "text": "Keynesian Model"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "The First Plan (1951–56) was based on the Harrod-Domar Model, focusing heavily on\nagriculture and irrigation.",
+          "deceptiveChoice": "B (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q39",
+          "number": 39,
+          "status": "unattempted",
+          "timeSeconds": 3,
+          "marksAwarded": 0,
+          "avgAttemptRate": 37.5,
+          "avgTimeSeconds": 5.75,
+          "question": "In which plan phase of industrialisation was initiated?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Fourth"
+            },
+            {
+              "id": "B",
+              "text": "Third"
+            },
+            {
+              "id": "C",
+              "text": "Second"
+            },
+            {
+              "id": "D",
+              "text": "First"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "The Second Plan (1956–61), based on the Mahalanobis model, shifted the focus to heavy industries and rapid industrialization.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q40",
+          "number": 40,
+          "status": "unattempted",
+          "timeSeconds": 3,
+          "marksAwarded": 0,
+          "avgAttemptRate": 37.5,
+          "avgTimeSeconds": 9.5,
+          "question": "CENVAT is associated with",
+          "options": [
+            {
+              "id": "A",
+              "text": "Rate of Indirect Tax"
+            },
+            {
+              "id": "B",
+              "text": "Rate of Income Tax"
+            },
+            {
+              "id": "C",
+              "text": "Rate of Direct Tax"
+            },
+            {
+              "id": "D",
+              "text": "None of the above"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "CENVAT (Central Value Added Tax) was a type of indirect tax (excise duty) replaced by GST.",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 66.67% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q43",
+          "number": 43,
+          "status": "unattempted",
+          "timeSeconds": 4,
+          "marksAwarded": 0,
+          "avgAttemptRate": 12.5,
+          "avgTimeSeconds": 11.25,
+          "question": "Participatory Notes (PNs) are associated with which one of the following?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Consolidated Fund of India"
+            },
+            {
+              "id": "B",
+              "text": "Foreign Institutional Investors"
+            },
+            {
+              "id": "C",
+              "text": "United Nations Development Programme"
+            },
+            {
+              "id": "D",
+              "text": "Kyoto Protocol"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "Participatory Notes are financial instruments used by foreign investors who wish to invest in\nIndian stock markets without registering with SEBI.",
+          "deceptiveChoice": "C (Chosen by 100% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q44",
+          "number": 44,
+          "status": "unattempted",
+          "timeSeconds": 3,
+          "marksAwarded": 0,
+          "avgAttemptRate": 50,
+          "avgTimeSeconds": 7.75,
+          "question": "Mixed Economy means",
+          "options": [
+            {
+              "id": "A",
+              "text": "Co-existence of small and large industries"
+            },
+            {
+              "id": "B",
+              "text": "Promoting both agriculture and Industries in the economy"
+            },
+            {
+              "id": "C",
+              "text": "Co-existence of public and private sectors"
+            },
+            {
+              "id": "D",
+              "text": "Co-existence of rich and poor"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "A Mixed Economy incorporates both private enterprise and government involvement (public\nsector) in the production process.",
+          "deceptiveChoice": "B (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q45",
+          "number": 45,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 50,
+          "avgTimeSeconds": 10.5,
+          "question": "Inside Trading is related to",
+          "options": [
+            {
+              "id": "A",
+              "text": "Share Market"
+            },
+            {
+              "id": "B",
+              "text": "Horse racing"
+            },
+            {
+              "id": "C",
+              "text": "Taxation"
+            },
+            {
+              "id": "D",
+              "text": "Public Expenditure"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "Insider Trading refers to the illegal practice of trading on the stock exchange to one’s own\nadvantage through having access to confidential information.",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 75% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q46",
+          "number": 46,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 62.5,
+          "avgTimeSeconds": 3.38,
+          "question": "NABARD is",
+          "options": [
+            {
+              "id": "A",
+              "text": "A bank"
+            },
+            {
+              "id": "B",
+              "text": "A board"
+            },
+            {
+              "id": "C",
+              "text": "A block"
+            },
+            {
+              "id": "D",
+              "text": "A department"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "NABARD is the apex development bank in India for providing credit for agriculture and rural\ndevelopment.",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q47",
+          "number": 47,
+          "status": "unattempted",
+          "timeSeconds": 3,
+          "marksAwarded": 0,
+          "avgAttemptRate": 37.5,
+          "avgTimeSeconds": 8.13,
+          "question": "RBI was nationalised in",
+          "options": [
+            {
+              "id": "A",
+              "text": "1959"
+            },
+            {
+              "id": "B",
+              "text": "1947"
+            },
+            {
+              "id": "C",
+              "text": "1945"
+            },
+            {
+              "id": "D",
+              "text": "1949"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "The Reserve Bank of India was nationalized on January 1, 1949.",
+          "deceptiveChoice": "A (Chosen by 33.33% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q48",
+          "number": 48,
+          "status": "unattempted",
+          "timeSeconds": 3,
+          "marksAwarded": 0,
+          "avgAttemptRate": 62.5,
+          "avgTimeSeconds": 9.38,
+          "question": "The main security guard of International Trade is",
+          "options": [
+            {
+              "id": "A",
+              "text": "IMF"
+            },
+            {
+              "id": "B",
+              "text": "World Bank"
+            },
+            {
+              "id": "C",
+              "text": "WTO"
+            },
+            {
+              "id": "D",
+              "text": "IFC"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "The World Trade Organization (WTO) deals with the global rules of trade between nations.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 80% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q49",
+          "number": 49,
+          "status": "unattempted",
+          "timeSeconds": 6,
+          "marksAwarded": 0,
+          "avgAttemptRate": 62.5,
+          "avgTimeSeconds": 11,
+          "question": "Which one of the following is the correct sequence in the decreasing order of contribution\nof different sectors to the GDP of India?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Services–Industry–Agriculture"
+            },
+            {
+              "id": "B",
+              "text": "Services–Agriculture–Industry"
+            },
+            {
+              "id": "C",
+              "text": "Industry–Services–Agriculture"
+            },
+            {
+              "id": "D",
+              "text": "Industry–Agriculture–Services"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "The structural composition of India’s GDP is led by Services (~54%), followed by Industry (~26%), and Agriculture (~18-20%).",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 60% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-02-q50",
+          "number": 50,
+          "status": "unattempted",
+          "timeSeconds": 19,
+          "marksAwarded": 0,
+          "avgAttemptRate": 62.5,
+          "avgTimeSeconds": 23.75,
+          "question": "When the overall price level decreases so that inflation rate becomes negative is known as:",
+          "options": [
+            {
+              "id": "A",
+              "text": "Depreciation"
+            },
+            {
+              "id": "B",
+              "text": "Stagflation"
+            },
+            {
+              "id": "C",
+              "text": "Deflation"
+            },
+            {
+              "id": "D",
+              "text": "None of the above"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Deflation is the general decrease in the price level of goods and services; it occurs when the\ninflation rate falls below 0%.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        }
+      ]
+    },
+    {
+      "code": "test-05",
+      "title": "Analogies or Similarity + Blood relationship + Symbols and Notations + Classification",
+      "summary": {
+        "score": 26.25,
+        "maxScore": 50,
+        "correct": 27,
+        "incorrect": 3,
+        "unattempted": 20,
+        "rank": 4,
+        "participants": 9,
+        "percentile": 55.56,
+        "accuracy": 90,
+        "timeMinutes": 30,
+        "averageScore": 22.14,
+        "highestScore": 30.5,
+        "averageAccuracy": 79.48,
+        "medianScore": 22.25
+      },
+      "attentionQuestions": [
+        {
+          "id": "test-05-q01",
+          "number": 1,
+          "status": "unattempted",
+          "timeSeconds": 121,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 142.89,
+          "question": "In the following questions, the symbols δ, $, ∗, @ and © are used with the meaning as indicated below: ‘P$Q’ means ‘P is neither equal to nor greater than Q’. ‘P©Q’ means ‘P is neither equal to nor smaller than Q’. ‘PδQ’ means ‘P is neither greater than nor smaller to Q’. ‘P@Q’ means ‘P is not smaller than Q’. ‘PHQ’ means ‘P is not greater than Q’. In each question, three statements showing relationship, have been given, which are followed by three conclusion I, II and III. Assuming that the given statements to be true, find out which conclusions is/are definitely true.",
+          "options": [
+            {
+              "id": "A",
+              "text": "only I is true"
+            },
+            {
+              "id": "B",
+              "text": "only II is true"
+            },
+            {
+              "id": "C",
+              "text": "only III is true"
+            },
+            {
+              "id": "D",
+              "text": "II and III are true"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 66.67% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-05-q02",
+          "number": 2,
+          "status": "unattempted",
+          "timeSeconds": 20,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 46.44,
+          "question": "In the following questions, the symbols δ, $, ∗, @ and © are used with the meaning as indicated below: ‘P$Q’ means ‘P is neither equal to nor greater than Q’. ‘P©Q’ means ‘P is neither equal to nor smaller than Q’. ‘PδQ’ means ‘P is neither greater than nor smaller to Q’. ‘P@Q’ means ‘P is not smaller than Q’. ‘PHQ’ means ‘P is not greater than Q’. In each question, three statements showing relationship, have been given, which are followed by three conclusion I, II and III. Assuming that the given statements to be true, find out which conclusions is/are definitely true.",
+          "options": [
+            {
+              "id": "A",
+              "text": "only I is true"
+            },
+            {
+              "id": "B",
+              "text": "only II is true"
+            },
+            {
+              "id": "C",
+              "text": "either II or III is true"
+            },
+            {
+              "id": "D",
+              "text": "either II or III and I are true"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "",
+          "deceptiveChoice": "A (Chosen by 33.33% students)",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-05-q04",
+          "number": 4,
+          "status": "unattempted",
+          "timeSeconds": 213,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 104.78,
+          "question": "If A for ‘+’, M for ‘×’, D for ‘÷’ G for ‘>’, L for ‘<’, then which of the following will be logically correct?",
+          "options": [
+            {
+              "id": "A",
+              "text": "4A 5D 3G 6A 2M 3"
+            },
+            {
+              "id": "B",
+              "text": "4A 5M 4L 6D 2A 8"
+            },
+            {
+              "id": "C",
+              "text": "4D 2A 4G 6D 2A 4"
+            },
+            {
+              "id": "D",
+              "text": "4A 3M 2L 4D 2M 6"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 83.33% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-05-q13",
+          "number": 13,
+          "status": "incorrect",
+          "timeSeconds": 19,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 100,
+          "avgTimeSeconds": 18.44,
+          "question": "Find the odd pair from the given alternatives.",
+          "options": [
+            {
+              "id": "A",
+              "text": "Captain - Team"
+            },
+            {
+              "id": "B",
+              "text": "Boss - Gang"
+            },
+            {
+              "id": "C",
+              "text": "Prime minister - Cabinet"
+            },
+            {
+              "id": "D",
+              "text": "Artist - Troupe"
+            }
+          ],
+          "selectedOption": "C",
+          "correctOption": "D",
+          "explanation": "Artist is just a part of troupe.",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 77.78% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-05-q16",
+          "number": 16,
+          "status": "unattempted",
+          "timeSeconds": 23,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 13.89,
+          "question": "Find the odd pair from the given alternatives.",
+          "options": [
+            {
+              "id": "A",
+              "text": "Lion-Rear"
+            },
+            {
+              "id": "B",
+              "text": "Snake-Hiss"
+            },
+            {
+              "id": "C",
+              "text": "Bees-Hum"
+            },
+            {
+              "id": "D",
+              "text": "Frog-Bleat"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "Frog don’t bleat, they croak.",
+          "deceptiveChoice": "A (Chosen by 83.33% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-05-q18",
+          "number": 18,
+          "status": "unattempted",
+          "timeSeconds": 27,
+          "marksAwarded": 0,
+          "avgAttemptRate": 22.22,
+          "avgTimeSeconds": 37.11,
+          "question": "Find the odd number from the given alternatives.",
+          "options": [
+            {
+              "id": "A",
+              "text": "272"
+            },
+            {
+              "id": "B",
+              "text": "210"
+            },
+            {
+              "id": "C",
+              "text": "240"
+            },
+            {
+              "id": "D",
+              "text": "304"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 50% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-05-q19",
+          "number": 19,
+          "status": "unattempted",
+          "timeSeconds": 14,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 28.89,
+          "question": "Find the odd number from the given alternatives.",
+          "options": [
+            {
+              "id": "A",
+              "text": "4867"
+            },
+            {
+              "id": "B",
+              "text": "5555"
+            },
+            {
+              "id": "C",
+              "text": "6243"
+            },
+            {
+              "id": "D",
+              "text": "6655"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 50% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-05-q23",
+          "number": 23,
+          "status": "unattempted",
+          "timeSeconds": 10,
+          "marksAwarded": 0,
+          "avgAttemptRate": 77.78,
+          "avgTimeSeconds": 16.11,
+          "question": "Find the odd word from the given alternatives.",
+          "options": [
+            {
+              "id": "A",
+              "text": "Brass"
+            },
+            {
+              "id": "B",
+              "text": "Gun metal"
+            },
+            {
+              "id": "C",
+              "text": "Bronze"
+            },
+            {
+              "id": "D",
+              "text": "Germenium"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "Brass, Bronze and gun metal are alloys while germenium is an element.",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 71.43% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-05-q26",
+          "number": 26,
+          "status": "incorrect",
+          "timeSeconds": 22,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 77.78,
+          "avgTimeSeconds": 18.11,
+          "question": "Find the odd word from the given alternatives.",
+          "options": [
+            {
+              "id": "A",
+              "text": "Tomato"
+            },
+            {
+              "id": "B",
+              "text": "Gourd"
+            },
+            {
+              "id": "C",
+              "text": "Brinjal"
+            },
+            {
+              "id": "D",
+              "text": "Potato"
+            }
+          ],
+          "selectedOption": "A",
+          "correctOption": "D",
+          "explanation": "All the vegetables except potato grow above the ground.",
+          "deceptiveChoice": "A (Chosen by 28.57% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-05-q27",
+          "number": 27,
+          "status": "unattempted",
+          "timeSeconds": 6,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 31,
+          "question": "Refer to the following number, symbol series and answer the question. Counting to be done from left to right only. (Left) * 5 2 # # 2 2 7 & % 2 $ & 1 3 $ % $ 5 4 $ $ (Right) How many such numbers are there each of which is immediately preceded by a number and also immediately followed by a number?",
+          "options": [
+            {
+              "id": "A",
+              "text": "3"
+            },
+            {
+              "id": "B",
+              "text": "0"
+            },
+            {
+              "id": "C",
+              "text": "1"
+            },
+            {
+              "id": "D",
+              "text": "2"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-05-q28",
+          "number": 28,
+          "status": "incorrect",
+          "timeSeconds": 63,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 44.89,
+          "question": "B, C, E, F and H have different heights. Only C is taller than B. E is taller than H. Only two people have heights between F and C. How many people have heights between H and B?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Four"
+            },
+            {
+              "id": "B",
+              "text": "One"
+            },
+            {
+              "id": "C",
+              "text": "Two"
+            },
+            {
+              "id": "D",
+              "text": "Three"
+            }
+          ],
+          "selectedOption": "D",
+          "correctOption": "C",
+          "explanation": "C > B > E > F > H So B’s at 2 and H at 5 – there are two people between them.",
+          "deceptiveChoice": "B (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-05-q30",
+          "number": 30,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 58.67,
+          "question": "Click to view full question",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": ""
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "",
+          "deceptiveChoice": "A (Chosen by 33.33% students)",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-05-q32",
+          "number": 32,
+          "status": "unattempted",
+          "timeSeconds": 14,
+          "marksAwarded": 0,
+          "avgAttemptRate": 22.22,
+          "avgTimeSeconds": 42.89,
+          "question": "Pointing to a photo of a girl, Rohit said, “She does not have any sister or daughter but her mother is the only daughter of my brother.” What is the relation between the girl and Rohit?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Daughter"
+            },
+            {
+              "id": "B",
+              "text": "Sister"
+            },
+            {
+              "id": "C",
+              "text": "Niece"
+            },
+            {
+              "id": "D",
+              "text": "Daughter in law"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-05-q33",
+          "number": 33,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 18.67,
+          "question": "Pointing a man on the stage, Rita said, “He is the brother of the daughter of the wife of my husband.” How is the man on the stage related to Rita?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Son"
+            },
+            {
+              "id": "B",
+              "text": "Husband"
+            },
+            {
+              "id": "C",
+              "text": "Cousin"
+            },
+            {
+              "id": "D",
+              "text": "Nephew"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "Brother of daughter means son. Wife of my husband means herself. So, the man is son of Rita.",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-05-q35",
+          "number": 35,
+          "status": "unattempted",
+          "timeSeconds": 4,
+          "marksAwarded": 0,
+          "avgAttemptRate": 0,
+          "avgTimeSeconds": 8.89,
+          "question": "Read the following information carefully and answer the question given below: Rakesh is son of Ankit’s father’s sister. Sahil is son of Damini, who is the mother of Gaurav and grandmother of Ankit. Ashok is the father of Tanya and grandfather of Rakesh. Damini is wife of Ashok. How is Gaurav’s wife related to Tanya?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Niece"
+            },
+            {
+              "id": "B",
+              "text": "Sister"
+            },
+            {
+              "id": "C",
+              "text": "Sister in law"
+            },
+            {
+              "id": "D",
+              "text": "Data Inadequate"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-05-q39",
+          "number": 39,
+          "status": "unattempted",
+          "timeSeconds": 6,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 7.56,
+          "question": "In the following question, select the related word from the given alternatives? Peacock : India :: Bear : ?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Australia"
+            },
+            {
+              "id": "B",
+              "text": "America"
+            },
+            {
+              "id": "C",
+              "text": "Russia"
+            },
+            {
+              "id": "D",
+              "text": "England"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "As, peacock is the national bird of India. Similarly, Bear is the national animal of Russia.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 66.67% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-05-q40",
+          "number": 40,
+          "status": "unattempted",
+          "timeSeconds": 42,
+          "marksAwarded": 0,
+          "avgAttemptRate": 22.22,
+          "avgTimeSeconds": 40.33,
+          "question": "In the following questions choose that set of numbers from the four alternatives sets, that is similar to the given set. Given, (56, 52, 36)",
+          "options": [
+            {
+              "id": "A",
+              "text": "(95, 90, 65)"
+            },
+            {
+              "id": "B",
+              "text": "(85, 80, 50)"
+            },
+            {
+              "id": "C",
+              "text": "(60, 70, 90)"
+            },
+            {
+              "id": "D",
+              "text": "(45, 55, 65)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 50% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-05-q42",
+          "number": 42,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 6.33,
+          "question": "In the following question, select the related pair that has the same relationship as the original pair of words. Horse : Hoof :: ?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Man : Foot"
+            },
+            {
+              "id": "B",
+              "text": "Paise : Rupee"
+            },
+            {
+              "id": "C",
+              "text": "Dog : Black"
+            },
+            {
+              "id": "D",
+              "text": "Pen : Pencil"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "The hoofs of an animal such as horse are the hard lower parts of its feet. In the same way foot are the lower part of man.",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-05-q44",
+          "number": 44,
+          "status": "unattempted",
+          "timeSeconds": 29,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 21.78,
+          "question": "East : North-West : : North : ?",
+          "options": [
+            {
+              "id": "A",
+              "text": "West"
+            },
+            {
+              "id": "B",
+              "text": "South-East"
+            },
+            {
+              "id": "C",
+              "text": "North-East"
+            },
+            {
+              "id": "D",
+              "text": "South-West"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "As, we move 135° anticlockwise from East direction we get North-West direction. Similarly, when we move 135° anticlockwise from North direction we get South-West direction.",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-05-q45",
+          "number": 45,
+          "status": "unattempted",
+          "timeSeconds": 10,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 11.78,
+          "question": "Dictionary : Words : : ? : Date",
+          "options": [
+            {
+              "id": "A",
+              "text": "Day"
+            },
+            {
+              "id": "B",
+              "text": "Girlfriend"
+            },
+            {
+              "id": "C",
+              "text": "Almanac"
+            },
+            {
+              "id": "D",
+              "text": "Plam"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "As, Dictionary contains words, similarly Almanac contains date.",
+          "deceptiveChoice": "A (Chosen by 75% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-05-q46",
+          "number": 46,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 17.11,
+          "question": "Which of the following letter-clusters should replace # and % so that the pattern and relationship followed between the letter-cluster pair on the left side of :: is the same as that on the right side of :: ? # : NJR :: OKS : %",
+          "options": [
+            {
+              "id": "A",
+              "text": "# = LHP, % = QMV"
+            },
+            {
+              "id": "B",
+              "text": "# = LHO, % = QMU"
+            },
+            {
+              "id": "C",
+              "text": "# = LHP, % = QNU"
+            },
+            {
+              "id": "D",
+              "text": "# = LHP, % = QMU"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 66.67% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-05-q47",
+          "number": 47,
+          "status": "unattempted",
+          "timeSeconds": 21,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 27.22,
+          "question": "In the following question, select the related word from the given alternatives? Peat, Bituminous, Lignite",
+          "options": [
+            {
+              "id": "A",
+              "text": "Cock"
+            },
+            {
+              "id": "B",
+              "text": "Granite"
+            },
+            {
+              "id": "C",
+              "text": "Basalt"
+            },
+            {
+              "id": "D",
+              "text": "Anthracite"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "In the given question all are the types of coal and ‘Anthracite’ is also one type.",
+          "deceptiveChoice": "B (Chosen by 75% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-05-q50",
+          "number": 50,
+          "status": "unattempted",
+          "timeSeconds": 15,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 19.78,
+          "question": "As ‘Bald’ is related to ‘Blonde’, in the same way ‘Barren’ is related to",
+          "options": [
+            {
+              "id": "A",
+              "text": "Vegetation"
+            },
+            {
+              "id": "B",
+              "text": "Farm"
+            },
+            {
+              "id": "C",
+              "text": "Fertile"
+            },
+            {
+              "id": "D",
+              "text": "Inhibited"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "As ‘Bald’ is related to ‘Blonde’ in the same way, ‘Barren’ is related to ‘Fertile’.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 50% students)",
+          "sourceQuality": "verified_text"
+        }
+      ]
+    },
+    {
+      "code": "test-09",
+      "title": "Building Materials + Concrete Technology + Estimating, Costing and Valuation",
+      "summary": {
+        "score": 24.5,
+        "maxScore": 50,
+        "correct": 25,
+        "incorrect": 2,
+        "unattempted": 23,
+        "rank": 4,
+        "participants": 18,
+        "percentile": 77.78,
+        "accuracy": 92,
+        "timeMinutes": 22,
+        "averageScore": 15.94,
+        "highestScore": 36.25,
+        "averageAccuracy": 60.14,
+        "medianScore": 16.38
+      },
+      "attentionQuestions": [
+        {
+          "id": "test-09-q01",
+          "number": 1,
+          "status": "unattempted",
+          "timeSeconds": 37,
+          "marksAwarded": 0,
+          "avgAttemptRate": 88.89,
+          "avgTimeSeconds": 30.5,
+          "question": "Plywood has the advantage of",
+          "options": [
+            {
+              "id": "A",
+              "text": "Greater tensile strength in longer direction"
+            },
+            {
+              "id": "B",
+              "text": "Greater tensile strength in shorter direction"
+            },
+            {
+              "id": "C",
+              "text": "Same tensile strength in both directions"
+            },
+            {
+              "id": "D",
+              "text": "None of the given answers"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "In plywood, veneers are placed one above the other with the direction of grains of successive layers at right angles. This cross graining of veneers makes the strength of the panel consistent across both directions.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 68.75% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-09-q07",
+          "number": 7,
+          "status": "unattempted",
+          "timeSeconds": 9,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 25.28,
+          "question": "In a wooden door, “Style” is the:",
+          "options": [
+            {
+              "id": "A",
+              "text": "outside vertical member of the shutter"
+            },
+            {
+              "id": "B",
+              "text": "topmost horizontal member of the shutter"
+            },
+            {
+              "id": "C",
+              "text": "middle horizontal member of the shutter"
+            },
+            {
+              "id": "D",
+              "text": "horizontal projection of head"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "• Top most horizontal member of the shutter is known as top rail. • Middle horizontal member is known as lock rail. • Vertical outside member of the shutter is known as stiles or styles.",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 58.33% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-09-q10",
+          "number": 10,
+          "status": "unattempted",
+          "timeSeconds": 28,
+          "marksAwarded": 0,
+          "avgAttemptRate": 55.56,
+          "avgTimeSeconds": 48.22,
+          "question": "Match List-I (Class of lime as per IS 712) with appropriate List-II (Type of lime) with the help of codes given below:",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "As per IS : 712, classification of lime is Class A: Eminently hydraulic lime. Class B: Semi hydraulic lime. Class C: Fat lime. Class D: Magnesium/dolomite lime. Class E: Kankar lime. Class F: Siliceous dolomite lime.",
+          "deceptiveChoice": "A (Chosen by 40% students)",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q12",
+          "number": 12,
+          "status": "unattempted",
+          "timeSeconds": 24,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 37.44,
+          "question": "Which of the following statement is correct regarding concreting?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Internal curing may be achieved by prewetted light weighted concrete."
+            },
+            {
+              "id": "B",
+              "text": "Right after placement of concrete entrapped air is expected to be more than 25%."
+            },
+            {
+              "id": "C",
+              "text": "Poker vibrator diameter is less than 20 mm."
+            },
+            {
+              "id": "D",
+              "text": "Poorly graded aggregate imparts better workability of concrete."
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "• Right after placement of concrete entrapped air is expected to be 5-15%. • Poker vibrator diameter is 20 mm – 150 mm. • Well graded aggregate imparts better workability.",
+          "deceptiveChoice": "C (Chosen by 37.5% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-09-q13",
+          "number": 13,
+          "status": "unattempted",
+          "timeSeconds": 13,
+          "marksAwarded": 0,
+          "avgAttemptRate": 88.89,
+          "avgTimeSeconds": 28.28,
+          "question": "In straight line method, the annual depreciation of the property is",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": ""
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 81.25% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q17",
+          "number": 17,
+          "status": "unattempted",
+          "timeSeconds": 39,
+          "marksAwarded": 0,
+          "avgAttemptRate": 72.22,
+          "avgTimeSeconds": 26.22,
+          "question": "For maintenance work inside the building, the type of scaffolding used is",
+          "options": [
+            {
+              "id": "A",
+              "text": "Cantilever scaffolding"
+            },
+            {
+              "id": "B",
+              "text": "Trestle scaffolding"
+            },
+            {
+              "id": "C",
+              "text": "Single scaffolding"
+            },
+            {
+              "id": "D",
+              "text": "Suspended scaffolding"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "Such type of scaffolding is used for painting and repair work inside the room, upto a height of 5 m. This is a light weight scaffolding used for repair works such as pointing, painting etc.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 30.77% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-09-q18",
+          "number": 18,
+          "status": "unattempted",
+          "timeSeconds": 8,
+          "marksAwarded": 0,
+          "avgAttemptRate": 38.89,
+          "avgTimeSeconds": 54.5,
+          "question": "For 12 mm thick plastering of 100 sq.m. net brickwork with 1 : 6 cement and sand mortar, the quantity of cement required is",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": ""
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "A (Chosen by 42.86% students)",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q19",
+          "number": 19,
+          "status": "unattempted",
+          "timeSeconds": 12,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 19.5,
+          "question": "Shrinkage of concrete can be estimated by using Schorer’s formula given by where, h = relative humidity expressed as a fraction",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": ""
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "Shrinkage of concrete increases with high w/c ratio and high cement content. Shrinkage can be estimated by using Schorer’s formula:",
+          "deceptiveChoice": "A (Chosen by 33.33% students)",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q21",
+          "number": 21,
+          "status": "unattempted",
+          "timeSeconds": 29,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 20.06,
+          "question": "In cost accounting of construction projects, expenses related to office rent, lighting, heating, and depreciation of office furniture are classified under:",
+          "options": [
+            {
+              "id": "A",
+              "text": "Prime cost"
+            },
+            {
+              "id": "B",
+              "text": "Overhead charges"
+            },
+            {
+              "id": "C",
+              "text": "Direct charges"
+            },
+            {
+              "id": "D",
+              "text": "Labour charges"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "Overhead charges are indirect expenses incurred for administration and office management of a project. These include office rent, lighting, heating, and depreciation of office equipment and furniture.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-09-q23",
+          "number": 23,
+          "status": "unattempted",
+          "timeSeconds": 6,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 44.61,
+          "question": "How many number of approx cement bags are required to make 2 m3 cement mortar of mix 1 : 4 (by volume)?",
+          "options": [
+            {
+              "id": "A",
+              "text": "11.5"
+            },
+            {
+              "id": "B",
+              "text": "14.5"
+            },
+            {
+              "id": "C",
+              "text": "12.5"
+            },
+            {
+              "id": "D",
+              "text": "19.5"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "",
+          "deceptiveChoice": "C (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q24",
+          "number": 24,
+          "status": "incorrect",
+          "timeSeconds": 27,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 94.44,
+          "avgTimeSeconds": 11.11,
+          "question": "Limestone is",
+          "options": [
+            {
+              "id": "A",
+              "text": "Sedimentary rock"
+            },
+            {
+              "id": "B",
+              "text": "Calcarious rock"
+            },
+            {
+              "id": "C",
+              "text": "Stratified rock"
+            },
+            {
+              "id": "D",
+              "text": "All of the above"
+            }
+          ],
+          "selectedOption": "B",
+          "correctOption": "D",
+          "explanation": "• Limestone is sedimentary rock having distinct layer along which rock can split and principal constituent of limestone is lime i.e. contains calcium. • Limestone is stratified as per physical appearance, chemically calcarious and sedimentary as per geological formation.",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 58.82% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-09-q25",
+          "number": 25,
+          "status": "unattempted",
+          "timeSeconds": 13,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 20.11,
+          "question": "Sand in mortar does not",
+          "options": [
+            {
+              "id": "A",
+              "text": "Reduces shrinkage."
+            },
+            {
+              "id": "B",
+              "text": "Increases volume of mortar."
+            },
+            {
+              "id": "C",
+              "text": "Impart the strength."
+            },
+            {
+              "id": "D",
+              "text": "Facilate uniform expulsion of gases if any organic matter decomposes."
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Use of sand in mortar does not impart any strength in it. It just readjusts the strength of mortar by increasing or decreasing its proportion.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 66.67% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-09-q26",
+          "number": 26,
+          "status": "unattempted",
+          "timeSeconds": 17,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 17.22,
+          "question": "Which of the following is not an example of admixture used in concrete?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Calcium thiosulphate"
+            },
+            {
+              "id": "B",
+              "text": "Tartaric acid"
+            },
+            {
+              "id": "C",
+              "text": "Vinsol oil resin"
+            },
+            {
+              "id": "D",
+              "text": "Borax"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "• Borax is used as preservative in timber to make it fire resistant. • Calcium thiosulphate is an accelerator. • Tartaric acid is a retarder. • Vinsol oil resin is air entraining admixture.",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 58.33% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-09-q27",
+          "number": 27,
+          "status": "incorrect",
+          "timeSeconds": 66,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 50,
+          "avgTimeSeconds": 24,
+          "question": "Match List-I (Test performed on stone) with appropriate List-II (Purpose) with the help of codes given below:",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": "B",
+          "correctOption": "C",
+          "explanation": "(c)",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 44.44% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q30",
+          "number": 30,
+          "status": "unattempted",
+          "timeSeconds": 7,
+          "marksAwarded": 0,
+          "avgAttemptRate": 5.56,
+          "avgTimeSeconds": 29.33,
+          "question": "An old building has been purchased by a person at a cost of Rs. 30,000 excluding the cost of the land. The amount of annual sinking fund at 4% interest assuming the future life of the building as 20 years and the scrap value of the building as 10% of the cost of purchase is : (Assume 1.0420 = 2.2)",
+          "options": [
+            {
+              "id": "A",
+              "text": "Rs. 900"
+            },
+            {
+              "id": "B",
+              "text": "Rs. 800"
+            },
+            {
+              "id": "C",
+              "text": "Rs. 1120"
+            },
+            {
+              "id": "D",
+              "text": "Rs. 930"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q34",
+          "number": 34,
+          "status": "unattempted",
+          "timeSeconds": 9,
+          "marksAwarded": 0,
+          "avgAttemptRate": 72.22,
+          "avgTimeSeconds": 11.56,
+          "question": "Coal-tar is obtained by destructive distillation of",
+          "options": [
+            {
+              "id": "A",
+              "text": "Petroleum"
+            },
+            {
+              "id": "B",
+              "text": "Wood"
+            },
+            {
+              "id": "C",
+              "text": "Coal"
+            },
+            {
+              "id": "D",
+              "text": "Bitumen"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Coal-tar is obtained by destructive distillation of coal or in the manufacture of coal gas.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 46.15% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-09-q38",
+          "number": 38,
+          "status": "unattempted",
+          "timeSeconds": 6,
+          "marksAwarded": 0,
+          "avgAttemptRate": 72.22,
+          "avgTimeSeconds": 9.17,
+          "question": "The carpet area of an office building is generally __________ of its plinth area",
+          "options": [
+            {
+              "id": "A",
+              "text": "80%-95%"
+            },
+            {
+              "id": "B",
+              "text": "60%-75%"
+            },
+            {
+              "id": "C",
+              "text": "50%-65%"
+            },
+            {
+              "id": "D",
+              "text": "40%-55%"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "The carpet area of an office building may be 60% to 75% of plinth area of the building with a target of 75%. The carpet area of residential building may be 50% to 65% of the plinth area of building with a target of 65%.",
+          "deceptiveChoice": "A (Chosen by 46.15% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-09-q39",
+          "number": 39,
+          "status": "unattempted",
+          "timeSeconds": 21,
+          "marksAwarded": 0,
+          "avgAttemptRate": 50,
+          "avgTimeSeconds": 14.22,
+          "question": "If the payment of annuity begins at some future date after a number of years, it is known as",
+          "options": [
+            {
+              "id": "A",
+              "text": "Perpetual annuity"
+            },
+            {
+              "id": "B",
+              "text": "Annuity certain"
+            },
+            {
+              "id": "C",
+              "text": "Annuity due"
+            },
+            {
+              "id": "D",
+              "text": "Deferred annuity"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "• If the payments of annuity continue for indefinite period, it is known as perpetual annuity. • If the amount of annuity is paid for a definite number of periods or years, it is known as annuity certain. • If the amount of annuity is paid at the beginning of each period of year and payments continue for definite number of periods, it is known as annuity due.",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 44.44% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-09-q40",
+          "number": 40,
+          "status": "unattempted",
+          "timeSeconds": 8,
+          "marksAwarded": 0,
+          "avgAttemptRate": 5.56,
+          "avgTimeSeconds": 17.39,
+          "question": "A residential building is constructed at a cost of Rs. 7,00,000. The total outgoing including sinking fund is Rs. 24,000 per annum. If the owner desires 6% return on construction, then the gross monthly rent of the property is",
+          "options": [
+            {
+              "id": "A",
+              "text": "Rs. 6000"
+            },
+            {
+              "id": "B",
+              "text": "Rs. 5500"
+            },
+            {
+              "id": "C",
+              "text": "Rs. 4500"
+            },
+            {
+              "id": "D",
+              "text": "Rs. 5000"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "",
+          "deceptiveChoice": "A (Chosen by 100% students)",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q42",
+          "number": 42,
+          "status": "unattempted",
+          "timeSeconds": 7,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 12.28,
+          "question": "A solution of baryta is used for",
+          "options": [
+            {
+              "id": "A",
+              "text": "Preservation of timber"
+            },
+            {
+              "id": "B",
+              "text": "Preservation of brick masonry"
+            },
+            {
+              "id": "C",
+              "text": "Preservation of stone"
+            },
+            {
+              "id": "D",
+              "text": "Preservation of bituminous surface"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 50% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q45",
+          "number": 45,
+          "status": "unattempted",
+          "timeSeconds": 6,
+          "marksAwarded": 0,
+          "avgAttemptRate": 16.67,
+          "avgTimeSeconds": 50.61,
+          "question": "The fineness modulus of fine aggregate is 2.78 and of coarse aggregate is 7.82 and the desired fineness modulus of mixed aggregate is 6.14. What is the amount of fine aggregate to be mixed with one part of coarse aggregate?",
+          "options": [
+            {
+              "id": "A",
+              "text": "55%"
+            },
+            {
+              "id": "B",
+              "text": "50%"
+            },
+            {
+              "id": "C",
+              "text": "45%"
+            },
+            {
+              "id": "D",
+              "text": "40%"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "Proportion of fine aggregate",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 66.67% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q46",
+          "number": 46,
+          "status": "unattempted",
+          "timeSeconds": 10,
+          "marksAwarded": 0,
+          "avgAttemptRate": 27.78,
+          "avgTimeSeconds": 23.5,
+          "question": "A concrete cylinder of size 150 mm diameter and 300 mm long is tested for split tensile strength of concrete. It failed at a load of 100 kN. The split tensile strength (in N/mm2) is",
+          "options": [
+            {
+              "id": "A",
+              "text": "0.35"
+            },
+            {
+              "id": "B",
+              "text": "0.71"
+            },
+            {
+              "id": "C",
+              "text": "1.42"
+            },
+            {
+              "id": "D",
+              "text": "2.83"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 80% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q47",
+          "number": 47,
+          "status": "unattempted",
+          "timeSeconds": 3,
+          "marksAwarded": 0,
+          "avgAttemptRate": 27.78,
+          "avgTimeSeconds": 12.89,
+          "question": "A property fetches a net annual income of Rs. 80,000 after deducting all outgoings, rate of interest is 8% per annum. What is the capitalized value of the property?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Rs. 10,00,000"
+            },
+            {
+              "id": "B",
+              "text": "Rs. 9,60,000"
+            },
+            {
+              "id": "C",
+              "text": "Rs. 16,63,500"
+            },
+            {
+              "id": "D",
+              "text": "Rs. 9,33,900"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 80% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q48",
+          "number": 48,
+          "status": "unattempted",
+          "timeSeconds": 4,
+          "marksAwarded": 0,
+          "avgAttemptRate": 16.67,
+          "avgTimeSeconds": 29.17,
+          "question": "The quantity of earthwork for 200 metre lengths for a portion of a road in an uniform ground, the heights of banks at the two ends being 1 m and 1.6 m. The formation width is 10 m and side slopes 2 : 1 (Horizontal : Vertical) is _____ . (Use Prismoidal formula)",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": ""
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "A (Chosen by 66.67% students)",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-09-q49",
+          "number": 49,
+          "status": "unattempted",
+          "timeSeconds": 12,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 13.33,
+          "question": "In timber preservation, the process in which maximum absorption of preservative is desired and vacuum is first created inside the cylinder is known as:",
+          "options": [
+            {
+              "id": "A",
+              "text": "Boucherie process"
+            },
+            {
+              "id": "B",
+              "text": "Lawry process"
+            },
+            {
+              "id": "C",
+              "text": "Rueping process"
+            },
+            {
+              "id": "D",
+              "text": "Full cell (Bethel) process"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "In the Full Cell or Bethel process, timber is first subjected to vacuum to remove air from wood cells. After that, preservative is forced into the timber under pressure so that maximum absorption is achieved. Hence, it is mainly used when deep penetration and high retention of preservative are required. Therefore, the correct answer is Full cell (Bethel) process.",
+          "deceptiveChoice": "A (Chosen by 33.33% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        }
+      ]
+    },
+    {
+      "code": "test-12",
+      "title": "Irrigation Engineering",
+      "summary": {
+        "score": 8.25,
+        "maxScore": 50,
+        "correct": 9,
+        "incorrect": 3,
+        "unattempted": 38,
+        "rank": 6,
+        "participants": 9,
+        "percentile": 33.33,
+        "accuracy": 75,
+        "timeMinutes": 16,
+        "averageScore": 15.19,
+        "highestScore": 36.25,
+        "averageAccuracy": 66.95,
+        "medianScore": 13.25
+      },
+      "attentionQuestions": [
+        {
+          "id": "test-12-q02",
+          "number": 2,
+          "status": "unattempted",
+          "timeSeconds": 11,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 23.67,
+          "question": "There are 5 raingauge stations existing in the catchment of a river. Coefficient of variation for the existing raingauges is 30%. The number of additional gauges required, if allowable percentage error in mean rainfall value in catchment is 10%, are _______.",
+          "options": [
+            {
+              "id": "A",
+              "text": "4"
+            },
+            {
+              "id": "B",
+              "text": "9"
+            },
+            {
+              "id": "C",
+              "text": "5"
+            },
+            {
+              "id": "D",
+              "text": "7"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q05",
+          "number": 5,
+          "status": "unattempted",
+          "timeSeconds": 12,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 28.44,
+          "question": "A storm with 16 cm precipitation and a direct run-off of 8 cm occurs on a catchment. The distribution of time is given below: The w-index of the storm is",
+          "options": [
+            {
+              "id": "A",
+              "text": "1.2 cm/h"
+            },
+            {
+              "id": "B",
+              "text": "0.93 cm/h"
+            },
+            {
+              "id": "C",
+              "text": "0.725 cm/h"
+            },
+            {
+              "id": "D",
+              "text": "1.0 cm/h"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q06",
+          "number": 6,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 55.56,
+          "avgTimeSeconds": 37.56,
+          "question": "Irrigation water was found to have Na+, Ca2+ and Mg2+ concentration as 25, 4 and 4 milli-equivalent per litre, respectively. The SAR value of water is",
+          "options": [
+            {
+              "id": "A",
+              "text": "12.5"
+            },
+            {
+              "id": "B",
+              "text": "6.25"
+            },
+            {
+              "id": "C",
+              "text": "25.0"
+            },
+            {
+              "id": "D",
+              "text": "10.6"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 80% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q07",
+          "number": 7,
+          "status": "unattempted",
+          "timeSeconds": 4,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 44.22,
+          "question": "Find the frequency of irrigation for the crop if Field capacity = 30%; Permanent wilting point (PWP) = 20%; Dry density of soil in the field = 1.2 g/cc Effective depth of root zone = 1 m; Daily consumptive use of water = 10 mm",
+          "options": [
+            {
+              "id": "A",
+              "text": "12 days"
+            },
+            {
+              "id": "B",
+              "text": "11 days"
+            },
+            {
+              "id": "C",
+              "text": "9 days"
+            },
+            {
+              "id": "D",
+              "text": "14 days"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q08",
+          "number": 8,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 22.22,
+          "avgTimeSeconds": 29.33,
+          "question": "A gravity dam 80 m high is in shape of elementary profile. Neglecting the uplift, the base width of the dam as per no tension at base criteria is (Take G = 2.5 m)",
+          "options": [
+            {
+              "id": "A",
+              "text": "50.63 m"
+            },
+            {
+              "id": "B",
+              "text": "49.64 m"
+            },
+            {
+              "id": "C",
+              "text": "35.77 m"
+            },
+            {
+              "id": "D",
+              "text": "32 m"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 50% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q09",
+          "number": 9,
+          "status": "unattempted",
+          "timeSeconds": 8,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 36.78,
+          "question": "Which of the following is not the correct limitation of Bligh’s creep theory?",
+          "options": [
+            {
+              "id": "A",
+              "text": "There is no difference between horizontal and vertical creep."
+            },
+            {
+              "id": "B",
+              "text": "There is no provision for exit gradient."
+            },
+            {
+              "id": "C",
+              "text": "Head loss does not take place in the same proportion as creep length."
+            },
+            {
+              "id": "D",
+              "text": "No specification about the necessity of providing cutoff at the upstream end of the floor."
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "Bligh’s do not specify the necessity of providing a cutoff at the downstream end of floor.",
+          "deceptiveChoice": "C (Chosen by 75% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q10",
+          "number": 10,
+          "status": "unattempted",
+          "timeSeconds": 20,
+          "marksAwarded": 0,
+          "avgAttemptRate": 55.56,
+          "avgTimeSeconds": 28,
+          "question": "The ratio of rate of change of discharge through an outlet to the rate of change in the water surface level of distributary w.r.t. the normal depth of flow in the channel is termed as",
+          "options": [
+            {
+              "id": "A",
+              "text": "Proportionality"
+            },
+            {
+              "id": "B",
+              "text": "Setting"
+            },
+            {
+              "id": "C",
+              "text": "Flexibility"
+            },
+            {
+              "id": "D",
+              "text": "Sensitivity"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "is defined as the ratio of the rate or change of discharge of the outlet to the rate of change of discharge of the distributary channel. , the outlet is proportional when flexibility equals unity. is the ratio of the depth of the sill level of the outlet below the FSL of the distributary to the full supply depth of the distributary.",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 60% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q14",
+          "number": 14,
+          "status": "unattempted",
+          "timeSeconds": 25,
+          "marksAwarded": 0,
+          "avgAttemptRate": 55.56,
+          "avgTimeSeconds": 37.22,
+          "question": "In hydrological cycle the average residence time of water in the global",
+          "options": [
+            {
+              "id": "A",
+              "text": "Atmospheric moisture is larger than that in the global rivers"
+            },
+            {
+              "id": "B",
+              "text": "Ocean is smaller than that of the global groundwater."
+            },
+            {
+              "id": "C",
+              "text": "Rivers is larger than that of the global groundwater"
+            },
+            {
+              "id": "D",
+              "text": "Ocean is larger than that of the global groundwater."
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "Oceans have the largest reservoir of water on Earth and a very long residence time, typically thousands of years, due to the vast volume and slow circulation of deep ocean currents.“Global groundwater also has a relatively long residence time, ranging from days to thousands of years, depending on the depth and connectivity of the aquifer but still oceans have longest residence time.",
+          "deceptiveChoice": "A (Chosen by 40% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q15",
+          "number": 15,
+          "status": "unattempted",
+          "timeSeconds": 23,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 12.56,
+          "question": "A stilling well is required when the stage measurements is made by employing",
+          "options": [
+            {
+              "id": "A",
+              "text": "Float gauge recorder"
+            },
+            {
+              "id": "B",
+              "text": "Horizontal staff gauge"
+            },
+            {
+              "id": "C",
+              "text": "Inclined staff gauge"
+            },
+            {
+              "id": "D",
+              "text": "Bubble gauge"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "Float gauge recorder",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 75% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q16",
+          "number": 16,
+          "status": "unattempted",
+          "timeSeconds": 5,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 32.56,
+          "question": "A bridge has an expected life of 25 years and is designed for a maximum flood of return period 100 years. What is the risk in hydraulic design?",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": ""
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q17",
+          "number": 17,
+          "status": "incorrect",
+          "timeSeconds": 27,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 77.78,
+          "avgTimeSeconds": 24.56,
+          "question": "The standard project flood is",
+          "options": [
+            {
+              "id": "A",
+              "text": "same as the design flood."
+            },
+            {
+              "id": "B",
+              "text": "smaller than the probable maximum flood."
+            },
+            {
+              "id": "C",
+              "text": "same as the probable maximum flood."
+            },
+            {
+              "id": "D",
+              "text": "larger than the probable maximum flood by a factor implying safety factor."
+            }
+          ],
+          "selectedOption": "D",
+          "correctOption": "B",
+          "explanation": "Standard Project Flood (SPF) is greatest storm that may reasonably be expected without modifying the rainfall data where Probable Maximum Precipitation (PMP) is the greatest or the extreme rainfall of a given duration that is physically possible over a stration or basin. Hence SPF is always less than PMP.",
+          "deceptiveChoice": "D (Chosen by 57.14% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q18",
+          "number": 18,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 22.22,
+          "avgTimeSeconds": 49.56,
+          "question": "The depth of flow in an alluvial channel is 1.8 m. If critical velocity ratio is 1.2 and Manning’s n is 0.018, then the critical velocity of the channel as per Kennedy’s method is",
+          "options": [
+            {
+              "id": "A",
+              "text": "0.66 m/s"
+            },
+            {
+              "id": "B",
+              "text": "0.96 m/s"
+            },
+            {
+              "id": "C",
+              "text": "0.56 m/s"
+            },
+            {
+              "id": "D",
+              "text": "1.18 m/s"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q20",
+          "number": 20,
+          "status": "unattempted",
+          "timeSeconds": 82,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 37.44,
+          "question": "Consider the following statements: 1. A lysimeter is used to measure evaporation. 2. Tensiometer is used to measure capillary potential. 3. Isopleths are lines on a map through points having equal depth of evapotranspiration Which of the above statements are correct?",
+          "options": [
+            {
+              "id": "A",
+              "text": "1 and 2"
+            },
+            {
+              "id": "B",
+              "text": "1 and 3"
+            },
+            {
+              "id": "C",
+              "text": "2 and 3"
+            },
+            {
+              "id": "D",
+              "text": "1, 2 and 3"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Lysimeter is used to measure evapotranspiration.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 50% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q21",
+          "number": 21,
+          "status": "unattempted",
+          "timeSeconds": 9,
+          "marksAwarded": 0,
+          "avgAttemptRate": 77.78,
+          "avgTimeSeconds": 10,
+          "question": "Duty is largest:",
+          "options": [
+            {
+              "id": "A",
+              "text": "On the field"
+            },
+            {
+              "id": "B",
+              "text": "At the head of main canal"
+            },
+            {
+              "id": "C",
+              "text": "Same at all places"
+            },
+            {
+              "id": "D",
+              "text": "None of the above"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "As one moves from head of the canal to the field, the duty of water increases. [D > D > D > D > D > D ]",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 71.43% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q22",
+          "number": 22,
+          "status": "unattempted",
+          "timeSeconds": 7,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 17.56,
+          "question": "S-hydrograph is used to obtain unit hydrograph of",
+          "options": [
+            {
+              "id": "A",
+              "text": "shorter duration from longer duration"
+            },
+            {
+              "id": "B",
+              "text": "longer duration from shorter duration"
+            },
+            {
+              "id": "C",
+              "text": "both (a) and (b)"
+            },
+            {
+              "id": "D",
+              "text": "None of the above"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "S-curve hydrographs can be used to obtain unit hydrograph of shorter duration from longer duration and vice-versa.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q23",
+          "number": 23,
+          "status": "unattempted",
+          "timeSeconds": 9,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 31.44,
+          "question": "Due to flood routing",
+          "options": [
+            {
+              "id": "A",
+              "text": "Peak of the hydrograph (of flood) gets reduced in size but occurs earlier in time"
+            },
+            {
+              "id": "B",
+              "text": "Peak of the hydrograph of flood gets reduced in size but gets delayed in time"
+            },
+            {
+              "id": "C",
+              "text": "Peak of the hydrograph is increased in size and time of base of hydrograph is increased"
+            },
+            {
+              "id": "D",
+              "text": "Peak of the hydrograph is decreased in size and time of base of hydrograph is decreased"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "Flood routing is an important technique necessary for the complete solution of flood problems. When a flood passes through a reservoir, its peak reduces and it requires bigger times base. The reduction in peak flow is called attenuation and delay in occurrence of peak is called ‘lag’. Using flood routing lag and attenuation can be determined.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 66.67% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q25",
+          "number": 25,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 37.33,
+          "question": "A 6 hour storm had 6 cm of rainfall and the resulting runoff was 3 cm. If the φ - index remains at the same level, the run off due to 11 cm of rainfall in 8 hours in the catchment is:",
+          "options": [
+            {
+              "id": "A",
+              "text": "5.50 cm"
+            },
+            {
+              "id": "B",
+              "text": "6.00 cm"
+            },
+            {
+              "id": "C",
+              "text": "6.50 cm"
+            },
+            {
+              "id": "D",
+              "text": "7.00 cm"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q26",
+          "number": 26,
+          "status": "incorrect",
+          "timeSeconds": 210,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 67.33,
+          "question": "Match the items in List-I (Instruments) and List-II (Items to be measured) using the codes below:",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": "D",
+          "correctOption": "A",
+          "explanation": "is a recording type rain gauge is used to measure evaporation loss is used to measure actual evapotranspiration in the field. is a device used to calculate infiltration capacity.",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 83.33% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q27",
+          "number": 27,
+          "status": "unattempted",
+          "timeSeconds": 76,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 24.44,
+          "question": "For an annual flood series arranged in decreasing order of magnitude, the return period for a magnitude listed at position m in a total of N entries is",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": ""
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "B (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q28",
+          "number": 28,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 4.33,
+          "question": "Muskingum method of routing satisfies the equation",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": "None of the above"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q29",
+          "number": 29,
+          "status": "unattempted",
+          "timeSeconds": 3,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 13,
+          "question": "Isohel is a line which joins points of equal",
+          "options": [
+            {
+              "id": "A",
+              "text": "atmospheric pressure"
+            },
+            {
+              "id": "B",
+              "text": "rainfall"
+            },
+            {
+              "id": "C",
+              "text": "duration of sunshine"
+            },
+            {
+              "id": "D",
+              "text": "temperature"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Isobar : Same atmospheric press. Isohyet : Some rainfall Isotherm Same temprature",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q30",
+          "number": 30,
+          "status": "unattempted",
+          "timeSeconds": 3,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 8.78,
+          "question": "The basic assumptions of the unit hydrograph theory are",
+          "options": [
+            {
+              "id": "A",
+              "text": "non-linear response and time invariance"
+            },
+            {
+              "id": "B",
+              "text": "Linear response and non-linear time invariance"
+            },
+            {
+              "id": "C",
+              "text": "linear response and time invariance"
+            },
+            {
+              "id": "D",
+              "text": "linear response and linear time variance"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Unit hydrograph is based on following two basic assumptions: According to this assumption the direct run-off hydrograph for a given effective rain fall is always the same in catchment irrespective of the time when the rain fall or storm takes place. It is the single most important assumption in the theory of unit hydrograph. According to this assumption any variation in the input value is proportionally reflected in the outlet value.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 75% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q31",
+          "number": 31,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 24.89,
+          "question": "Consider the following relation between discharge through the supply ditch (Q), average depth of water flowing over the strip (y), rate of infiltration of soil (f), area of land irrigated (A) and time required to cover the area with water (t): The condition at which surface flow will stop and only deep percolation will be observed, will occur when irrigated area (A) is",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": "None of these"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "It is maximum area that can be irrigated with a supply ditch of discharge ‘ ’ and soil having infiltration capacity ‘ ’. After irrigating this much of area, surface flow will stop, and deep percolation will start.",
+          "deceptiveChoice": "C (Chosen by 100% students)",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q32",
+          "number": 32,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 42,
+          "question": "Consider the following statements pertaining to advantages of sprinkler irrigation: 1. Cropped area may be increased by 16%. 2. Upto 80% of applied water can be stored in the root zone of plants. 3. Heavy soil with poor intake cannot be irrigated efficiently. 4. It is not suited to crops requiring frequent and larger depths of irrigation, such as paddy. Which of the above statements is/are correct?",
+          "options": [
+            {
+              "id": "A",
+              "text": "1 and 3"
+            },
+            {
+              "id": "B",
+              "text": "2 and 4"
+            },
+            {
+              "id": "C",
+              "text": "2, 3 and 4"
+            },
+            {
+              "id": "D",
+              "text": "1, 2, 3 and 4"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "No cultivation area is lost for making ditches, as happens in surface irrigation methods. Hence, it results in increasing about 16% of the cropped area.",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 75% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q33",
+          "number": 33,
+          "status": "unattempted",
+          "timeSeconds": 14,
+          "marksAwarded": 0,
+          "avgAttemptRate": 55.56,
+          "avgTimeSeconds": 18.78,
+          "question": "Tobacco and cotton are",
+          "options": [
+            {
+              "id": "A",
+              "text": "Rabi and Kharif crop respectively"
+            },
+            {
+              "id": "B",
+              "text": "Rabi and Rabi crop respectively"
+            },
+            {
+              "id": "C",
+              "text": "Kharif and Rabi crop respectively"
+            },
+            {
+              "id": "D",
+              "text": "Kharif and Kharif crop respectively"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "(April to September): Summer crops (maize, bajra, juar, groundnut, cotton rice, til). (October to March): (Winter crops wheat, gram, barley, mustered, tobacco, potato). Sugarcane (March to June): Fruits and vegetables.",
+          "deceptiveChoice": "D (Chosen by 40% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q34",
+          "number": 34,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 55.56,
+          "avgTimeSeconds": 17.33,
+          "question": "Which type of groyne is commonly used for the purpose of river training and bank protection?",
+          "options": [
+            {
+              "id": "A",
+              "text": "Attracting groynes"
+            },
+            {
+              "id": "B",
+              "text": "Repelling groynes"
+            },
+            {
+              "id": "C",
+              "text": "Deflecting groynes"
+            },
+            {
+              "id": "D",
+              "text": "None of these"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "A groyne pointing upstream tends to repel the river flow away from the bank on which it is provided. It is commonly used for the purpose of river training and bank protection. A groyne pointing downstream tends to attract the river flow towards the bank on which it is provided. The attracting groynes are not useful for bank protection and may sometimes even endanger the adjacent banks since silting between successive groynes is absent. A groynes perpendicular to the bank or pointing slightly u/s and having a relatively short length. A deflecting groynes, gives only local protection.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 60% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q36",
+          "number": 36,
+          "status": "incorrect",
+          "timeSeconds": 9,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 100,
+          "avgTimeSeconds": 11,
+          "question": "The relation between duty D in hectares/cumec, depth of water, Δ in metres and base period B in days is given by",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": ""
+            }
+          ],
+          "selectedOption": "A",
+          "correctOption": "B",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 88.89% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q37",
+          "number": 37,
+          "status": "unattempted",
+          "timeSeconds": 3,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 21.67,
+          "question": "For medium silt whose average grain size is 0.16 mm, Lacey’s silt factor is likely to be",
+          "options": [
+            {
+              "id": "A",
+              "text": "0.30"
+            },
+            {
+              "id": "B",
+              "text": "0.45"
+            },
+            {
+              "id": "C",
+              "text": "0.70"
+            },
+            {
+              "id": "D",
+              "text": "1.32"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 66.67% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q38",
+          "number": 38,
+          "status": "unattempted",
+          "timeSeconds": 16,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 17.67,
+          "question": "For the upstream slope of an earth dam, the most critical condition is",
+          "options": [
+            {
+              "id": "A",
+              "text": "sudden draw down condition"
+            },
+            {
+              "id": "B",
+              "text": "steady seepage condition"
+            },
+            {
+              "id": "C",
+              "text": "neither sudden draw down nor steady seepage condition"
+            },
+            {
+              "id": "D",
+              "text": "during construction when the reservoir is allowed to be filled"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "For the upstream slope of an earthen dam, the most critical condition is when sudden drawdown condition occurs. At this condition upstream soil remain fully saturated, effective stress falls suddenly and slope of downstream side become unstable.",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 33.33% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q39",
+          "number": 39,
+          "status": "unattempted",
+          "timeSeconds": 5,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 14.67,
+          "question": "Maximum wave pressure on the face of dam occurs of khw, where hw is the height of wave pressure and khw is given by",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": ""
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "A (Chosen by 100% students)",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q40",
+          "number": 40,
+          "status": "unattempted",
+          "timeSeconds": 19,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 22.67,
+          "question": "The frequency of irrigation is so decided that average moisture content in the root zone of the soil is close to",
+          "options": [
+            {
+              "id": "A",
+              "text": "saturation level"
+            },
+            {
+              "id": "B",
+              "text": "field capacity"
+            },
+            {
+              "id": "C",
+              "text": "wilting point"
+            },
+            {
+              "id": "D",
+              "text": "average of field capacity and wilting point"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "The frequency of irrigation is so decided when the average moisture content in the root zone of soil is at optimum moisture content ( ) which is near the wilting point (φ)",
+          "deceptiveChoice": "D (Chosen by 66.67% students)",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q41",
+          "number": 41,
+          "status": "unattempted",
+          "timeSeconds": 3,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 16.56,
+          "question": "According to Khosla’s theory, the undermining of the floor starts from",
+          "options": [
+            {
+              "id": "A",
+              "text": "starting end"
+            },
+            {
+              "id": "B",
+              "text": "tail end"
+            },
+            {
+              "id": "C",
+              "text": "intermediate point between (a) and (b)"
+            },
+            {
+              "id": "D",
+              "text": "All of these"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "The undermining (piping) of the floor starts from the downstream end of the downstream pucca floor and if not checked, it travels upstream towards the weir wall. The undermining starts only when the exit gradient is unsafe for the subsoil on which the weir is founded. It is absolutely necessary to have reasonably deep vertical cut-off at the downstream and of downstream pucca floor to prevent undermining.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 50% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q42",
+          "number": 42,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 55.56,
+          "avgTimeSeconds": 10.33,
+          "question": "Which of the following is not the correct limitation of Bligh’s creep theory?",
+          "options": [
+            {
+              "id": "A",
+              "text": "There is no difference between horizontal and vertical creep."
+            },
+            {
+              "id": "B",
+              "text": "There is no provision for exit gradient."
+            },
+            {
+              "id": "C",
+              "text": "Head loss does not take place in the same proportion as creep length."
+            },
+            {
+              "id": "D",
+              "text": "No specification about the necessity of providing cutoff at the upstream end of the floor."
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "Bligh’s do not specify the necessity of providing a cutoff at the downstream end of floor.",
+          "deceptiveChoice": "C (Chosen by 60% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q43",
+          "number": 43,
+          "status": "unattempted",
+          "timeSeconds": 6,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 15.67,
+          "question": "The lag time of a basin is the time interval between:",
+          "options": [
+            {
+              "id": "A",
+              "text": "the beginning and end of the direct runoff"
+            },
+            {
+              "id": "B",
+              "text": "the centroid of the rainfall excess and the peak of the runoff hydrograph"
+            },
+            {
+              "id": "C",
+              "text": "the beginning of rainfall and the peak of runoff hydrograph"
+            },
+            {
+              "id": "D",
+              "text": "the end of rainfall and end of runoff"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q44",
+          "number": 44,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 12.33,
+          "question": "If the flood discharge flowing in a river is 3600 m3/s, its perimeter as per Lacey’s theory is likely to be",
+          "options": [
+            {
+              "id": "A",
+              "text": "360 m"
+            },
+            {
+              "id": "B",
+              "text": "300 m"
+            },
+            {
+              "id": "C",
+              "text": "285 m"
+            },
+            {
+              "id": "D",
+              "text": "270 m"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q45",
+          "number": 45,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 6.67,
+          "question": "The exit gradient determined by Khosla’s theory in case of design of weir working under head ‘H’ with impervious floor length ‘b’ and depth of downstream sheet pile as d is where λ is a function of b and d.",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": ""
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 75% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q46",
+          "number": 46,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 33.67,
+          "question": "The Thiessen weights of 4 rain gauges A, B, C and D covering a river basin are 0.15, 0.25, 0.30 and 0.30 respectively. If the average depth of rainfall for the basin is 5 cm and rainfall recorded at B, C and D are 5 cm, 4 cm and 5 cm respectively, what is the rainfall at A?",
+          "options": [
+            {
+              "id": "A",
+              "text": "5 cm"
+            },
+            {
+              "id": "B",
+              "text": "6 cm"
+            },
+            {
+              "id": "C",
+              "text": "7 cm"
+            },
+            {
+              "id": "D",
+              "text": "8 cm"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Average rainfall = ΣWeight × Rainfall 5 = 0.15 × P + 0.25× 5 + 0.3 × 4 + 0.3 × 5 P = 7 cm",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q47",
+          "number": 47,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 33.33,
+          "avgTimeSeconds": 7.67,
+          "question": "The discharge passing over an ogee spillway, per unit length of its apex line is proportional to (where H is head over the apex of its crest)",
+          "options": [
+            {
+              "id": "A",
+              "text": "H"
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": ""
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "∝ for Ogee spillway",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q48",
+          "number": 48,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 22.22,
+          "avgTimeSeconds": 26.33,
+          "question": "The critical condition for stability of slope of an earth dam at down stream will be",
+          "options": [
+            {
+              "id": "A",
+              "text": "Reservoir empty with max. seepage"
+            },
+            {
+              "id": "B",
+              "text": "Reservoir full without pore water pressure"
+            },
+            {
+              "id": "C",
+              "text": "Reservoir full with max. percolation rate"
+            },
+            {
+              "id": "D",
+              "text": "None of these"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "The critical condition will be when reservoir full with maximum seepage.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_text"
+        },
+        {
+          "id": "test-12-q49",
+          "number": 49,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 0,
+          "avgTimeSeconds": 13.78,
+          "question": "A hydraulic structure build on sand have uplift pressure of 2 m at some point ‘P’. The minimum safe floor thickness needed at point P is",
+          "options": [
+            {
+              "id": "A",
+              "text": "1.78 m"
+            },
+            {
+              "id": "B",
+              "text": "1.69 m"
+            },
+            {
+              "id": "C",
+              "text": "1.33 m"
+            },
+            {
+              "id": "D",
+              "text": "1.58 m"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "",
+          "sourceQuality": "visual_review_required"
+        },
+        {
+          "id": "test-12-q50",
+          "number": 50,
+          "status": "unattempted",
+          "timeSeconds": 5,
+          "marksAwarded": 0,
+          "avgAttemptRate": 22.22,
+          "avgTimeSeconds": 21.44,
+          "question": "A gravity dam has total vertical downward weight of 60000 kN and base width of 60 m. If vertical stress at heel is zero, then the vertical stress at toe will be",
+          "options": [
+            {
+              "id": "A",
+              "text": ""
+            },
+            {
+              "id": "B",
+              "text": ""
+            },
+            {
+              "id": "C",
+              "text": ""
+            },
+            {
+              "id": "D",
+              "text": ""
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "visual_review_required"
+        }
+      ]
+    }
+  ]
+}

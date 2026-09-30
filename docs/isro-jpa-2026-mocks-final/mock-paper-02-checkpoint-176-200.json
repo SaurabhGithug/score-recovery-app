@@ -1,0 +1,24 @@
+{
+  "paper": 2,
+  "exactly_200_questions": false,
+  "section_counts": {
+    "Quantitative Aptitude and General Knowledge": 25
+  },
+  "section_counts_valid": false,
+  "quant_count": 0,
+  "gk_count": 25,
+  "difficulty_counts": {
+    "Moderate": 17,
+    "Hard": 5,
+    "Easy": 3
+  },
+  "answer_distribution": {
+    "A": 7,
+    "B": 6,
+    "C": 6,
+    "D": 6
+  },
+  "defects": [],
+  "status": "passed",
+  "batch": "176-200"
+}

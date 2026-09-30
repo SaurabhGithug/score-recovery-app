@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
 }
 
 @theme inline {
@@ -10,17 +10,71 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-devanagari: var(--font-devanagari);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Devanagari glyphs fall back into Noto Sans Devanagari automatically —
+     the browser picks per-character within this stack, so mixed Hindi/English
+     text (very common in this product) renders correctly without any
+     language-conditional class switching. */
+  font-family: var(--font-geist-sans), var(--font-devanagari), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Keep monospace contexts (timers, marks) on the mono stack. */
+.font-mono {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+:where(a, button, summary, input, select, textarea):focus-visible {
+  outline: 2px solid #0f766e;
+  outline-offset: 3px;
+}
+
+html { scroll-padding-top: 1rem; }
+
+/* Fluid content without disabling zoom or hiding overflowing learning material. */
+body {
+  min-height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  overflow-wrap: anywhere;
+}
+:where(main, section, article, nav, .flex > *, .grid > *) { min-width: 0; }
+:where(img, video, canvas, svg) { max-width: 100%; }
+:where(pre, .katex-display) { max-width: 100%; overflow-x: auto; }
+.install-dialog {
+  margin: auto;
+  width: min(28rem, calc(100% - 2rem));
+  max-height: calc(100dvh - 2rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  overflow-y: auto;
+}
+.install-dialog::backdrop { background: rgb(15 23 42 / 55%); }
+.app-navigation-drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  margin: 0;
+  width: min(22rem, calc(100vw - 1.25rem));
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) 0;
+  border: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.app-navigation-drawer::backdrop { background: rgb(15 23 42 / 35%); }
+.mobile-action-bar {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  padding-left: max(0.75rem, env(safe-area-inset-left));
+  padding-right: max(0.75rem, env(safe-area-inset-right));
+}
+@media (max-width: 639px) {
+  /* 16px fields avoid unexpected focus zoom on iOS; pinch zoom stays enabled. */
+  input:not([type="checkbox"]):not([type="radio"]), select, textarea { font-size: 1rem; max-width: 100%; }
+  :where(button, summary, nav a) { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }

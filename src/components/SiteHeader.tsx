@@ -1,0 +1,84 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useLang } from "@/lib/i18n";
+import { useAttemptMode } from "@/lib/attempt-mode";
+import { useUser } from "@/lib/user-context";
+
+const PRIMARY = [
+  { href: "/learn", en: "Learn", hi: "सीखें", icon: "book" },
+  { href: "/papers", en: "Tests", hi: "टेस्ट", icon: "paper" },
+  { href: "/dashboard", en: "My progress", hi: "मेरी प्रगति", icon: "chart" },
+];
+
+function NavIcon({ name }: { name: string }) {
+  return <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    {name === "book" ? <><path d="M12 5v15M12 5C8 2 3 4 3 4v15s5-2 9 1c4-3 9-1 9-1V4s-5-2-9 1Z" /></> : name === "paper" ? <><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h4" /></> : <><path d="M4 4v16h16M8 16v-4M13 16V8M18 16V5" /></>}
+  </svg>;
+}
+
+function NavigationDrawer({ onClose }: { onClose: () => void }) {
+  const { lang, setLang } = useLang();
+  const { currentUser, openProfileModal, logout } = useUser();
+  const pathname = usePathname();
+  const dialog = useRef<HTMLDialogElement>(null);
+  const closeButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const trigger = document.activeElement;
+    const element = dialog.current;
+    const overflow = document.body.style.overflow;
+    element?.showModal();
+    document.body.style.overflow = "hidden";
+    closeButton.current?.focus();
+    return () => {
+      element?.close();
+      document.body.style.overflow = overflow;
+      if (trigger instanceof HTMLElement) trigger.focus();
+    };
+  }, []);
+  return <dialog ref={dialog} id="app-navigation" aria-labelledby="navigation-title" className="app-navigation-drawer bg-white text-slate-900 shadow-2xl" onCancel={e => { e.preventDefault(); onClose(); }} onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+    <div className="flex min-h-full flex-col p-5 sm:p-6">
+      <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-5">
+        <h2 id="navigation-title" className="text-base font-semibold">{lang === "hi" ? "आपका अध्ययन" : "Your study space"}</h2>
+        <button ref={closeButton} type="button" onClick={onClose} aria-label={lang === "hi" ? "मेन्यू बंद करें" : "Close menu"} className="flex h-11 w-11 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-blue-600"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="m6 6 12 12M6 18 18 6" /></svg></button>
+      </div>
+      <nav aria-label="Main navigation" className="space-y-2 py-6">
+        {PRIMARY.map(item => {
+          const active = pathname.startsWith(item.href) || (item.href === "/papers" && pathname.startsWith("/recovery-lab/testbook"));
+          return <Link key={item.href} href={item.href} onClick={onClose} aria-current={active ? "page" : undefined} className={`flex min-h-14 items-center gap-4 rounded-xl px-4 py-3 text-base font-medium focus-visible:outline-2 focus-visible:outline-blue-600 ${active ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}><NavIcon name={item.icon} />{lang === "hi" ? item.hi : item.en}{active && <span aria-hidden="true" className="ml-auto h-1.5 w-1.5 rounded-full bg-blue-600" />}</Link>;
+        })}
+      </nav>
+      <section aria-label={lang === "hi" ? "खाता और भाषा" : "Account and language"} className="mt-auto border-t border-slate-200 pt-5">
+        <label className="flex items-center justify-between gap-3 text-sm text-slate-600">{lang === "hi" ? "भाषा" : "Language"}<select aria-label="Language" value={lang} onChange={e => setLang(e.target.value as "en" | "hi")} className="min-h-11 rounded-lg border border-slate-200 bg-white px-3"><option value="en">English</option><option value="hi">हिंदी</option></select></label>
+        <div className="mt-5 flex items-center gap-3">
+          <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold">{currentUser?.name?.slice(0, 1).toUpperCase() || "SR"}</span>
+          <div className="min-w-0"><p className="text-xs text-slate-500">{lang === "hi" ? "खाता" : "Account"}</p><p className="break-words text-sm font-medium">{currentUser?.name || (lang === "hi" ? "साइन इन नहीं है" : "Not signed in")}</p></div>
+        </div>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+          <button type="button" className="min-h-11 rounded-lg px-2 text-sm font-medium text-slate-700 hover:bg-slate-50" onClick={() => { onClose(); openProfileModal(); }}>{currentUser ? (lang === "hi" ? "खाता बदलें" : "Switch account") : (lang === "hi" ? "साइन इन करें" : "Sign in")}</button>
+          {currentUser && <button type="button" className="min-h-11 rounded-lg px-2 text-sm text-slate-500 hover:bg-slate-50" onClick={() => { onClose(); void logout(); }}>{lang === "hi" ? "साइन आउट करें" : "Sign out"}</button>}
+        </div>
+      </section>
+    </div>
+  </dialog>;
+}
+
+export function SiteHeader() {
+  const { lang } = useLang();
+  const { kind } = useAttemptMode();
+  const [menuOpen, setMenuOpen] = useState(false);
+  return <header className="border-b border-slate-200 bg-white">
+    <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-2 px-3 sm:px-6">
+      <Link href="/" aria-label="Score Recovery home" className="flex shrink-0 items-center gap-2 font-semibold text-slate-900">
+        <span className="rounded-md bg-slate-900 px-1.5 py-1 text-xs text-white">SR</span>
+        <span className="hidden lg:inline">Score Recovery</span>
+      </Link>
+      {kind === null ? <>
+        <button type="button" aria-expanded={menuOpen} aria-haspopup="dialog" aria-controls="app-navigation" onClick={() => setMenuOpen(true)} className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>{lang === "hi" ? "मेन्यू" : "Menu"}</button>
+        {menuOpen && <NavigationDrawer onClose={() => setMenuOpen(false)} />}
+      </> : <span className="text-sm text-slate-500">{lang === "hi" ? "एक बार में एक प्रश्न" : "One question at a time"}</span>}
+    </div>
+  </header>;
+}

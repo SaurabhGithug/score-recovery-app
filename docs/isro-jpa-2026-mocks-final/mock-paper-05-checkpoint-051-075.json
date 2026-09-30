@@ -1,0 +1,24 @@
+{
+  "paper": 5,
+  "exactly_200_questions": false,
+  "section_counts": {
+    "English Language & Comprehension": 25
+  },
+  "section_counts_valid": false,
+  "quant_count": 0,
+  "gk_count": 0,
+  "difficulty_counts": {
+    "Moderate": 19,
+    "Easy": 2,
+    "Hard": 4
+  },
+  "answer_distribution": {
+    "C": 7,
+    "D": 6,
+    "A": 6,
+    "B": 6
+  },
+  "defects": [],
+  "status": "passed",
+  "batch": "051-075"
+}

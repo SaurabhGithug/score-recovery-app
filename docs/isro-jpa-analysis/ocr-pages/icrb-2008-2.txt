@@ -1,0 +1,514 @@
+# icrb-2008-2
+Source PDF: docs/isro-jpa-previous-papers-third-party/2008-icrb-jpa-paper-2.pdf
+Pages: 14
+OCR is uncorrected; verify figures, formulas, dates, and options against PDF images.
+
+
+========== PDF PAGE 1 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION
+ees [HEADQUARTERS] :
+WRITTEN TEST FOR RECRUITMENT TO THE POST OF ASSISTANT/
+. ; JR.PERSONAL ASSISTANT .
+‘ , - Test Booklet : |D |
+Paper -ll : Arithmetic, General Knowledge. Computer Literacy ©
+Date : 20" July 2008 Time : 1400 hrs. to 1630 hrs.
+“ No. of questions
+Part- A : Arithmetic (Objective type) 60 E 2D FES
+we , Part-B : General Knowledge (Objective type) - 20 LS oP On
+. Part-C : Computer Literacy (Objective type) 20 ae | sity i
+-_ i /
+INSTRUCTIONS ONG AS
+‘ . . EF ent
+1. The question paper is in the form of test booklet. . ee
+2. A-separate OMR answer sheet is provided to all candidates. ;
+_ 3. Each objective question is provided with a text and figures wherever applicable with
+multiple answers (a), (b), (c) and (d), which includes one correct answer.
+_ 4. Refer answer sheet instructions and use HB pencil for answering all the questions.
+5. All questions carry 1. mark each. - .
+. 6. Multiple answers for a question will be regarded as wrong answer.
+7. Although the test stresses on accuracy more than speed, it is important for you to use
+your time as effectively as possibile. , ;
+, } 8. Do not waste time on questions which are too difficult for you: Go on to other questions
+; and come back to the difficult ones later. ;
+‘ 3 9. Question booklets have been marked with A or B or C or D or E or F_ on the right
+hand top corner, which shall be written on the answer sheet in the box and bubble
+- appropriately. — ; ;
+10. Enter your name and roll number correctly on the OMR answer sheet.
+41. Enter all information as per the instructions given in the answer sheet.
+12. Space available in the Question booklet could be used for rough work, if required and
+, _ no separate sheet will be provided. ;
+43. At the end of the test (1) Written test Call Letter with photograph (2) OMR Answer
+Sheet and (3) Test Booklet shall be returned to the Invigilator.
+: + UWL
+
+
+========== PDF PAGE 2 ==========
+
+--- TESSERACT OCR ---
+|
+;
+
+
+========== PDF PAGE 3 ==========
+
+--- TESSERACT OCR ---
+oo INDIAN SPACE RESEARCH ORGANISATION [D |
+, HEADQUARTERS
+WRITTEN TEST FOR THE POST OF ASSISTANT/JR.PERSONAL ASSISTANT an
+PART-A (ARITHMETIC) :
+4. Which of the following is always odd?
+(a) | Sum of two odd numbers (b) Difference of two odd numbers
+(c) Product of two odd numbers (d) None of these
+2. Find the sum of prime numbers lying between 60 and 75. .
+(a) 199 (b) 201 .{c) 211 ; (d) 272 © ,
+_ 3. The length of a rectangular plot is 60% more than its breadth. If the
+, difference between the length and the breadth of that rectangle is 24 cm.
+| what is the area of that rectangle ?
+— (a) 2400sq.cm. (b) 2480sq.cm. (c) 2560 sq.cm. (d) 2600. sq.cm.
+4. in a camp, there is a meal for 120 men or 200 children. If 150 children have
+taken the meal, how many men will be catered to with the remaining
+- meal ? ;
+; (a) .20 (b) 30 (c) 40 (d) 50
+5. The H.C.F. and L.C.M. of two numbers are 11 and 385 respectively. !f one
+~ number fies between 75 and 125, then that number is :
+; {a) 77 (b) 88 (c) 99 (d) 110 -
+6. What will be the least number which when doubled wiil be exactly divisible
+: by 12; 18, 21 and 30 ?
+, (a) 196 (b) 630 (c) 1260 (d) 2520
+7%, Sam invested Rs.15,000 @ 10% per annum for one year. If the interestis — .
+, _. €ompounded half-yearly, then the amount received by Sam at the end of
+, the year willbe :
+(a)  Rs.16,500 (b) —_Rs.18,525.50
+i. (c) Rs.16,537.50 (d) Rs.18,150
+8. (?)*15=37.5 % of 220
+(a) 11 (b) 81.5 (c) 5.5 {(d) 851
+9% A is twice as fast as B and B is thrice as fast as C is. The journey covered
+. by C in 42 minutes, will be covered by A in:
+(a) 14min. (b) 28min. (c) 63 min. (d) 7 min.
+: Page 1 of 12
+
+
+========== PDF PAGE 4 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION a 7
+HEADQUARTERS ;
+WRITTEN TEST FOR THE POST OF ASSISTANT/JR.PERSONAL ASSISTANT
+Direction: The circle-graph given here shows the spending of a country on various
+_ sports during a particular year. Study the graph carefully and answer the following five
+questions given below it :
+, Hockey .
+a 63° ,
+. Football
+; Cricket | 54°
+« gt? :
+_ . Others *
+. 31°
+. 7 Basket Bail . : woe
+: 50° Golf :
+Tennis 36 :
+45° ;
+40. What percent of the total spending is spent on Tennis ?
+(a) 12%% — (b)  22%% (c) 25% (d) 45% ©
+41. How much more percent is spent on Hockey than that on Golf ?
+(a) 27% (b) 35% (c) 37.5% (d) 75% ‘
+42. How much less percent is spent on Football than that on Cricket ?
+(a) 222% (b) 27% (c) 331% (d) 374%
+". 43. «If the total amount spent on sports during the year was Rs.2 crores, the oO
+amount spent on Cricket and Hockey together was : , ;
+; (a), Rs.8,00,000 (b).. Rs.80,00,000
+(c) Rs.1,20,00,000 (d) — Rs.1,60,00,000 -
+14, If the total amount spent on sports during the year be Rs.1,80,00,000, the :
+‘amount spent on Basketball exceeds that on Tennis by: .
+(a)  Rs.2,50,000 (b)  Rs.3,60,000 :
+(c) __Rs.3,75,000 (d) —_ Rs.4,10,000
+Page 2 of 12
+
+
+========== PDF PAGE 5 ==========
+
+--- TESSERACT OCR ---
+a INDIAN SPACE RESEARCH ORGANISATION
+HEADQUARTERS .
+ben wet WRITTEN TEST FOR THE POST OF ASSISTANT/JR.PERSONAL ASSISTANT ere
+15. . A can doa piece of work in 25 days and B can do it in 20 days. They work
+together for 5 days and then A goes away. In how many days will B finish
+the work
+(a) — 10 days (b) 11 days (c)  20days {d) | 331 day
+11
+16. The average score of a cricketer for ten matches is 38.9 runs. If the
+average for the first six matches is 42, then find the average for the last
+four matches.. . :
+(a) 33.25 (b) 33.5 (c) 3425 © (d) 35
+_ 17. Which is the largest among the following fractions? ‘
+a (a) 5/8 (b) 7/9 (c) 4/7 (d) 2/3
+18. The ratio between two numbers is 3:4 and their sum is 420. The greater of
+the two numbers is: Lo
+(a). 175 (b) 200 (c) 240 (d) 315
+19. Rs.1,200 becomes Rs.1632 in 4 years at a certain rate of simple interest. If
+‘ the rate of interest is increased by 1%, it would amount to how much?
+a) Rs.1635 (b) Rs.1644 (c) Rs.1670 . (d) Rs.1680
+20. The number 311311311311311311311 is : oe
+(a) divisible by 3 but not by 17 (b) divisible by 11 but not by 3
+(c) divisible by both 3 and 11 (d) neither divisible by 3 nor by 114
+21. The students in three classes are in ratio 2:3:5..1f 20 students are increased-  -*
+; in each class, the ratio changes to 4:5:7. What is the total number in the
+, three classes before the increase? ,
+> (a) 100.students (b) 75 students
+(c) 150 students (d) 50 students :
+_22. A, B and C start at the same time in the same direction to run around a :
+| circular stadium. A completes a round in 252 seconds, B in 308 seconds
+, and C in 198 seconds, all starting at the same point. After what time will
+they meet again at the starting point ?
+(a) 26 minutes 18 seconds (b) 42minutes 36 seconds —
+(c) 45 minutes (d) 46 minutes 12 seconds
+; ; Ss Page 3 of 12
+
+
+========== PDF PAGE 6 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION ‘D_ oo
+HEADQUARTERS ©
+WRITTEN TEST FOR THE POST OF ASSISTANT/JR.PERSONAL ASSISTANT
+23. Divide Rs.1540 among A, B, C so that A shall receive 2/9 as much as B and
+C together, and B 3/11 of what A and C together do. ;
+. (a) 285,330,830 (b) 280,330,930
+. (c)} 280,330,980 (d) 330,380,980 ~
+. 24. Ina fort there is provision for 40 days for 275 persons. If after 16 days 125
+: persons leave the fort, for how many more days the provision will now
+last? oe :
+; (a) 45days (b) 35 days (c)  44days (d) 53days
+25. 10 years ago, the average age of a family of 4 members was 24 years. 2 .
+; children having been born, the average of the family is same today. The ;
+present age of youngest child if they differ in age by 2 years is: a
+- (a) 1 year (b) 2 years (c) 3 years (d) Syears oT
+26. A train travels 92.4 km/hr. How many metres will it travel in 10 minutes? :
+(a) 15400 (b) 1540 . (c) 154 . (d) 15.40
+27. Aman covers a certain distance in 2 hours 45 mints., when he walks at the
+rate of 4 km/hr. How much time will he take to cover the same distance if
+oo he runs ata speed of 6.5 km/hr.? ~
+(a) 40min. (b) © 41 min. 15 sec. (c) 45min. (d} 100 min.
+28. A number when divided by the sum of 555 and 445 gives two times their ;
+; difference as quotient.and 30 as the remainder. The number is:
+{a) 1220 (b) 1250 (c) 22030 (d) 220030
+29. Which of the following will come in place of both the question marks in the NO
+following equations ?
+: 128 +16x?—-7x2 = 1 2
+- PH8x6+??
+j “ (a) 3 (b) 14 (c) 16 (d) 17 :
+30. 80% of 120+40% of 150=?
+| (a) 160 (b) 176 () 156 (d) 256
+31. 67% of 89:89 % of 67=7
+; (a) 5163 (b) 5963 (c) 0 (d) 1
+| , , Page 4 of 12
+
+
+========== PDF PAGE 7 ==========
+
+--- TESSERACT OCR ---
+a INDIAN SPACE RESEARCH ORGANISATION . ID |
+; HEADQUARTERS
+WRITTEN TEST FOR THE POST OF ASSISTANT/JR.PERSONAL ASSISTANT
+_ 32. . What decimal fraction is 20 mm of a metre?
+(a) 2 (b) 02 (c) .05 (dd) 5
+33. 5005-5000 / 10.00 =?
+(a) 05 — (b) 50 (c) 5000 (d) 4505
+34. A man purchased a watch for Rs. 400 and sold it at a gain of 20% of the .
+selling price. The selling price of the watch is:
+(a) Rs. 300 (b} Rs.320 - (c) Rs. 440 ‘(d) Rs. 500
+7 35. A shopkeeper mixes two varieties of tea, one costing Rs. 35 per k.g. and
+- ‘another at Rs. 45 per kg. in the ration 3:2. If he sells the mixed variety at
+, cy Rs. 41.60 per k.g., percentage of his gain or loss is: ;
+(a) 4% gain (b) 4% loss (c) 62/3% gain {d) 62/3% loss
+36. Two-fifth of one-fourth of three-seventh of a number is 15. What is half of |
+that number ? :
+: ~ (a) 94 (b) 96 (c) - 188 (d) 175
+37. The compound interest on a certain sum for 2 years is Rs. 41 and the
+simple interest is Rs. 40. What is the rate percent? ;
+(a) 4% (b) 5% (c) 6% _ (d)' 8%
+| 38. Asum of money at compound interest amounts to thrice itself in 3 years. In
+how many years will it be 9 times itself?
+| (a) 18 (b) 12 (c) 9 (d) 6
+' | 39. The difference between simple interest and ‘the compound interest on
+; Rs.600 for one year at 10% per annum, reckoned half yearly is’
+? {a) Nil (b) Rs. 1.50 (c) Rs. 4.40 ‘(d) Rs. 6.50
+~ 40. 3/4” of 1/5 of a number is 60. The: number is:
+(a)  .300 (b) 400 (c) 450 (d) 1200
+' 41. On dividing 55390 by 299, the remainder is 75. The quotient is:
+(a) 187 (b) 185 (c) 243 (d) 374
+Page 5 of 12
+
+
+========== PDF PAGE 8 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION 7
+; HEADQUARTERS
+’ WRITTEN TEST FOR THE POST OF ASSISTANT/JR.PERSONAL ASSISTANT a
+Direction: The following table shows the number of new employees added to different
+_ categories of employees in a Company and also the number of employees from these .
+categories who left the. company every year since the foundation of the Company in
+1995. Based on the table, answer the following five questions:-
+reo [oe [ omens [ones [oan ee |
+YEAR $s
+7995 [760 | -- (1200 | — [sso | — |iie0 | — |820| — |
+4996 [280 | 120 [272 | 120 [256 | 104 | 200 | 400 | 184 | 96 |
+- [1997
+7998 [148 | 88 | 236 | 96 [208 | 100 | 248 | 96 | 196 | 80 | :
+1999
+[2000 [193 [| 96 | 268 | 112 [248 | 144 | 260 | 92 | 200 | 104 | ;
+42. What is the percentage of number of Operators who left the Company with
+respect to total number of Operators who joined the Company during the |
+period between 1995 and 2000 ?
+(a) 19% (b) 21% ‘(c) 27% (d)} 29%
+43. For which of the following categories the percentage. increase in the
+. number of employees working in the Company from 1995 to 2000 was the
+. maximum ? :
+(a) Managers (b) Technicians -
+(c) Operators (d) Accountants
+44. What was the difference between the total number of Technicians added to
+= the Company and the total number of Accountants added to the Company
+; during the years 1996 to 2000 ? . ~
+(a) 128 (b) 112 {c) 96 (d) 88 fe
+45. What was the total number of Peons working in the Company in the year — *
+1999 ? ;
+(a) 1312 — (by) 1192 | (c) 1088 (d) 968
+46. What was the pooled average of the total number of employees .of all
+categories in the year 1997 ?
+(a) 1325 (b) 1285 (c) 1265 (d) 4195
+Page 6 of 12
+
+
+========== PDF PAGE 9 ==========
+
+--- TESSERACT OCR ---
+oS INDIAN SPACE RESEARCH ORGANISATION [D |
+HEADQUARTERS .
+. WRITTEN TEST FOR THE POST OF ASSISTANT/JR.PERSONAL ASSISTANT
+47. The average consumption of petrol for a car for seven months is 110 litres
+and for next five months 86 litres. The average monthly consumption is: ;
+a) 98 litres (b) 100 litres {c) 1021itres (d) 96 litres ;
+48. Asum of money amounts to Rs. 767 in 3 years and Rs. 806 in 4 years. The
+sum is:
+a) Rs. 600 (b) Rs. 650 {c) Rs. 675 (d) Rs. 700
+_. 49. A borrowed Rs.5000. from B at simple interest. After 4 years, B received
+Rs.1000 more than the amount given to B on loan. The rate of interest was: ,
+: a) 5% (b) 25% (c) 20% (d) 4%
+; . 50. Which part contains the fractions in‘ascending order ? ,
+- fa) 11, 16, 19 (b) 16, 11, 19
+14 19 21 19 14 21
+(c) 16, 19, 14 (d) 19, 11, 16
+19 21 14 21 14 19 ©
+51. The number of students in each section of a school is 24. After admitting
+new students, three new sections were started. Now, the total number of ;
+sections is 16 and there are 21 students in each section. The number of
+new students admitted is : . .
+(a) 14 -(b) 24 (c) 48 (d) 114
+52. (856+ 167)? + (856-167) isequalto: |
+. 856 x 856 + 167 x 167
+’ (a) 1 (b) 2 (c) 689 (d) 1023
+. 53. The value of (67.542)? - (32.458)? is :
+75.458 — 40.374
+: (a) 1 (b) 710 (c) 100 (d) None of these
+_ _ $84.  § out of 2250 parts of earth is sulphur. What is the percentage of sulphur in
+earth ?
+(a) 11 (b) 2 fc) 4 (d) 2
+50 9 45 45
+, Page 7 of 12
+
+
+========== PDF PAGE 10 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION — 7
+HEADQUARTERS
+oo. _WRITTEN TEST FOR THE POST OF ASSISTANT/JR.PERSONAL ASSISTANT oss
+’ 55. Ais 30% more efficient than B. How much time will they, working together,
+take to complete a job which A alone could have done in 23 days ?
+' {a) 11 days (b) 13 days (c) 20 days (d) ‘25 days
+- 56. An express train traveled at an average speed of 100 km/ h, stopping for 3
+_ minutes after every 75 km. How long did it take to reach the destination
+600 km, from the starting point ?
+(a) 6 hrs. 21 min. (b) 6 hrs. 24 min. .,
+(c) 6 hrs. 27 min. (d) 6 hrs. 30 min.
+57. Two trains start from P and Q respectively and travel towards each other at
+, a speed of 50 km/hr and 40 km/hr respectively. By the time they meet, the —
+first train has traveled 100 km. more than the second. The distance
+’ between P and Qis :
+(a) 500 km. (b) 630 km. (c) 660 km. (d) 900 km. .
+58. A merchant has 1000 kg of sugar, part of which he sells at 8% profit and the °
+rest at 18% profit. He gains 14% on the whole. The quantity sold at 18%
+profit is: 7
+(a)  400kg. (b) 560 kg. (c) 600 kg. (d) 640 kg.
+59. A man took a-loan from a bank at the rate of 12% p.a. simple interest. After ;
+3 years, he had to pay Rs.5,400 interest only for the period. The principal 7
+| amount borrowed by him was : —
+(a) Rs.2,000 (b) Rs.10,000 (c) Rs.15,000 (d)  Rs.20,000 .
+_60. A and B take part'in a 100 m race. A runs at 5 km per hour. A gives Ba :
+. - start of 8 m and still beats him by 8 seconds. The speed of Bis :
+| (a) 5.15kmph — (b) 4.14 kmph (c) 4.25 kmph (d) 44kmph
+| , Page 8 of 12
+
+
+========== PDF PAGE 11 ==========
+
+--- TESSERACT OCR ---
+me INDIAN SPACE RESEARCH ORGANISATION [D |
+_ HEADQUARTERS
+WRITTEN TEST FOR THE POST OF ASSISTANT/JR.PERSONAL ASSISTANT
+, PART-B (GENERAL KNOWLEDGE) ;
+' 61. The river Cauvery flows from:
+(a) Andhra Pradesh to Tamil Nadu (b) Karnataka to Maharashtra ;
+{c) Karnataka to Tamil Nadu © (dq) Kerala to Tamil Nadu
+‘62. Which of the following company is the world’s largest car manufacturer ?
+(a) Honda Motor (b) Volvo Motor : ‘
+(c) Suzuki Motor (d) |General Motor
+- 63. India’s newly built and tested missile “Astra” is meant for ---------- .
+. (a) Surface to air strike (b) "Aj to air-strike
+co (c). Ship to ship strike (d) Surface to surface strike
+64. Gandhiji started Satyagraha movement in 1919 in protest against the:
+(a)  Enactment of Rowlatt Act (b) . Champaran Wrongs
+(c) Simon Commission (d) Colonial exploitation of India
+65. Who among the following was the temporary President of the first session
+of the Constituent Assembly of India? ;
+(a) H.V Kamat (b) SS. Nijalingappa
+| (c) Dr.Rrajendra Prasad (d) Sachithanada Sinha :
+| .
+| ,
+| 66. In the history of the freedom movement of India, the year 1930 is
+associated with:
+(a) Partition of Bengal (b) Dandi March
+(c) — Jallianwala Bagh Massacre (d) | Chauri Chaura incident
+' 67. Who has been adjudged as the most popular and liked person of the world,
+, according to a recent online survey conducted by BBC ?
+(a) Nelson Mandela (b) Bill Clinton
+~ (c) Bill Gates (d)  DalaiLama
+| 68. The range of Agni-it missile is around :
+| , (a) 500 km. (b) 2000km. (c) 3500 km. (d) 5000 km.
+_ 69. | Which vitamin is provided by sunlight to the body ?
+(a) VitaminA (b) VitaminB (c) VitaminC (d)  VitaminD
+| , Page 9 of 12
+_
+
+
+========== PDF PAGE 12 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION , ut
+HEADQUARTERS
+. WRITTEN TEST FOR THE POST OF ASSISTANT/JR.PERSONAL ASSISTANT
+70. cedeseeseeeereeeee MUSClE iS the strongest of all in the human body.
+(a) Jaw (b) — Thigh (c) Calf (d) Upper arm
+71. Which of the following Indian cricketers was/were never appointed as
+captain of the Indian Test cricket team?
+. (a) S. Venkataraghavan ; (b) —‘K. Srikant ,
+(c) Mohinder Amarnath (d) Syed Kirmani ; ;
+72. Musical instrument “sitar” is the combination of -------------
+(a)  Bansuri and Veena (b)  Bansuri and Sarangi oo
+(c) Veena and Tambura (d) Veena and Piano ; .
+73. In which of the following states, Internet users are maximum in India ? ; *
+(a) Uttar Pradesh (b) Punjab J
+(c) Kerala (d) Maharashtra
+_. 74. The lady to win the Wimbledon title successfully nine times was:
+| (a) Monica Seles (b) Steffi Graf
+(c) Martina Navratilova : (d) = Chris Evert
+75. Who among the following wrote the book ‘Algebra of Infinite Justice’? .
+(a) Anita Desai (b) Vikram Seth
+(c) Arundhati Roy (d) — Rohington Mistry ;
+| . ,
+76. The song “Bande Mataram” was originally composed in:
+(a) Assamese (b) Bengali (c) — Hindi (d) — Sanskrit.
+77. The first woman filmstar nominated to the Rajya Sabha was: So ron
+|: (a) Nargis Dutt (b) Shabana Azmi Do
+_ (c) | Madhubala (d) Meena Kumari
+"78. - Which among the following music composers was deaf? .
+| (a) Beethovan L.V -  (b) Back J.S
+"  (c) Richard Strauss (d) Johannes Brahms
+79. Which one of the following plants is useful in treating hypertension ? .
+| . (a)  Cinchona = (b) Ocimum (c) Rauwoifia (d) Vinca
+| 80. Who said “Man is a Social Animal” ?
+(a) Plato (b) Aristotle (c) Rousseau (d) Socrates
+Page 10 of 12
+
+
+========== PDF PAGE 13 ==========
+
+--- TESSERACT OCR ---
+a INDIAN SPACE RESEARCH ORGANISATION ‘|
+HEADQUARTERS
+_ WRITTEN TEST FOR THE POST OF ASSISTANTIJR.PERSONAL ASSISTANT =”
+PART-C (COMPUTER LITERACY)
+~ 81. An Excel Workbook is a collection of -------- ;
+(a} | Workbooks (b) | Worksheets .
+(c) _ Charts ‘  (d) Worksheets and Charts
+82. Word length of a Personal Computer is ---------
+(a) A bits (b) 8 bits (c). 16 bits (d) 64 bits
+83. Which of the following is handy to carry yet can store large amounts of
+. ‘data?
+. (a) Floppy Disk . (b) Hard Disk (c) CDROM (d) Zip Disk
++84. Which of the following is the latest version of Excel ? , ,
+, (a) Excel2000 (b) Excel 2002 (c) ExcelME (d) Excel XP
+85. A typical worksheet has ---------- number of columns.
+(a) 128 (b) 256 (c) 512 (d) 1024 -
+86. In Computer language,1 Kilobyte equals: | ;
+(a) 1000 Bytes (b) 1024 Bytes (c) 100 Bytes (d) 8 Bytes ;
+87. Which switch should be used in the DIR command to view files in all
+directories? = .
+(a) /P (b) MW (c) IS (dy) UL
+| 88. When saving a document, a difference between “Save’ and ‘Save As’ is -----
+, (a) there is no difference -- they do exactly the same thing all the time.
+; (b) ‘Save’ will save a file that has already been assigned a name and
+saving location.
+a (c) ‘Save As’ allows one to change or set the name and/or saving
+. ’ Jocation for the file.
+OO (d) —(b) & (c) only.
+89. Which of the following is true about folders, directories and files ?
+(a) A folder can contain a directory, but not a file. -
+| (b) A folder can contain a file, but not a directory.
+‘ (c) A folder can contain a directory and a file.
+(d) A file can contain files, directories and folders.
+| 90. To insert a new slide in the current Presentation, we can choose --------
+(a). CTRL+M (ob) CTRL +N (c) CTRL+0O (d) CTRL +F
+| oe Page llof12 ~
+
+
+========== PDF PAGE 14 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION po
+, HEADQUARTERS ~ ,
+WRITTEN TEST FOR THE POST OF ASSISTANT/JR.PERSONAL ASSISTANT
+91. | Computer software includes ---------- .
+(a) Application programs (b) Operating system programs
+-  (c) Packaged programs {d) All of these ;
+' 92. Which of the following is not a language for computer programming?
+(a) WINDOWS (b) PASCAL (c) BASIC (d)} COBOL
+93. Who invented the computer?
+oO (a) Leonardo (b) Dennis Gason (c) Charles Barbage (d) Percy L Spencer
+94. MLS DOS is the name of alan: . *
+(a) Application Software (b) Hardware .
+(c) System Software (d) Programming Language , UD
+95. Which of the following are the best units of data‘on an external storage
+device ?
+. (a) Bits (b) Bytes (c) Hertz (d) Clock cycles
+: 96. Which of the following have the fastest access time ?
+(a) Semiconductor Memories . (b) Magnetic Disks : 7
+(c) Magnetic Tapes (d) Compact Disks
+97. Which of the following is a read only memory storage device. oo
+(a)  Floppydisk (b) Harddisk = (Cc) CDROM (d) None of these
+98. E-MAIL
+’ (a) stands for electronic mail ‘ ~
+(b) | Stores purchase orders and invoices, between computers. a
+(c) BothAandB .
+- (d) - None of the above a
+99. Which of the following packages is used for composition in printing press? ~
+. (a) Lotus (b) Dbase (c) Page maker (d) Word Perfect
+100. With regard to e-mail addresses :
+(a) they must always contain an @ symbol.
+(b) they can never contain spaces.
+(c) they are case-Insensitive.
+(d) all of the above
+: : Page 120f 12 .

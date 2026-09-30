@@ -1,0 +1,447 @@
+# icrb-2006-2
+Source PDF: docs/isro-jpa-previous-papers-third-party/2006-icrb-jpa-paper-2.pdf
+Pages: 12
+OCR is uncorrected; verify figures, formulas, dates, and options against PDF images.
+
+
+========== PDF PAGE 1 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION
+, , [HEADQUARTERS]
+, WRITTEN TEST FOR RECRUITMENT TO THE POST OF OFFICE ASSISTANT
+[OFFICE CLERK’B’] / JR.PERSONAL ASSISTANT [JR.STENOGRAPHER]
+; . ; Test Booklet : ia |
+a Paper -lIl: Arithmetic including Computer Literacy
+~ Date : 28 May 2006 Time ; 1330 hrs. to 1600 hrs. .
+No. of questions
+' Part-A : Arithmetic (Objective type) * 80
+Part-B  : Computer Literacy (Objective type) 20 ;
+INSTRUCTIONS |
+1. The question paper is in the form of test booklet.’ ;
+2. A separate OMR answer sheet is provided to all candidates.
+. , 3. Each objective question is provided with a text and figures wherever applicable with
+multiple answers a), b), c) and d), which includes one correct answer. :
+, 4. Refer answer sheet instructions and use HB pencil for answering all the questions. . ~
+5. All questions carry equal marks. - : ,
+6. Multiple answers for a question will be regarded as wrong answer. . .
+7. Although the test stresses on accuracy more than speed, it is important for you to
+use your time as effectively as possible. .
+; 8. Do not waste time on questions which are too difficult for you. Go on to other
+questions and come back to the difficult ones later.
+9. Question booklets have been marked with A or Bor C orDorEorF ontheright ~
+. hand top corner, which shall be written on the answer sheet in the box and bubble
+appropriately. : .
+: 16. Enter your name and roll number correctly on the OMR answer sheet. ;
+11. Enter all information as per the instructions given in the answer sheet.
+12. Space available in the Question booklet could be used for rough work, if required —
+and no separate sheet will be provided. .
+13. . At the end of the test (1) Written test Cail Letter with photograph (2) OMR Answer 7
+. - Sheet and (3) Test Booklet shall be returned to the Invigilator. “
+HERER ,
+
+
+========== PDF PAGE 2 ==========
+
+--- TESSERACT OCR ---
+
+
+========== PDF PAGE 3 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION
+[HEADQUARTERS] :
+. WRITTEN TEST FOR THE POST OF OFFICE ASSISTANT [OFFICE
+CLERK “B’J/JR.PERSONAL ASSISTANT [JR.STENOGRAPHER]
+PART-A_ -- ARITHMETIC
+Directions for Qn.1 and 2: In each of the following number series a wrong number is
+given. Find out the wrong number.
+1. 13 6 11 20 39 70
+. a) 3 b) 39 c) 11 d) 20
+2. 50 51 47 56 42 65 29
+. a) 51 b) 47 c) 56 d) 42
+3. What is the sum of all even numbers from 1 — 40 ?
+a) 160 b) 420 c) 210 d) 480
+4. Which of the following numbers is exactly divisible by 99 ?
+a) 114345 b) 3572404 c) 135792 d) 913464
+5. A number when divided by 357 leaves a reminder 39. By dividing the same
+number by 17, the reminder obtained is :
+a) 0 b) 1 c) 4 d) 5
+6. The least number which when divided by 15, 27, 35 and 42 leaves in each case
+a remainder 7, is:
+a) 1883 b) 1897 c) 1987 d) 2007
+7. The sum of squares of two numbers is 80 and the square of their difference is
+36. The product of the two numbers is: ~
+, a) 22 b) 44 c) 58 d) 116
+8. Which fraction is equal to 0.20 % ? ;
+a) 1/20 b) 1/50 c) 1/400 d) 1/500
+: 9. Find the missing term in the following sequence :
+; 4, 9, 19, --, 79
+, a) 36 b) 37 c) 38 d) 39
+10. In an examination, a student scores 4 marks for every correct answer and
+loses one mark for every wrong answer. A student attempts all the hundred
+questions and scores 210 marks. The number of questions he answered
+correctly was : .
+; ~ a) 70 b) 62 c) 64 d) 68
+
+
+========== PDF PAGE 4 ==========
+
+--- TESSERACT OCR ---
+12:
+11. If Rs. 900 amounts to Rs. 1,080 in 4 years at simple interest, what sum will
+amount to Rs.1,275 in 5 years at the same rate?
+, a)Rs.1,020  b)Rs.1,050 c)Rs.1,080 d)Rs.1,200
+12. Asum of money at compound interest amounts to thrice itself in 3 years. In
+. how many years will it be 9 times itself?
+- a)18 _b) 12 c)9 d)6 ,
+13. Ofthe following fractions, which is less than 2/3 ?
+a) 7/8 b) 5/6 c) 3/4 d) 3/5
+14. The difference between the compound interest and the simple interest ona
+certain sum at 5% per annum for 2 years is Rs.1.50, the sum is : ;
+a) Rs. 600 b) Rs. 500 c) Rs. 400 d) Rs. 300
+15. Acandoa piece of work in 25 days and B can finish it in 20 days. They :
+work together for 5 days and then A goes away. In how many days will L
+finish the work?
+a) 10 days b) 11 days c) 20 days d) 33 1/11 days
+16. Acandoa piece of work in 40 days. He worked at it for 5 days and B
+: finished the remaining work in 21 days. In how many days can A and B
+together finish the work?
+a) 13 days b) 15 days c) 6 2/3 days d) 18 1/7 days
+17. Arvind purchased a wrist watch with 30 percent discount on the labelled price.
+: He sold it with 40 percent profit on the price he bought. What was his percent
+loss on the labelled price? _
+a)8 , b) 2 c)6 d)4
+18. An amount of money is to be distributed among P,Q and R in the ratio of
+: 7:3:11. If the total share of P and Q together is Rs.15000, what is the
+difference between P and R’s share? :
+a) Rs.3000 b) Rs.9000 c) Rs.4500 d) Rs.6000
+19. 2/3.0f a consignment was sold for a profit of 6% and the rest at a loss of 3%. If
+the sale has an overall profit of Rs.540/, then the value of the consignment will
+be ,
+; a) Rs.16,000 b) Rs.17,000 c) Rs.18,000 d) Rs.19,000 -
+20. % of anumber substracted from 1/3 of a number gives 12. Then the number is .
+a) 144 b) 140 c) 134 d) 130
+21. Jayesh earns 60% more money than Kabir. Kabir earns 20% less than Akash.
+If Kabir’s income is Rs. 5000 by what percent is Jayesh’s earning more than
+Akash?
+a) 28 b) 48 ¢) 72 d) None of these
+
+
+========== PDF PAGE 5 ==========
+
+--- TESSERACT OCR ---
+13:
+22. Varun purchased a steel wire. He cut 16 pieces of 2.5metres, 12 pieces of 1.5
+metres and 20 pieces of 0.5 metres. Instead if he had cut pieces of 1.7 metres
+; only, how many pieces could have been made?
+a) 30 b) 60 c) 80 d) 40
+23. Three-fifty of two third of one-fourth of a number is 40 more than one-sixth of
+660. What is 50 percent of that number?
+a) 1500 b) 700 c) 800 d) None of these.
+24. 75% of a number when added to 75 becomes the number itself. The number
+is:
+a) 150 b) 200 c) 225 dj) 300
+: 25. The average height of 30 girls out of a class of 40 is 160 cms. and that of the
+. remaining girls is 156 cms. The average height of the whole class is:
+~ a) 158 cms. b) 158.5 cms c) 159 cms d) 159.5 cms
+26. How many times do.the hands of a clock point towards each other inaday?
+a) 24 b) 20 c) 12 d) 22
+; 27. Two stations A and B are 110 km apart on a straight line. One train starts from
+A at 7 a.m. and travels towards B at 20 kmph. Another train starts from B at 8
+a.m. and travels towards A at a speed of 25 kmph. At what time will they
+meet?
+a) 9a:m. b) 10a.m. c) 11a.m. d) 10.30a.m.
+28. The ratio between the present ages of P and Q is 3:4. If the ratio of their ages
+after four years becomes 7:9, what is Q’s age at present?
+a) 24 years ’ b) 30 years c) 28 years d) None of these.
+29. How long will a train 60m long traveling at 40 km an hour take to pass through ;
+a station whose platform is 90m long
+7 a) 12.5seconds hb) 13.5seconds_ c) 14.5 seconds d) 15.5 seconds
+30. By how much percent is four-fifth of 70 lesser than five-seventh of 122?
+a) 42% b) 30% c) 24% d) 36%
+31. The radius of a circle is increased by 1%. What is the increase percent in its
+. area?
+: a) 1.1% b) 1% c) 2% d) 2.01%
+32. Which of these is the same as 0.07 Kg?
+; a) 0.7g b) 7g c) 70g d) 700g
+33. ‘If the square root of 9 is 3, then the square root of .9 is
+a) 3 b) .03 c) .09 d).95
+
+
+========== PDF PAGE 6 ==========
+
+--- TESSERACT OCR ---
+24: :
+34. ‘If the average of 5 and K is equal to the average of 5, 12 and K, then the value
+: of K is
+a) 1 b) 19 c) 21 d) 17
+35. Acylindrical water tank has a diameter of 7 meters and tank contains 2000
+litres in the tank. What is the depth of water in the tank to the nearest
+centimeter?
+a) 1 b) 5 c) 52 d) 130
+36. Sarah is twice as old as her youngest brother. If the difference between their
+ages is 15 years. How old is her youngest brother ?
+a) 10 b) 15 c) 20 d) 25 :
+37. =‘ If 3x = 6x-15 then x+8 = 7 ’
+a) 5 b) 10 c) 11 d) 13 | -
+Directions: Study the following table carefully and answer the questions given
+below: (Q38-41)
+Number of five different types of vehicles produced by a company over the year
+(in thousand)
+Type of vehicles
+Year A B Cc D E Total
+1988 342 180 95 102 - 68 787
+1989 260 98 78 112 72 620
+1990 316 156 101 118 94 785
+; 1991 294 164 92 106 105 761
+1992 308 175 143 164 116 906
+1993 312 168 105 134 138 857
+38. The percentage of production of vehicle A to the total production of ali the
+types of together was minimum in which of the following years among thy
+given years? ~
+a) 1992 b) 1993 c) 1989 d) 1988
+39. The total of production of vehicle C in 1989 and vehicle D in 1988 was equal to
+the production of vehicle B in which of the following years? ;
+a) 1991 b) 1990 c) 1988 d) 1992
+40. What was the approximate percentage increase in the production of vehicle E .
+from 1989 to 1990?
+| a) 50 b) 30 c) 40 d) 15
+41. The production of vehicle B in 1990 was approximately what percent of the
+total production of all types of vehicles together in the same year? .
+, ~ a) 40 b) 10 c) 30 d) 20
+
+
+========== PDF PAGE 7 ==========
+
+--- TESSERACT OCR ---
+25:
+42. Three-fourth of a number is 20 less than 80% of the same number. What is
+60 percent of that number?
+; a) 280 b) 360 c) 300 d) None of these ,
+43. Jeevan purchased 30 kg of rice at the rate of Rs.11.75 per kg and 25 kgs of rice
+at the rate of Rs.12.25 per kg. He mixed the two and sold the mixture.
+Approximately, at what rate he sold the mixture to make 40 percent profit in the
+transaction?
+a) Rs.16.00 b) Rs.16.50 c) Rs.16.75 d) Rs.17.25
+44. The average age of 25 boys and the class teacher is 16 years. If the ages of
+the class teacher and one of the boys are excluded the average reduces to 15.
+What is the teacher’s age?
+. a) 41 years b) 28 years c) 26 years d) Data inadequate
+- 45. The cube root of 5.832 is:
+o_ a) .018 b) 18 c) .18 d) 1.8 .
+46. In an examination 93% of students passed and 259 failed. The total number of
+students is: «
+a) 3700 b) 500 c) 3950 d) None of these
+47. The income of A and B are in the ratio 3:2 and their expenditures in the ratio
+5:3. If each saves Rs.1000, A’s income is:
+a) Rs.3000 b) Rs.4000 c) Rs.6000 d) Rs.9000
+48. 12 toys go in a small packet, 14 such packets form a small box. 25 such boxes
+go in acarton. Atul purchased 15 cartons for his shot. How many toys did he
+purchase ? .
+a) 4200 b) 63000 c) 21000 d) 147000
+49. Agame of 100 points, A can give B 20 points and C 28 points. Then, B can
+give C:
+; a) 8 points b)10 points c)14 points d) 40 points
+7 50. ‘If the diameter of a sphere is doubled, the increase in its surface area will be: ,
+a) 100% b) 200% c) 300% d) 400%
+51. Rs.1870 has been divided into three parts in such a way that half of first part,
+1/3" of second part and 1/6" of third part are equal. The third part is:
+, a) Rs.510 b) Rs.680 c) Rs.1020 d) Rs.850
+- 52. Three cubes whose edges are 3cm, 4cm & 5cm respectively are melted
+without any loss of metal into a single cube. The edge of new cube is:
+a) 12cm b) 10cm c) 9cm d) 6cm
+53. You are lying 120 ft away from a tree that is 50 feet tall. You look up at the top
+of the tree. Approximately how far is your hear from the top of the tree in a
+. _ straight line ?
+a) 5Oft b) 75 ft c) 120 ft d)130 ft
+
+
+========== PDF PAGE 8 ==========
+
+--- TESSERACT OCR ---
+:6: :
+Direction (54-57) :
+In the following Pie Chart the people of various age group of a village is shown
+Age .
+; eo tes0 orc
+° NEES BO to 10
+Be 13% B10 to 20
+020 to 30
+7 7 ao to4e | / 930 to 40
+en 0201090 940 to 50
+The total population of the Village is 10,000. Find the correct answer for the
+following questions: -
+
+54. The people in 40-50 age group are less than that in 20-30 by :
+a) 667 b) 567 - c) 1333 d) 1667
+
+55. What is the ratio in the age group 30-40 to that of 10-20 ? ;
+
+a) 2:3 b) 4:3 c) 1:2 d) 9:4
+56. The number of people in the age group less than 10 is what percent of total
+population ? ;
+a) 36% b) 10% c) 25% - d) 72%
+57. The difference between the minimum age group and the maximum age group
+; is
+a) 1500 b) 2000 c) 1000 d) 1200
+
+58. John’s parents have 6 sons, all married and each one has 4 children. How
+many members are there in the family ?_ . —
+a) 32 b) 35 c) 36 d) 38 oO
+
+59. At what rate percent, a sum of money doubles itself in 15 Years?
+
+a) 25% b) 6% C) 6.66% d) 8%
+
+60. Accricketer scored 180 runs in the first test and 258 runs in the second. How -
+many runs should he score in the third test so that his average score in the
+three tests would be 230 runs. ~
+a) 219 b) 242 c) 334 d) None of these
+
+61. Two pipes can fill a tank in two hours and three hours separately. If both the —
+pipes are opened together then the time required to fill tank will be:
+
+a) 80 mins b) 72 mins c) 60 mins d) 48 mins
+
+
+========== PDF PAGE 9 ==========
+
+--- TESSERACT OCR ---
+7:
+62. In a writing competition, the first place winner receives % the prize money.
+The second place winner receives ‘2 of prize money of the winner and the
+; third place winner receives ‘2 the prize money second winner receives. If the
+third winner receives Rs.2,500, what is the total prize money?
+a) Rs. 25,000 b) Rs.17,500 c) Rs.20,000 d) Rs.15,000
+63. HCF of two numbers is 4 and its LCM is 616 and one of the number is 44,
+what is the other number?
+a) 56 b) 44 c) 46 d) 54
+64 A boy has 3 red marbles in his pocket, 4 blue marbles, and 4 green marbles.
+How many will he have to take out of his pocket to ensure that he has one of
+: each colour ?
+: a) 3 b) 7 c) 9 d) 11
+oY 65. if 3x + 5x =-8, then x+1 =?
+a) -2 b) -1 c) 0 d) 1
+66. Solve:
+0.853 x 0.853 - .147 x .147
+0.853 - .147
+a) 1. b) 0.853 c) 1.47 dy
+: 67. Arectangle with length 12 and width 5 has an area that is four times the area
+of a triangle with base 3. What is the height of the triangle?
+: a) 21 b) 15 c) 10 d) 20 ;
+68. The arithmetic mean of four numbers is 120. While calculating the mean, one
+observation whose value is 33 was taken as 13. The correct mean is
+a) 121 b) 125 c) 120 d) 130
+, - 69. A man spends 20% of his income on house rent, 25% of the remaining on
+“ milk products and rest on food and clothing. If he pays Rs.60 towards rent ,
+how much he spends on milk products?
+a) 60 b) 80 c) 75 d) 100
+70. One man and one woman can do a work in 10 days. In how many days one
+. women alone can do the work?
+: a) 60/3 b) 80/3 c) 70/3 d) 90/3
+71. On amap, 1 cm represents 10 kilometer. The distance from A to B is shown
+on map as 15/8 cms and calculate the actual distance between the two points
+in kitometers
+a) 18.75 b) 15.75 c) 16.75 d) 17.75
+
+
+========== PDF PAGE 10 ==========
+
+--- TESSERACT OCR ---
+‘ :8:
+72. What decimal fraction is 20 mm of a metre
+a) 2 b) .02 c) .05 d) .5
+73. What is the sum of all the natural numbers from 1 to 50 ?
+a) 820 b) 1275 c) 1285 d) 1200
+74. Aman purchased 400 shares with a face value of Rs.10/- each at Rs.12/-. If
+the company announces Rs.6/- per share calculate his earnings in percentage: ..
+a) 60 b) 50 c) 66 d) 12 ;
+75. Some amount out of Rs.7000 was lent at 6% per annum and the remainine
+amount at 4% per annum. If the total simple interest from both the fraction in -
+5 years was Rs.1600, calculate the sum lent at 6%?
+a) Rs.2,500 b) Rs.4,500 c) Rs.3,000 d) Rs.2,000
+76. Avwire in the form of a circle of radius 84 cms is cut and bent in the form of a
+square without losing any material. Find the side of the square
+a) 144 b) 140 c) 134 d) 130
+: 77. One hectometer is equal to
+- a) 100 meters b) 10 meters c) 1000 meters d) 10000 meters
+78. The average age of a batch of 40 students in a bus is 8 years. When the age
+of the conductor is included then the average age is increased by one year..
+Find the age of the conductor.
+a) 44 years b) 40 years c) 42 years d) 49 years
+79. A shopkeeper gives discount of 10% on the marked price of an item anc’ .
+makes a profit of 10%. Find the cost of the item if the marked price is Rs.330/-. ~
+a) Rs.300 b) Rs.270 c) Rs.280 d) Rs.250
+80. Aearns 50% of B’s salary. B earns 80% of C’s salary. If the total earnings for
+a month is Rs.22,000 find the earnings of A. . ;
+a) Rs.4000 b) Rs.4200 c) 4400 d) Rs.4600
+On.
+
+
+========== PDF PAGE 11 ==========
+
+--- TESSERACT OCR ---
+19: ‘
+; PART-B : COMPUTER LITERACY
+81. Computer Virus can enter into the Computer System through
+_a)Air b) CPU, if the cabinet is open _c) Infected Floppy d) None of the above
+82. The part of a computer system containing the circuitry that does the adding,
+subtracting, multiplying, dividing and comparing is called as
+a) Arithmetic-logic unit b) Control c)Memory d) CPU
+83. Excel files have default extension of ;
+. a) XLS b) DOS c) DOC d) PPT
+: 84.  Anerror in the computer data are program is called
+. a) error bb) mistake c) bug d) bit
+85. The capacity of the floppy disc is
+a) 1.4MB b) 6MB c) 1.4GB d) 6GB
+86. A Computer Programme that converts an entire programme into a machine
+language at one time is called ?
+a) Compiler  b) Interpreter c) Data-base dd) Simulator
+87. Two kinds of main memory are ?
+a) Primary and Secondary memory b) RAM and ROM
+c) Random and Sequential d) External and Disc memory :
+88. JAVAisa
+a) High level language b)Machinelanguage cc) Natural language
+d) Assembly language
+- 89. Central Processing Unit (CPU) ;
+. ; (a) The computer's primary processing hardware which interprets and execute
+program instructions and manages the function of input, output and storage
+devices.
+(b) Is considered to be heart of the computer.
+. (c) May reside on a single chip on the computer's motherboard, or on a larger card
+: inserted into a special slot on the motherboard
+: (d) All the above. .
+90. What device is used to connect a Computer to Internet?
+a) Modem b) Mouse c) Monitor d) All the Above
+. 91. The entire text created by a Word Processor is known as
+a) File b) Work Book c) Document d) Page
+
+
+========== PDF PAGE 12 ==========
+
+--- TESSERACT OCR ---
+:10: ;
+92. Electronic transmission of the image of a document from one point to another
+' . is called
+a) X-Mail b) Telex c) Fax d) Phonogram
+93. In multiple choice examinations, answer sheets are evaluated by
+a) Optical Character Reader~ b) Optical Mark Reader c) Opaque Mark Reader
+d) Object Mark Reader
+94. The standard language used to write queries is :
+a) DDL b) SQL c) VB d) Java
+95. If independent networks are connected, it is called .
+a) LAN b) WAN c) Internet d) Network Architecture ;
+96. To move from one cell to other cell in Table, press
+a) Enter b) Shift c) Space d) Tab
+97. The storage device used to compensate for the difference in rates of flow of
+data from one device to another is termed as
+a) chip b) Channel c) Floppy d) Buffer.
+98. Which of the following indian Company designs and manufactures Super
+Computers ?
+a) ISRO b) C-DOT c) C-DAC d) CMC
+99. What is the name of the screen symbol which shows the placement of next
+_ character ?
+a) Mouse b) Cursor — c) Key Pad d) Joy Stic
+100. Inthe Computer professional language, 1000 bits position is represented with
+a) Mega Bit b) Kilo Bit c) Giga Bit d) Terra Bit

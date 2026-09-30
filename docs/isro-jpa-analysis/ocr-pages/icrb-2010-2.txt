@@ -1,0 +1,534 @@
+# icrb-2010-2
+Source PDF: docs/isro-jpa-previous-papers-third-party/2010-icrb-jpa-paper-2.pdf
+Pages: 14
+OCR is uncorrected; verify figures, formulas, dates, and options against PDF images.
+
+
+========== PDF PAGE 1 ==========
+
+--- TESSERACT OCR ---
+| INDIAN SPACE RESEARCH ORGANISATION
+“Se0 REGS [HEADQUARTERS]
+OO SON . ;
+ESS on
+~ (Bf Ye NE
+- {/(  VesWRITTEN TEST FOR RECRUITMENT TO THE POST OF ASSISTANT/
+- ; aes * JR.PERSONAL ASSISTANT
+TCO, . - =
+- Test Booklet : »
+Paper —Il: Arithmetic, General Knowledge, Computer Literacy
+Date : 10” January 2010 _ Tine : 1400 hrs. to 1630 hrs.
+a No. of questions
+Part- A : Arithmetic (Objective type) 60
+_ Part-B -: General Knowledge (Objective type) 20
+Part-C : Computer Literacy (Objective type) 20
+. INSTRUCTIONS : ye
+1. The question paper is in the form of test booklet. . Ay.
+, 2. | Aseparate OMR answer sheet is provided to all candidates. ; :
+3. Each objective question is provided with a text and figures wherever applicable with ©
+multiple answers (a), (b), (c) and (d), which includes one correct answer. o : .
+4. Refer answer sheet instructions and use HB peneil for, answering all the questions. °
+5. All questions carry 7 mark each. There will be negative mark for wrong answer.
+6. Multiple answers for a question will be regarded as wrong answer. _
+: 7. Although the test stresses on accurdcy more than speed, it is important for you to Use
+your time as effectively as possible. ;
+os 8. Do not waste time on questions which are too difficult for you. Go on to other questions
+oO and come back to the difficult ones later.
+9. Question booklets have been marked with A or B or C or D or E or F on the right
+- hand top corner, which shall be written on the answer sheet in the box and bubble
+appropriately:
+10. Enter your name and roll number correctly ori the OMR answer sheet.
+‘44. Enter all information as per the instructions given in the answer sheet.
+12. Space available in the Question booklet could be used for rough work, if required and
+; no separate sheet will be provided.
+13. At the end of the test (1) Written test Call Letter with photograph and (2) OMR Answer
+Sheet shall be returned to the Invigilator.
+: . . Wt ;
+
+
+========== PDF PAGE 2 ==========
+
+--- TESSERACT OCR ---
+Sunt |iSrPo
+INDIAN SPACE RESEARCH ORGANISATION .
+
+
+========== PDF PAGE 3 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION
+ISRO CENTRALISED RECRUITMENT BOARD [ICRB] B .
+oo ISRO HEADQUARTERS
+- WRITTEN TEST FOR THE POST OF ASSISTANT/JR. PERSONAL
+ASSISTANT
+PART-A (ARITHMETIC)
+1. A bonus of Rs. 1000 is to be divided among three people so that Rohit + |
+receives twice as much as Sachin, who receives one-fifth as much as
+Gagan. How much money should Gagan receive?
+a) Rs. 100 b)  -Bs.250 =e) ~—sR8375 d) — Bs.625
+2. The batting average for 40 innings of a cricket player is 50 runs. His
+highest score exceeds his lowest score by 172 runs. If these two innings are
+excluded, the average of the remaining 38 innings is 48 runs. The highest
+a score ofthe player is:
+a) 165 runs b) 170 runs c) 172 runs d) 174 runs
+3. After replacing an old member by a new member, it was found that the
+average age of five members of a club is the same as it was 3 years ago.
+What is the difference between the ages of the replaced and the new
+member? ;
+. a) 2 years - b) 4 years c) 8 years d) 15 years
+7 4, A man bought a house for Rs. 5 lakhs and rents it. He puts 12 4% % of each
+. month’s rent aside for repairs, pays Rs. 1660 as annual taxes and realizes
+10% on his investment thereafter. The monthly rent of the house is: |”
+a) Rs. 2460 b) Rs. 2500 c) Rs. 4920 d) Rs.5000
+5. Two ships are sailing in the sea on the two sides of a light house. The
+en angles of elevation of the top of the light house as observed from the two
+4 ships are 30 deg and 45 deg respectively. If the light house is 100 meter
+o high, the distance between the two ships is:
+. a) 173M b) 200 M c) 273 M d) 300 M
+6. A student was asked to divide a number by 3. But, instead of dividing it,
+, he multiplied it by 3 and got 29.7-what was the correct answer?
+a) 3.3 b) 9.3 c) 9.8 d) 9.9
+7. A man bought 5 shirts at Rs 450 each, 4 trousers at Rs 750 each and 12
+pairs of shoes at Rs 750 each. What is the average expenditure per article?
+a) Rs 678.50 b) Rs 800 c) Rs 900 d) Rs 1000
+‘ ; Page 1 of 12
+
+
+========== PDF PAGE 4 ==========
+
+--- TESSERACT OCR ---
+, INDIAN SPACE RESEARCH ORGANISATION . oe
+ISRO CENTRALISED RECRUITMENT BOARD [ICRB]
+ISRO HEADQUARTERS
+8. - Ramlal purchased 120 reams of paper at Rsi00 per ream and the
+expenditure on transport was Rs 480. He had to pay an octroi duty of 50 .
+paise per ream and the coolie charges were Rs 60.What should be charge
+; per ream to gain 20%. . .
+; a) Rs 105 b) Rs 115.50 c) Rs 120 d) Rs 126
+9. An85cm long wire is to be cut into two pieces such that one piece will be
+two-third as long as the other. How many centimeters will the shorter
+piece be?
+a) 34 b) 51 c) 17 d) 8.5
+10. Ajay, Keshav and Vijay invested Rs. 8000, Rs. 4000 and Rs. 8000
+respectively in a business. Ajay left after six months. If after 8 months
+there was a profit of Rs. 4005, then what will be the share of Keshav?
+a) Rs. 890 b) Rs. 1780 c) Rs. 1335 d) Rs. 1602 7.
+11.. The ratio of the prices of three different types of cars is 4: 5: 7. If the
+' difference between the prices of costliest and the cheapest cars is
+Rs. 60,000, what is the price of the car of moderate price?
+a) Rs. 80,000 b) Rs.1,00,000 cc) Rs. 1,40,000  d) Rs. 1,20,000
+a 12. The average weight of 29 students in a class is 48 kg. If the weight of the
+, teacher is included, the average weight rises by 500 g. Find out the weight
+of the teacher.
+a) 57kg _b) 60kg c) 65kg d) 63k¢
+13. A cricketer has a certain average of 9 innings. In the tenth innings, he .
+scores 100 runs, thereby increasing his average by 8 runs. His new
+average is-
+a) 20 runs b) 24 runs c) 28runs d) 32runs on
+14. There are two candidates Ramesh and Ramgopal for an election. Ramesh ae
+gets 65% of the total valid votes. If the total votes were 6000, what is the .
+valid. votes that the other candidate Ramgopal gets if 25% of the total
+votes were declared invalid? , ; :
+a) 1575 b) 1625 c) 1675 d) 1525
+15. Ina group of buffaloes and ducks, the number of legs are 24 more than
+twice the number of heads. What is the number of buffaloes in the group?
+a} 6 . b) 12 c) 8 d) None of the above.
+on Page 2 of 12
+| 5
+
+
+========== PDF PAGE 5 ==========
+
+--- TESSERACT OCR ---
+; INDIAN SPACE RESEARCH ORGANISATION
+ISRO CENTRALISED RECRUITMENT BOARD [ICRB]
+ISRO HEADQUARTERS
+16. The traffic light at three different roads change after every 48 sec., 72 sec.
+- and 108 second respectively. If they all. change simultaneously at 8:20:00
+hours, when will they change again simultaneously?
+; a) 12:8:27 b) 8:27:12 c) 27:8:12 d) None of these.
+aa *
+17. How many 5 are there in 37 =?
+; a) ~ 300 b) 400 c) 500 d) none of these
+18. A library has an average of 510 visitors on Sundays and 240 on other days.
+The average number of visitors per day in a month of 30 days beginning
+with a Sunday is .........
+. a) 250 b) 285 c) 280 dj 286
+: a b ¢ arbres
+19 If-=~==, then ~~—— is equal to ..... :
+: 3 4 F z
+; z q
+a) 7 - pb) 2 c) 3 d) =
+20. | Which of the following fractions are in descending order?
+| a) 7523 b)7532 3257 d)23 57 .
+8,7, 3,5 8,7, 5,3 5,3,7,8 3,5,7,8
+21. The mean of 200 items. was 50. Later on, it was discovered that 2 items
+were misread as 92 and 8 instead of 192 and 88. Then the correct mean is:
+a) 50.8 b) 50.9 c) 50.7 d) 50. 6
+22. A tank is filled with 1/5 part of it with water. 8 litres of water is taken
+from it. If the tank is filled with 1/6" part of it water now, How many
+- 5 liters of water can.the tank hold? :
+a a) 480 b) 720 c) 280 d) 240
+23. Arrange the following in ascending order of magnitude: —
+, 34, 53/72, 89/116
+a) 89/116, 53/72, % b) %4, 53/72, 89/116
+c) %4, 89/116, 53/72 d) 53/72, 89/116, %
+24. The difference of two numbers is 11 and 1/5t of their sum is 9. The
+numbers are
+a) 31, 20 b) 30, 19 c) 29,18 d) 28,17
+Page 3 of 12
+
+
+========== PDF PAGE 6 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION - a
+ISRO CENTRALISED RECRUITMENT BOARD [ICRB]
+; ISRO HEADQUARTERS
+25. 3 men can do as much work as 5 women and 1 woman can do as much
+work as 2 children. If 20 women can finish work in 14 days, in how many .
+days will the same work be finished by 6 men, 5 women and 5 children?
+"aj 14 b) 16 c) 618 d) 20 :
+26. A team of 8 persons joins in a shooting competition. The best marks man
+, scored 85 points. If he had scored 92 points the average score for the team
+would have been 84. The number of points, the team scored was:
+a) 672 b) 665 c) 645 d) 588
+27. Profit earned by selling an article for Rs.1060/- is 20% more than the loss
+incurred by selling the article for Rs.950/-. At what price should the article
+be sold to earn 20% profit?
+a) Rs.980/- b) Rs.1080/- —c) Rs.1800/- dd) None
+28. The area of a rectangle is thrice that of a square. If the length of the . im
+rectangle is 40cm and its breadth is 3/2 times that of the sides of the aa
+square, then the side of the square is:
+a) 15cm b) 20cm. c) 70cm d) 80cm
+29. Aman rows upstream 8 km and downstream 220 km taking 4 hrs each
+time. Find the speéd of the man in still water? :
+a) 3.5 Kmph b)  4kmph c) 3 kmph d) 4.5 kmph
+30. An aeroplane travels distances 2500 kms, 1200 kms and 500 kms at the rate
+of 500 km/hr, 400 km/hr and 250 km/hr respectively. The average speed
+in km/hr is:
+; a) 405 b) 410 c) 420 d) 575
+31. Sound travels at 330m/sec. How many kms away is a thundercloud when ~,
+its sound follows the flash after 10 secs? wet.
+a) 3.3kms b) 3.33 kms c) 0.33 kms d) 33 kms .
+32. A walks at a uniform rate of 4 km an hour and 4 hours after his start, B -
+bicycles after him at the uniform rate of 10 km an hour. How far from the
+starting point will B catch A?
+a)  16.7km b) 18.6km c) 215km d) 26.7km
+ie Page 4 of 12
+
+
+========== PDF PAGE 7 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION
+ISRO CENTRALISED RECRUITMENT BOARD [ICRB] B
+ISRO HEADQUARTERS
+; 33. Two guns are fired from the same piace at an interval of 6 minutes. A
+person approaching the place observes that 5 minutes 52 seconds have
+- - elapsed between the hearing of the sound of the two guns. If the velocity
+, of the sound is 330 m/sec, the man was approaching that place at what
+speed?
+a) 24km/hr * b) 27 km/hr c) 30 km/hr d) 36 km/hr
+34. A person has to make a journey of 72 km. He rides a cycle at 12 km/hr.
+After going a certain distance the cycle is punctured and he walks the
+remaining distance at 4 ¥ km/hr. Find where the cycle is punctured if the
+total time for the journey is 8 4 hours.
+a) 50 km b) 52 km c) 54km d)  56km
+~ 35. A shopkeeper advertises for selling cloth at 4% loss. However by using a
+: false metre scale he actually gains 25%. What is the actual length of the
+scale?
+a) 80cm b) 70cm c) 90cm d) 75cm
+36. The marked price of a shirt and trousers are in the ratio of 1:2. The
+shopkeeper gives 40% discount on the shirt. If the total discount on the set
+- of the shirt and trousers is 30%, the discount offered on the trousers is:
+a) 15% by) 20% ~~ coc) 25% dd) 30% a
+37. A contractor undertakes to dig a canal 12 km long in 350 days and
+, employs 45 men. He finds after 200 days of working that only 4 42 km of
+canal have been completed) How many extra men must be employed to
+finish the work in time? :
+a) 50 b) 55 c) 60 d) 65
+D 38. The sales of a business in 1987 were 30% less than sales in 1986. By what
+percent must the sales in 1988 be increased to bring to the level of 1986?
+a) 42.85% by 43% c) 42.6% d) 40.25%
+39. Suresh has some cows and hens. If the total number of heads be 48 and
+that of legs be 140, then find the number of hens?
+a) 22 b) 23 c) 24 dy =-26
+40. To acertain number 7 is added. The sum is multiplied by 5, the product is
+divided by 9 and 3 is subtracted from the quotient. If the remainder is 12,
+what is the number?
+a) 24 b) 20 c) 40 — ap 48
+mc Page 5 of 12
+
+
+========== PDF PAGE 8 ==========
+
+--- TESSERACT OCR ---
+, / INDIAN SPACE RESEARCH ORGANISATION —_ a
+ISRO CENTRALISED RECRUITMENT BOARD [ICRB] .
+: ISRO HEADQUARTERS
+41. The electricity bill of a certain establishment is partly fixed and partly
+: varies as the number of units of electricity consumed. When in a certain
+month 540 units are consumed, the bill is Rs.1800. In another month 620 >
+_ units are consumed and the bill is Rs.2040. In yet another month, 500 units
+are consumed, the bill for that month will be- :
+a) Rs.1,560 b) — Rs.1,680 c) Rs.1,840 d) Rs.1,950
+" 42. Aman sells Rs.4000, 10% stock at 150 and invests the proceeds partly in
+6% stock at 80 and 7% stock at 96. He thereby increases his income by
+Rs.50. How much of the proceeds were invested in each stock?
+; a) 0 b) 10 c) 100 d) 1000 —
+43. There are 20 workers and one manager in a factory and their average
+monthly salary was Rs.1600. The manager whose salary was Rs.3000,
+retired and his place was taken by another. The average salary of all the 21
+people became Rs.1750 per month. What was the salary of the new >)
+manager?
+a) Rs.6000 b) Rs.6150 c) Rs.6100 d) Rs.6200
+44. A screwdriver and a hammer currently have the same price. It the price of
+a screwdriver raises by 5% and the price of hammer goes up by 3% how
+; much more will it cost to buy 3 screwdrivers and 3 hammers?
+a) 3% b) 4% c) 5% - dy) 8% © a
+45. Ganesh invested 40% of his salary on food, 50% of the remaining on
+. education and 10% of the remaining on other requirements..Now he is left
+with Rs.540. What is his salary?
+a) Rs.20,000 b) Rs.24,000 c) Rs.2,000 d) Rs.15,000
+46. A carpenter prepared 14 more toys on Tuesday than what he had
+prepared on Monday. Then on Wednesday he prepared 50% of the toys ~
+; that were prepared on the previous two days together. If he had prepared an
+. 75 toys in the three days, how many toys did he prepare on Wednesday? ;
+a) 18 b) 32 | c) 25 d) 39 ;
+47. The average temperature of the first three days of a week is 27° and of the
+next three days is 29°. If the average of the whole of the week is 28.5° the
+temperature of the last day of the week is
+a). 31.5° b) = 10.5° c) 21° d) none
+Se Page 6 of 12
+| ;
+
+
+========== PDF PAGE 9 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION
+ISRO CENTRALISED RECRUITMENT BOARD [ICRB] B
+ISRO HEADQUARTERS
+48.  I£8 students are seated on each bench, 3 benches are left over. If'5 students ;
+, "are seated on each bench, 12 students are left over. How many benches
+and students are there?
+a) 10 benches and 65 students _—-b) 12 benches and 72 students
+ce) 11 benches and 60 students _—_d) 9 benches and 70 students .
+49. Two towers are 35 mtrs and 50 mtrs high and 20 mtr apart on level
+ground. Find the length of the rope connecting their tops?
+a) 15 mtrs b) 20 mtrs c) 25 mtrs d) 30mirs
+50. If Bis 10% heavier than A and C is 10% lighter than B, then what can you
+say about the relative weights of A & C?
+~ a) Cis heaver than A by 1 % b) Cis lighter than A by 1%
+: c) They are equal in weight d) Cis lighter than A by 99 %
+51. A businessman sold two TV sets for Rs. 9,900 each, making 10% profit on
+: one and losing 10% on the other. His gain or loss percentage on the two
+| “TV sets is
+a)nogainnoloss _—_b) loss of 1 % c) gain of 1% d) gain of 5%
+52. Amonkey ascends a greased pole 12 metres high. He ascends 3 metres in’
+the first minute and slips down by 1 metre in the alternate minute. In
+which minute, did he reach the top of the pole? .
+a) 10% _ by) 12h c) 13m dit
+53. A gardener planted total 6561 plants in such a way that there are as many
+rows as there are trees in each row. How many rows were there?
+. a) 91 b) 81 ‘c) 89 d) 801
+ce 54. Three bells toll at intervals of 36 seconds, 40 seconds and 48 seconds,
+DS respectively. They start ringing together at particular time. They will toll
+next time together after ,
+a)é6éminutes- b)12 minutes  c) 18 minutes d) 24 minutes
+55. The price of commodity X increases by 40 paise every year, while the price
+of commodity Y increases by 15 paise every year. If in 2001, the price of
+commodity X was Rs. 4.20 and that of Y was Rs. 6.30, in which year
+commodity X will cost 40 paise more than the commodity Y?
+a) 2010 b) 2011 c) 2012 d) = 2013
+, Page 7 of 12
+
+
+========== PDF PAGE 10 ==========
+
+--- TESSERACT OCR ---
+"INDIAN SPACE RESEARCH ORGANISATION . oe
+ISRO CENTRALISED RECRUITMENT BOARD [ICRB]
+ISRO HEADQUARTERS
+Directions (Qns. 56 to 60) Study the following information to answer the given
+questions. , .
+Percentage of students in various courses (A, B, C, D, E, F) and percentage .
+- of girls out of these. :
+Total Students: 1200 Total girls = 800
+(800 girls + 400 boys)
+Percentage in various courses Percentage of Girls in-courses
+> ; A
+30% | 30%
+—- 14% ;
+oo 15% en Gn
+35%- | , 80% RNY
+56. _ For course D what is the respective ratio of boys and girls?
+a) 34 b) 4:5 c). 3:5 d) 56 ©
+57 For which pair of courses is the number of boys the same? ,
+. a) E&F »b) A&D c) C&F ' d) B&D
+58. For course E, the number of girls is how much percent more than the boys
+for course E?
+a) 250 b) 350 c) 150 d) 80°
+59. For which course is the number of boys the minimum? ;
+a) E b) F c) Cc d) A
+60. How many girls are in course C? ~
+a) 44 b) 16 ec) = 40 d) 160 a
+END OF PART-A
+. Page 8 of 12
+
+
+========== PDF PAGE 11 ==========
+
+--- TESSERACT OCR ---
+INDIAN SPACE RESEARCH ORGANISATION .
+ISRO CENTRALISED RECRUITMENT BOARD [ICRB] B
+ISRO HEADQUARTERS
+; PART - B (GENERAL KNOWLEDGE) :
+61. Which of the following writs literally means ‘what is your authority’?
+a) Habeas Corpus b) Quo Warranto
+-¢) Certiorari d) Prohibition ‘
+62. India’s first Atomic Reactor was .
+a) Aryabhatta b) Savitri c) Zerlina d) Apsara ; .
+63. The first “Earth Summit’ was held at . ;
+a)San Francisco —_b} Frankfurt c) RiodeJaneiro  d) Caracas
+: 64. Name the Plant that is used in Ayurveda for improving memory.
+7 a) Amla b) Brahmi ) Tulsi d) Vasaka
+65.. The term ‘butterfly’ in sports is associated with
+a) Basketball b) Swimming c) Rowing — d) Golf
+66. National income estimates in India are prepared by ........
+‘ a) Central Statistical Organization b) Ministry of Finance
+c) National Development Council d) Planning Commission
+67. | Which waterway separates India from Srilanka? ,
+a) Eight degree channel b) Palk Strait
+c) Ten degree channel d) Andaman Sea o
+68. The leaders of G20 countries met for the first time in Washington in
+a) November, 2005 b) November, 2006
+, c) November, 2007 d) November, 2008
+2 69. | Which of the following award was given to Dr.G.Madhavan Nair recently?
+; a) Man of the year’ b) Bharat Ratna ,
+; - ¢)} Business man of the year . d) Best public servant of the year
+70. Which of the following is a chemical fertilizer?
+a) Zinc Oxide b) Meurate of Potash
+c) Calcium Carbonate d) Silver chloride
+71. | Which one of the following pairs of cities has recently been connected by a
+six lane express way?
+a) Ahmedabad and Vadodra b) Dhaka and Chittagong
+c) Islamabad and Lahore d) Mumbai and Pune
+Page 9 of 12
+
+
+========== PDF PAGE 12 ==========
+
+--- TESSERACT OCR ---
+"INDIAN SPACERESEARCH ORGANISATION —s J a
+- ISRO CENTRALISED RECRUITMENT BOARD [ICRB]
+ISRO HEADQUARTERS
+72. Now the latest CRR as declared by RBI w.e.f January 19, 2009 is _ .
+a) 5.0% b) 5.5% c) 6.0% d) 6.5%
+_ 73, Which of the following parts of the sunlight makes the solar cooker hot?
+a) Cosmic rays b) Ultra Violet c) Red Light d) Infrared.
+74. The colour of the human skin is due to:
+a) Myoglobin b) Melanin c) Keratin d) Myelin
+: 75. A small weight put on a pressure cooker increases the pressure of the
+steam because
+a) itis air-tight
+b) area.of contact is very small ,
+c) density of metal is very high ‘ .
+d) Pressure builds up irrespective of the weight placed a)
+76. Which is the smallest country (in population)?
+a) Vatican city b) Nauru c) Monaco d) Palau
+77. Who said the famous quotation ‘A Government of the people, by the
+people and for the people?
+a) Carl Schurz b) Abraham Lincoln
+c) GeorgeBernard Shaw d) Emerson. :
+78. To whom should the President tender his resignation if he wants to resign
+from his office? , =
+a) The Speaker b) The Chief Justice of India
+c) The Prime Minister d) The Vice-President
+. 79, Who wrote the book “Satyartha Prakash”?
+- a) Swamy Dayanand b) Swamy Vivekanand -_
+c) Sarojini Naidu d) = Kalidas -
+80. Whois the present Chairman of ISRO? ;
+a) Dr. K Kasturirangan b) Shri G Madhavan Nair
+c) Dr. K. Radhakrishnan d) Shri Anil Kakodkar
+END OF PART-B
+Se Page 10 of 12
+
+
+========== PDF PAGE 13 ==========
+
+--- TESSERACT OCR ---
+. INDIAN SPACE RESEARCH ORGANISATION .
+ISRO CENTRALISED RECRUITMENT BOARD [ICRB] B
+ISRO HEADQUARTERS
+- PART - C: (COMPUTER LITERACY)
+- 81. Which of the following is not a version of BASIC ?
+a) GWBASIC b) GSBASIC c) BASICA ‘d) OBASIC
+82. | Which of the following is not a numeric constant ?
+a)Integer _b) Long Integer c) Short Integer d) Single precesion
+83. | Which of the following commands helps to insert comments that enable
+one to understand what the programe is all about ?
+a) REM b) PRINT c) LET d) INPUT
+84. Tomake your document password protected, you use ——— :
+; a) Format, font b) Format, paragraph
+» c) Tools options, security d) save
+85. Typical data transfer rate in LAN are of the order of
+a) Bits per sec b) Kilo bits per sec
+c) Mega bits per sec d) None of the above
+86. A large number of computers in a wide geographical area can be
+efficiently connected by :
+a) Twisted pair lines -  _b) Coaxial cables 7
+c} Communications satellites d)} None of the above
+87. A floppy disk is made up of flexible plastic coated with .
+a) Zinc Oxide b) Magnetic Oxide c)IronOxide d) None |
+88. In word, what combination of keys do you press to delete an entire word?
+oe a) Ctrl+ Del b) Alt + Del cc) Shift + Backspace d)Shift +Alt+ Del
+89. A file which contains transient data to be processed in combination with a
+. master file is called .
+. a) Sequential file. b) Master file
+c} Transmission file d) Random organization file
+90. Reusable Optical Storage will typically have the acronym ____
+- a)CD b) ROM c) RW d) DVD
+91. RAM stands for- :
+a) Random Access Memory b) Read Automatic Memory
+c) Random Accessing Memory d) Random Allowable Memory
+— Page 11 of 12
+
+
+========== PDF PAGE 14 ==========
+
+--- TESSERACT OCR ---
+7 INDIAN SPACE RESEARCH ORGANISATION —s [- ae
+ISRO CENTRALISED RECRUITMENT BOARD [ICRB]
+ISRO HEADQUARTERS
+92. | What does IMEI stand for? a
+a) International Mobile Electronic Identity .
+_ b) International Mobile Equipment Identity ;
+c) Inter Mobile Equipment Identity
+d) Inter-protocol for Mobile Equipment Identity
+* 93. Which of the following is not the goal of a computer network? ;
+a) Resource sharing - b) Low reliability
+c) Load sharing .d) To provide physical treatment
+94. PPP stands for ;
+a) Point to Point Protocol b) Point to Point Programme
+c) Point to Point Provider d) None of the above
+95. File name with extension as VXD represents ,
+a) Normal application file b) Text file ne : -
+c) Device driver d) Picture file a
+96. | Which of the following can be used as universal gate? ; ;
+; oe a) NAND b) OR c) AND d) NOT
+. 97. Which of the following is the feature of operating system that is machine
+7 dependant?
+a)Process scheduling b)File processing c) Job scheduling d)All the above.
+‘ 98. Files that store data in the same format as used in program are called’
+a) Binary files  b)Source files c) Text files d) Core .
+~ + 99. Which of the following is true:
+a) MS-DOS does not support multiprogramming. .
+, b) MS-DOS supports multiprogramming to some extent : :
+c). MS-DOS supports multiprogramming fully
+d) None of the above. :
+100. The unit “Kilo instructions per second” is used to measure the speed of
+a) processor b) disk drive c) printer 1) tape drive
+END OF PART-C ;
+an Page 12 of 12

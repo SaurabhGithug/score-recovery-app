@@ -1,0 +1,24 @@
+{
+  "paper": 5,
+  "exactly_200_questions": false,
+  "section_counts": {
+    "General Intelligence & Reasoning": 25
+  },
+  "section_counts_valid": false,
+  "quant_count": 0,
+  "gk_count": 0,
+  "difficulty_counts": {
+    "Hard": 7,
+    "Moderate": 17,
+    "Easy": 1
+  },
+  "answer_distribution": {
+    "A": 7,
+    "B": 6,
+    "C": 6,
+    "D": 6
+  },
+  "defects": [],
+  "status": "passed",
+  "batch": "101-125"
+}

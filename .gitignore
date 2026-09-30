@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +40,18 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local persistent data & document storage
+/data/
+
+# scratch and generated output (kept on disk only)
+/tmp/
+/output/
+services/**/.cache/
+__pycache__/
+*.pyc
+
+# large third-party source papers (kept on disk only: size, and not ours to redistribute)
+/docs/isro-jpa-2026-official/
+/docs/isro-jpa-previous-papers-third-party/
+/docs/*.zip

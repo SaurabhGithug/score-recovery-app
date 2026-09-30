@@ -1,0 +1,58 @@
+{
+  "paper": 1,
+  "exactly_200_questions": true,
+  "section_counts": {
+    "English Language & Comprehension": 100,
+    "General Intelligence & Reasoning": 50,
+    "Quantitative Aptitude and General Knowledge": 50
+  },
+  "section_counts_valid": true,
+  "quant_count": 25,
+  "gk_count": 25,
+  "difficulty_counts": {
+    "Moderate": 128,
+    "Hard": 61,
+    "Easy": 11
+  },
+  "answer_distribution": {
+    "A": 50,
+    "B": 51,
+    "C": 50,
+    "D": 49
+  },
+  "defects": [],
+  "status": "passed",
+  "label": "Evidence-informed practice mock; not official; not predicted.",
+  "current_affairs_sources": [
+    {
+      "url": "https://www.isro.gov.in/",
+      "publication_date": "2026-09-19",
+      "verification_date": "2026-09-19",
+      "question_number": 176
+    },
+    {
+      "url": "https://www.isro.gov.in/",
+      "publication_date": "2026-09-19",
+      "verification_date": "2026-09-19",
+      "question_number": 177
+    },
+    {
+      "url": "https://www.isro.gov.in/",
+      "publication_date": "2026-09-19",
+      "verification_date": "2026-09-19",
+      "question_number": 178
+    },
+    {
+      "url": "https://www.pmindia.gov.in/en/",
+      "publication_date": "2026-09-19",
+      "verification_date": "2026-09-19",
+      "question_number": 179
+    },
+    {
+      "url": "https://www.rbi.org.in/",
+      "publication_date": "2026-09-19",
+      "verification_date": "2026-09-19",
+      "question_number": 180
+    }
+  ]
+}
