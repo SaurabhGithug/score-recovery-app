@@ -11,9 +11,17 @@
  *   a 64- and a 200-token cap, finishReason MAX_TOKENS). A reply cut off mid-thought is billed.
  */
 
+export interface GeminiImage {
+  mimeType: string;
+  /** base64 */
+  data: string;
+}
+
 export interface GeminiTurn {
   role: "user" | "model";
   text: string;
+  /** Pictures sent with this turn (Gemini reads images; they are billed as prompt tokens). */
+  images?: GeminiImage[];
 }
 
 export interface GeminiRequest {
@@ -101,7 +109,10 @@ function usageOf(raw: RawResponse): GeminiUsage {
 export async function geminiGenerate(apiKey: string, request: GeminiRequest, signal?: AbortSignal): Promise<GeminiResult> {
   const body = {
     systemInstruction: { parts: [{ text: request.system }] },
-    contents: request.turns.map((turn) => ({ role: turn.role, parts: [{ text: turn.text }] })),
+    contents: request.turns.map((turn) => ({
+      role: turn.role,
+      parts: [{ text: turn.text }, ...(turn.images ?? []).map((image) => ({ inlineData: { mimeType: image.mimeType, data: image.data } }))],
+    })),
     ...(request.grounded ? { tools: [{ google_search: {} }] } : {}),
     generationConfig: {
       maxOutputTokens: request.maxOutputTokens,

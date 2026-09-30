@@ -34,7 +34,8 @@ import { getLlmSetup } from "../llm";
 import { DeepSeekProvider, DEEPSEEK_MAX_ATTEMPTS } from "../llm/deepseek";
 import { costUsd } from "../generation/pricing";
 import { LlmError, type LlmProvider, type LlmUsage } from "../llm/types";
-import { GeminiError, geminiGenerate, type GeminiRequest, type GeminiResult, type GeminiTurn, type GeminiUsage } from "./gemini";
+import { GeminiError, geminiGenerate, type GeminiImage, type GeminiRequest, type GeminiResult, type GeminiTurn, type GeminiUsage } from "./gemini";
+import { sourceHtmlImages } from "../source-html";
 import { syllabusContext, type SyllabusContext, type TopicCandidate } from "./syllabus-context";
 
 export type FollowUpContextKind = "made_easy" | "bank";
@@ -81,6 +82,10 @@ export interface FollowUpAnswer {
 }
 
 export const MAX_MESSAGE_CHARS = 1500;
+const MAX_IMAGES = 8;
+const MAX_IMAGE_BYTES = 1_500_000;
+/** Prompt tokens reserved per attached image (Gemini bills images as input; generous on purpose). */
+const IMAGE_TOKENS = 2000;
 export const MAX_HISTORY_TURNS = 8;
 const MAX_TURN_CHARS = 6000;
 /** Thinking plus answer (verified: Gemini counts thoughts inside it); generous so a MEDIUM think doesn't cut the answer off. */
@@ -104,6 +109,8 @@ interface Facts {
   contentFp: string;
   subjectHint: string | undefined;
   ownQuestionId: string | undefined;
+  /** Source images, in order, with where each appears ("in the question", "option B"...). */
+  images: { url: string; where: string }[];
 }
 
 function sha(text: string): string {
@@ -130,9 +137,14 @@ function madeEasyFacts(userId: string, id: string): Facts {
       q.sourceQuality === "visual_review_required"
         ? "Part of this question (a table, figure, formula or the option text) was an image that was not captured, so the text below is incomplete."
         : null,
-    contentFp: sha(JSON.stringify([q.question, q.options, q.correctOption, q.explanation, q.sourceQuality])),
+    contentFp: sha(JSON.stringify([q.question, q.options, q.correctOption, q.explanation, q.sourceQuality, q.questionHtml ?? "", q.optionsHtml ?? []])),
     subjectHint: q.testTitle,
     ownQuestionId: undefined,
+    images: [
+      ...sourceHtmlImages(q.questionHtml ?? "").map((url) => ({ url, where: "in the question" })),
+      ...(q.optionsHtml ?? []).flatMap((html, i) => sourceHtmlImages(html).map((url) => ({ url, where: `option ${q.options[i]?.id ?? i + 1}` }))),
+      ...sourceHtmlImages(q.explanationHtml ?? "").map((url) => ({ url, where: "in the source explanation" })),
+    ].slice(0, MAX_IMAGES),
   };
 }
 
@@ -166,6 +178,7 @@ function bankFacts(userId: string, id: string): Facts {
     contentFp: `${contentFingerprint(q)}:${key.status}:${key.answer ?? ""}:${sha(q.sourceSolution ?? "")}`,
     subjectHint: undefined,
     ownQuestionId: q.id,
+    images: [],
   };
 }
 
@@ -175,10 +188,16 @@ function factsFor(userId: string, kind: unknown, id: unknown): Facts {
   return kind === "made_easy" ? madeEasyFacts(userId, id) : bankFacts(userId, id);
 }
 
-function factsBlock(f: Facts): string {
+function factsBlock(f: Facts, imagesAttached = false): string {
+  const imageNote = !f.images.length
+    ? null
+    : imagesAttached
+      ? `IMAGES: ${f.images.length} source image(s) are attached, in order: ${f.images.map((img, i) => `${i + 1} = ${img.where}`).join("; ")}. "[image]" in the text marks where each appears. Read them; they are part of the question.`
+      : `IMAGES: parts of this question are images you cannot see ("[image]"). If the answer depends on them, say so instead of guessing.`;
   const lines = [
     `QUESTION (${f.heading})`,
     f.incomplete ? `NOTE: ${f.incomplete}` : null,
+    imageNote,
     f.question || "(question text missing)",
     "",
     "OPTIONS",
@@ -246,8 +265,9 @@ export function geminiWorstUsd(model: string, request: Pick<GeminiRequest, "syst
   const p = GEMINI_PRICES[model];
   const rate = p ? { input: p.input, output: p.output } : GEMINI_FALLBACK;
   const promptChars = request.system.length + request.turns.reduce((n, t) => n + t.text.length, 0);
+  const imageTokens = request.turns.reduce((n, t) => n + (t.images?.length ?? 0), 0) * IMAGE_TOKENS;
   const outputTokens = request.maxOutputTokens;
-  return (Math.ceil(promptChars / 3) * rate.input + outputTokens * rate.output) / 1_000_000 + (request.grounded ? WORST_CASE_SEARCHES * SEARCH_USD : 0);
+  return ((Math.ceil(promptChars / 3) + imageTokens) * rate.input + outputTokens * rate.output) / 1_000_000 + (request.grounded ? WORST_CASE_SEARCHES * SEARCH_USD : 0);
 }
 
 function reserve(userId: string, model: string, usd: number, capUsd: number): string {
@@ -264,6 +284,32 @@ export interface FollowUpDeps {
   deepseekModel: string;
   capUsd: number;
   gemini: (apiKey: string, request: GeminiRequest) => Promise<GeminiResult>;
+  /** Fetches one source image (allowlisted host only); null when it can't be used. */
+  fetchImage: (url: string) => Promise<GeminiImage | null>;
+}
+
+/** The portal's public image host: the only place source images are fetched from. */
+const IMAGE_HOST = /^https:\/\/cdnstatic\.madeeasyprime\.com\//;
+
+async function fetchSourceImage(url: string): Promise<GeminiImage | null> {
+  if (!IMAGE_HOST.test(url)) return null;
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000), redirect: "error" });
+    const type = res.headers.get("content-type")?.split(";")[0].trim() ?? "";
+    if (!res.ok || !/^image\/(png|jpeg|gif|webp)$/.test(type)) return null;
+    const bytes = Buffer.from(await res.arrayBuffer());
+    if (bytes.length > MAX_IMAGE_BYTES) return null;
+    return { mimeType: type, data: bytes.toString("base64") };
+  } catch {
+    return null;
+  }
+}
+
+async function loadImages(deps: FollowUpDeps, f: Facts): Promise<GeminiImage[] | null> {
+  if (!f.images.length) return [];
+  const images = await Promise.all(f.images.map((img) => deps.fetchImage(img.url)));
+  // All or nothing: a partial set would shift the numbering the prompt describes.
+  return images.every((img): img is GeminiImage => img !== null) ? images : null;
 }
 
 export function followUpDeps(): FollowUpDeps {
@@ -277,6 +323,7 @@ export function followUpDeps(): FollowUpDeps {
     deepseekModel: process.env.DEEPSEEK_FOLLOWUP_MODEL?.trim() || DEFAULT_DEEPSEEK_MODEL,
     capUsd: setup.maxUsdPerDay,
     gemini: geminiGenerate,
+    fetchImage: fetchSourceImage,
   };
 }
 
@@ -348,10 +395,10 @@ async function callDeepSeek(deps: FollowUpDeps, userId: string, system: string, 
   }
 }
 
-/** A JSON reply from either provider (no web search). */
-async function askJson(deps: FollowUpDeps, provider: ProviderName, userId: string, system: string, user: string): Promise<{ json: unknown; model: string }> {
+/** A JSON reply from either provider (no web search). Images go to Gemini only. */
+async function askJson(deps: FollowUpDeps, provider: ProviderName, userId: string, system: string, user: string, images: GeminiImage[] = []): Promise<{ json: unknown; model: string }> {
   if (provider === "deepseek") return callDeepSeek(deps, userId, system, user);
-  const result = await callGemini(deps, userId, { model: deps.geminiModel, system, turns: [{ role: "user", text: user }], grounded: false, json: true, maxOutputTokens: MAX_OUTPUT_TOKENS, thinkingLevel: "MEDIUM" }, false);
+  const result = await callGemini(deps, userId, { model: deps.geminiModel, system, turns: [{ role: "user", text: user, images }], grounded: false, json: true, maxOutputTokens: MAX_OUTPUT_TOKENS, thinkingLevel: "MEDIUM" }, false);
   try {
     return { json: JSON.parse(result.text.replace(/^```(?:json)?\s*|\s*```$/g, "")), model: deps.geminiModel };
   } catch {
@@ -374,12 +421,12 @@ const CHECK_SYSTEM = [
   '{"answers": ["A|B|C|D or null if no option is correct or more than one is"]}, one entry per question, in order.',
 ].join("\n");
 
-function packPrompt(f: Facts, ctx: SyllabusContext): string {
+function packPrompt(f: Facts, ctx: SyllabusContext, imagesAttached: boolean): string {
   const topics = ctx.candidates.length
     ? ctx.candidates.map((c: TopicCandidate) => `- id: ${c.nodeId}\n  path: ${c.path}\n  official wording: ${c.officialText || "(none)"}\n  SSC asked: ${c.pypCount} question(s)${yearsText(c.years)}`).join("\n")
     : "(no topics found)";
   const similar = ctx.similar.filter((s) => s.stem.trim()).slice(0, 4).map((s) => `- (${s.year ?? "year unknown"}) ${s.stem.replace(/\s+/g, " ").slice(0, 260)}`).join("\n");
-  return `${factsBlock(f)}\n\nTOPICS\n${topics}\n\nSIMILAR PREVIOUS-YEAR SSC QUESTIONS\n${similar || "(none found)"}`;
+  return `${factsBlock(f, imagesAttached)}\n\nTOPICS\n${topics}\n\nSIMILAR PREVIOUS-YEAR SSC QUESTIONS\n${similar || "(none found)"}`;
 }
 
 const LETTERS = ["A", "B", "C", "D"];
@@ -429,7 +476,8 @@ function contextFor(f: Facts): SyllabusContext {
 async function generatePack(deps: FollowUpDeps, userId: string, f: Facts, ctx: SyllabusContext): Promise<StudyPack> {
   const generator = deps.provider;
   if (!available(deps, generator)) throw notSetUp(generator);
-  const made = await askJson(deps, generator, userId, PACK_SYSTEM, packPrompt(f, ctx));
+  const images = generator === "google" ? await loadImages(deps, f) : null;
+  const made = await askJson(deps, generator, userId, PACK_SYSTEM, packPrompt(f, ctx, images !== null && images.length > 0), images ?? []);
   const parsed = parsePack(made.json, ctx);
 
   // A second AI answers the practice questions blind; only questions it answers the same way stay.
@@ -598,9 +646,14 @@ export async function askFollowUp(
   const ctx = contextFor(facts);
 
   // The source facts and syllabus ride on the first learner turn; the model never gets them from the browser.
+  // Gemini also gets the question's source images (Made Easy tables and figures); DeepSeek is told it can't see them.
+  const images = deps.provider === "google" ? await loadImages(deps, facts) : null;
+  const attached = images !== null && images.length > 0;
   const asked = [...history, { role: "user" as const, text: input.message.trim() }];
   const turns: GeminiTurn[] = asked.map((t, i) =>
-    i === 0 ? { role: "user", text: `${factsBlock(facts)}\n\n${syllabusBlock(ctx)}\n\nLEARNER'S QUESTION: ${t.text}` } : t
+    i === 0
+      ? { role: "user", text: `${factsBlock(facts, attached)}\n\n${syllabusBlock(ctx)}\n\nLEARNER'S QUESTION: ${t.text}`, images: attached ? images! : undefined }
+      : t
   );
 
   // The study pack is made in the background the first time; the answer never waits for it.

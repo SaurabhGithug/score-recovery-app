@@ -4,9 +4,22 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useUser } from "@/lib/user-context";
-import { formatSeconds, observedSignal, type MadeEasyQuestionWithTest, type MadeEasyTestDetail } from "@/lib/madeeasy";
+import { formatSeconds, madeEasyReady, observedSignal, type MadeEasyQuestionWithTest, type MadeEasyTestDetail } from "@/lib/madeeasy";
 import { getMadeEasyTest, loadDrillProgress, saveDrillProgress, MadeEasyRequestError, type DrillProgressEntry } from "@/components/madeeasy/api";
 import { AskFollowUp } from "@/components/ai/AskFollowUp";
+import { SourceHtml } from "@/components/madeeasy/SourceHtml";
+
+/** The question as the portal showed it (HTML with its images) when recaptured, else the saved text. */
+function QuestionBody({ question, className }: { question: MadeEasyQuestionWithTest; className: string }) {
+  return question.questionHtml
+    ? <SourceHtml html={question.questionHtml} className={className} />
+    : <p className={`whitespace-pre-line ${className}`}>{question.question || "The question text was not captured."}</p>;
+}
+
+function OptionBody({ question, index }: { question: MadeEasyQuestionWithTest; index: number }) {
+  const html = question.optionsHtml?.[index];
+  return html ? <SourceHtml html={html} className="min-w-0 flex-1" /> : <span className="leading-5">{question.options[index].text}</span>;
+}
 
 type ResultFilter = "all" | "incorrect" | "unattempted" | "needs_source";
 
@@ -67,11 +80,11 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
   const [progress, setProgress] = useState<Record<string, DrillProgressEntry>>(() => (typeof window === "undefined" ? {} : loadDrillProgress(userId)));
   const [drill, setDrill] = useState<{ ids: string[]; index: number } | null>(null);
 
-  const ready = useMemo(() => questions.filter((q) => q.sourceQuality === "verified_text"), [questions]);
+  const ready = useMemo(() => questions.filter(madeEasyReady), [questions]);
   const shown = useMemo(
     () =>
       questions.filter((q) =>
-        filter === "all" ? true : filter === "needs_source" ? q.sourceQuality !== "verified_text" : q.status === filter
+        filter === "all" ? true : filter === "needs_source" ? !madeEasyReady(q) : q.status === filter
       ),
     [questions, filter]
   );
@@ -183,7 +196,7 @@ function QuestionCard({ question, record, expanded, onToggle, onPractise }: {
   onToggle: () => void;
   onPractise: () => void;
 }) {
-  const ready = question.sourceQuality === "verified_text";
+  const ready = madeEasyReady(question);
   return (
     <li className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs">
       <div className="p-4 sm:p-5">
@@ -193,7 +206,7 @@ function QuestionCard({ question, record, expanded, onToggle, onPractise }: {
           {!ready && <span className="rounded-md bg-slate-200 px-2 py-1 text-slate-700">Needs the source</span>}
           {record && <span className="font-semibold text-blue-700">Practised: {record.correct}/{record.attempts} correct</span>}
         </div>
-        <h3 className="mt-3 whitespace-pre-line text-sm font-bold leading-6 text-slate-900 sm:text-base">{question.question || "The question text was not captured."}</h3>
+        <QuestionBody question={question} className="mt-3 text-sm font-bold leading-6 text-slate-900 sm:text-base" />
         <p className="mt-2 text-xs text-slate-500">{observedSignal(question)} · {question.avgAttemptRate}% of the group attempted it</p>
         <div className="mt-3 flex flex-wrap gap-2">
           <button type="button" onClick={onToggle} className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">{expanded ? "Hide answer" : "See answer and explanation"}</button>
@@ -220,17 +233,20 @@ function AnswerAndExplanation({ question, selected, selectedLabel = "Your origin
   return (
     <div className="grid gap-4 lg:grid-cols-2">
       <div className="space-y-2">
-        {question.options.map((option) => (
-          <div key={option.id} className={`rounded-lg border px-3 py-2 text-sm ${option.id === question.correctOption ? "border-emerald-300 bg-emerald-50" : option.id === selected ? "border-rose-300 bg-rose-50" : "border-slate-200 bg-white"}`}>
-            <span className="mr-2 font-black">{option.id}.</span>{option.text}
-            {option.id === question.correctOption && <span className="ml-2 text-xs font-bold text-emerald-700">Correct</span>}
-            {option.id === selected && option.id !== question.correctOption && <span className="ml-2 text-xs font-bold text-rose-700">{selectedLabel}</span>}
+        {question.options.map((option, i) => (
+          <div key={option.id} className={`flex items-start gap-2 rounded-lg border px-3 py-2 text-sm ${option.id === question.correctOption ? "border-emerald-300 bg-emerald-50" : option.id === selected ? "border-rose-300 bg-rose-50" : "border-slate-200 bg-white"}`}>
+            <span className="font-black">{option.id}.</span>
+            <OptionBody question={question} index={i} />
+            {option.id === question.correctOption && <span className="shrink-0 text-xs font-bold text-emerald-700">Correct</span>}
+            {option.id === selected && option.id !== question.correctOption && <span className="shrink-0 text-xs font-bold text-rose-700">{selectedLabel}</span>}
           </div>
         ))}
       </div>
       <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
         <p className="text-xs font-black uppercase tracking-wide text-blue-800">Made Easy explanation</p>
-        <p className="mt-2 whitespace-pre-line text-sm leading-6 text-blue-950">{question.explanation || "Made Easy gave no explanation for this question."}</p>
+        {question.explanationHtml
+          ? <SourceHtml html={question.explanationHtml} className="mt-2 text-sm leading-6 text-blue-950" />
+          : <p className="mt-2 whitespace-pre-line text-sm leading-6 text-blue-950">{question.explanation || "Made Easy gave no explanation for this question."}</p>}
         {(question.deceptiveChoice || question.popularChoice) && (
           <div className="mt-3 border-t border-blue-200 pt-3 text-xs leading-5 text-blue-900">
             {question.deceptiveChoice && <p><b>Misleading option:</b> {question.deceptiveChoice}</p>}
@@ -274,14 +290,14 @@ function Drill({ question, position, total, onAnswered, onNext }: {
         <span className="rounded-md bg-blue-100 px-2 py-1 text-blue-800">Q{question.number} · {position} of {total}</span>
         <span className="font-mono text-xl font-black text-slate-900">{formatSeconds(seconds)}</span>
       </div>
-      <p className="mt-6 whitespace-pre-line text-base font-semibold leading-7 text-slate-900 sm:text-lg">{question.question}</p>
+      <QuestionBody question={question} className="mt-6 text-base font-semibold leading-7 text-slate-900 sm:text-lg" />
       {!revealed ? (
         <>
           <div className="mt-5 grid gap-2.5">
-            {question.options.map((option) => (
+            {question.options.map((option, i) => (
               <button type="button" key={option.id} onClick={() => setSelected(option.id)} className={`flex items-start gap-3 rounded-xl border p-3.5 text-left text-sm transition ${optionClass(option.id, question, selected, false)}`}>
                 <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-current text-xs font-black">{option.id}</span>
-                <span className="pt-0.5 leading-5">{option.text}</span>
+                <span className="min-w-0 flex-1 pt-0.5"><OptionBody question={question} index={i} /></span>
               </button>
             ))}
           </div>

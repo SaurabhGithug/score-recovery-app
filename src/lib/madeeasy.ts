@@ -5,7 +5,15 @@
  */
 
 export type MadeEasyQuestionStatus = "incorrect" | "unattempted";
-export type MadeEasySourceQuality = "verified_text" | "visual_review_required";
+/**
+ * verified_text: complete plain text from the first capture. verified_source: the portal's own HTML
+ * (text and images) recaptured 2026-09-30. visual_review_required: parts missing; not practised.
+ */
+export type MadeEasySourceQuality = "verified_text" | "verified_source" | "visual_review_required";
+
+export function madeEasyReady(q: { sourceQuality: MadeEasySourceQuality }): boolean {
+  return q.sourceQuality !== "visual_review_required";
+}
 
 export interface MadeEasyOption {
   id: string;
@@ -28,6 +36,10 @@ export interface MadeEasyQuestion {
   deceptiveChoice: string;
   popularChoice: string;
   sourceQuality: MadeEasySourceQuality;
+  /** The portal's own HTML (with its image links), when recaptured. Sanitized before it is served. */
+  questionHtml?: string;
+  optionsHtml?: string[];
+  explanationHtml?: string;
 }
 
 export interface MadeEasyTestSummary {

@@ -5,8 +5,10 @@
  * imported by client components, so the JSON never reaches a browser bundle.
  */
 import rawImport from "@/lib/madeeasy-import.json";
+import { sanitizeSourceHtml } from "./source-html";
 import {
   decodePortalText,
+  madeEasyReady,
   recoveryPriority,
   type MadeEasyImport,
   type MadeEasyOverview,
@@ -38,6 +40,10 @@ function decoded(test: MadeEasyTest): MadeEasyQuestionWithTest[] {
       question: decodePortalText(question.question),
       explanation: decodePortalText(question.explanation),
       options: question.options.map((option) => ({ ...option, text: decodePortalText(option.text) })),
+      // Third-party HTML is rebuilt from an allowlist before it leaves the server (source-html.ts).
+      questionHtml: question.questionHtml ? sanitizeSourceHtml(question.questionHtml) : undefined,
+      optionsHtml: question.optionsHtml?.map(sanitizeSourceHtml),
+      explanationHtml: question.explanationHtml ? sanitizeSourceHtml(question.explanationHtml) : undefined,
       testCode: test.code,
       testTitle: test.title,
     }))
@@ -46,7 +52,7 @@ function decoded(test: MadeEasyTest): MadeEasyQuestionWithTest[] {
 
 function card(test: MadeEasyTest): MadeEasyTestCard {
   const questions = test.attentionQuestions;
-  const ready = questions.filter((q) => q.sourceQuality === "verified_text").length;
+  const ready = questions.filter(madeEasyReady).length;
   return {
     code: test.code,
     title: test.title,

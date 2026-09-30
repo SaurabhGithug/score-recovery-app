@@ -18,6 +18,7 @@ const { canReadMadeEasy, madeEasyOverview, madeEasyTest, madeEasyOwner } = await
 const { askFollowUp, studyPack, waitForStudyPacks, geminiCostUsd, geminiWorstUsd } = await import("../src/lib/server/followup/followup.ts");
 const { GeminiError } = await import("../src/lib/server/followup/gemini.ts");
 const { syllabusContext, resetSyllabusIndex } = await import("../src/lib/server/followup/syllabus-context.ts");
+const { sanitizeSourceHtml, sourceHtmlToText } = await import("../src/lib/server/source-html.ts");
 
 let passed = 0;
 async function test(name, fn) {
@@ -104,8 +105,10 @@ function fakeDeepSeek(answers) {
   };
 }
 
+const fakeImage = async (url) => (url.startsWith("https://cdnstatic.madeeasyprime.com/") ? { mimeType: "image/png", data: Buffer.from(url).toString("base64") } : null);
+
 function deps(overrides = {}) {
-  return { provider: "google", googleKey: "test-key-not-real", geminiModel: "gemini-3.8-flash", deepseek: null, deepseekModel: "deepseek-v4-pro", capUsd: 5, gemini: fakeGemini(), ...overrides };
+  return { provider: "google", googleKey: "test-key-not-real", geminiModel: "gemini-3.8-flash", deepseek: null, deepseekModel: "deepseek-v4-pro", capUsd: 5, gemini: fakeGemini(), fetchImage: fakeImage, ...overrides };
 }
 
 const spentSince = (since) => SpendRepository.totalSince(since);
@@ -131,6 +134,35 @@ await test("Made Easy: each test's counts add up and questions are decoded and o
   assert.equal(madeEasyTest("test-99"), null);
 });
 
+await test("source HTML: only simple formatting and the portal's images survive", () => {
+  const dirty = `<p onclick="x()">Hi <b>there</b><script>alert(1)</script><img src="https://evil.example/x.png" onerror="alert(1)"><img src="https://cdnstatic.madeeasyprime.com/resources/image/a-1.png" onerror="y()"><a href="javascript:z()">link</a> 5 < 6 &amp; &rsquo; &bogus</p><style>p{}</style><iframe src="https://evil.example"></iframe>`;
+  const clean = sanitizeSourceHtml(dirty);
+  assert.equal(clean, `<p>Hi <b>there</b><img src="https://cdnstatic.madeeasyprime.com/resources/image/a-1.png" alt="" loading="lazy" referrerpolicy="no-referrer">link 5 &lt; 6 &amp; &rsquo; &amp;bogus</p>`);
+  assert.doesNotMatch(clean, /on\w+=|script|javascript|evil|iframe|<a /i);
+  assert.equal(sourceHtmlToText("<p>Na<sup>+</sup> &amp; H<sub>2</sub>O &rsquo;s<br>next</p><p><img src=\"x\"></p>"), "Na^+ & H_2O ’s\nnext\n[image]");
+});
+
+await test("Made Easy: every recaptured question is ready and served with sanitized HTML", () => {
+  for (const card of madeEasyOverview().tests) {
+    assert.equal(card.counts.needsSource, 0, `${card.code} still has questions needing the source`);
+    for (const q of madeEasyTest(card.code).questions) {
+      assert.ok(q.questionHtml, `${q.id} has its source HTML`);
+      for (const html of [q.questionHtml, q.explanationHtml ?? "", ...(q.optionsHtml ?? [])]) {
+        assert.doesNotMatch(html, /<(script|style|iframe|a )|on\w+=|style=/i);
+        for (const m of html.matchAll(/<img src="([^"]+)"/g)) assert.match(m[1], /^https:\/\/cdnstatic\.madeeasyprime\.com\//);
+      }
+    }
+  }
+});
+
+await test("follow-up: when a source image can't be fetched, none are attached and the model is told it can't see them", async () => {
+  const gemini = fakeGemini();
+  await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Explain the table", history: [] }, deps({ gemini, fetchImage: async () => null }));
+  const sent = gemini.calls.find((c) => !c.json);
+  assert.equal(sent.turns[0].images, undefined);
+  assert.match(sent.turns[0].text, /parts of this question are images you cannot see/);
+});
+
 // ---------------------------------------------------------------- syllabus context
 await test("syllabus: a question's topic comes from similar past SSC questions, with how often SSC asked it", () => {
   const ctx = syllabusContext("An old building purchased for Rs 30,000; depreciation and scrap value by the straight line method");
@@ -153,13 +185,15 @@ await test("follow-up: another account cannot ask about the owner's Made Easy qu
   await rejectsWith(askFollowUp(other, { kind: "made_easy", id: "test-12-q26", message: "Why?" }, deps()), 403);
 });
 
-await test("follow-up: the server sends the source key, the syllabus topic and the incomplete flag; asks for exam-scoring extras", async () => {
+await test("follow-up: the server sends the source key, the syllabus topic and the question's images; asks for exam-scoring extras", async () => {
   const gemini = fakeGemini();
   const answer = await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Which instrument measures infiltration?" }, deps({ gemini }));
   const sent = gemini.calls.find((c) => !c.json);
   assert.equal(sent.grounded, true);
   assert.match(sent.turns[0].text, /ANSWER KEY: A/);
-  assert.match(sent.turns[0].text, /NOTE: Part of this question .* not captured/);
+  assert.match(sent.turns[0].text, /IMAGES: 1 source image\(s\) are attached, in order: 1 = in the question/);
+  assert.equal(sent.turns[0].images.length, 1, "the List-I/List-II table goes to Gemini");
+  assert.match(sent.turns[0].text, /Tipping bucket gauge/, "the recaptured explanation is complete");
   assert.match(sent.turns[0].text, /SSC JE SYLLABUS \(2026 notice\)/);
   assert.match(sent.turns[0].text, /LEARNER'S QUESTION: Which instrument measures infiltration\?/);
   assert.match(sent.system, /Do not replace it/);
