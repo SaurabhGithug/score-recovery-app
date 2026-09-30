@@ -1,0 +1,18 @@
+# Local build and dependency caches are recreated by Vercel.
+.next/
+node_modules/
+*.tsbuildinfo
+
+# Offline preparation material and persistent local data are not deployable assets.
+data/
+docs/
+output/
+tmp/
+services/
+
+# Local-only configuration and editor metadata.
+.env*
+.claude/
+.DS_Store
+CLAUDE.md
+AGENTS.md
