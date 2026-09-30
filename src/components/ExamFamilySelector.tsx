@@ -176,8 +176,9 @@ export function ExamFamilySelector({ onExamChange }: ExamFamilySelectorProps) {
                 </p>
                 <p className="text-emerald-800 mt-0.5">
                   {t({
-                    en: "Paper-I is qualifying (+1 / −0.25, 200 Qs / 120 min). Paper-II normalized score decides the final appointment merit (+3 / −1.0, 100 Qs / 300 Marks / 120 min). On-screen scientific calculator and IS 456 / Steam Tables are provided directly inside the test runner console.",
-                    hi: "पेपर-I अर्हक है (+1 / −0.25, 200 प्रश्न / 120 मिनट)। केवल पेपर-II का सामान्यीकृत स्कोर अंतिम मेरिट निर्धारित करता है (+3 / −1.0, 100 प्रश्न / 300 अंक / 120 मिनट)। ऑन-स्क्रीन वैज्ञानिक कैलकुलेटर और IS 456 / स्टीम टेबल सीधे परीक्षा कंसोल में उपलब्ध हैं।",
+                    // Marks per question and tools are in the highlights bar above; not repeated here.
+                    en: "Paper-I: 200 questions in 120 minutes, qualifying only. Paper-II: 100 questions (300 marks) in 120 minutes; its normalised score decides the final merit.",
+                    hi: "पेपर-I: 120 मिनट में 200 प्रश्न, केवल अर्हक। पेपर-II: 120 मिनट में 100 प्रश्न (300 अंक); इसका सामान्यीकृत स्कोर अंतिम मेरिट तय करता है।",
                   })}
                 </p>
               </div>

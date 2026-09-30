@@ -64,16 +64,16 @@ function ProgressDashboard() {
     </section>
 
     <section aria-labelledby="recorded-progress" className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-      <h2 id="recorded-progress" className="font-semibold text-slate-900">{t({ en: "Past practice results", hi: "पिछले अभ्यास के नतीजे" })}</h2>
-      <Link href="/papers?view=past" className="mt-2 inline-flex min-h-11 items-center text-sm font-medium text-blue-700 underline">{t({ en: "See my past tests and solutions →", hi: "मेरे पिछले टेस्ट और हल देखें →" })}</Link>
+      {/* Only results kept in this browser. Tests and Learn results are under My results (/papers?view=past), which links here. */}
+      <h2 id="recorded-progress" className="font-semibold text-slate-900">{t({ en: "Older results saved in this browser", hi: "इस ब्राउज़र में सहेजे पुराने नतीजे" })}</h2>
+      <Link href="/papers?view=past" className="mt-1 inline-flex min-h-11 items-center text-sm text-slate-600 underline">{t({ en: "Tests and Learn results are in My results", hi: "टेस्ट और सीखें के नतीजे मेरे परिणाम में हैं" })}</Link>
       {!records ? <p role="status" className="mt-3 text-sm text-slate-500">{t({ en: "Loading results…", hi: "नतीजे लोड हो रहे हैं…" })}</p> : submitted.length === 0 ? <p className="mt-2 text-sm leading-relaxed text-slate-500">{t({ en: "No results saved here yet for your account and study goal.", hi: "इस डिवाइस पर आपके खाते और पढ़ाई के लक्ष्य के लिए अभी कोई नतीजा नहीं है।" })}</p> : <>
         <div className="mt-4 flex flex-wrap gap-x-10 gap-y-4">
           <div><p className="text-xs text-slate-500">{t({ en: "Completed", hi: "पूर्ण" })}</p><p className="mt-1 text-2xl font-semibold">{submitted.length}</p></div>
           {latestReport && <div><p className="text-xs text-slate-500">{t({ en: "Last score", hi: "पिछला स्कोर" })}</p><p className="mt-1 text-2xl font-semibold">{latestReport.score.totalMarks} <span className="text-sm font-normal text-slate-500">/ {latestReport.score.maxMarks}</span></p></div>}
         </div>
         <p className="mt-3 text-xs text-slate-500">{t({ en: "These are short practice-test results saved on this device, not all your mock tests or an estimate of your exam score.", hi: "ये इस डिवाइस पर सहेजे गए छोटे अभ्यास टेस्ट के नतीजे हैं—सभी मॉक टेस्ट या परीक्षा के स्कोर का अनुमान नहीं।" })}</p>
-        <details className="mt-4 border-t border-slate-100 pt-3">
-          <summary className="cursor-pointer py-2 text-sm font-medium text-slate-700">{t({ en: "View past tests", hi: "पिछले टेस्ट देखें" })}</summary>
+        <div className="mt-4 border-t border-slate-100 pt-1">
           <ul className="divide-y divide-slate-100">{submitted.map(attempt => {
             const report = reportByAttempt.get(attempt.id);
             return <li key={attempt.id} className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm">
@@ -81,7 +81,7 @@ function ProgressDashboard() {
               {report && <Link href={`/results/${attempt.id}`} className={quietButton}>{t({ en: "View result →", hi: "परिणाम देखें →" })}</Link>}
             </li>;
           })}</ul>
-        </details>
+        </div>
       </>}
       {openTopics.length > 0 && <details className="mt-4 border-t border-slate-100 pt-3">
         <summary className="cursor-pointer py-2 text-sm font-medium text-slate-700">{t({ en: "Topics to practise", hi: "दोबारा पढ़ने के विषय" })}</summary>

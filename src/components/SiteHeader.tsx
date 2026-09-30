@@ -1,21 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useLang } from "@/lib/i18n";
 import { useAttemptMode } from "@/lib/attempt-mode";
 import { useUser } from "@/lib/user-context";
 
+// "My results" opens the Tests page's past-tests view: that is where server-saved results live
+// (/dashboard only shows older results saved in this browser).
 const PRIMARY = [
   { href: "/learn", en: "Learn", hi: "सीखें", icon: "book" },
   { href: "/papers", en: "Tests", hi: "टेस्ट", icon: "paper" },
-  { href: "/dashboard", en: "My progress", hi: "मेरी प्रगति", icon: "chart" },
+  { href: "/papers?view=past", en: "My results", hi: "मेरे परिणाम", icon: "chart" },
+  { href: "/syllabus", en: "Syllabus", hi: "पाठ्यक्रम", icon: "list" },
 ];
 
 function NavIcon({ name }: { name: string }) {
   return <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-    {name === "book" ? <><path d="M12 5v15M12 5C8 2 3 4 3 4v15s5-2 9 1c4-3 9-1 9-1V4s-5-2-9 1Z" /></> : name === "paper" ? <><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h4" /></> : <><path d="M4 4v16h16M8 16v-4M13 16V8M18 16V5" /></>}
+    {name === "book" ? <><path d="M12 5v15M12 5C8 2 3 4 3 4v15s5-2 9 1c4-3 9-1 9-1V4s-5-2-9 1Z" /></> : name === "list" ? <><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" /></> : name === "paper" ? <><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h4" /></> : <><path d="M4 4v16h16M8 16v-4M13 16V8M18 16V5" /></>}
   </svg>;
 }
 
@@ -23,6 +26,7 @@ function NavigationDrawer({ onClose }: { onClose: () => void }) {
   const { lang, setLang } = useLang();
   const { currentUser, openProfileModal, logout } = useUser();
   const pathname = usePathname();
+  const pastView = useSearchParams().get("view") === "past";
   const dialog = useRef<HTMLDialogElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -46,7 +50,11 @@ function NavigationDrawer({ onClose }: { onClose: () => void }) {
       </div>
       <nav aria-label="Main navigation" className="space-y-2 py-6">
         {PRIMARY.map(item => {
-          const active = pathname.startsWith(item.href) || (item.href === "/papers" && pathname.startsWith("/recovery-lab/testbook"));
+          const active = item.href === "/papers?view=past"
+            ? (pathname === "/papers" && pastView) || pathname.startsWith("/papers/attempts")
+            : item.href === "/papers"
+              ? (pathname.startsWith("/papers") && !pastView && !pathname.startsWith("/papers/attempts")) || pathname.startsWith("/recovery-lab/testbook")
+              : pathname.startsWith(item.href);
           return <Link key={item.href} href={item.href} onClick={onClose} aria-current={active ? "page" : undefined} className={`flex min-h-14 items-center gap-4 rounded-xl px-4 py-3 text-base font-medium focus-visible:outline-2 focus-visible:outline-blue-600 ${active ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}><NavIcon name={item.icon} />{lang === "hi" ? item.hi : item.en}{active && <span aria-hidden="true" className="ml-auto h-1.5 w-1.5 rounded-full bg-blue-600" />}</Link>;
         })}
       </nav>
@@ -77,7 +85,7 @@ export function SiteHeader() {
       </Link>
       {kind === null ? <>
         <button type="button" aria-expanded={menuOpen} aria-haspopup="dialog" aria-controls="app-navigation" onClick={() => setMenuOpen(true)} className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-medium text-slate-700 hover:bg-slate-50"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>{lang === "hi" ? "मेन्यू" : "Menu"}</button>
-        {menuOpen && <NavigationDrawer onClose={() => setMenuOpen(false)} />}
+        {menuOpen && <Suspense fallback={null}><NavigationDrawer onClose={() => setMenuOpen(false)} /></Suspense>}
       </> : <span className="text-sm text-slate-500">{lang === "hi" ? "एक बार में एक प्रश्न" : "One question at a time"}</span>}
     </div>
   </header>;

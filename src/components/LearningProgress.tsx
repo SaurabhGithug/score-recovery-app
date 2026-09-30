@@ -38,7 +38,8 @@ export function LearningProgress({ data, busy, onPractice, onResume }: {
         <h2 className="mt-1 font-semibold" title={g.name}>{label.title}</h2>
         <dl className="mt-4 grid gap-4 sm:grid-cols-2">
           {g.newAttempts > 0 && <div><dt className="text-sm text-slate-600">New questions answered without help</dt><dd className="mt-1 font-semibold">{accuracy(g.newCorrect, g.newAttempts)}</dd></div>}
-          {g.independent > 0 && <div><dt className="text-sm text-slate-600">All answers without help</dt><dd className="mt-1 font-semibold">{accuracy(g.correct, g.independent)}</dd></div>}
+          {/* Equal to the row above until a question has been repeated: show it only when it adds something. */}
+          {g.independent > g.newAttempts && <div><dt className="text-sm text-slate-600">All answers without help</dt><dd className="mt-1 font-semibold">{accuracy(g.correct, g.independent)}</dd></div>}
           {g.retentionChecks > 0 && <div><dt className="text-sm text-slate-600">Correct when tried again later</dt><dd className="mt-1 font-semibold">{g.retained} of {g.retentionChecks}</dd></div>}
           {g.assisted > 0 && <div><dt className="text-sm text-slate-600">Answers using help</dt><dd className="mt-1 font-semibold">{g.assisted}</dd></div>}
         </dl>

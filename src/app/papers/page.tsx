@@ -142,6 +142,10 @@ function TestsPage() {
       </nav>
       {view === "past" ? <>
         <p className="mt-4 text-sm text-slate-600">Continue an unfinished test or review your answers from a completed test.</p>
+        <p className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+          <Link href="/learn?tab=progress" className="font-semibold text-blue-700 hover:text-blue-800">{t({ en: "Learn practice results →", hi: "सीखें: अभ्यास परिणाम →" })}</Link>
+          <Link href="/dashboard" className="text-slate-600 underline hover:text-slate-900">{t({ en: "Older results saved in this browser", hi: "इस ब्राउज़र में सहेजे पुराने परिणाम" })}</Link>
+        </p>
         {loadError && <p role="alert" className="mt-4 text-sm text-rose-700">{loadError} <button type="button" onClick={() => setReloadToken(n => n + 1)} className="underline">Retry</button></p>}
         {!loadError && papers === null && <p className="mt-5 text-sm text-slate-500">Loading past tests…</p>}
         {!loadError && papers !== null && pastAttempts.length === 0 && <section className="mt-6 rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center">
