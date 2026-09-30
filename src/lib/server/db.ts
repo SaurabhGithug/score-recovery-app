@@ -324,6 +324,20 @@ function runMigrations(db: DatabaseSync) {
         FOREIGN KEY (question_id) REFERENCES bank_questions(id) ON DELETE CASCADE
     );
 
+    -- AI study packs (DECISION-004): syllabus topic, scope, exam points and cross-checked practice
+    -- questions for one question, labelled AI-generated in the UI. Keyed by the content the pack was
+    -- made for, so a re-imported question gets a new pack. kind is 'bank' or 'made_easy'.
+    CREATE TABLE IF NOT EXISTS ai_study_packs (
+        kind TEXT NOT NULL,
+        question_id TEXT NOT NULL,
+        content_fp TEXT NOT NULL,
+        pack TEXT NOT NULL,
+        model TEXT NOT NULL,
+        checker TEXT,
+        created_at TEXT NOT NULL,
+        PRIMARY KEY (kind, question_id, content_fp)
+    );
+
     CREATE TABLE IF NOT EXISTS bank_attempts (
         id TEXT PRIMARY KEY,
         user_id TEXT NOT NULL,

@@ -1,4 +1,8 @@
-import rawImport from "@/lib/madeeasy-import.json";
+/**
+ * Made Easy test-series import: types and display helpers only, safe for the browser.
+ * The data itself (src/lib/madeeasy-import.json) is read on the server by
+ * src/lib/server/made-easy.ts and served only to its owner's account through /api/made-easy.
+ */
 
 export type MadeEasyQuestionStatus = "incorrect" | "unattempted";
 export type MadeEasySourceQuality = "verified_text" | "visual_review_required";
@@ -58,6 +62,9 @@ export interface MadeEasyImport {
     capturedOn: string;
     scope: string;
     integrityPolicy: string;
+    /** The one app account these results belong to (server-side only; not sent to the browser). */
+    ownerUserId?: string;
+    ownerNote?: string;
   };
   tests: MadeEasyTest[];
 }
@@ -66,8 +73,6 @@ export type MadeEasyQuestionWithTest = MadeEasyQuestion & {
   testCode: string;
   testTitle: string;
 };
-
-export const MADE_EASY_IMPORT = rawImport as MadeEasyImport;
 
 export function decodePortalText(text: string) {
   return text
@@ -80,24 +85,30 @@ export function decodePortalText(text: string) {
     .replaceAll("&amp;", "&");
 }
 
-export const MADE_EASY_QUESTIONS: MadeEasyQuestionWithTest[] =
-  MADE_EASY_IMPORT.tests.flatMap((test) =>
-    test.attentionQuestions.map((question) => ({
-      ...question,
-      question: decodePortalText(question.question),
-      explanation: decodePortalText(question.explanation),
-      options: question.options.map((option) => ({
-        ...option,
-        text: decodePortalText(option.text),
-      })),
-      testCode: test.code,
-      testTitle: test.title,
-    }))
-  );
+/** A test as listed on the Made Easy page: its result and how many of its saved questions are practice-ready. */
+export interface MadeEasyTestCard {
+  code: string;
+  title: string;
+  summary: MadeEasyTestSummary;
+  counts: { attention: number; ready: number; needsSource: number; incorrect: number; unattempted: number };
+}
 
-export const MADE_EASY_DRILL_QUESTIONS = MADE_EASY_QUESTIONS.filter(
-  (question) => question.sourceQuality === "verified_text"
-);
+export interface MadeEasyOverview {
+  provider: string;
+  series: string;
+  capturedOn: string;
+  portalUrl: string;
+  tests: MadeEasyTestCard[];
+}
+
+export interface MadeEasyTestDetail {
+  provider: string;
+  capturedOn: string;
+  portalUrl: string;
+  test: MadeEasyTestCard;
+  /** Decoded text, ordered by practice priority. */
+  questions: MadeEasyQuestionWithTest[];
+}
 
 export function formatSeconds(seconds: number) {
   if (seconds < 60) return `${Math.round(seconds)}s`;

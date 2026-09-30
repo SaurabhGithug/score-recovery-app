@@ -16,6 +16,7 @@ import { useDeclareAttemptMode } from "@/lib/attempt-mode";
 import { BankApiRequestError, checkAnswer, explainQuestion, saveResponses, submitAttempt } from "./api";
 import { ExplanationBlock } from "./ReviewQuestion";
 import { KeyProvenance } from "./KeyProvenance";
+import { AskFollowUp } from "../ai/AskFollowUp";
 import { EndTestDialog } from "../EndTestDialog";
 import { ScientificCalculatorWidget } from "../ScientificCalculatorWidget";
 import { displayLabel, displayOrder, imageLed, textReliable, type OptionLayout } from "./optionOrder";
@@ -741,6 +742,7 @@ function CheckedResultPanel({ result, question }: { result: BankCheckResult; que
           {explainError && <span className="text-xs font-medium text-rose-600">{explainError}</span>}
         </div>
       ) : null}
+      {!question.unavailable && <AskFollowUp kind="bank" id={result.questionId} />}
     </div>
   );
 }

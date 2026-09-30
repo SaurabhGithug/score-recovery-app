@@ -6,6 +6,7 @@ import { useLang } from "@/lib/i18n";
 import { BankApiRequestError, explainQuestion, resolveQuestion } from "./api";
 import { displayLabel, displayOrder, imageLed, optionRef, textReliable, type OptionLayout } from "./optionOrder";
 import { KeyProvenance } from "./KeyProvenance";
+import { AiGeneratedBadge, AskFollowUp } from "../ai/AskFollowUp";
 
 const OUTCOME_STYLE: Record<BankOutcome, string> = {
   correct: "bg-emerald-100 text-emerald-800",
@@ -196,6 +197,8 @@ export function ReviewQuestion({
         </div>
       ) : null}
 
+      {!question.unavailable && <AskFollowUp kind="bank" id={question.id} />}
+
       {/* Resolve (disputed only) */}
       {question.key.status === "disputed" && (
         <div className="mt-3 rounded-lg border border-violet-200 bg-violet-50 p-3 text-xs">
@@ -251,6 +254,7 @@ export function ExplanationBlock({ explanation, question }: { explanation: BankE
   const { t } = useLang();
   return (
     <div className="mt-3 rounded-lg border border-blue-100 bg-blue-50/60 p-3 text-xs leading-5 text-slate-700">
+      <div className="mb-1.5"><AiGeneratedBadge detail={explanation.model} /></div>
       <p className="text-[10px] font-bold uppercase tracking-wide text-blue-700">{explanation.topic}</p>
       <p className="mt-1 font-semibold text-slate-800">{explanation.concept}</p>
       {explanation.steps.length > 0 && (
@@ -280,7 +284,6 @@ export function ExplanationBlock({ explanation, question }: { explanation: BankE
       {explanation.verificationLimits.length > 0 && (
         <p className="mt-2 text-slate-500"><span className="font-semibold">{t({ en: "What could not be checked: ", hi: "सत्यापन सीमाएँ: " })}</span>{explanation.verificationLimits.join("; ")}</p>
       )}
-      <p className="mt-2 text-[10px] text-slate-400">{explanation.model}</p>
     </div>
   );
 }

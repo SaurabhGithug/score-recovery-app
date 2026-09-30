@@ -7,7 +7,7 @@ import type { BankPaperCode, BankPaperKind, BankPaperSummary, BankSection } from
 import { useLang } from "@/lib/i18n";
 import { useUser } from "@/lib/user-context";
 import { BankApiRequestError, createAttempt, getPaper, listPapers } from "@/components/bank/api";
-import { MADE_EASY_IMPORT } from "@/lib/madeeasy";
+import type { MadeEasyOverview } from "@/lib/madeeasy";
 
 type PaperFilter = "all" | BankPaperCode;
 type SectionPickerState = BankSection[] | "loading" | "error";
@@ -32,6 +32,7 @@ function TestsPage() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [sectionPicker, setSectionPicker] = useState<Record<string, SectionPickerState>>({});
   const [reloadToken, setReloadToken] = useState(0);
+  const [madeEasy, setMadeEasy] = useState<MadeEasyOverview | null>(null);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -50,6 +51,16 @@ function TestsPage() {
       cancelled = true;
     };
   }, [kind, view, currentUser, reloadToken]);
+
+  useEffect(() => {
+    if (!currentUser || view !== "past") return;
+    let cancelled = false;
+    fetch("/api/made-easy", { cache: "no-store" })
+      .then(async (res) => res.ok ? (await res.json()) as MadeEasyOverview : null)
+      .then((value) => { if (!cancelled) setMadeEasy(value); })
+      .catch(() => { if (!cancelled) setMadeEasy(null); });
+    return () => { cancelled = true; };
+  }, [currentUser, view]);
 
   const pastAttempts = useMemo(() => (papers ?? [])
     .flatMap(paper => paper.attempts.map(attempt => ({ paper, attempt })))
@@ -166,12 +177,12 @@ function TestsPage() {
             </li>)}</ul>
           </section>}
 
-          <section aria-labelledby="imported-tests-heading">
+          {madeEasy && <section aria-labelledby="imported-tests-heading">
             <div className="flex items-baseline justify-between gap-4">
               <h2 id="imported-tests-heading" className="text-lg font-bold text-slate-950">Imported from Made Easy</h2>
-              <span className="text-xs font-semibold text-slate-500">{MADE_EASY_IMPORT.tests.length} tests</span>
+              <span className="text-xs font-semibold text-slate-500">{madeEasy.tests.length} tests</span>
             </div>
-            <ul className="mt-3 grid gap-3 sm:grid-cols-2">{MADE_EASY_IMPORT.tests.map((test) => {
+            <ul className="mt-3 grid gap-3 sm:grid-cols-2">{madeEasy.tests.map((test) => {
               const attention = test.summary.incorrect + test.summary.unattempted;
               return <li key={test.code} className="rounded-xl border border-slate-200 bg-white p-4">
                 <div className="flex items-start justify-between gap-3">
@@ -185,7 +196,7 @@ function TestsPage() {
                 <Link href={`/recovery-lab?test=${test.code}`} className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 hover:text-blue-800">Review questions →</Link>
               </li>;
             })}</ul>
-          </section>
+          </section>}
 
           <section aria-labelledby="completed-tests-heading">
             <div className="flex items-baseline justify-between gap-4">
