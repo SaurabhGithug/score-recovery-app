@@ -16,6 +16,47 @@ interface Answer {
   searchEntryPointHtml: string | null;
   pack?: StudyPackData | null;
   packPending?: boolean;
+  check?: { id: string | null; status: CheckResult["status"] };
+}
+
+interface CheckResult {
+  status: "pending" | "done" | "failed" | "unavailable";
+  verdict?: "consistent" | "issues" | "cannot_verify";
+  issues?: { claim: string; problem: string; correction: string | null }[];
+  keyConcern?: boolean;
+  checkedBy?: string;
+  error?: string;
+}
+
+/** What the second AI made of an answer. */
+function CheckNote({ check }: { check: CheckResult | undefined }) {
+  const { t } = useLang();
+  if (!check || check.status === "unavailable") {
+    return <p className="mt-2 text-xs text-slate-500">{t({ en: "Not checked by a second AI (none is set up).", hi: "दूसरे AI से नहीं जाँचा गया (कोई सेट नहीं है)।" })}</p>;
+  }
+  if (check.status === "pending") return <p role="status" className="mt-2 text-xs text-slate-500">{t({ en: "A second AI is checking this answer…", hi: "दूसरा AI इस उत्तर की जाँच कर रहा है…" })}</p>;
+  if (check.status === "failed") return <p className="mt-2 text-xs text-slate-500">{t({ en: `Not checked: ${check.error ?? "the second AI could not check it."}`, hi: "दूसरा AI इसकी जाँच नहीं कर सका।" })}</p>;
+  const by = check.checkedBy ? ` (${check.checkedBy})` : "";
+  return (
+    <div className={`mt-2 rounded-md border px-3 py-2 text-xs leading-5 ${check.verdict === "consistent" ? "border-emerald-200 bg-emerald-50 text-emerald-900" : check.verdict === "issues" ? "border-amber-300 bg-amber-50 text-amber-950" : "border-slate-200 bg-slate-50 text-slate-700"}`}>
+      {check.verdict === "consistent" && <p className="font-semibold">{t({ en: `✓ Checked by a second AI${by}: no problems found.`, hi: `✓ दूसरे AI${by} ने जाँचा: कोई गलती नहीं मिली।` })}</p>}
+      {check.verdict === "cannot_verify" && <p className="font-semibold">{t({ en: `A second AI${by} could not verify this answer (it may depend on a picture it can't see). Treat it with care.`, hi: `दूसरा AI${by} इस उत्तर की पुष्टि नहीं कर सका। सावधानी से लें।` })}</p>}
+      {check.verdict === "issues" && (
+        <>
+          <p className="font-semibold">{t({ en: `⚠ A second AI${by} found possible problems in this answer:`, hi: `⚠ दूसरे AI${by} को इस उत्तर में संभावित गलतियाँ मिलीं:` })}</p>
+          <ul className="mt-1 list-disc space-y-1 pl-4">
+            {check.issues?.map((issue, i) => (
+              <li key={i}>
+                <span className="italic">“{issue.claim}”</span>: {issue.problem}
+                {issue.correction && <> {t({ en: "Correct:", hi: "सही:" })} {issue.correction}</>}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {check.keyConcern && <p className="mt-1 font-semibold text-rose-800">{t({ en: "The second AI also doubts the source's answer key. Check it in your book or notes.", hi: "दूसरे AI को स्रोत की उत्तर कुंजी पर भी संदेह है। अपनी किताब से जाँचें।" })}</p>}
+    </div>
+  );
 }
 
 interface PackStatus {
@@ -63,6 +104,7 @@ export function AskFollowUp({ kind, id }: { kind: "made_easy" | "bank"; id: stri
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [checks, setChecks] = useState<Record<string, CheckResult>>({});
   const [pack, setPack] = useState<StudyPackData | null>(null);
   const [packPending, setPackPending] = useState(false);
   const [packError, setPackError] = useState("");
@@ -93,6 +135,28 @@ export function AskFollowUp({ kind, id }: { kind: "made_easy" | "bank"; id: stri
     return () => { live = false; window.clearInterval(timer); };
   }, [packPending, kind, id, t]);
 
+  // Poll the second AI's pending checks every few seconds (up to 3 minutes each).
+  const pendingChecks = Object.entries(checks).filter(([, c]) => c.status === "pending").map(([checkId]) => checkId).join(",");
+  useEffect(() => {
+    if (!pendingChecks) return;
+    let live = true;
+    let tries = 0;
+    const timer = window.setInterval(() => {
+      tries++;
+      for (const checkId of pendingChecks.split(",")) {
+        fetch("/api/ai/follow-up/check", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: checkId }), cache: "no-store" })
+          .then((res) => (res.ok ? (res.json() as Promise<CheckResult>) : { status: "failed" as const, error: "the check is no longer available." }))
+          .then((result) => {
+            if (!live) return;
+            const next = result.status === "pending" && tries > 60 ? { status: "failed" as const, error: "the second AI took too long." } : result;
+            if (next.status !== "pending") setChecks((prev) => ({ ...prev, [checkId]: next }));
+          })
+          .catch(() => {});
+      }
+    }, 3000);
+    return () => { live = false; window.clearInterval(timer); };
+  }, [pendingChecks]);
+
   async function makePack() {
     setPackError("");
     try {
@@ -120,6 +184,7 @@ export function AskFollowUp({ kind, id }: { kind: "made_easy" | "bank"; id: stri
       const meta = data as Answer;
       if (meta.pack) setPack(meta.pack);
       else if (meta.packPending) setPackPending(true);
+      if (meta.check?.id) { const checkId = meta.check.id; setChecks((prev) => ({ ...prev, [checkId]: { status: "pending" } })); }
       setTurns((prev) => [...prev, { role: "user", text: message }, { role: "model", text: meta.answer, meta }]);
       setDraft("");
     } catch (err) {
@@ -165,6 +230,7 @@ export function AskFollowUp({ kind, id }: { kind: "made_easy" | "bank"; id: stri
                   {pack?.topic && <TopicTag pack={pack} />}
                 </div>
                 <p className="mt-2 whitespace-pre-line leading-6">{turn.text}</p>
+                <CheckNote check={turn.meta.check?.id ? checks[turn.meta.check.id] : turn.meta.check?.status === "unavailable" ? { status: "unavailable" } : undefined} />
                 {turn.meta.sources.length > 0 && (
                   <div className="mt-2 text-xs text-slate-500">
                     <p className="font-semibold">{t({ en: "Web sources the AI used:", hi: "AI ने उपयोग किए वेब स्रोत:" })}</p>

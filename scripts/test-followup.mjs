@@ -15,7 +15,7 @@ const { SyllabusRepository: S } = await import("../src/lib/server/repositories/s
 const { buildSyllabusSeed } = await import("../src/lib/syllabus/seed-builder.ts");
 const { getDatabase } = await import("../src/lib/server/db.ts");
 const { canReadMadeEasy, madeEasyOverview, madeEasyTest, madeEasyOwner } = await import("../src/lib/server/made-easy.ts");
-const { askFollowUp, studyPack, waitForStudyPacks, geminiCostUsd, geminiWorstUsd } = await import("../src/lib/server/followup/followup.ts");
+const { askFollowUp, studyPack, waitForStudyPacks, answerCheck, waitForAnswerChecks, geminiCostUsd, geminiWorstUsd } = await import("../src/lib/server/followup/followup.ts");
 const { GeminiError } = await import("../src/lib/server/followup/gemini.ts");
 const { syllabusContext, resetSyllabusIndex } = await import("../src/lib/server/followup/syllabus-context.ts");
 const { sanitizeSourceHtml, sourceHtmlToText } = await import("../src/lib/server/source-html.ts");
@@ -75,6 +75,9 @@ function fakeGemini(reply = {}) {
     const error = reply.throwError?.(request);
     if (error) throw error;
     if (reply.failGrounded && request.grounded) throw new GeminiError("Search Grounding is not supported for this API key tier", 400);
+    if (request.json && request.system.startsWith("You check a tutor's answer")) {
+      return { text: reply.verdictText ?? JSON.stringify({ verdict: "consistent", issues: [], keyConcern: false }), finishReason: "STOP", usage: { promptTokens: 800, outputTokens: 200, searchQueries: 0 }, grounded: false, sources: [], searchEntryPointHtml: null, usageKnown: true };
+    }
     if (request.json) {
       if (reply.packDelay) await reply.packDelay;
       return { text: reply.packText ?? GOOD_PACK(reply.topicId ?? null), finishReason: "STOP", usage: { promptTokens: 2000, outputTokens: 900, searchQueries: 0 }, grounded: false, sources: [], searchEntryPointHtml: null, usageKnown: true };
@@ -363,6 +366,60 @@ await test("follow-up: a reply without usage figures keeps the worst case reserv
   await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why?" }, deps({ gemini: fakeGemini({ usageKnown: false }) }));
   const kept = spentSince(new Date(0)) - before;
   assert.ok(kept >= geminiWorstUsd("gemini-3.8-flash", { system: "", turns: [], grounded: true, maxOutputTokens: 8192 }));
+});
+
+// ---------------------------------------------------------------- answer checks
+await test("answer check: without a second model there is no check, and the answer says so", async () => {
+  const answer = await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why A?" }, deps());
+  assert.deepEqual(answer.check, { id: null, status: "unavailable" });
+});
+
+await test("answer check: a second Google model checks the answer in the background, with the key and images; only the asker can read it", async () => {
+  const gemini = fakeGemini();
+  const answer = await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why A?" }, deps({ gemini, geminiCheckModel: "gemini-3.1-pro-preview" }));
+  assert.equal(answer.check.status, "pending");
+  assert.deepEqual(answerCheck(OWNER, answer.check.id), { status: "pending" });
+  await waitForAnswerChecks();
+  const result = answerCheck(OWNER, answer.check.id);
+  assert.equal(result.status, "done");
+  assert.equal(result.verdict, "consistent");
+  assert.equal(result.checkedBy, "gemini-3.1-pro-preview");
+  const verify = gemini.calls.find((c) => c.model === "gemini-3.1-pro-preview");
+  assert.match(verify.turns[0].text, /ANSWER KEY: A/);
+  assert.match(verify.turns[0].text, /TUTOR'S ANSWER TO CHECK:\nBecause the lysimeter measures evapotranspiration\./);
+  assert.equal(verify.turns[0].images.length, 1, "the checker sees the table too");
+  assert.throws(() => answerCheck(other, answer.check.id), (err) => err.status === 404);
+  assert.throws(() => answerCheck(OWNER, "chk_not_a_real_id"), (err) => err.status === 404);
+});
+
+await test("answer check: DeepSeek is preferred as the checker; its problems and key doubts are reported", async () => {
+  const deepseek = {
+    calls: [],
+    name: "fake-deepseek",
+    async completeJson(request) {
+      this.calls.push(request);
+      const json = request.system.startsWith("You check a tutor's answer")
+        ? { verdict: "issues", issues: [{ claim: "the lysimeter measures evaporation", problem: "it measures evapotranspiration", correction: "A lysimeter measures actual evapotranspiration." }], keyConcern: true }
+        : { answers: ["A", "B", "B"] };
+      return { json, usage: { promptCacheHitTokens: 0, promptCacheMissTokens: 500, completionTokens: 200, reasoningTokens: 0 }, model: "deepseek-v4-pro", finishReason: "stop" };
+    },
+  };
+  const answer = await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why A?" }, deps({ deepseek, geminiCheckModel: "gemini-3.1-pro-preview" }));
+  await waitForAnswerChecks();
+  const result = answerCheck(OWNER, answer.check.id);
+  assert.equal(result.verdict, "issues");
+  assert.equal(result.checkedBy, "deepseek-v4-pro");
+  assert.equal(result.keyConcern, true);
+  assert.equal(result.issues[0].correction, "A lysimeter measures actual evapotranspiration.");
+  assert.match(deepseek.calls.find((c) => c.system.startsWith("You check"))?.user ?? "", /images you cannot see/, "DeepSeek is told it can't see the table");
+});
+
+await test("answer check: a malformed verdict fails the check instead of passing it; 'issues' with none listed is not a pass", async () => {
+  const broken = await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why?" }, deps({ gemini: fakeGemini({ verdictText: '{"verdict": "looks fine"}' }), geminiCheckModel: "gemini-3.1-pro-preview" }));
+  const empty = await askFollowUp(OWNER, { kind: "made_easy", id: "test-12-q26", message: "Why?" }, deps({ gemini: fakeGemini({ verdictText: '{"verdict": "issues", "issues": []}' }), geminiCheckModel: "gemini-3.1-pro-preview" }));
+  await waitForAnswerChecks();
+  assert.equal(answerCheck(OWNER, broken.check.id).status, "failed");
+  assert.equal(answerCheck(OWNER, empty.check.id).verdict, "cannot_verify");
 });
 
 // ---------------------------------------------------------------- bank commitment and key wording

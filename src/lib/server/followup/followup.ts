@@ -68,6 +68,18 @@ export interface StudyPack {
   createdAt: string;
 }
 
+/** A second AI's check of one follow-up answer (Saurabh, 2026-09-30: "one AI to answer, one to verify"). */
+export interface AnswerCheck {
+  status: "pending" | "done" | "failed" | "unavailable";
+  /** consistent: no problems found. issues: possible problems listed. cannot_verify: e.g. it depends on images the checker can't see. */
+  verdict?: "consistent" | "issues" | "cannot_verify";
+  issues?: { claim: string; problem: string; correction: string | null }[];
+  /** The checker thinks the source's answer key itself may be wrong. */
+  keyConcern?: boolean;
+  checkedBy?: string;
+  error?: string;
+}
+
 export interface FollowUpAnswer {
   answer: string;
   provider: ProviderName;
@@ -79,6 +91,8 @@ export interface FollowUpAnswer {
   pack: StudyPack | null;
   /** The pack is still being made: poll /api/ai/study-pack. */
   packPending: boolean;
+  /** The second AI's check of this answer: poll /api/ai/follow-up/check with the id while pending. */
+  check: { id: string | null; status: AnswerCheck["status"] };
 }
 
 export const MAX_MESSAGE_CHARS = 1500;
@@ -411,6 +425,84 @@ async function askJson(deps: FollowUpDeps, provider: ProviderName, userId: strin
   }
 }
 
+/**
+ * The model that checks another model's work: the other provider (independent errors), else a
+ * different Google model (same vendor, so less independent, but still a second model), else none.
+ */
+function secondModel(deps: FollowUpDeps, primary: ProviderName): { provider: ProviderName; model?: string } | null {
+  if (primary === "google") {
+    if (deps.deepseek) return { provider: "deepseek" };
+    if (deps.googleKey && deps.geminiCheckModel && deps.geminiCheckModel !== deps.geminiModel) return { provider: "google", model: deps.geminiCheckModel };
+    return null;
+  }
+  return deps.googleKey ? { provider: "google" } : null;
+}
+
+// ---------------------------------------------------------------- answer checks
+
+const VERIFY_SYSTEM = [
+  "You check a tutor's answer to a learner's follow-up question for India's SSC JE Civil Engineering exam. Output JSON only.",
+  'Return exactly: {"verdict": "consistent" | "issues" | "cannot_verify", "issues": [{"claim": "<the tutor\'s statement, quoted briefly>", "problem": "<what is wrong>", "correction": "<the correct statement, or null>"}], "keyConcern": true | false}',
+  "Check: (1) Does the answer contradict the given answer key or source explanation? (2) Factual, numerical, unit or formula errors. (3) Invented standards, IS-code clause numbers, values or sources. List only real problems, at most 5; do not nitpick wording or style.",
+  'verdict "consistent" means you found no problems. Use "cannot_verify" only when the answer depends on something you cannot see or check (for example an image). Set keyConcern to true only if you are confident the source answer key itself is wrong.',
+].join("\n");
+
+const checks = new Map<string, { userId: string; createdAt: number; result: AnswerCheck; job: Promise<void> }>();
+const CHECK_TTL_MS = 60 * 60 * 1000;
+
+function parseCheck(json: unknown): Omit<AnswerCheck, "status" | "checkedBy"> {
+  const j = (json ?? {}) as Record<string, unknown>;
+  const verdict = j.verdict === "consistent" || j.verdict === "issues" || j.verdict === "cannot_verify" ? j.verdict : null;
+  if (!verdict) throw new HttpError(502, "The second AI's check came back in an unexpected form.");
+  const issues = (Array.isArray(j.issues) ? j.issues : [])
+    .map((raw) => {
+      const i = (raw ?? {}) as Record<string, unknown>;
+      const claim = asText(i.claim, 300);
+      const problem = asText(i.problem, 500);
+      return claim && problem ? { claim, problem, correction: asText(i.correction, 500) } : null;
+    })
+    .filter((i): i is NonNullable<typeof i> => i !== null)
+    .slice(0, 5);
+  // "issues" with nothing listed says nothing useful; treat as unverified rather than invent a problem.
+  return { verdict: verdict === "issues" && !issues.length ? "cannot_verify" : verdict, issues, keyConcern: j.keyConcern === true };
+}
+
+/** Starts the second AI's check of an answer in the background; returns its id, or null when no second model is set up. */
+function startCheck(deps: FollowUpDeps, userId: string, facts: Facts, question: string, answer: string, answeredBy: ProviderName): string | null {
+  const now = Date.now();
+  for (const [id, c] of checks) if (now - c.createdAt > CHECK_TTL_MS) checks.delete(id);
+  const checker = secondModel(deps, answeredBy);
+  if (!checker) return null;
+  const id = `chk_${crypto.randomBytes(12).toString("hex")}`;
+  const entry = { userId, createdAt: now, result: { status: "pending" } as AnswerCheck, job: Promise.resolve() };
+  entry.job = (async () => {
+    try {
+      const images = checker.provider === "google" ? await loadImages(deps, facts) : null;
+      const attached = images !== null && images.length > 0;
+      const prompt = `${factsBlock(facts, attached)}\n\nLEARNER'S QUESTION: ${question}\n\nTUTOR'S ANSWER TO CHECK:\n${answer}`;
+      const checked = await askJson(deps, checker.provider, userId, VERIFY_SYSTEM, prompt, attached ? images! : [], checker.model);
+      entry.result = { status: "done", ...parseCheck(checked.json), checkedBy: checked.model };
+    } catch (err) {
+      if (!(err instanceof HttpError)) console.error("[answer check]", err);
+      entry.result = { status: "failed", error: err instanceof HttpError ? err.message : "The second AI could not check this answer." };
+    }
+  })();
+  checks.set(id, entry);
+  return id;
+}
+
+/** The check of an answer this learner asked for; 404 for anyone else or when it has expired. */
+export function answerCheck(userId: string, id: unknown): AnswerCheck {
+  const entry = typeof id === "string" ? checks.get(id) : undefined;
+  if (!entry || entry.userId !== userId) throw new HttpError(404, "No such check (checks are kept for an hour).");
+  return entry.result;
+}
+
+/** Waits for every running answer check (scripts and tests). */
+export async function waitForAnswerChecks(): Promise<void> {
+  await Promise.allSettled([...checks.values()].map((c) => c.job));
+}
+
 // ---------------------------------------------------------------- study pack
 
 const PACK_SYSTEM = [
@@ -487,10 +579,7 @@ async function generatePack(deps: FollowUpDeps, userId: string, f: Facts, ctx: S
 
   // A second AI answers the practice questions blind; only questions it answers the same way stay.
   // The checker is the other provider; without it, a different Google model (less independent, still a second model).
-  const checker: { provider: ProviderName; model?: string } | null =
-    generator === "google"
-      ? deps.deepseek ? { provider: "deepseek" } : deps.geminiCheckModel && deps.geminiCheckModel !== deps.geminiModel ? { provider: "google", model: deps.geminiCheckModel } : null
-      : deps.googleKey ? { provider: "google" } : null;
+  const checker = secondModel(deps, generator);
   let practice: StudyPackQuestion[] = parsed.practice.map((p) => ({ ...p, crossChecked: false }));
   let checkedBy: string | null = null;
   if (parsed.practice.length && checker) {
@@ -619,7 +708,7 @@ function parseTurns(value: unknown): FollowUpTurn[] {
   });
 }
 
-async function answerWith(deps: FollowUpDeps, userId: string, turns: GeminiTurn[]): Promise<Omit<FollowUpAnswer, "pack" | "packPending">> {
+async function answerWith(deps: FollowUpDeps, userId: string, turns: GeminiTurn[]): Promise<Omit<FollowUpAnswer, "pack" | "packPending" | "check">> {
   if (deps.provider === "deepseek") {
     const transcript = turns.map((t) => `${t.role === "user" ? "LEARNER" : "TUTOR"}:\n${t.text}`).join("\n\n");
     const { json, model } = await callDeepSeek(deps, userId, `${SYSTEM}\nReturn JSON: {"answer": "<your reply to the learner's last message>"}.`, transcript);
@@ -669,5 +758,12 @@ export async function askFollowUp(
   const existing = cachedPack(facts);
   if (!existing) startPack(deps, userId, facts, ctx);
   const answer = await answerWith(deps, userId, turns);
-  return { ...answer, pack: existing, packPending: !existing && inFlight.has(packKey(facts)) };
+  // A second AI checks the answer in the background; the learner sees the answer at once.
+  const checkId = startCheck(deps, userId, facts, input.message.trim(), answer.answer, answer.provider);
+  return {
+    ...answer,
+    pack: existing,
+    packPending: !existing && inFlight.has(packKey(facts)),
+    check: { id: checkId, status: checkId ? "pending" : "unavailable" },
+  };
 }
