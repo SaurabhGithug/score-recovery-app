@@ -69,7 +69,8 @@ export function StandardCard({ standard, userId }: { standard: StandardRow; user
           : test.kind === "disabled" ? <button type="button" disabled aria-describedby={noteId} className={btnDisabled}>{test.label}</button>
           : <Link href={testHref(standard.id)} aria-describedby={test.note ? noteId : undefined} className={btnSecondary}>{test.label}</Link>}
       </div>
-      {test.kind !== "loading" && test.note && <p id={noteId} className="mt-3 text-sm text-slate-600">{test.note}</p>}
+      {/* Under the test button: below it on phones, right-aligned under it when the buttons sit side by side. */}
+      {test.kind !== "loading" && test.note && <p id={noteId} className="mt-3 text-sm text-slate-600 sm:text-right">{test.note}</p>}
     </section>
   );
 }
@@ -88,7 +89,7 @@ function testAction(quiz: QuizState, t: Translate): TestAction {
   if (overview.active) {
     const ends = new Date(overview.active.deadlineAt);
     const endsAt = Number.isNaN(ends.getTime()) ? "" : ends.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
-    return { kind: "link", label: t({ en: "Resume test", hi: "टेस्ट जारी रखें" }), note: endsAt ? t({ en: `Ends at ${endsAt}`, hi: `${endsAt} पर समाप्त` }) : null };
+    return { kind: "link", label: t({ en: "Resume test", hi: "टेस्ट जारी रखें" }), note: endsAt ? t({ en: `Test ends at ${endsAt}`, hi: `टेस्ट ${endsAt} पर समाप्त होगा` }) : null };
   }
   if (overview.available.total < MIN_TEST_QUESTIONS) {
     return { kind: "disabled", label, note: t({ en: "Questions are being prepared", hi: "प्रश्न तैयार किए जा रहे हैं" }) };
