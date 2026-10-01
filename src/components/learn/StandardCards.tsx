@@ -9,13 +9,14 @@ import {
   type QuizState, type StandardRow,
 } from "./standards-data";
 
-// One accent (blue) plus slate. No shadows, gradients, icons or motion: the page stays still.
+// One accent (blue) plus slate. No shadows, gradients or motion: the page stays still.
 // Keyboard focus uses the app-wide outline from globals.css.
 
 const btn = "inline-flex min-h-12 w-full items-center justify-center rounded-xl px-5 text-base font-semibold sm:w-auto";
 const btnPrimary = `${btn} bg-blue-600 text-white hover:bg-blue-700 sm:flex-1`;
 const btnSecondary = `${btn} border border-slate-300 bg-white text-slate-800 hover:bg-slate-50 sm:px-6`;
-const btnDisabled = `${btn} cursor-not-allowed border border-slate-200 bg-slate-100 text-slate-500 sm:px-6`;
+// h-12: on phones globals.css gives every <button> an unlayered min-height (44px) that beats min-h-12, so pin the height to match the links.
+const btnDisabled = `${btn} h-12 cursor-not-allowed border border-slate-200 bg-slate-100 text-slate-500 sm:px-6`;
 
 type Translate = ReturnType<typeof useLang>["t"];
 
