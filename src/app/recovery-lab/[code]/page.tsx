@@ -80,6 +80,7 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
   const [reviewIndex, setReviewIndex] = useState(0);
   const [progress, setProgress] = useState<Record<string, DrillProgressEntry>>(() => (typeof window === "undefined" ? {} : loadDrillProgress(userId)));
   const [drill, setDrill] = useState<{ ids: string[]; index: number } | null>(null);
+  const [drillResumeIndex, setDrillResumeIndex] = useState(0);
 
   const ready = useMemo(() => questions.filter(madeEasyReady), [questions]);
   const shown = useMemo(
@@ -100,6 +101,28 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
   function moveReview(nextIndex: number) {
     setReviewIndex(Math.max(0, Math.min(nextIndex, shown.length - 1)));
     setExpandedId(null);
+  }
+
+  function beginDrill(ids: string[], requestedIndex = 0) {
+    if (!ids.length) return;
+    const index = Math.max(0, Math.min(requestedIndex, ids.length - 1));
+    setDrill({ ids, index });
+  }
+
+  function leaveDrill() {
+    if (drill) setDrillResumeIndex(drill.index);
+    setDrill(null);
+  }
+
+  function advanceDrill(nextIndex: number) {
+    if (!drill) return;
+    if (nextIndex >= drill.ids.length) {
+      setDrillResumeIndex(0);
+      setDrill(null);
+      return;
+    }
+    setDrillResumeIndex(nextIndex);
+    setDrill({ ...drill, index: nextIndex });
   }
 
   function record(questionId: string, correct: boolean, seconds: number) {
@@ -142,10 +165,10 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
           </dl>
           <div className="mt-5 flex flex-wrap items-center gap-4">
             {drill ? (
-              <button type="button" onClick={() => setDrill(null)} className="text-sm text-slate-600 underline">← Back to the question list</button>
+              <button type="button" onClick={leaveDrill} className="text-sm text-slate-600 underline">← Back to the question list</button>
             ) : (
-              <button type="button" disabled={!ready.length} onClick={() => setDrill({ ids: ready.map((q) => q.id), index: 0 })} className="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-40">
-                Practise the {ready.length} ready questions →
+              <button type="button" disabled={!ready.length} onClick={() => beginDrill(ready.map((q) => q.id), drillResumeIndex)} className="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-40">
+                {drillResumeIndex > 0 ? `Continue from question ${drillResumeIndex + 1} →` : `Practise the ${ready.length} ready questions →`}
               </button>
             )}
             <a href={detail.portalUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-600 underline">Open on Made Easy ↗</a>
@@ -161,7 +184,7 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
             position={drill.index + 1}
             total={drill.ids.length}
             onAnswered={record}
-            onNext={() => setDrill((d) => (d && d.index + 1 < d.ids.length ? { ...d, index: d.index + 1 } : null))}
+            onNext={() => advanceDrill(drill.index + 1)}
           />
         ) : (
           <>
@@ -185,7 +208,7 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
                   record={progress[reviewQuestion.id]}
                   expanded={expandedId === reviewQuestion.id}
                   onToggle={() => setExpandedId(expandedId === reviewQuestion.id ? null : reviewQuestion.id)}
-                  onPractise={() => setDrill({ ids: [reviewQuestion.id], index: 0 })}
+                  onPractise={() => beginDrill([reviewQuestion.id])}
                 />
                 <nav aria-label="Review questions" className="flex items-center justify-between gap-3">
                   <button type="button" disabled={reviewIndex === 0} onClick={() => moveReview(reviewIndex - 1)} className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40">← Previous</button>
