@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useUser } from "@/lib/user-context";
 import { useDeclareAttemptMode } from "@/lib/attempt-mode";
 import type { LearningOverview, LearningSessionView, LearningMode } from "@/lib/learning/types";
@@ -9,6 +9,10 @@ import { LearningProgress } from "@/components/LearningProgress";
 import { NoticeHighlights } from "@/components/syllabus/NoticeHighlights";
 import { StructuredAnswer } from "@/components/ai/AskFollowUp";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { isLearningOnlyProfile } from "@/lib/profile-access";
+import { MechanicalLearnHub } from "@/components/learn/MechanicalLearnHub";
+import { HubBackLink } from "@/components/learn/HubBackLink";
 
 const button="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-40 hover:bg-slate-700";
 const secondary="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 disabled:opacity-40 hover:bg-slate-50";
@@ -22,19 +26,27 @@ async function api<T>(query="",body?:unknown,signal?:AbortSignal):Promise<T> {
 }
 
 export default function LearningPage() {
-  const {currentUser,isLoading,openProfileModal}=useUser();
-  if(isLoading)return <main className="p-8">Loading your account…</main>;
-  if(!currentUser)return <main className="mx-auto max-w-2xl p-8"><h1 className="text-3xl font-bold">Your Civil learning plan</h1><p className="my-4 text-slate-600">Choose Civil or Mechanical to keep practice, review dates and progress separate.</p><button className={button} onClick={openProfileModal}>Choose profile</button></main>;
-  return <LearningWorkspace key={currentUser.id}/>;
+  return <Suspense fallback={<main className="p-8">Loading your account…</main>}><LearningGate/></Suspense>;
 }
 
-function LearningWorkspace() {
+function LearningGate() {
+  const {currentUser,isLoading,openProfileModal}=useUser();
+  // Read with useSearchParams, not window.location: during a client-side move between /learn and /learn?tab=… the URL is not updated yet at render time.
+  const tabParam=useSearchParams().get("tab");
+  if(isLoading)return <main className="p-8">Loading your account…</main>;
+  if(!currentUser)return <main className="mx-auto max-w-2xl p-8"><h1 className="text-3xl font-bold">Your Civil learning plan</h1><p className="my-4 text-slate-600">Choose Civil or Mechanical to keep practice, review dates and progress separate.</p><button className={button} onClick={openProfileModal}>Choose profile</button></main>;
+  const hub=isLearningOnlyProfile(currentUser);
+  if(hub&&!tabParam)return <MechanicalLearnHub/>;
+  return <LearningWorkspace key={currentUser.id} initialTab={tabParam} hubLink={hub}/>;
+}
+
+function LearningWorkspace({initialTab,hubLink}:{initialTab:string|null;hubLink:boolean}) {
   const [data,setData]=useState<LearningOverview|null>(null);
   const [session,setSession]=useState<LearningSessionView|null>(null);
   useDeclareAttemptMode(session ? "drill" : null);
   // Rendered only after the account loads (never on the server), so the URL can pick the first tab: /learn?tab=progress.
   const [tab,setTab]=useState<"today"|"revision"|"syllabus"|"progress">(()=>{
-    const selected=typeof window!=="undefined"?new URLSearchParams(window.location.search).get("tab"):null;
+    const selected=initialTab;
     return selected==="progress"||selected==="revision"||selected==="syllabus"?selected:"today";
   });
   const [error,setError]=useState("");const [busy,setBusy]=useState(false);
@@ -53,6 +65,7 @@ function LearningWorkspace() {
   async function leave() {setSession(null);await refresh();}
   const total=data?.groups.reduce((a,g)=>({fresh:a.fresh+g.newAttempts,correct:a.correct+g.newCorrect,due:a.due+g.due}),{fresh:0,correct:0,due:0});
   return <main className="mx-auto w-full max-w-4xl space-y-6 px-4 py-8 text-slate-900">
+    {!session&&hubLink&&<HubBackLink/>}
     {!session&&<header><p className="text-sm text-slate-500">SSC JE · Civil Engineering</p><h1 className="mt-1 text-2xl font-semibold tracking-tight">Learn</h1></header>}
     {!session&&<nav className="flex flex-wrap gap-5 border-b border-slate-200" aria-label="Learning views">{(["today","revision","syllabus","progress"] as const).map(t=><button key={t} onClick={()=>setTab(t)} aria-pressed={tab===t} className={"border-b-2 pb-3 text-sm "+(tab===t?"border-slate-900 font-semibold text-slate-900":"border-transparent text-slate-500")}>{t==="today"?"Today":t==="revision"?"Revision notes":t==="syllabus"?"Study material":"Practice results"}</button>)}</nav>}
     {error&&<div role="alert" className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm">{error}</div>}
