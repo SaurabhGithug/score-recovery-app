@@ -55,9 +55,12 @@ export const AlertIcon = ({ className }: { className?: string }) => <Svg classNa
 
 // ---------------------------------------------------------------- AI answer pieces
 
-/** Google's terms require its search suggestions to be shown with a grounded answer, in a sandboxed frame. Kept small, never hidden. */
+/**
+ * Google's terms require its search suggestions to be shown with a grounded answer, in a sandboxed frame. Kept small,
+ * never hidden: 72px holds Google's single row of chips plus the frame's default body margins without clipping it.
+ */
 export function SearchSuggestions({ html }: { html: string }) {
-  return <iframe title="Google Search suggestions" sandbox="allow-popups allow-popups-to-escape-sandbox" srcDoc={`<base target="_blank">${html}`} className="mt-4 h-14 w-full border-0" />;
+  return <iframe title="Google Search suggestions" sandbox="allow-popups allow-popups-to-escape-sandbox" srcDoc={`<base target="_blank">${html}`} className="mt-4 h-[4.5rem] w-full border-0" />;
 }
 
 export function SourcesList({ sources }: { sources: Source[] }) {
