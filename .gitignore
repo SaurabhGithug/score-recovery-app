@@ -55,3 +55,4 @@ __pycache__/
 /docs/isro-jpa-2026-official/
 /docs/isro-jpa-previous-papers-third-party/
 /docs/*.zip
+.neon
