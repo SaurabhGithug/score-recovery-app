@@ -29,7 +29,7 @@ function configuredPostgresUrl(): string | null {
  * Returns one async database interface for both environments:
  *
  * - local development and isolated tests keep using the existing SQLite file;
- * - Vercel uses the pooled Supabase Postgres connection supplied in DATABASE_URL.
+ * - Vercel uses the pooled Neon Postgres connection supplied in DATABASE_URL.
  *
  * Keeping the local adapter is intentional: content preparation remains an offline workflow,
  * while the deployed application no longer relies on a writable local filesystem.

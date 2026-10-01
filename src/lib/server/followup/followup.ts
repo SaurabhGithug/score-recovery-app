@@ -360,7 +360,7 @@ function notSetUp(provider: ProviderName): HttpError {
  * One Gemini request, reserved and settled. With `retryWithoutSearch`, a refusal of the Search
  * tool (e.g. no billing) is answered once more without it.
  */
-async function callGemini(deps: FollowUpDeps, userId: string, request: GeminiRequest, retryWithoutSearch: boolean): Promise<GeminiResult> {
+export async function callGemini(deps: FollowUpDeps, userId: string, request: GeminiRequest, retryWithoutSearch: boolean): Promise<GeminiResult> {
   if (!deps.googleKey) throw notSetUp("google");
   const retry = retryWithoutSearch && request.grounded;
   const worst = geminiWorstUsd(request.model, request) + (retry ? geminiWorstUsd(request.model, { ...request, grounded: false }) : 0);
@@ -450,7 +450,7 @@ interface Checker {
  * 3. the same Google model with high thinking (least independent).
  * The next one is tried when one is rate-limited or not set up.
  */
-function checkers(deps: FollowUpDeps, primary: ProviderName): Checker[] {
+export function checkers(deps: FollowUpDeps, primary: ProviderName): Checker[] {
   const out: Checker[] = [];
   if (primary === "google") {
     if (deps.deepseek) out.push({ provider: "deepseek" });
@@ -466,7 +466,7 @@ function checkers(deps: FollowUpDeps, primary: ProviderName): Checker[] {
  * Runs a JSON check with the first checker that succeeds; any provider failure (rate limit, quota,
  * outage, bad reply) moves on to the next. Every attempt reserves and settles its own cost.
  */
-async function runCheck(
+export async function runCheck(
   deps: FollowUpDeps,
   primary: ProviderName,
   userId: string,
@@ -501,7 +501,7 @@ const VERIFY_SYSTEM = [
 const checks = new Map<string, { userId: string; createdAt: number; result: AnswerCheck; job: Promise<void> }>();
 const CHECK_TTL_MS = 60 * 60 * 1000;
 
-function parseCheck(json: unknown): Omit<AnswerCheck, "status" | "checkedBy"> {
+export function parseCheck(json: unknown): Omit<AnswerCheck, "status" | "checkedBy"> {
   const j = (json ?? {}) as Record<string, unknown>;
   const verdict = j.verdict === "consistent" || j.verdict === "issues" || j.verdict === "cannot_verify" ? j.verdict : null;
   if (!verdict) throw new HttpError(502, "The second AI's check came back in an unexpected form.");

@@ -10,6 +10,7 @@ import { isLearningOnlyProfile, profileHome } from "@/lib/profile-access";
 
 const PRIMARY = [
   { href: "/learn", en: "Learn", hi: "सीखें", icon: "book" },
+  { href: "/standards", en: "Standards", hi: "मानक", icon: "book" },
   { href: "/papers", en: "Tests", hi: "टेस्ट", icon: "paper" },
   { href: "/dashboard", en: "Progress", hi: "प्रगति", icon: "chart" },
   { href: "/syllabus", en: "Syllabus", hi: "पाठ्यक्रम", icon: "list" },

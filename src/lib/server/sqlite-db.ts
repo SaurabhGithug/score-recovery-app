@@ -403,6 +403,52 @@ CREATE INDEX IF NOT EXISTS idx_recovery_practice_user ON recovery_practice(user_
         FOREIGN KEY (paper_id) REFERENCES bank_papers(id) ON DELETE CASCADE
     );
     CREATE INDEX IF NOT EXISTS idx_bank_attempts_user ON bank_attempts(user_id, paper_id);
+
+    -- Standards study: migrations/0010_standards.sql (src/lib/server/standards/**).
+    CREATE TABLE IF NOT EXISTS standards (
+        id TEXT PRIMARY KEY,
+        owner_user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        code TEXT NOT NULL,
+        title TEXT NOT NULL,
+        source_name TEXT NOT NULL,
+        content_fp TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        UNIQUE (owner_user_id, code)
+    );
+
+    CREATE TABLE IF NOT EXISTS standard_clauses (
+        standard_id TEXT NOT NULL REFERENCES standards(id) ON DELETE CASCADE,
+        clause_no TEXT NOT NULL,
+        parent_no TEXT,
+        title TEXT NOT NULL,
+        body TEXT NOT NULL,
+        page INTEGER NOT NULL,
+        ord INTEGER NOT NULL,
+        PRIMARY KEY (standard_id, clause_no)
+    );
+
+    -- One lesson per clause and standard content; regenerating replaces it.
+    CREATE TABLE IF NOT EXISTS standard_lessons (
+        standard_id TEXT NOT NULL REFERENCES standards(id) ON DELETE CASCADE,
+        clause_no TEXT NOT NULL,
+        content_fp TEXT NOT NULL,
+        lesson TEXT NOT NULL,
+        model TEXT NOT NULL,
+        grounded INTEGER NOT NULL DEFAULT 0,
+        sources TEXT NOT NULL DEFAULT '[]',
+        search_html TEXT,
+        check_result TEXT,
+        created_at TEXT NOT NULL,
+        PRIMARY KEY (standard_id, clause_no)
+    );
+    -- The second AI's verdict on a free-question answer, polled by the learner. In the database, not
+    -- server memory: on Vercel the poll can reach a different instance than the one that answered.
+    CREATE TABLE IF NOT EXISTS standard_answer_checks (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        result TEXT NOT NULL,
+        created_at TEXT NOT NULL
+    );
   `;
 
   db.exec(schemaSql);
