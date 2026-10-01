@@ -339,6 +339,12 @@ function evidenceSource(
   const basename = path.basename(file.data.source.file);
   const where = `${publisherName(file.data.source.publisher)} PDF ${basename}, p.${q.page ?? "?"}`;
   switch (q.key?.basis) {
+    case "answer_image":
+      return {
+        authority: "publisher_key",
+        sourceGroup: publisherGroup(file.data.source.publisher),
+        sourceLabel: `Printed Correct Answer image visually matched to an option — ${where} (not independently verified as SSC's final key)`,
+      };
     case "answer_text": {
       // An unlisted "Correct Answer" printout is never promoted to SSC's key.
       const known = (file.data.source.sha256 ? ANSWER_LINE_SOURCES[file.data.source.sha256] : undefined) ?? {
@@ -847,7 +853,9 @@ export async function importPypDirectory(options: { dir?: string; cwd?: string }
           questionCount: built.questions.length,
           durationMinutes: 120,
           fidelity: "official_paper",
-          publisher: PUBLISHER,
+          publisher: publisherGroup(P.data.source.publisher) === "adda247-group"
+            ? PUBLISHER
+            : `${publisherName(P.data.source.publisher)} (republished SSC response sheet)`,
           sourceUrl: P.data.source.source_url,
           sourceFile: P.data.source.file,
           sourceSha256: P.data.source.sha256,

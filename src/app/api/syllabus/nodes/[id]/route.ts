@@ -19,7 +19,7 @@ export async function GET(req: Request, props: { params: Promise<{ id: string }>
       throw new HttpError(404, "Syllabus node not found.");
     }
     if (!validId(decoded)) throw new HttpError(404, "Syllabus node not found.");
-    const detail = SyllabusRepository.nodeDetail(decoded, user.id);
+    const detail = await SyllabusRepository.nodeDetail(decoded, user.id);
     if (!detail) throw new HttpError(404, "Syllabus node not found.");
     return jsonOk(detail);
   });

@@ -10,7 +10,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 // "exam"  — a live test. Its runner owns its test-only tools, including the calculator.
 // "drill" — an untimed repair drill/retest. Hides nav so a
 //           mid-drill tap can't silently lose the "unseen retest" evidence trail.
-export type AttemptKind = "exam" | "drill" | null;
+export type AttemptKind = "exam" | "drill" | "focus" | null;
 
 type AttemptModeContextValue = {
   kind: AttemptKind;

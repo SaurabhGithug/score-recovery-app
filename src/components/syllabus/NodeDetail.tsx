@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { SyllabusNodeDetail } from "@/lib/syllabus/types";
 import { getSyllabusNode, SyllabusApiError } from "./api";
 import { LinkBadge, OriginBadge, ReviewBadge } from "./Badges";
+import { TopicAnalysisPanel } from "./TopicAnalysisPanel";
 
 const ORIGIN_LABEL: Record<string, string> = {
   source: "Section printed on the paper",
@@ -98,6 +99,8 @@ export function NodeDetail({ nodeId, onClose, onOpen }: { nodeId: string; onClos
                   {d.node.parentLinkNote}
                 </p>
               )}
+
+              <TopicAnalysisPanel key={nodeId} nodeId={nodeId} />
 
               <section>
                 <h3 className="text-xs font-black uppercase tracking-wide text-slate-400">Previous-year questions linked</h3>

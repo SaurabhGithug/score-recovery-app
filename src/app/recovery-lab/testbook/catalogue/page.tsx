@@ -20,10 +20,10 @@ export default function TestbookCataloguePage() {
         <section className="rounded-3xl bg-slate-950 p-7 text-white">
           <div className="text-xs font-black uppercase tracking-[0.18em] text-cyan-300">SSC JE Civil · import status</div>
           <h1 className="mt-2 text-3xl font-black sm:text-4xl">Testbook import status</h1>
-          <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">These counts show what was visible during the last check. A test listing does not mean its questions have been saved.</p>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">Catalogue listings and captured questions are separate. These capture counts are for Reema&apos;s local private bank, not the live deployment.</p>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-xl border border-slate-700 bg-slate-900 p-4"><div className="text-3xl font-black">{testbookCatalogueAudit.liveHeaderTotal}</div><div className="text-xs text-slate-400">Tests shown by Testbook</div></div>
-            <div className="rounded-xl border border-slate-700 bg-slate-900 p-4"><div className="text-3xl font-black">{verifiedTestbookCatalogueItems.length}</div><div className="text-xs text-slate-400">Test listings checked</div></div>
+            <div className="rounded-xl border border-slate-700 bg-slate-900 p-4"><div className="text-3xl font-black">{testbookCatalogueAudit.requestedCategoryTotal}</div><div className="text-xs text-slate-400">Listings inventoried in the seven requested categories</div></div>
             <div className="rounded-xl border border-slate-700 bg-slate-900 p-4"><div className="text-3xl font-black">{capturedTestbookTotals.questions}</div><div className="text-xs text-slate-400">Questions saved</div></div>
             <div className="rounded-xl border border-slate-700 bg-slate-900 p-4"><div className="text-3xl font-black">{capturedTestbookTotals.verifiedSolutions}</div><div className="text-xs text-slate-400">Solutions from Testbook</div></div>
           </div>
@@ -44,7 +44,7 @@ export default function TestbookCataloguePage() {
               </div>
             ))}
           </div>
-          <p className="mt-4 leading-6">Incomplete questions keep any available test details. They stay out of checked practice and AI explanations until the missing answer sources are added.</p>
+          <p className="mt-4 leading-6">All six saved tests passed question, answer, and solution checks. Question occurrences may overlap between a full paper and its technical-only version.</p>
         </section>
 
         <section className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-950">
@@ -55,7 +55,7 @@ export default function TestbookCataloguePage() {
 
         <section className="rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-6 text-slate-700 shadow-xs">
           <h2 className="text-lg font-black text-slate-950">What was found in the Testbook account</h2>
-          <p className="mt-1">The portal showed {testbookCatalogueAudit.observedProgress} attempted tests during this audit. The account-wide attempt history exposed {testbookCatalogueAudit.solutionAccessibleAttemptHistory} distinct tests with a solution link. Attempt progress and a visible solution link are not treated as captured learning content: only the {capturedTestbookTests.length} tests listed above have been saved with sources for their questions.</p>
+          <p className="mt-1">At the last authenticated catalogue check, the portal showed {testbookCatalogueAudit.observedProgress} attempted tests and {testbookCatalogueAudit.solutionAccessibleAttemptHistory} tests with a solution link in account-wide history. One further chapter test was submitted later; its solutions remain uncaptured because the session ended. A solution link is not counted as saved content: only the {capturedTestbookTests.length} tests listed above have complete captures.</p>
         </section>
 
         <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
@@ -64,7 +64,7 @@ export default function TestbookCataloguePage() {
         </section>
 
         <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs">
-          <div className="border-b border-slate-200 p-5"><h2 className="text-lg font-black">Cards verified from the live catalogue</h2></div>
+          <div className="border-b border-slate-200 p-5"><h2 className="text-lg font-black">Sample cards from the live catalogue</h2><p className="mt-1 text-sm text-slate-500">A small sample is shown below; the full seven-category inventory has {testbookCatalogueAudit.requestedCategoryTotal} distinct test listings.</p></div>
           <div className="divide-y divide-slate-100">{verifiedTestbookCatalogueItems.map((item) => <div key={item.id} className="grid gap-2 p-4 text-sm sm:grid-cols-[minmax(0,1fr)_210px] sm:items-center"><div><div className="font-bold text-slate-950">{item.title}</div><div className="mt-1 font-mono text-[11px] text-slate-500">{item.id} · {item.observedQuestions} questions · {item.observedMinutes} min</div></div><div className="text-xs font-bold text-slate-600">{stateLabel[item.state]}</div></div>)}</div>
         </section>
 

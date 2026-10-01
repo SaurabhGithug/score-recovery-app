@@ -13,7 +13,7 @@ const dir = dirFlag >= 0 ? path.resolve(args[dirFlag + 1]) : undefined;
 const asJson = args.includes("--json");
 
 const { importPypDirectory } = await import("../src/lib/server/bank/import-pyp.ts");
-const report = importPypDirectory({ dir });
+const report = await importPypDirectory({ dir });
 
 if (asJson) {
   console.log(JSON.stringify(report, null, 2));

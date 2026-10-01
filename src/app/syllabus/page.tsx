@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { SyllabusTreeNode } from "@/lib/syllabus/types";
 import { useLang } from "@/lib/i18n";
 import { useUser } from "@/lib/user-context";
@@ -17,12 +18,19 @@ function walk(nodes: SyllabusTreeNode[], fn: (n: SyllabusTreeNode, ancestors: st
 }
 
 export default function SyllabusPage() {
+  return <Suspense fallback={<p className="p-6 text-sm text-slate-500">Loading syllabus…</p>}><SyllabusContent /></Suspense>;
+}
+
+function SyllabusContent() {
   const { t } = useLang();
   const { currentUser, isLoading: userLoading, openProfileModal } = useUser();
   const [year, setYear] = useState(2026);
   const [data, setData] = useState<{ year: number; tree: SyllabusTreePayload | null; error: string } | null>(null);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
-  const [openNode, setOpenNode] = useState<string | null>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const openNode = searchParams.get("node");
+  const setOpenNode = (id: string | null) => router.push(id ? `/syllabus?node=${encodeURIComponent(id)}` : "/syllabus", { scroll: false });
   const [query, setQuery] = useState("");
   const [showScheme, setShowScheme] = useState(false);
   const [reload, setReload] = useState(0);

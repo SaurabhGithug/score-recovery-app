@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Testbook solutions saver (personal)",
+  "version": "0.1.0",
+  "description": "Passively saves the test + answers data your own browser receives when you open a Testbook solutions page. Never clicks, navigates or submits anything.",
+  "content_scripts": [
+    {
+      "matches": ["https://testbook.com/*"],
+      "js": ["hook.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://testbook.com/*"],
+      "js": ["relay.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

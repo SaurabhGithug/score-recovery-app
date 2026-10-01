@@ -21,7 +21,7 @@ export function migrateLegacyTestbookStorage(baseKey: string, userId: string, co
   return scopedKey;
 }
 
-export type TestbookAttemptStatus = "correct" | "incorrect" | "unattempted" | "partial";
+export type TestbookAttemptStatus = "correct" | "incorrect" | "unattempted" | "partial" | "unknown";
 export type TestbookEvidenceState = "portal_verified" | "portal_solution_pending";
 export type TestbookRecoveryCause =
   | "knowledge_gap"

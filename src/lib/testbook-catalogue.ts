@@ -19,9 +19,10 @@ export interface CapturedTestbookTest {
 }
 
 export const testbookCatalogueAudit = {
-  observedAt: "2026-09-30",
+  observedAt: "2026-10-01",
   sourceUrl: "https://testbook.com/ssc-je-ce/test-series/my",
   liveHeaderTotal: 1027,
+  requestedCategoryTotal: 707,
   observedProgress: "38/1027",
   solutionAccessibleAttemptHistory: 42,
   integrityWarning:
@@ -36,18 +37,19 @@ export const testbookCatalogueAudit = {
     { name: "SSC CGL Similar 2025 PYPs", liveCount: 16 },
   ],
   blockers: [
-    "The catalogue's View More control did not reveal the remaining cards in this browser session.",
-    "Subscription-locked cards are inventoried by their visible metadata only; their protected contents are not bypassed.",
-    "Unattempted tests are not submitted blank merely to unlock solutions, because that would corrupt portal performance history.",
-    "The full commercial question bank is not duplicated. Only learner-accessible attempt material with a legitimate study purpose can be imported privately.",
+    "The 707 test listings are metadata, not 707 captured question sets. Only six complete solution pages have been saved and checked.",
+    "One additional Official Chapter Test was submitted with the learner's authorization, but Testbook signed out before its unlocked solutions could be captured.",
+    "The six saved tests were imported into Reema's local private bank; they have not been deployed to the live app.",
   ],
 } as const;
 
 export const capturedTestbookTests: CapturedTestbookTest[] = [
-  { id: "696230a5b8298a3583ea9d34", title: "SSC JE CE Full Test 1", capturedQuestions: 200, portalVerifiedSolutions: 200, heldOutQuestions: 0 },
-  { id: "696230a5289f7b74caaaaeaa", title: "SSC JE CE Full Test 2", capturedQuestions: 200, portalVerifiedSolutions: 196, heldOutQuestions: 4 },
-  { id: "696230a6e72332566bcd2889", title: "SSC JE CE Full Test 3", capturedQuestions: 200, portalVerifiedSolutions: 199, heldOutQuestions: 1 },
-  { id: "696230767a4a7332463c6656", title: "ST 24: Building Materials (Conceptual)", capturedQuestions: 20, portalVerifiedSolutions: 20, heldOutQuestions: 0 },
+  { id: "69622ed29b3da2c77748c517", title: "OCT 8: Surveying (Fundamental Concept & Linear Measurement)", capturedQuestions: 10, portalVerifiedSolutions: 10, heldOutQuestions: 0 },
+  { id: "69622ed3be11fb0496f54dac", title: "OCT 9: Surveying (Compass & Theodolite)", capturedQuestions: 10, portalVerifiedSolutions: 10, heldOutQuestions: 0 },
+  { id: "69622ed4c497a1018de5c98a", title: "OCT 10: Surveying (Contouring & Area & Volume)", capturedQuestions: 10, portalVerifiedSolutions: 10, heldOutQuestions: 0 },
+  { id: "6997144461da269378f0c33d", title: "SSC JE (Civil Engineering) Official Paper (Held On: 03 Dec, 2025 Shift 1)", capturedQuestions: 200, portalVerifiedSolutions: 200, heldOutQuestions: 0 },
+  { id: "699714455397aa616b8d8874", title: "SSC JE (Civil Engineering) Official Paper (Held On: 04 Dec, 2025 Shift 1)", capturedQuestions: 200, portalVerifiedSolutions: 200, heldOutQuestions: 0 },
+  { id: "69b7ef02290d3bedaacf169c", title: "SSC JE CE Technical Part Official Paper (Held On: 03 Dec, 2025 Shift 1)", capturedQuestions: 100, portalVerifiedSolutions: 100, heldOutQuestions: 0 },
 ];
 
 export const capturedTestbookTotals = capturedTestbookTests.reduce(

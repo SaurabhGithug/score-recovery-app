@@ -250,6 +250,23 @@ const KIND_RANK: Record<string, number> = { topic: 3, chapter: 2, subject: 1, pa
  */
 export async function syllabusContext(text: string, ownQuestionId?: string, subjectHint?: string): Promise<SyllabusContext> {
   const ix = await index();
+  // A supplied subject is stronger evidence than generic overlap such as “magnitude”.
+  // “Engineering” occurs in many subjects and must never match all of them.
+  const hint = new Set(tokens(subjectHint ?? "").filter(t => !["engineer", "civil", "test", "paper", "mock"].includes(t)));
+  const normalizedHint = (subjectHint ?? "").toLowerCase().trim();
+  const subjectScores = [...ix.nodes.values()].filter(n => n.kind === "subject").map(n => ({
+    id: n.id,
+    score: (normalizedHint.length > 4 && n.name.toLowerCase().includes(normalizedHint) ? 100 : 0)
+      + tokens(n.name).filter(t => hint.has(t)).length,
+  }));
+  const bestSubject = Math.max(0, ...subjectScores.map(s => s.score));
+  const roots = new Set(subjectScores.filter(s => bestSubject > 0 && s.score === bestSubject).map(s => s.id));
+  const inSubject = (id: string): boolean => {
+    for (let n = ix.nodes.get(id), guard = 0; n && guard < 10; n = n.parentId ? ix.nodes.get(n.parentId) : undefined, guard++) {
+      if (roots.has(n.id)) return true;
+    }
+    return false;
+  };
   const tf = termFreq(text);
   const query = new Map<string, number>();
   let sq = 0;
@@ -263,6 +280,7 @@ export async function syllabusContext(text: string, ownQuestionId?: string, subj
   const scored: { doc: Doc; score: number }[] = [];
   for (const doc of ix.docs) {
     if (doc.id === ownQuestionId) continue;
+    if (roots.size && !doc.tags.some(tag => inSubject(tag.nodeId))) continue;
     let dot = 0;
     for (const [t, w] of query) {
       const d = doc.vector.get(t);
@@ -286,28 +304,14 @@ export async function syllabusContext(text: string, ownQuestionId?: string, subj
     }
     // The notice's own wording for each topic, matched directly.
     ix.nodeVectors
+      .filter(nv => !roots.size || inSubject(nv.id))
       .map((nv) => ({ id: nv.id, score: cosine(query, qNorm, nv.vector, nv.norm) }))
       .filter((m) => m.score >= 0.1)
       .sort((a, b) => b.score - a.score)
       .slice(0, 5)
       .forEach((m) => add(m.id, m.score));
-    // Topics of the subject the source says the question is from.
-    const hint = new Set(tokens(subjectHint ?? ""));
-    if (hint.size) {
-      const subjects = [...ix.nodes.values()].filter((node) => node.kind === "subject" && tokens(node.name).some((t) => hint.has(t)));
-      for (const subject of subjects) {
-        const under = (id: string | null): boolean => {
-          for (let node = id ? ix.nodes.get(id) : undefined, g = 0; node && g < 8; node = node.parentId ? ix.nodes.get(node.parentId) : undefined, g++) {
-            if (node.id === subject.id) return true;
-          }
-          return false;
-        };
-        for (const node of ix.nodes.values()) {
-          if (node.kind === "topic" && under(node.parentId)) add(node.id, 0.05);
-        }
-        for (const [id, w] of weights) if (under(id)) weights.set(id, w + 0.3);
-      }
-    }
+    // Boost genuine textual matches within the source subject; never assign by title alone.
+    if (roots.size) for (const [id, w] of weights) if (inSubject(id)) weights.set(id, w + 0.3);
   }
   const candidates = [...weights.entries()]
     .map(([id, w]) => candidate(ix, id, w))
@@ -316,7 +320,12 @@ export async function syllabusContext(text: string, ownQuestionId?: string, subj
     .slice(0, 12);
   return {
     candidates,
-    similar: top.slice(0, 5).map(({ doc, score }) => ({
+    similar: top.filter(({ doc }) => doc.stem.trim() && (!candidates[0] || doc.tags.some(tag => {
+      for (let n = ix.nodes.get(tag.nodeId), guard = 0; n && guard < 10; n = n.parentId ? ix.nodes.get(n.parentId) : undefined, guard++) {
+        if (n.id === candidates[0].nodeId) return true;
+      }
+      return false;
+    }))).slice(0, 5).map(({ doc, score }) => ({
       questionId: doc.id,
       paperId: doc.paperId,
       paperTitle: doc.paperTitle,
@@ -326,7 +335,7 @@ export async function syllabusContext(text: string, ownQuestionId?: string, subj
       position: doc.position,
       sourceUrl: doc.sourceUrl,
       year: doc.year,
-      stem: doc.stem.slice(0, 300),
+      stem: doc.stem.slice(0, 1600),
       score: Math.round(score * 100) / 100,
     })),
     fromOwnTags: own.length > 0,

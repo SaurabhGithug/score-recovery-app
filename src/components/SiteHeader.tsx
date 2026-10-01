@@ -104,6 +104,7 @@ export function SiteHeader() {
   const { kind } = useAttemptMode();
   const { currentUser } = useUser();
   const [menuOpen, setMenuOpen] = useState(false);
+  if (kind === "focus") return null;
   return <header className="border-b border-slate-200 bg-white">
     <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-2 px-3 sm:px-6">
       <Link href={profileHome(currentUser)} aria-label="Score Recovery home" className="flex shrink-0 items-center gap-2 font-semibold text-slate-900">

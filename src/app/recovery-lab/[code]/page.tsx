@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useUser } from "@/lib/user-context";
@@ -8,6 +8,8 @@ import { formatSeconds, madeEasyReady, observedSignal, type MadeEasyQuestionWith
 import { getMadeEasyTest, loadDrillProgress, saveDrillProgress, MadeEasyRequestError, type DrillProgressEntry } from "@/components/madeeasy/api";
 import { AskFollowUp } from "@/components/ai/AskFollowUp";
 import { SourceHtml } from "@/components/madeeasy/SourceHtml";
+import { useDeclareAttemptMode } from "@/lib/attempt-mode";
+import { QuestionTopic } from "@/components/ai/QuestionTopic";
 
 /** The question as the portal showed it (HTML with its images) when recaptured, else the saved text. */
 function QuestionBody({ question, className }: { question: MadeEasyQuestionWithTest; className: string }) {
@@ -76,11 +78,24 @@ export default function MadeEasyTestPage() {
 function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: string }) {
   const { test, questions } = detail;
   const [filter, setFilter] = useState<ResultFilter>("all");
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [reviewIndex, setReviewIndex] = useState(0);
+  const [focus, setFocus] = useState<"answer" | "teach" | null>(() => {
+    const id = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("question") : null;
+    return id && questions.some(q => q.id === id) ? "answer" : null;
+  });
+  const [reviewIndex, setReviewIndex] = useState(() => {
+    const id = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("question") : null;
+    return Math.max(0, questions.findIndex(q => q.id === id));
+  });
   const [progress, setProgress] = useState<Record<string, DrillProgressEntry>>(() => (typeof window === "undefined" ? {} : loadDrillProgress(userId)));
   const [drill, setDrill] = useState<{ ids: string[]; index: number } | null>(null);
   const [drillResumeIndex, setDrillResumeIndex] = useState(0);
+
+  const focused = Boolean(focus || drill);
+  useDeclareAttemptMode(focused ? "focus" : null);
+  const focusHeading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (focused) { window.scrollTo(0, 0); focusHeading.current?.focus(); }
+  }, [focused]);
 
   const ready = useMemo(() => questions.filter(madeEasyReady), [questions]);
   const shown = useMemo(
@@ -95,17 +110,17 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
   function chooseFilter(value: ResultFilter) {
     setFilter(value);
     setReviewIndex(0);
-    setExpandedId(null);
+    setFocus(null);
   }
 
   function moveReview(nextIndex: number) {
     setReviewIndex(Math.max(0, Math.min(nextIndex, shown.length - 1)));
-    setExpandedId(null);
   }
 
   function beginDrill(ids: string[], requestedIndex = 0) {
     if (!ids.length) return;
     const index = Math.max(0, Math.min(requestedIndex, ids.length - 1));
+    setFocus(null);
     setDrill({ ids, index });
   }
 
@@ -151,7 +166,7 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
 
   return (
     <div className="min-h-full bg-slate-50">
-      <section className="border-b border-slate-200 bg-white">
+      {!focused && <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-4xl px-4 py-6">
           <Link href="/recovery-lab" className="text-xs font-semibold text-blue-700">← All Made Easy tests</Link>
           <p className="mt-3 text-xs font-bold uppercase tracking-wide text-slate-500">{detail.provider} · {test.code.replace("test-", "Test ")}</p>
@@ -164,19 +179,19 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
             <Stat label="Group average" value={String(test.summary.averageScore)} />
           </dl>
           <div className="mt-5 flex flex-wrap items-center gap-4">
-            {drill ? (
-              <button type="button" onClick={leaveDrill} className="text-sm text-slate-600 underline">← Back to the question list</button>
-            ) : (
-              <button type="button" disabled={!ready.length} onClick={() => beginDrill(ready.map((q) => q.id), drillResumeIndex)} className="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-40">
-                {drillResumeIndex > 0 ? `Continue from question ${drillResumeIndex + 1} →` : `Practise the ${ready.length} ready questions →`}
-              </button>
-            )}
+            <button type="button" disabled={!ready.length} onClick={() => beginDrill(ready.map((q) => q.id), drillResumeIndex)} className="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-40">
+              {drillResumeIndex > 0 ? `Continue from question ${drillResumeIndex + 1} →` : `Practise the ${ready.length} ready questions →`}
+            </button>
             <a href={detail.portalUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-600 underline">Open on Made Easy ↗</a>
           </div>
         </div>
-      </section>
+      </section>}
 
       <main className="mx-auto w-full max-w-4xl px-4 py-6">
+        {focused && <div className="mb-4 flex items-center justify-between gap-3">
+          <h1 ref={focusHeading} tabIndex={-1} className="text-sm font-bold text-slate-700 outline-none">Focus mode · {drill ? "Practise" : focus === "teach" ? "Teach me" : "Answer & explanation"}</h1>
+          <button type="button" onClick={() => { leaveDrill(); setFocus(null); }} className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700">Exit focus</button>
+        </div>}
         {drill ? (
           <Drill
             key={drill.ids[drill.index]}
@@ -188,15 +203,29 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
           />
         ) : (
           <>
-            <div className="flex flex-wrap gap-2" role="group" aria-label="Show questions">
+            {!focused && <div className="flex flex-wrap gap-2" role="group" aria-label="Show questions">
               {chips.map((chip) => (
                 <button key={chip.value} type="button" aria-pressed={filter === chip.value} onClick={() => chooseFilter(chip.value)} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${filter === chip.value ? "border-blue-600 bg-blue-50 text-blue-700" : "border-slate-200 bg-white text-slate-600"}`}>
                   {chip.label} ({chip.count})
                 </button>
               ))}
-            </div>
-            <p className="mt-3 text-xs text-slate-500">Most important first: wrong answers before unanswered ones, then slow answers and questions with a trap option.</p>
-            {reviewQuestion ? (
+            </div>}
+            {!focused && <p className="mt-3 text-xs text-slate-500">Most important first: wrong answers before unanswered ones, then slow answers and questions with a trap option.</p>}
+            {!focused && shown.length > 0 ? (
+              <ol aria-label="Questions in this group" className="mt-4 space-y-3">
+                {shown.map((question, index) => (
+                  <li key={question.id}>
+                    <QuestionCard
+                      question={question}
+                      record={progress[question.id]}
+                      mode={null}
+                      onMode={(mode) => { setReviewIndex(index); setFocus(mode); }}
+                      onPractise={() => { setReviewIndex(index); beginDrill([question.id]); }}
+                    />
+                  </li>
+                ))}
+              </ol>
+            ) : reviewQuestion && focused ? (
               <div className="mt-4 space-y-3">
                 <div className="flex items-center justify-between gap-3 text-xs font-semibold text-slate-500">
                   <span>Question {reviewIndex + 1} of {shown.length}</span>
@@ -206,8 +235,8 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
                   key={reviewQuestion.id}
                   question={reviewQuestion}
                   record={progress[reviewQuestion.id]}
-                  expanded={expandedId === reviewQuestion.id}
-                  onToggle={() => setExpandedId(expandedId === reviewQuestion.id ? null : reviewQuestion.id)}
+                  mode={focus}
+                  onMode={setFocus}
                   onPractise={() => beginDrill([reviewQuestion.id])}
                 />
                 <nav aria-label="Review questions" className="flex items-center justify-between gap-3">
@@ -232,15 +261,16 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-function QuestionCard({ question, record, expanded, onToggle, onPractise }: {
+function QuestionCard({ question, record, mode, onMode, onPractise }: {
   question: MadeEasyQuestionWithTest;
   record: DrillProgressEntry | undefined;
-  expanded: boolean;
-  onToggle: () => void;
+  mode: "answer" | "teach" | null;
+  onMode: (mode: "answer" | "teach") => void;
   onPractise: () => void;
 }) {
   const ready = madeEasyReady(question);
-  const [teaching, setTeaching] = useState(false);
+  const teaching = mode === "teach";
+  const expanded = mode === "answer";
   return (
     <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs">
       <div className="p-4 sm:p-5">
@@ -250,11 +280,12 @@ function QuestionCard({ question, record, expanded, onToggle, onPractise }: {
           {!ready && <span className="rounded-md bg-slate-200 px-2 py-1 text-slate-700">Needs the source</span>}
           {record && <span className="font-semibold text-blue-700">Practised: {record.correct}/{record.attempts} correct</span>}
         </div>
+        {mode !== null && <QuestionTopic kind="made_easy" id={question.id} />}
         <QuestionBody question={question} className="mt-3 text-sm font-bold leading-6 text-slate-900 sm:text-base" />
         <p className="mt-2 text-xs text-slate-500">{observedSignal(question)} · {question.avgAttemptRate}% of the group attempted it</p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <button type="button" onClick={onToggle} className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">{expanded ? "Hide answer" : "See answer and explanation"}</button>
-          {ready && <button type="button" aria-expanded={teaching} onClick={() => setTeaching((open) => !open)} className="rounded-lg border border-violet-300 bg-violet-50 px-3 py-2 text-xs font-bold text-violet-800 hover:bg-violet-100">{teaching ? "Close lesson" : "Teach me"}</button>}
+          <button type="button" onClick={() => onMode("answer")} className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">See answer and explanation</button>
+          {ready && <button type="button" aria-expanded={teaching} onClick={() => onMode("teach")} className="rounded-lg border border-violet-300 bg-violet-50 px-3 py-2 text-xs font-bold text-violet-800 hover:bg-violet-100">Teach me</button>}
           {ready && <button type="button" onClick={onPractise} className="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white hover:bg-slate-800">Practise</button>}
         </div>
       </div>
@@ -274,41 +305,18 @@ function QuestionCard({ question, record, expanded, onToggle, onPractise }: {
   );
 }
 
-/** A source-grounded teaching sequence: understand, contrast, explain, then retrieve without help. */
+/** A syllabus-scoped lesson with worked concepts, exam facts and retrieval practice. */
 function TeachMe({ question, onPractise }: { question: MadeEasyQuestionWithTest; onPractise: () => void }) {
-  const [step, setStep] = useState<1 | 2>(1);
-  const correct = question.options.find((option) => option.id === question.correctOption);
-  const original = question.options.find((option) => option.id === question.selectedOption);
-
-  return (
-    <section aria-label="Teach this question" className="border-t border-violet-200 bg-violet-50/70 p-4 sm:p-5">
-      <p className="text-xs font-black uppercase tracking-wide text-violet-800">Teach me · guided review</p>
-      <h3 className="mt-2 font-bold text-slate-950">1. Understand the source explanation</h3>
-      {question.explanationHtml
-        ? <SourceHtml html={question.explanationHtml} className="mt-2 text-sm leading-6 text-slate-800" />
-        : <p className="mt-2 whitespace-pre-line text-sm leading-6 text-slate-800">{question.explanation || "Made Easy gave no explanation for this question."}</p>}
-      {step === 1 ? (
-        <button type="button" onClick={() => setStep(2)} className="mt-4 min-h-11 rounded-xl bg-violet-700 px-4 text-sm font-semibold text-white hover:bg-violet-800">Next: compare the choices →</button>
-      ) : (
-        <div className="mt-5 border-t border-violet-200 pt-4">
-          <h3 className="font-bold text-slate-950">2. Contrast, explain, then retrieve</h3>
-          <dl className="mt-3 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-xl border border-emerald-200 bg-white p-3">
-              <dt className="text-xs font-bold uppercase tracking-wide text-emerald-700">Correct choice</dt>
-              <dd className="mt-1 text-sm text-slate-800"><b>{question.correctOption}.</b> {correct?.text || "See the source option above."}</dd>
-            </div>
-            <div className="rounded-xl border border-rose-200 bg-white p-3">
-              <dt className="text-xs font-bold uppercase tracking-wide text-rose-700">Your earlier choice</dt>
-              <dd className="mt-1 text-sm text-slate-800">{original ? <><b>{original.id}.</b> {original.text}</> : "You left this question unanswered."}</dd>
-            </div>
-          </dl>
-          <p className="mt-3 rounded-xl bg-white p-3 text-sm leading-6 text-slate-700"><b>Say it in your own words:</b> what rule or distinction makes {question.correctOption} correct? Keep it to one sentence.</p>
-          <p className="mt-2 text-xs leading-5 text-slate-500">The lesson uses only the captured source answer and explanation. Practising next hides the help so you retrieve it independently.</p>
-          <button type="button" onClick={onPractise} className="mt-4 min-h-11 rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800">Try it now without help →</button>
-        </div>
-      )}
-    </section>
-  );
+  return <section aria-label="Teach this question" className="border-t border-violet-200 bg-violet-50/50 p-4 sm:p-5">
+    <h2 className="font-bold text-slate-950">What would you like to learn?</h2>
+    <p className="mt-1 text-sm leading-6 text-slate-600">Choose a suggestion or ask your own question. The tutor will stay within this exam and syllabus topic.</p>
+    <AskFollowUp key={question.id} kind="made_easy" id={question.id} lesson />
+    <details className="mt-4 rounded-xl border border-slate-200 bg-white p-3">
+      <summary className="cursor-pointer text-sm font-semibold text-slate-700">Compare with the source explanation</summary>
+      <div className="mt-3"><AnswerAndExplanation question={question} selected={question.selectedOption} /></div>
+    </details>
+    <button type="button" onClick={onPractise} className="mt-4 min-h-11 rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white">Try the original question without help →</button>
+  </section>;
 }
 
 /** The options with the key and the learner's choice marked, then the portal's own explanation. */
@@ -352,6 +360,7 @@ function Drill({ question, position, total, onAnswered, onNext }: {
   const [revealed, setRevealed] = useState(false);
   const [startedAt] = useState(() => Date.now());
   const [seconds, setSeconds] = useState(0);
+  const [saveError, setSaveError] = useState(false);
 
   useEffect(() => {
     if (revealed) return;
@@ -365,6 +374,8 @@ function Drill({ question, position, total, onAnswered, onNext }: {
     setSeconds(final);
     setRevealed(true);
     onAnswered(question.id, selected === question.correctOption, final);
+    fetch("/api/made-easy/practice", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: question.id, selected, seconds: final }) })
+      .then(res => { if (!res.ok) setSaveError(true); }, () => setSaveError(true));
   }
 
   return (
@@ -373,6 +384,8 @@ function Drill({ question, position, total, onAnswered, onNext }: {
         <span className="rounded-md bg-blue-100 px-2 py-1 text-blue-800">Q{question.number} · {position} of {total}</span>
         <span className="font-mono text-xl font-black text-slate-900">{formatSeconds(seconds)}</span>
       </div>
+      <QuestionTopic kind="made_easy" id={question.id} />
+      {saveError && <p role="alert" className="mt-2 text-xs text-amber-800">Saved on this device, but could not sync this attempt to syllabus analysis.</p>}
       <QuestionBody question={question} className="mt-6 text-base font-semibold leading-7 text-slate-900 sm:text-lg" />
       {!revealed ? (
         <>

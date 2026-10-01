@@ -41,6 +41,7 @@ const resultStyles: Record<TestbookAttemptStatus, string> = {
   incorrect: "bg-rose-100 text-rose-800",
   unattempted: "bg-amber-100 text-amber-900",
   partial: "bg-violet-100 text-violet-800",
+  unknown: "bg-slate-100 text-slate-700",
 };
 
 const recoveryCauseLabels: Record<TestbookRecoveryCause, string> = {
@@ -132,7 +133,7 @@ export default function LegacyTestbookLab() {
       if (term && !`${question.questionText} ${question.section} ${question.globalNumber}`.toLowerCase().includes(term)) return false;
       return true;
     }).sort((left, right) => {
-      const sourcePriority: Record<TestbookAttemptStatus, number> = { incorrect: 0, unattempted: 1, partial: 2, correct: 3 };
+      const sourcePriority: Record<TestbookAttemptStatus, number> = { incorrect: 0, unattempted: 1, partial: 2, unknown: 3, correct: 4 };
       const sourceDifference = sourcePriority[left.originalResult] - sourcePriority[right.originalResult];
       if (sourceDifference) return sourceDifference;
       const leftFailures = trainingAttempts.filter((attempt) => attempt.testId === test.id && attempt.questionId === left.id && !attempt.correct).length;
@@ -289,7 +290,7 @@ export default function LegacyTestbookLab() {
             </label>
           </section>
         )}
-        {mode==="bank"&&<details className="rounded-xl border border-slate-200 bg-white p-4"><summary className="cursor-pointer text-sm font-medium text-slate-600">Past results & source details</summary><p className="mt-4 text-sm text-slate-600">Score {test.score}/{test.maxScore} · {test.questionCount} questions · {test.summary.correct} correct · {test.summary.incorrect} incorrect · {test.summary.unattempted} unattempted · {evidence.portal_verified} captured solutions.</p><Link href="/recovery-lab/testbook/catalogue" className="mt-3 inline-block text-sm underline">Capture audit</Link><div className="mt-5 space-y-5">
+        {mode==="bank"&&<details className="rounded-xl border border-slate-200 bg-white p-4"><summary className="cursor-pointer text-sm font-medium text-slate-600">Past results & source details</summary><p className="mt-4 text-sm text-slate-600">Score {test.score}/{test.maxScore} · {test.questionCount} questions · {test.summary.correct} correct · {test.summary.incorrect} incorrect · {test.summary.unattempted} unattempted · {test.summary.unknown ?? 0} result unknown · {evidence.portal_verified} captured solutions.</p><Link href="/recovery-lab/testbook/catalogue" className="mt-3 inline-block text-sm underline">Capture audit</Link><div className="mt-5 space-y-5">
 
 
         <section className="grid gap-4 lg:grid-cols-3">

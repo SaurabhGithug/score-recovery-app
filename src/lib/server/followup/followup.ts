@@ -38,6 +38,9 @@ import { GeminiError, geminiGenerate, type GeminiImage, type GeminiRequest, type
 import { sourceHtmlImages } from "../source-html";
 import { syllabusContext, type SyllabusContext, type TopicCandidate } from "./syllabus-context";
 
+import { STUDY_EVIDENCE_VERSION, currentStudyEvidence, citationIds, type StudyCitation } from "../../study-evidence";
+import { studyEvidence, evidencePrompt } from "./study-evidence";
+
 export type FollowUpContextKind = "made_easy" | "bank";
 export type ProviderName = "google" | "deepseek";
 
@@ -56,6 +59,7 @@ export interface StudyPackQuestion {
 }
 
 export interface StudyPack {
+  evidenceVersion: number;
   topic: { nodeId: string; path: string; pypCount: number; years: number[] } | null;
   /** How the topic was found: the question's own tags, or similar past SSC questions. */
   topicBasis: "own_tags" | "similar_past_questions" | "none";
@@ -63,7 +67,7 @@ export interface StudyPack {
   scope: string;
   examPoints: string[];
   /** Exact stored past-paper questions; E1, E2… match references in generated text. */
-  evidence: { id: string; label: string; questionId: string; stem: string; sourceUrl: string | null }[];
+  evidence: StudyCitation[];
   practice: StudyPackQuestion[];
   generatedBy: string;
   checkedBy: string | null;
@@ -85,6 +89,7 @@ export interface AnswerCheck {
 }
 
 export interface FollowUpAnswer {
+  evidence: StudyCitation[];
   answer: string;
   provider: ProviderName;
   model: string;
@@ -240,22 +245,15 @@ function syllabusBlock(ctx: SyllabusContext): string {
         ...ctx.candidates.slice(0, 3).map((c) => `- ${c.path}: ${c.pypCount} stored matching question(s)${yearsText(c.years)}.`),
       ]
     : ["SSC JE SYLLABUS (2026): no matching topic was found in the previous-year papers."];
-  const evidence = ctx.similar.slice(0, 5).map((q, i) =>
-    `E${i + 1} — ${citationLabel(q)}\nQuestion: ${q.stem}${q.sourceUrl ? `\nSource: ${q.sourceUrl}` : ""}`
-  );
-  return [...topics, "", "STORED PAST-PAPER EVIDENCE (cite only these as exam occurrences):", ...(evidence.length ? evidence : ["None matched reliably."])].join("\n");
-}
-
-function citationLabel(q: SyllabusContext["similar"][number]): string {
-  return `${q.paperTitle}; ${q.examDate ?? q.year ?? "date unknown"}${q.shift ? `, ${q.shift}` : ""}; Q${q.position}`;
+  return [...topics, "", "SUPPORTING SOURCES (E = stored exam question; R = reference, not an exam occurrence):", evidencePrompt(ctx)].join("\n");
 }
 
 const SYSTEM = [
   "You are a tutor for India's SSC JE Civil Engineering exam. The learner has already answered the question below and is asking a follow-up question about it.",
   "Rules:",
   "- Answer the learner's question directly and concisely, focused on what the SSC JE exam tests. For numericals, show the formula, units and steps.",
-  "- Stay within the SSC JE syllabus topic given below. After answering, add a short part headed \"Also asked in the exam:\" with 2-4 closely related facts, values or distinctions SSC asks on this topic, so the learner can score on similar questions.",
-  "- Evidence rule: every bullet under \"Also asked in the exam:\" must be directly supported by a STORED PAST-PAPER EVIDENCE question and end with its id, for example [E2]. Never say SSC asked something without that evidence. If none supports a useful bullet, say \"No matched past-paper evidence in this library.\" General theory may be explained elsewhere but must not be presented as an exam occurrence.",
+  "- Stay within the supplied SSC JE syllabus topic. Answer only what was requested. Do not append an unsolicited lesson. You may recommend one next learning step in one sentence, explaining why it helps; wait for the learner to request it.",
+  "- Cite each supported factual claim immediately with its supplied [E#] or [R#]. E# shows an exam question; R# is a reference and never proof of an exam occurrence. Do not invent citations. Uncited theory is not verified. Do not infer a fixed SPF/PMF percentage. Counts are stored unreviewed mappings, not comprehensive exam frequency.",
   "- The answer key given is from the named source. Do not replace it. If you are confident it is wrong, add one separate line starting \"Possible key error:\" with your reason; never present your own choice as the key.",
   "- If the question is marked incomplete (a table, figure or options missing), say what is missing and do not invent it.",
   "- If you are not sure, say so rather than guess. Do not invent IS-code clause numbers, page numbers, book titles or quotations.",
@@ -563,6 +561,7 @@ const PACK_SYSTEM = [
   "You get: a question the learner has answered (with its source key), the SSC JE syllabus topics it most likely belongs to (with how often SSC asked each in previous years), and similar previous-year SSC questions.",
   "Return exactly this JSON shape:",
   '{"topicId": "<one id copied from the TOPICS list, or null if none fits>", "scope": "<2-3 sentences: what this topic covers; only describe what SSC asks when supported by E# evidence>", "examPoints": ["<short fact or formula ending with [E1] when directly tested there; otherwise ending with [GENERAL THEORY]>"], "practice": [{"question": "...", "options": ["...", "...", "...", "..."], "answer": "A|B|C|D", "explanation": "<why the answer is right and the others wrong, briefly>"}]}',
+  "Do not teach a fixed SPF/PMF percentage: the attached reference does not establish one. Cite R# references for definitions and equations they support. Attach references to each scope sentence and learning point, or mark [GENERAL THEORY]. Do not invent unsupported numerical constants or claim source verification from AI agreement.",
   "Rules: exactly 3 practice questions, each with exactly 4 options and one correct answer, in SSC JE style and on the same topic but not copies of the given questions. Never claim SSC asked a fact unless an E# question directly supports it. Use [GENERAL THEORY] for uncited learning facts. Only facts you are sure of; standard values and textbook results only; no invented IS-code clause numbers. If the question is marked incomplete, do not invent the missing part.",
 ].join("\n");
 
@@ -573,12 +572,9 @@ const CHECK_SYSTEM = [
 
 function packPrompt(f: Facts, ctx: SyllabusContext, imagesAttached: boolean): string {
   const topics = ctx.candidates.length
-    ? ctx.candidates.map((c: TopicCandidate) => `- id: ${c.nodeId}\n  path: ${c.path}\n  official wording: ${c.officialText || "(none)"}\n  SSC asked: ${c.pypCount} question(s)${yearsText(c.years)}`).join("\n")
+    ? ctx.candidates.map((c: TopicCandidate) => `- id: ${c.nodeId}\n  path: ${c.path}\n  official wording: ${c.officialText || "(none)"}\n  Stored unreviewed mappings: ${c.pypCount} question(s)${yearsText(c.years)}`).join("\n")
     : "(no topics found)";
-  const similar = ctx.similar.filter((s) => s.stem.trim()).slice(0, 5).map((s, i) =>
-    `- E${i + 1}: ${citationLabel(s)}\n  Question: ${s.stem.replace(/\s+/g, " ").slice(0, 300)}${s.sourceUrl ? `\n  Source: ${s.sourceUrl}` : ""}`
-  ).join("\n");
-  return `${factsBlock(f, imagesAttached)}\n\nTOPICS\n${topics}\n\nSIMILAR PREVIOUS-YEAR SSC QUESTIONS\n${similar || "(none found)"}`;
+  return `${factsBlock(f, imagesAttached)}\n\nTOPICS\n${topics}\n\nSUPPORTING SOURCES\n${evidencePrompt(ctx)}`;
 }
 
 const LETTERS = ["A", "B", "C", "D"];
@@ -615,11 +611,36 @@ async function cachedPack(f: Facts): Promise<StudyPack | null> {
   if (!row) return null;
   try {
     const pack = JSON.parse(row.pack) as StudyPack;
-    // Packs created before evidence-backed citations are intentionally regenerated.
-    return Array.isArray(pack.evidence) ? pack : null;
+    // Old packs may contain misnumbered citations or unsupported claims; never serve them.
+    return currentStudyEvidence(pack) ? pack : null;
   } catch {
     return null;
   }
+}
+
+/** Reuse saved teaching analysis in Syllabus; only the import owner can read it. */
+export async function storedRecoveryLessons(userId: string, ids: string[]) {
+  if (!canReadMadeEasy(userId) || !ids.length) return [];
+  const facts = new Map(ids.map(id => { const f = madeEasyFacts(userId, id); return [id, f] as const; }));
+  const rows = await getDatabase().prepare(`SELECT question_id, content_fp, pack FROM ai_study_packs WHERE kind = 'made_easy' AND question_id IN (${ids.map(() => "?").join(",")}) ORDER BY created_at DESC`)
+    .all<{ question_id: string; content_fp: string; pack: string }>(...ids);
+  return rows.flatMap(row => {
+    const f = facts.get(row.question_id);
+    if (!f || f.contentFp !== row.content_fp) return [];
+    try {
+      const pack = JSON.parse(row.pack) as StudyPack;
+      if (!currentStudyEvidence(pack) || !Array.isArray(pack.examPoints)) return [];
+      return [{ questionId: f.id, title: f.heading, scope: pack.scope, examPoints: pack.examPoints, evidence: pack.evidence, createdAt: pack.createdAt }];
+    } catch { return []; }
+  });
+}
+
+export async function followUpContext(userId: string, input: { kind: unknown; id: unknown }) {
+  const f = await factsFor(userId, input.kind, input.id);
+  const { questionContext, recoveryContext } = await import("./question-context");
+  if (f.kind === "made_easy") return recoveryContext(madeEasyQuestion(f.id)!);
+  return questionContext({ kind: f.kind, id: f.id, fingerprint: f.contentFp,
+    text: `${f.question} ${f.options.map(o => o.text).join(" ")} ${f.explanation ?? ""}`, subjectHint: f.subjectHint });
 }
 
 async function contextFor(f: Facts): Promise<SyllabusContext> {
@@ -633,6 +654,14 @@ async function generatePack(deps: FollowUpDeps, userId: string, f: Facts, ctx: S
   const images = generator === "google" ? await loadImages(deps, f) : null;
   const made = await askJson(deps, generator, userId, PACK_SYSTEM, packPrompt(f, ctx, images !== null && images.length > 0), images ?? []);
   const parsed = parsePack(made.json, ctx);
+  const evidence = studyEvidence(ctx);
+  const claims = [parsed.scope, ...parsed.examPoints, ...parsed.practice.map(p => `${p.question} ${p.options.map(o => o.text).join(' ')} ${p.explanation}`)];
+  if (claims.some(text => citationIds(text).some(id => !evidence.some(e => e.id === id)))) {
+    throw new HttpError(502, "The lesson cited a missing source. Please try again.");
+  }
+  if (claims.some(text => /(?:SPF|standard project flood)/i.test(text) && /(?:PMF|probable maximum flood)/i.test(text) && /(?:70|80)\s*%|0\.[78]\b/.test(text))) {
+    throw new HttpError(502, "The lesson included an unsupported SPF/PMF ratio and was withheld. Please try again.");
+  }
 
   // A second AI answers the practice questions blind; only questions it answers the same way stay.
   // The checker is the other provider; without it, a different Google model (less independent, still a second model).
@@ -658,18 +687,13 @@ async function generatePack(deps: FollowUpDeps, userId: string, f: Facts, ctx: S
   const topic = parsed.topicId ? ctx.candidates.find((c) => c.nodeId === parsed.topicId)! : null;
   const years = [...new Set(ctx.similar.map((s) => s.year).filter((y): y is number => y !== null))].sort();
   const pack: StudyPack = {
+    evidenceVersion: STUDY_EVIDENCE_VERSION,
     topic: topic ? { nodeId: topic.nodeId, path: topic.path, pypCount: topic.pypCount, years: topic.years } : null,
     topicBasis: topic ? (ctx.fromOwnTags ? "own_tags" : "similar_past_questions") : "none",
     similarPastQuestions: { count: ctx.similar.length, years },
     scope: parsed.scope,
     examPoints: parsed.examPoints,
-    evidence: ctx.similar.slice(0, 5).map((q, i) => ({
-      id: `E${i + 1}`,
-      label: citationLabel(q),
-      questionId: q.questionId,
-      stem: q.stem,
-      sourceUrl: q.sourceUrl,
-    })),
+    evidence,
     practice,
     generatedBy: made.model,
     checkedBy,
@@ -680,7 +704,7 @@ async function generatePack(deps: FollowUpDeps, userId: string, f: Facts, ctx: S
     await getDatabase()
       .prepare(`INSERT INTO ai_study_packs (kind, question_id, content_fp, pack, model, checker, created_at)
         VALUES (?, ?, ?, ?, ?, ?, ?)
-        ON CONFLICT(kind, question_id) DO UPDATE SET content_fp = excluded.content_fp, pack = excluded.pack,
+        ON CONFLICT(kind, question_id, content_fp) DO UPDATE SET pack = excluded.pack,
           model = excluded.model, checker = excluded.checker, created_at = excluded.created_at`)
       .run(f.kind, f.id, f.contentFp, JSON.stringify(pack), made.model, checkedBy, pack.createdAt);
   }
@@ -694,7 +718,7 @@ const recentFailures = new Map<string, { message: string; at: number }>();
 const FAILURE_MEMORY_MS = 10 * 60 * 1000;
 
 function packKey(f: Facts): string {
-  return `${f.kind}|${f.id}|${f.contentFp}`;
+  return `${STUDY_EVIDENCE_VERSION}|${f.kind}|${f.id}|${f.contentFp}`;
 }
 
 /** What a learner may see of an error: our own messages, never internals. */
@@ -777,7 +801,7 @@ function parseTurns(value: unknown): FollowUpTurn[] {
   });
 }
 
-async function answerWith(deps: FollowUpDeps, userId: string, turns: GeminiTurn[]): Promise<Omit<FollowUpAnswer, "pack" | "packPending" | "check">> {
+async function answerWith(deps: FollowUpDeps, userId: string, turns: GeminiTurn[]): Promise<Omit<FollowUpAnswer, "pack" | "packPending" | "check" | "evidence">> {
   if (deps.provider === "deepseek") {
     const transcript = turns.map((t) => `${t.role === "user" ? "LEARNER" : "TUTOR"}:\n${t.text}`).join("\n\n");
     const { json, model } = await callDeepSeek(deps, userId, `${SYSTEM}\nReturn JSON: {"answer": "<your reply to the learner's last message>"}.`, transcript);
@@ -829,14 +853,14 @@ export async function askFollowUp(
       : t
   );
 
-  // The study pack is made in the background the first time; the answer never waits for it.
+  // Lessons are generated only by an explicit study-pack request.
   const existing = await cachedPack(facts);
-  if (!existing) startPack(deps, userId, facts, ctx);
   const answer = await answerWith(deps, userId, turns);
   // A second AI checks the answer in the background; the learner sees the answer at once.
   const checkId = startCheck(deps, userId, facts, ctx, input.message.trim(), answer.answer, answer.provider);
   return {
     ...answer,
+    evidence: studyEvidence(ctx),
     pack: existing,
     packPending: !existing && inFlight.has(packKey(facts)),
     check: { id: checkId, status: checkId ? "pending" : "unavailable" },

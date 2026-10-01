@@ -102,6 +102,11 @@ export async function importTestbook(value: unknown, userId: string): Promise<Ba
           image_url: q.questionAssets[0] ?? null,
           question_assets: q.questionAssets,
           option_assets: Object.fromEntries(q.options.map((o) => [o.id, o.assets])),
+          question_html: q.questionHtml,
+          option_html: Object.fromEntries(q.options.map((o) => [o.id, o.html])),
+          solution_html: verified ? q.portalSolution!.html : null,
+          solution_assets: verified ? q.portalSolution!.assets : [],
+          original_result: q.originalResult,
           evidence_state: q.evidenceState,
         },
       });
@@ -123,7 +128,7 @@ export async function importTestbook(value: unknown, userId: string): Promise<Ba
     await BankRepository.transaction(async () => {
       await BankRepository.upsertPaper({
         id: paperId,
-        kind: "mock",
+        kind: /Official Paper/i.test(test.title) ? "pyp" : "mock",
         paper: paperCodeFromTitle(test.title),
         cycleYear: null,
         examDate: null,
@@ -131,7 +136,7 @@ export async function importTestbook(value: unknown, userId: string): Promise<Ba
         title: test.title,
         questionCount: questions.length,
         durationMinutes: 120,
-        fidelity: "provider_mock",
+        fidelity: /Official Paper/i.test(test.title) ? "provider_pyp" : "provider_mock",
         publisher: "Testbook",
         sourceUrl: data.source.sourceUrl || null,
         sourceFile: null,

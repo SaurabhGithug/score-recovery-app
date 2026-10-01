@@ -89,6 +89,10 @@ export function madeEasyTest(code: string): MadeEasyTestDetail | null {
   };
 }
 
+export function allMadeEasyQuestions(): MadeEasyQuestionWithTest[] {
+  return IMPORT.tests.flatMap(decoded);
+}
+
 export function madeEasyQuestion(id: string): MadeEasyQuestionWithTest | null {
   for (const test of IMPORT.tests) {
     if (!test.attentionQuestions.some((q) => q.id === id)) continue;
