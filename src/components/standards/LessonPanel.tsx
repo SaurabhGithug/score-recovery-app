@@ -7,12 +7,13 @@ import { AiGeneratedBadge } from "@/components/ai/AiGeneratedBadge";
 import { aiDetail, CheckNote, ChevronIcon, SearchSuggestions, SourcesList, type LangCode, type Lesson } from "./shared";
 
 /**
- * AI-written text in calm reading type: 16px with generous leading, bold as plain bold (no highlighter) and any
- * mini-headings in sentence case. Wraps the shared answer renderer so markup and maths handling stay in one place.
+ * AI-written text in calm reading type: 16px with generous leading, bold as plain bold (no highlighter), list markers
+ * in quiet grey rather than a second accent colour, and any mini-headings in sentence case. Wraps the shared answer
+ * renderer so markup and maths handling stay in one place.
  */
 export function ReadingAnswer({ text }: { text: string }) {
   return (
-    <div className="[&>div]:mt-0 [&>div]:text-base [&>div]:leading-7 [&>div]:text-slate-800 [&_strong]:bg-transparent [&_strong]:px-0 [&_h5]:border-0 [&_h5]:pt-0 [&_h5]:text-base [&_h5]:normal-case [&_h5]:tracking-normal [&_h5]:text-slate-900">
+    <div className="[&>div]:mt-0 [&>div]:text-base [&>div]:leading-7 [&>div]:text-slate-800 [&_strong]:bg-transparent [&_strong]:px-0 [&_li]:marker:text-slate-500 [&_h5]:border-0 [&_h5]:pt-0 [&_h5]:text-base [&_h5]:normal-case [&_h5]:tracking-normal [&_h5]:text-slate-900">
       <StructuredAnswer answer={text} />
     </div>
   );
@@ -115,7 +116,7 @@ export function LessonPanel({ lesson, lang, onLang, writing, otherWriting, error
           {sections.map((s, i) => (
             <details key={`${lesson.createdAt}:${i}`} open={i < OPEN_SECTIONS} className="group">
               <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 py-2 [&::-webkit-details-marker]:hidden">
-                <h3 className="text-lg font-semibold leading-snug text-slate-900">{s.title}</h3>
+                <h2 className="text-lg font-semibold leading-snug text-slate-900">{s.title}</h2>
                 <ChevronIcon className="h-5 w-5 text-slate-500 group-open:rotate-90" />
               </summary>
               <div className="pb-6"><ReadingAnswer text={s.body} /></div>
