@@ -159,7 +159,8 @@ export default function StandardStudyPage() {
     } finally { setBusyClause(null); }
   }
 
-  const shell = "mx-auto w-full max-w-[38rem] px-4 pb-16 pt-2";
+  // One reading column, narrow enough for about 65 characters a line on wide screens.
+  const shell = "mx-auto w-full max-w-[32rem] px-4 pb-16 pt-2";
   const backToLearn = <Link href="/learn" className="text-base font-medium text-blue-700 underline">{t({ en: "Back to Learn", hi: "सीखें पर वापस" })}</Link>;
   if (error) {
     return (
