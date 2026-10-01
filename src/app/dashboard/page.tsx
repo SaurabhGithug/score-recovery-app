@@ -54,7 +54,8 @@ function ProgressDashboard() {
   return <main className="mx-auto w-full max-w-3xl flex-1 space-y-5 px-4 py-6 sm:px-6 sm:py-8">
     <header>
       <p className="text-sm text-slate-500">{activeContext?.name || "SSC JE · Civil Engineering"}</p>
-      <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-950">{t({ en: "My progress", hi: "मेरी प्रगति" })}</h1>
+      <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-950">{t({ en: "Progress", hi: "प्रगति" })}</h1>
+      <p className="mt-2 text-sm text-slate-600">{t({ en: "Your learning progress and practice patterns. Test attempt history stays under Tests → My past tests.", hi: "आपकी सीखने की प्रगति और अभ्यास पैटर्न। टेस्ट का इतिहास टेस्ट → मेरे पिछले टेस्ट में रहता है।" })}</p>
     </header>
 
     <section aria-labelledby="next-step" className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
@@ -64,9 +65,8 @@ function ProgressDashboard() {
     </section>
 
     <section aria-labelledby="recorded-progress" className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-      {/* Only results kept in this browser. Tests and Learn results are under My results (/papers?view=past), which links here. */}
-      <h2 id="recorded-progress" className="font-semibold text-slate-900">{t({ en: "Older results saved in this browser", hi: "इस ब्राउज़र में सहेजे पुराने नतीजे" })}</h2>
-      <Link href="/papers?view=past" className="mt-1 inline-flex min-h-11 items-center text-sm text-slate-600 underline">{t({ en: "Tests and Learn results are in My results", hi: "टेस्ट और सीखें के नतीजे मेरे परिणाम में हैं" })}</Link>
+      <h2 id="recorded-progress" className="font-semibold text-slate-900">{t({ en: "Practice results saved in this browser", hi: "इस ब्राउज़र में सहेजे अभ्यास परिणाम" })}</h2>
+      <Link href="/papers?view=past" className="mt-1 inline-flex min-h-11 items-center text-sm text-slate-600 underline">{t({ en: "Open My past tests for full test attempts and Made Easy imports →", hi: "पूर्ण टेस्ट और Made Easy इम्पोर्ट के लिए मेरे पिछले टेस्ट खोलें →" })}</Link>
       {!records ? <p role="status" className="mt-3 text-sm text-slate-500">{t({ en: "Loading results…", hi: "नतीजे लोड हो रहे हैं…" })}</p> : submitted.length === 0 ? <p className="mt-2 text-sm leading-relaxed text-slate-500">{t({ en: "No results saved here yet for your account and study goal.", hi: "इस डिवाइस पर आपके खाते और पढ़ाई के लक्ष्य के लिए अभी कोई नतीजा नहीं है।" })}</p> : <>
         <div className="mt-4 flex flex-wrap gap-x-10 gap-y-4">
           <div><p className="text-xs text-slate-500">{t({ en: "Completed", hi: "पूर्ण" })}</p><p className="mt-1 text-2xl font-semibold">{submitted.length}</p></div>

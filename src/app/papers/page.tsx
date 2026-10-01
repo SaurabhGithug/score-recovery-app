@@ -26,9 +26,16 @@ function TestsPage() {
   const params = useSearchParams();
   const view = params.get("view") === "past" ? "past" : "browse";
   const kind: BankPaperKind = params.get("kind") === "mock" ? "mock" : "pyp";
+  const pastTestFilter: PastTestFilter = params.get("source") === "made-easy" ? "made-easy" : params.get("source") === "test-papers" ? "test-papers" : "all";
   function setKind(value: BankPaperKind) { router.replace(`/papers?kind=${value}`, { scroll: false }); }
+  function setPastTestFilter(value: PastTestFilter) {
+    const next = new URLSearchParams(params.toString());
+    next.set("view", "past");
+    if (value === "all") next.delete("source");
+    else next.set("source", value);
+    router.replace(`/papers?${next.toString()}`, { scroll: false });
+  }
   const [paperFilter, setPaperFilter] = useState<PaperFilter>("all");
-  const [pastTestFilter, setPastTestFilter] = useState<PastTestFilter>("all");
   const [papers, setPapers] = useState<BankPaperSummary[] | null>(null);
   const [loadError, setLoadError] = useState("");
   const [actionError, setActionError] = useState("");

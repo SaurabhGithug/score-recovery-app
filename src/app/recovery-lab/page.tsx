@@ -66,7 +66,7 @@ function MadeEasyTests() {
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-7">
-      <Link href="/papers?view=past" className="text-xs font-semibold text-blue-700">← My results</Link>
+      <Link href="/papers?view=past&source=made-easy" className="text-xs font-semibold text-blue-700">← My past tests</Link>
       <p className="mt-3 text-sm text-slate-500">{overview.provider} · {overview.series} · saved {overview.capturedOn}</p>
       <h1 className="mt-1 text-2xl font-semibold text-slate-900">Your Made Easy tests</h1>
       <p className="mt-2 text-sm text-slate-600">

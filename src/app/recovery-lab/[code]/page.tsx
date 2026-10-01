@@ -77,6 +77,7 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
   const { test, questions } = detail;
   const [filter, setFilter] = useState<ResultFilter>("all");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [reviewIndex, setReviewIndex] = useState(0);
   const [progress, setProgress] = useState<Record<string, DrillProgressEntry>>(() => (typeof window === "undefined" ? {} : loadDrillProgress(userId)));
   const [drill, setDrill] = useState<{ ids: string[]; index: number } | null>(null);
 
@@ -88,6 +89,18 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
       ),
     [questions, filter]
   );
+  const reviewQuestion = shown[reviewIndex] ?? null;
+
+  function chooseFilter(value: ResultFilter) {
+    setFilter(value);
+    setReviewIndex(0);
+    setExpandedId(null);
+  }
+
+  function moveReview(nextIndex: number) {
+    setReviewIndex(Math.max(0, Math.min(nextIndex, shown.length - 1)));
+    setExpandedId(null);
+  }
 
   function record(questionId: string, correct: boolean, seconds: number) {
     setProgress((current) => {
@@ -154,25 +167,32 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
           <>
             <div className="flex flex-wrap gap-2" role="group" aria-label="Show questions">
               {chips.map((chip) => (
-                <button key={chip.value} type="button" aria-pressed={filter === chip.value} onClick={() => setFilter(chip.value)} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${filter === chip.value ? "border-blue-600 bg-blue-50 text-blue-700" : "border-slate-200 bg-white text-slate-600"}`}>
+                <button key={chip.value} type="button" aria-pressed={filter === chip.value} onClick={() => chooseFilter(chip.value)} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${filter === chip.value ? "border-blue-600 bg-blue-50 text-blue-700" : "border-slate-200 bg-white text-slate-600"}`}>
                   {chip.label} ({chip.count})
                 </button>
               ))}
             </div>
             <p className="mt-3 text-xs text-slate-500">Most important first: wrong answers before unanswered ones, then slow answers and questions with a trap option.</p>
-            <ol className="mt-4 space-y-3">
-              {shown.map((q) => (
+            {reviewQuestion ? (
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center justify-between gap-3 text-xs font-semibold text-slate-500">
+                  <span>Question {reviewIndex + 1} of {shown.length}</span>
+                  <span>Only one question is shown at a time</span>
+                </div>
                 <QuestionCard
-                  key={q.id}
-                  question={q}
-                  record={progress[q.id]}
-                  expanded={expandedId === q.id}
-                  onToggle={() => setExpandedId(expandedId === q.id ? null : q.id)}
-                  onPractise={() => setDrill({ ids: [q.id], index: 0 })}
+                  key={reviewQuestion.id}
+                  question={reviewQuestion}
+                  record={progress[reviewQuestion.id]}
+                  expanded={expandedId === reviewQuestion.id}
+                  onToggle={() => setExpandedId(expandedId === reviewQuestion.id ? null : reviewQuestion.id)}
+                  onPractise={() => setDrill({ ids: [reviewQuestion.id], index: 0 })}
                 />
-              ))}
-            </ol>
-            {!shown.length && <p className="rounded-2xl border border-dashed border-slate-300 bg-white py-12 text-center text-sm text-slate-500">No questions in this group.</p>}
+                <nav aria-label="Review questions" className="flex items-center justify-between gap-3">
+                  <button type="button" disabled={reviewIndex === 0} onClick={() => moveReview(reviewIndex - 1)} className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40">← Previous</button>
+                  <button type="button" disabled={reviewIndex >= shown.length - 1} onClick={() => moveReview(reviewIndex + 1)} className="min-h-11 rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">Next question →</button>
+                </nav>
+              </div>
+            ) : <p className="mt-4 rounded-2xl border border-dashed border-slate-300 bg-white py-12 text-center text-sm text-slate-500">No questions in this group.</p>}
           </>
         )}
       </main>
@@ -197,8 +217,9 @@ function QuestionCard({ question, record, expanded, onToggle, onPractise }: {
   onPractise: () => void;
 }) {
   const ready = madeEasyReady(question);
+  const [teaching, setTeaching] = useState(false);
   return (
-    <li className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs">
+    <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs">
       <div className="p-4 sm:p-5">
         <div className="flex flex-wrap items-center gap-2 text-[11px] font-bold">
           <span className="text-slate-500">Q{question.number}</span>
@@ -210,9 +231,11 @@ function QuestionCard({ question, record, expanded, onToggle, onPractise }: {
         <p className="mt-2 text-xs text-slate-500">{observedSignal(question)} · {question.avgAttemptRate}% of the group attempted it</p>
         <div className="mt-3 flex flex-wrap gap-2">
           <button type="button" onClick={onToggle} className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">{expanded ? "Hide answer" : "See answer and explanation"}</button>
+          {ready && <button type="button" aria-expanded={teaching} onClick={() => setTeaching((open) => !open)} className="rounded-lg border border-violet-300 bg-violet-50 px-3 py-2 text-xs font-bold text-violet-800 hover:bg-violet-100">{teaching ? "Close lesson" : "Teach me"}</button>}
           {ready && <button type="button" onClick={onPractise} className="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white hover:bg-slate-800">Practise</button>}
         </div>
       </div>
+      {teaching && ready && <TeachMe question={question} onPractise={onPractise} />}
       {expanded && (
         <div className="border-t border-slate-100 bg-slate-50/70 p-4 sm:p-5">
           {ready ? <AnswerAndExplanation question={question} selected={question.selectedOption} /> : (
@@ -224,7 +247,44 @@ function QuestionCard({ question, record, expanded, onToggle, onPractise }: {
           <AskFollowUp kind="made_easy" id={question.id} />
         </div>
       )}
-    </li>
+    </article>
+  );
+}
+
+/** A source-grounded teaching sequence: understand, contrast, explain, then retrieve without help. */
+function TeachMe({ question, onPractise }: { question: MadeEasyQuestionWithTest; onPractise: () => void }) {
+  const [step, setStep] = useState<1 | 2>(1);
+  const correct = question.options.find((option) => option.id === question.correctOption);
+  const original = question.options.find((option) => option.id === question.selectedOption);
+
+  return (
+    <section aria-label="Teach this question" className="border-t border-violet-200 bg-violet-50/70 p-4 sm:p-5">
+      <p className="text-xs font-black uppercase tracking-wide text-violet-800">Teach me · guided review</p>
+      <h3 className="mt-2 font-bold text-slate-950">1. Understand the source explanation</h3>
+      {question.explanationHtml
+        ? <SourceHtml html={question.explanationHtml} className="mt-2 text-sm leading-6 text-slate-800" />
+        : <p className="mt-2 whitespace-pre-line text-sm leading-6 text-slate-800">{question.explanation || "Made Easy gave no explanation for this question."}</p>}
+      {step === 1 ? (
+        <button type="button" onClick={() => setStep(2)} className="mt-4 min-h-11 rounded-xl bg-violet-700 px-4 text-sm font-semibold text-white hover:bg-violet-800">Next: compare the choices →</button>
+      ) : (
+        <div className="mt-5 border-t border-violet-200 pt-4">
+          <h3 className="font-bold text-slate-950">2. Contrast, explain, then retrieve</h3>
+          <dl className="mt-3 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-xl border border-emerald-200 bg-white p-3">
+              <dt className="text-xs font-bold uppercase tracking-wide text-emerald-700">Correct choice</dt>
+              <dd className="mt-1 text-sm text-slate-800"><b>{question.correctOption}.</b> {correct?.text || "See the source option above."}</dd>
+            </div>
+            <div className="rounded-xl border border-rose-200 bg-white p-3">
+              <dt className="text-xs font-bold uppercase tracking-wide text-rose-700">Your earlier choice</dt>
+              <dd className="mt-1 text-sm text-slate-800">{original ? <><b>{original.id}.</b> {original.text}</> : "You left this question unanswered."}</dd>
+            </div>
+          </dl>
+          <p className="mt-3 rounded-xl bg-white p-3 text-sm leading-6 text-slate-700"><b>Say it in your own words:</b> what rule or distinction makes {question.correctOption} correct? Keep it to one sentence.</p>
+          <p className="mt-2 text-xs leading-5 text-slate-500">The lesson uses only the captured source answer and explanation. Practising next hides the help so you retrieve it independently.</p>
+          <button type="button" onClick={onPractise} className="mt-4 min-h-11 rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800">Try it now without help →</button>
+        </div>
+      )}
+    </section>
   );
 }
 

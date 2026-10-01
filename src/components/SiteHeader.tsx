@@ -2,25 +2,23 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useLang } from "@/lib/i18n";
 import { useAttemptMode } from "@/lib/attempt-mode";
 import { useUser } from "@/lib/user-context";
 import { isLearningOnlyProfile, profileHome } from "@/lib/profile-access";
 
-// "My results" opens the Tests page's past-tests view: that is where server-saved results live
-// (/dashboard only shows older results saved in this browser).
 const PRIMARY = [
   { href: "/learn", en: "Learn", hi: "सीखें", icon: "book" },
   { href: "/papers", en: "Tests", hi: "टेस्ट", icon: "paper" },
-  { href: "/papers?view=past", en: "My results", hi: "मेरे परिणाम", icon: "chart" },
+  { href: "/dashboard", en: "Progress", hi: "प्रगति", icon: "chart" },
   { href: "/syllabus", en: "Syllabus", hi: "पाठ्यक्रम", icon: "list" },
 ];
 
-/** Which main destination the current page belongs to ("My results" is the Tests page's past view). */
-function isActive(href: string, pathname: string, pastView: boolean): boolean {
-  if (href === "/papers?view=past") return (pathname === "/papers" && pastView) || pathname.startsWith("/papers/attempts") || pathname.startsWith("/recovery-lab/");
-  if (href === "/papers") return (pathname.startsWith("/papers") && !pastView && !pathname.startsWith("/papers/attempts")) || pathname.startsWith("/recovery-lab/testbook");
+/** Which main destination the current page belongs to. */
+function isActive(href: string, pathname: string): boolean {
+  if (href === "/dashboard") return pathname.startsWith("/dashboard") || pathname.startsWith("/results/");
+  if (href === "/papers") return pathname.startsWith("/papers") || pathname.startsWith("/recovery-lab");
   return pathname.startsWith(href);
 }
 
@@ -29,10 +27,9 @@ function MainNavLinks({ variant }: { variant: "top" | "bottom" }) {
   const { lang } = useLang();
   const { currentUser } = useUser();
   const pathname = usePathname();
-  const pastView = useSearchParams().get("view") === "past";
   const destinations = isLearningOnlyProfile(currentUser) ? PRIMARY.slice(0, 1) : PRIMARY;
   return <>{destinations.map(item => {
-    const active = isActive(item.href, pathname, pastView);
+    const active = isActive(item.href, pathname);
     const label = lang === "hi" ? item.hi : item.en;
     return variant === "top"
       ? <Link key={item.href} href={item.href} aria-current={active ? "page" : undefined} className={`flex min-h-11 items-center rounded-lg px-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-blue-600 ${active ? "bg-blue-50 text-blue-700" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"}`}>{label}</Link>
@@ -59,7 +56,6 @@ function NavigationDrawer({ onClose }: { onClose: () => void }) {
   const { lang, setLang } = useLang();
   const { currentUser, openProfileModal, logout } = useUser();
   const pathname = usePathname();
-  const pastView = useSearchParams().get("view") === "past";
   const destinations = isLearningOnlyProfile(currentUser) ? PRIMARY.slice(0, 1) : PRIMARY;
   const dialog = useRef<HTMLDialogElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
@@ -84,7 +80,7 @@ function NavigationDrawer({ onClose }: { onClose: () => void }) {
       </div>
       <nav aria-label="Main navigation" className="space-y-2 py-6">
         {destinations.map(item => {
-          const active = isActive(item.href, pathname, pastView);
+          const active = isActive(item.href, pathname);
           return <Link key={item.href} href={item.href} onClick={onClose} aria-current={active ? "page" : undefined} className={`flex min-h-14 items-center gap-4 rounded-xl px-4 py-3 text-base font-medium focus-visible:outline-2 focus-visible:outline-blue-600 ${active ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}><NavIcon name={item.icon} />{lang === "hi" ? item.hi : item.en}{active && <span aria-hidden="true" className="ml-auto h-1.5 w-1.5 rounded-full bg-blue-600" />}</Link>;
         })}
       </nav>
