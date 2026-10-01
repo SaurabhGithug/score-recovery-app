@@ -2,6 +2,8 @@
 // Isolated fixtures only: a fresh temp SQLite database, an INVENTED "standard" and invented
 // questions (no text from any real standard), two learners and a fixed, hand-advanced clock.
 // Run: npx tsx scripts/test-standard-quiz.mjs
+// Postgres run (ONLY a throwaway database or Neon branch, never production; the 0010 and 0011 migrations must be applied):
+//   TEST_DATABASE_URL=postgres://... npx tsx scripts/test-standard-quiz.mjs
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
@@ -12,12 +14,19 @@ process.env.SCORE_RECOVERY_DATA_DIR = path.join(temp, "data");
 delete process.env.DATABASE_URL;
 delete process.env.POSTGRES_URL;
 delete process.env.POSTGRES_PRISMA_URL;
+// Unique per run so a shared Postgres database never sees clashing primary keys.
+const RUN = Math.random().toString(16).slice(2, 8);
+if (process.env.TEST_DATABASE_URL) {
+  process.env.DATABASE_URL = process.env.TEST_DATABASE_URL;
+  console.log(`Postgres run against ${new URL(process.env.TEST_DATABASE_URL).host.replace(/^[^@]*@/, "")}`);
+}
 
 const { StandardsRepository: R } = await import("../src/lib/server/standards/repo.ts");
 const { QuizRepository, clauseFingerprint } = await import("../src/lib/server/standards/quiz-repo.ts");
 const { createQuizService, selectQuestions, ActiveAttemptError, GRACE_SECONDS } = await import("../src/lib/server/standards/quiz.ts");
 const { SessionRepository } = await import("../src/lib/server/repositories/session-repo.ts");
 const { getDatabase } = await import("../src/lib/server/db.ts");
+if (getDatabase().dialect !== (process.env.TEST_DATABASE_URL ? "postgres" : "sqlite")) throw new Error("Wrong database dialect for this run.");
 const quizRoute = await import("../src/app/api/standards/[id]/quiz/route.ts");
 const attemptRoute = await import("../src/app/api/standards/quiz/attempt/[attemptId]/route.ts");
 
@@ -44,9 +53,9 @@ async function rejectsWith(promise, status, pattern) {
 // ---------------------------------------------------------------- fixtures (all invented)
 const db = getDatabase();
 const addUser = (id) => db.prepare("INSERT INTO users (id, name, normalized_name) VALUES (?, ?, ?)").run(id, id, id);
-const ALICE = "usr_quiz_alice";
-const BOB = "usr_quiz_bob";
-const CAROL = "usr_quiz_carol";
+const ALICE = `usr_quiz_alice_${RUN}`;
+const BOB = `usr_quiz_bob_${RUN}`;
+const CAROL = `usr_quiz_carol_${RUN}`;
 for (const u of [ALICE, BOB, CAROL]) await addUser(u);
 
 const U = (clauseNo, title, body, parentNo = null) => ({ clauseNo, parentNo, title, body, page: 1 });
@@ -84,7 +93,7 @@ async function seed(standardId) {
     for (let i = 0; i < n; i++) {
       const k = ++seq;
       const answer = ["A", "B", "C", "D"][k % 4];
-      const id = `sq_test_${k}`;
+      const id = `sq_test_${RUN}_${k}`;
       KEY[id] = answer;
       const explanation = `EXPLAIN-SECRET-${k} because the pretend rule says so`;
       const notes = Object.fromEntries(["A", "B", "C", "D"].filter((o) => o !== answer).map((o) => [o, `NOTE-SECRET-${k}-${o}`]));
@@ -497,6 +506,8 @@ await test("routes: 401 signed out, 403 cross-site, 404 for another learner, 413
   assert.equal(done.body.skipped, 5);
 });
 
+// Throwaway fixtures: deleting the users cascades to their standards, questions and attempts.
+for (const u of [ALICE, BOB, CAROL]) await db.prepare("DELETE FROM users WHERE id = ?").run(u);
 fs.rmSync(temp, { recursive: true, force: true });
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
