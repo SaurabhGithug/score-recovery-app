@@ -171,13 +171,6 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
           <Link href="/recovery-lab" className="text-xs font-semibold text-blue-700">← All Made Easy tests</Link>
           <p className="mt-3 text-xs font-bold uppercase tracking-wide text-slate-500">{detail.provider} · {test.code.replace("test-", "Test ")}</p>
           <h1 className="mt-1 text-2xl font-semibold text-slate-900">{test.title}</h1>
-          <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-5">
-            <Stat label="Score" value={`${test.summary.score}/${test.summary.maxScore}`} />
-            <Stat label="Accuracy" value={`${test.summary.accuracy}%`} />
-            <Stat label="Rank" value={`${test.summary.rank}/${test.summary.participants}`} />
-            <Stat label="Time" value={`${test.summary.timeMinutes} min`} />
-            <Stat label="Group average" value={String(test.summary.averageScore)} />
-          </dl>
           <div className="mt-5 flex flex-wrap items-center gap-4">
             <button type="button" disabled={!ready.length} onClick={() => beginDrill(ready.map((q) => q.id), drillResumeIndex)} className="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-40">
               {drillResumeIndex > 0 ? `Continue from question ${drillResumeIndex + 1} →` : `Practise the ${ready.length} ready questions →`}
@@ -248,15 +241,6 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
           </>
         )}
       </main>
-    </div>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg bg-slate-50 px-3 py-2">
-      <dt className="text-[10px] font-bold uppercase tracking-wide text-slate-500">{label}</dt>
-      <dd className="mt-0.5 font-mono font-bold text-slate-900">{value}</dd>
     </div>
   );
 }
