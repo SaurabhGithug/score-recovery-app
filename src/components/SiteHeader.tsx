@@ -6,6 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useLang } from "@/lib/i18n";
 import { useAttemptMode } from "@/lib/attempt-mode";
 import { useUser } from "@/lib/user-context";
+import { isLearningOnlyProfile, profileHome } from "@/lib/profile-access";
 
 // "My results" opens the Tests page's past-tests view: that is where server-saved results live
 // (/dashboard only shows older results saved in this browser).
@@ -26,9 +27,11 @@ function isActive(href: string, pathname: string, pastView: boolean): boolean {
 /** The main destinations, always visible: links in the header on wider screens, a tab bar at the bottom on phones. */
 function MainNavLinks({ variant }: { variant: "top" | "bottom" }) {
   const { lang } = useLang();
+  const { currentUser } = useUser();
   const pathname = usePathname();
   const pastView = useSearchParams().get("view") === "past";
-  return <>{PRIMARY.map(item => {
+  const destinations = isLearningOnlyProfile(currentUser) ? PRIMARY.slice(0, 1) : PRIMARY;
+  return <>{destinations.map(item => {
     const active = isActive(item.href, pathname, pastView);
     const label = lang === "hi" ? item.hi : item.en;
     return variant === "top"
@@ -57,6 +60,7 @@ function NavigationDrawer({ onClose }: { onClose: () => void }) {
   const { currentUser, openProfileModal, logout } = useUser();
   const pathname = usePathname();
   const pastView = useSearchParams().get("view") === "past";
+  const destinations = isLearningOnlyProfile(currentUser) ? PRIMARY.slice(0, 1) : PRIMARY;
   const dialog = useRef<HTMLDialogElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -79,7 +83,7 @@ function NavigationDrawer({ onClose }: { onClose: () => void }) {
         <button ref={closeButton} type="button" onClick={onClose} aria-label={lang === "hi" ? "मेन्यू बंद करें" : "Close menu"} className="flex h-11 w-11 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-blue-600"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="m6 6 12 12M6 18 18 6" /></svg></button>
       </div>
       <nav aria-label="Main navigation" className="space-y-2 py-6">
-        {PRIMARY.map(item => {
+        {destinations.map(item => {
           const active = isActive(item.href, pathname, pastView);
           return <Link key={item.href} href={item.href} onClick={onClose} aria-current={active ? "page" : undefined} className={`flex min-h-14 items-center gap-4 rounded-xl px-4 py-3 text-base font-medium focus-visible:outline-2 focus-visible:outline-blue-600 ${active ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:bg-slate-50"}`}><NavIcon name={item.icon} />{lang === "hi" ? item.hi : item.en}{active && <span aria-hidden="true" className="ml-auto h-1.5 w-1.5 rounded-full bg-blue-600" />}</Link>;
         })}
@@ -102,10 +106,11 @@ function NavigationDrawer({ onClose }: { onClose: () => void }) {
 export function SiteHeader() {
   const { lang } = useLang();
   const { kind } = useAttemptMode();
+  const { currentUser } = useUser();
   const [menuOpen, setMenuOpen] = useState(false);
   return <header className="border-b border-slate-200 bg-white">
     <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-2 px-3 sm:px-6">
-      <Link href="/" aria-label="Score Recovery home" className="flex shrink-0 items-center gap-2 font-semibold text-slate-900">
+      <Link href={profileHome(currentUser)} aria-label="Score Recovery home" className="flex shrink-0 items-center gap-2 font-semibold text-slate-900">
         <span className="rounded-md bg-slate-900 px-1.5 py-1 text-xs text-white">SR</span>
         <span className="hidden lg:inline">Score Recovery</span>
       </Link>
