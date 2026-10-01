@@ -24,7 +24,7 @@ async function api<T>(query="",body?:unknown,signal?:AbortSignal):Promise<T> {
 export default function LearningPage() {
   const {currentUser,isLoading,openProfileModal}=useUser();
   if(isLoading)return <main className="p-8">Loading your account…</main>;
-  if(!currentUser)return <main className="mx-auto max-w-2xl p-8"><h1 className="text-3xl font-bold">Your Civil learning plan</h1><p className="my-4 text-slate-600">Sign in to save your practice, review dates and progress separately from other learners.</p><button className={button} onClick={openProfileModal}>Sign in or create account</button></main>;
+  if(!currentUser)return <main className="mx-auto max-w-2xl p-8"><h1 className="text-3xl font-bold">Your Civil learning plan</h1><p className="my-4 text-slate-600">Choose Reema or Saurabh to keep practice, review dates and progress separate.</p><button className={button} onClick={openProfileModal}>Choose profile</button></main>;
   return <LearningWorkspace key={currentUser.id}/>;
 }
 

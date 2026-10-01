@@ -131,9 +131,9 @@ function TestsPage() {
   if (!userLoading && !currentUser) {
     return (
       <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-4 px-4 py-16 text-center">
-        <p className="text-sm text-slate-600">{t({ en: "Sign in to open the shared SSC JE Civil question bank.", hi: "साझा प्रश्न बैंक खोलने के लिए साइन इन करें।" })}</p>
+        <p className="text-sm text-slate-600">{t({ en: "Choose Reema or Saurabh to open your SSC JE Civil question bank.", hi: "अपना SSC JE सिविल प्रश्न बैंक खोलने के लिए रीमा या सौरभ चुनें।" })}</p>
         <button type="button" onClick={openProfileModal} className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-blue-700">
-          {t({ en: "Sign in", hi: "साइन इन करें" })}
+          {t({ en: "Choose profile", hi: "प्रोफ़ाइल चुनें" })}
         </button>
       </div>
     );

@@ -64,7 +64,7 @@ function PaperInstructions() {
   }
 
   if (!userLoading && !currentUser) {
-    return <div className="mx-auto flex max-w-md flex-1 flex-col items-center justify-center gap-4 px-4 py-16 text-center"><p className="text-sm text-slate-600">Sign in before starting a test.</p><button type="button" onClick={openProfileModal} className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white">Sign in</button></div>;
+    return <div className="mx-auto flex max-w-md flex-1 flex-col items-center justify-center gap-4 px-4 py-16 text-center"><p className="text-sm text-slate-600">Choose Reema or Saurabh before starting a test.</p><button type="button" onClick={openProfileModal} className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white">Choose profile</button></div>;
   }
   if (error && !paper) {
     return <div className="mx-auto max-w-md px-4 py-16 text-center"><p className="text-sm font-medium text-rose-700">{error}</p><Link href="/papers" className="mt-4 inline-flex rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">Back to tests</Link></div>;

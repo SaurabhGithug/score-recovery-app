@@ -16,11 +16,51 @@ interface UserWithPassword extends UserRecord {
 
 const PUBLIC_USER_COLUMNS = "id, name, normalized_name, created_at, updated_at";
 
+export type FixedProfileKey = "reema" | "saurabh";
+
+const FIXED_PROFILE_NAMES: Record<FixedProfileKey, string> = {
+  reema: "Reema",
+  saurabh: "Saurabh",
+};
+
 export function normalizeName(name: string): string {
   return name.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
 export class UserRepository {
+  public static async findOrCreateFixedProfile(profile: FixedProfileKey): Promise<UserRecord> {
+    const displayName = FIXED_PROFILE_NAMES[profile];
+    const db = getDatabase();
+    const existing = await db.prepare(
+      `SELECT ${PUBLIC_USER_COLUMNS} FROM users WHERE normalized_name = ? ORDER BY created_at ASC LIMIT 1`
+    ).get<UserRecord>(profile);
+
+    if (existing) {
+      if (existing.name === displayName) return existing;
+      const updatedAt = new Date().toISOString();
+      await db.prepare("UPDATE users SET name = ?, updated_at = ? WHERE id = ?")
+        .run(displayName, updatedAt, existing.id);
+      return { ...existing, name: displayName, updated_at: updatedAt };
+    }
+
+    const id = `usr_profile_${profile}`;
+    const now = new Date().toISOString();
+    await db.prepare(`
+      INSERT INTO users (id, name, normalized_name, password_hash, created_at, updated_at)
+      VALUES (?, ?, ?, NULL, ?, ?)
+      ON CONFLICT(id) DO UPDATE SET
+        name = excluded.name,
+        normalized_name = excluded.normalized_name,
+        updated_at = excluded.updated_at
+    `).run(id, displayName, profile, now, now);
+
+    const user = await db.prepare(
+      `SELECT ${PUBLIC_USER_COLUMNS} FROM users WHERE id = ? LIMIT 1`
+    ).get<UserRecord>(id);
+    if (!user) throw new Error("Could not create the selected profile.");
+    return user;
+  }
+
   public static async register(rawName: string, password: string): Promise<{ user: UserRecord; claimedLegacyProfile: boolean }> {
     const trimmed = rawName.trim();
     if (trimmed.length < 2 || trimmed.length > 60) {

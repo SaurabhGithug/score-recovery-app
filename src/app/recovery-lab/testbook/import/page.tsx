@@ -57,7 +57,7 @@ export default function TestbookImportPage() {
       window.localStorage.setItem(storageKey, JSON.stringify(merged));
       window.dispatchEvent(new Event("testbook-import-changed"));
       const questions = parsed.tests.reduce((sum, test) => sum + test.questions.length, 0);
-      setMessage(`Validated ${questions} portal questions. The bank now contains ${merged.tests.length} test capture${merged.tests.length === 1 ? "" : "s"}.${currentUser ? "" : " Sign in and explicitly confirm ownership here to attach this staged bank to your account."}`);
+      setMessage(`Validated ${questions} portal questions. The bank now contains ${merged.tests.length} test capture${merged.tests.length === 1 ? "" : "s"}.${currentUser ? "" : " Choose a profile and explicitly confirm ownership here to attach this staged bank."}`);
       setSaved(true);
       // Local import kept intact regardless of whether the server sync below succeeds.
       if (currentUser) {
@@ -119,7 +119,7 @@ export default function TestbookImportPage() {
             <summary className="cursor-pointer">Looking for older captures?</summary>
             <label className="mt-3 flex items-start gap-2 leading-6"><input type="checkbox" checked={ownsLegacy} onChange={e=>setOwnsLegacy(e.target.checked)} className="mt-1.5"/><span>I confirm that unowned captures and practice history on this device belong to me. Include them when I sync. Existing account data is not overwritten.</span></label>
           </details>
-        </> : <button type="button" onClick={openProfileModal} className="mt-5 rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-700">Sign in to sync</button>}
+        </> : <button type="button" onClick={openProfileModal} className="mt-5 rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-700">Choose profile to sync</button>}
         {copyMessage && <p role="status" className="mt-4 text-sm text-emerald-800">{copyMessage}</p>}
         {copyError && <p role="alert" className="mt-4 text-sm text-rose-700">{copyError}</p>}
       </section>
@@ -127,7 +127,7 @@ export default function TestbookImportPage() {
       <details className="mt-5 rounded-2xl border border-slate-200 bg-white p-6">
         <summary className="cursor-pointer text-sm font-semibold text-slate-800">Import a new capture (JSON)</summary>
         <p className="mt-4 text-sm leading-6 text-slate-600">Paste a structured SSC JE Civil capture below. Do not paste API keys here; keys belong in the server’s .env.local file.</p>
-        {!currentUser && <p className="mt-3 text-sm text-amber-800">Before login, captures stay on this browser without an owner. Sign in and confirm ownership above to attach them to your account.</p>}
+        {!currentUser && <p className="mt-3 text-sm text-amber-800">Before choosing a profile, captures stay on this browser without an owner. Choose Reema or Saurabh and confirm ownership above to attach them.</p>}
         <label className="mt-4 block text-sm font-medium text-slate-700">Capture data
           <textarea aria-label="Structured portal capture" value={payload} onChange={event=>setPayload(event.target.value)} rows={8} spellCheck={false} className="mt-2 block w-full rounded-lg border border-slate-300 bg-slate-50 p-3 font-mono text-xs leading-6 text-slate-800" placeholder='{"schemaVersion":1,"source":{"provider":"Testbook",...}}'/>
         </label>

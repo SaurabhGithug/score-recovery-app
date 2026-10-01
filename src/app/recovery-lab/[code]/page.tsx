@@ -56,8 +56,8 @@ export default function MadeEasyTestPage() {
   if (!currentUser) {
     return (
       <div className="mx-auto max-w-md px-4 py-16 text-center">
-        <p className="text-sm text-slate-600">Sign in to open your Made Easy tests.</p>
-        <button type="button" onClick={openProfileModal} className="mt-4 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">Sign in</button>
+        <p className="text-sm text-slate-600">Choose Reema or Saurabh to open your Made Easy tests.</p>
+        <button type="button" onClick={openProfileModal} className="mt-4 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">Choose profile</button>
       </div>
     );
   }

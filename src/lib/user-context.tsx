@@ -10,6 +10,8 @@ export interface User {
   updated_at: string;
 }
 
+export type FixedProfile = "reema" | "saurabh";
+
 export interface PreparationContext {
   id: string;
   user_id: string;
@@ -31,8 +33,7 @@ export interface PreparationContext {
 interface UserContextValue {
   currentUser: User | null;
   isLoading: boolean;
-  signIn: (name: string, password: string) => Promise<User>;
-  register: (name: string, password: string) => Promise<{ user: User; claimedLegacyProfile: boolean }>;
+  selectProfile: (profile: FixedProfile) => Promise<User>;
   logout: () => Promise<void>;
   openProfileModal: () => void;
   closeProfileModal: () => void;
@@ -121,27 +122,15 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     return user;
   };
 
-  const signIn = async (name: string, password: string) => {
+  const selectProfile = async (profile: FixedProfile) => {
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, password }),
+      body: JSON.stringify({ profile }),
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Could not sign in.");
+    if (!res.ok) throw new Error(data.error || "Could not open this profile.");
     return finishAuthentication(data.user as User);
-  };
-
-  const register = async (name: string, password: string) => {
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, password }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Could not create account.");
-    const user = await finishAuthentication(data.user as User);
-    return { user, claimedLegacyProfile: Boolean(data.claimedLegacyProfile) };
   };
 
   const logout = async () => {
@@ -177,7 +166,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     year?: number;
     semester?: number;
   }) => {
-    if (!currentUser) throw new Error("Sign in first.");
+    if (!currentUser) throw new Error("Choose a profile first.");
     const res = await fetch("/api/contexts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -198,8 +187,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     <UserContext.Provider value={{
       currentUser,
       isLoading,
-      signIn,
-      register,
+      selectProfile,
       logout,
       openProfileModal: () => setIsProfileModalOpen(true),
       closeProfileModal: () => setIsProfileModalOpen(false),

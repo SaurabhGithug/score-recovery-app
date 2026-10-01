@@ -81,9 +81,9 @@ export default function SyllabusPage() {
   if (!userLoading && !currentUser) {
     return (
       <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-4 px-4 py-16 text-center">
-        <p className="text-sm text-slate-600">{t({ en: "Sign in to view the SSC JE Civil syllabus map.", hi: "SSC JE सिविल पाठ्यक्रम देखने के लिए साइन इन करें।" })}</p>
+        <p className="text-sm text-slate-600">{t({ en: "Choose Reema or Saurabh to view the SSC JE Civil syllabus map.", hi: "SSC JE सिविल पाठ्यक्रम देखने के लिए रीमा या सौरभ चुनें।" })}</p>
         <button type="button" onClick={openProfileModal} className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-blue-700">
-          {t({ en: "Sign in", hi: "साइन इन करें" })}
+          {t({ en: "Choose profile", hi: "प्रोफ़ाइल चुनें" })}
         </button>
       </div>
     );

@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST() {
   return NextResponse.json(
-    { error: "Use /api/auth/register or /api/auth/login with a password." },
+    { error: "Account creation is disabled. Choose the Reema or Saurabh profile." },
     { status: 410 }
   );
 }
