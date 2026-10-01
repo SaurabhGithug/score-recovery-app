@@ -214,7 +214,7 @@ export default function StandardStudyPage() {
         {clause ? (
           <>
             <h1 ref={headingRef} tabIndex={-1} className="mt-4 break-words text-2xl font-semibold leading-snug tracking-tight text-slate-900 outline-none sm:text-[1.75rem]">
-              {!isFront(clause) && <span className="mr-2 tabular-nums text-slate-400">{clause.clause_no}</span>}{clauseName(clause, t)}
+              {!isFront(clause) && <span className="mr-2 tabular-nums text-slate-500">{clause.clause_no}</span>}{clauseName(clause, t)}
             </h1>
             {clause.page != null && <p className="mt-1 text-sm text-slate-600">{t({ en: `Page ${clause.page}`, hi: `पृष्ठ ${clause.page}` })}</p>}
 
