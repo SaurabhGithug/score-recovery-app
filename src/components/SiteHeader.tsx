@@ -20,6 +20,7 @@ const PRIMARY = [
 function isActive(href: string, pathname: string): boolean {
   if (href === "/dashboard") return pathname.startsWith("/dashboard") || pathname.startsWith("/results/");
   if (href === "/papers") return pathname.startsWith("/papers") || pathname.startsWith("/recovery-lab");
+  if (href === "/learn") return pathname.startsWith("/learn") || pathname.startsWith("/standards");
   return pathname.startsWith(href);
 }
 
