@@ -4,12 +4,11 @@ import { useEffect, useMemo, useState, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useUser } from "@/lib/user-context";
-import { formatSeconds, madeEasyReady, observedSignal, type MadeEasyQuestionWithTest, type MadeEasyTestDetail } from "@/lib/madeeasy";
+import { formatSeconds, madeEasyReady, type MadeEasyQuestionWithTest, type MadeEasyTestDetail } from "@/lib/madeeasy";
 import { getMadeEasyTest, loadDrillProgress, saveDrillProgress, MadeEasyRequestError, type DrillProgressEntry } from "@/components/madeeasy/api";
 import { AskFollowUp } from "@/components/ai/AskFollowUp";
 import { SourceHtml } from "@/components/madeeasy/SourceHtml";
 import { useDeclareAttemptMode } from "@/lib/attempt-mode";
-import { QuestionTopic } from "@/components/ai/QuestionTopic";
 
 /** The question as the portal showed it (HTML with its images) when recaptured, else the saved text. */
 function QuestionBody({ question, className }: { question: MadeEasyQuestionWithTest; className: string }) {
@@ -210,7 +209,6 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
                   <li key={question.id}>
                     <QuestionCard
                       question={question}
-                      record={progress[question.id]}
                       mode={null}
                       onMode={(mode) => { setReviewIndex(index); setFocus(mode); }}
                       onPractise={() => { setReviewIndex(index); beginDrill([question.id]); }}
@@ -227,7 +225,6 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
                 <QuestionCard
                   key={reviewQuestion.id}
                   question={reviewQuestion}
-                  record={progress[reviewQuestion.id]}
                   mode={focus}
                   onMode={setFocus}
                   onPractise={() => beginDrill([reviewQuestion.id])}
@@ -245,9 +242,8 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
   );
 }
 
-function QuestionCard({ question, record, mode, onMode, onPractise }: {
+function QuestionCard({ question, mode, onMode, onPractise }: {
   question: MadeEasyQuestionWithTest;
-  record: DrillProgressEntry | undefined;
   mode: "answer" | "teach" | null;
   onMode: (mode: "answer" | "teach") => void;
   onPractise: () => void;
@@ -262,11 +258,8 @@ function QuestionCard({ question, record, mode, onMode, onPractise }: {
           <span className="text-slate-500">Q{question.number}</span>
           <span className={question.status === "incorrect" ? "rounded-md bg-rose-100 px-2 py-1 text-rose-800" : "rounded-md bg-amber-100 px-2 py-1 text-amber-800"}>{question.status === "incorrect" ? "Incorrect" : "Unattempted"}</span>
           {!ready && <span className="rounded-md bg-slate-200 px-2 py-1 text-slate-700">Needs the source</span>}
-          {record && <span className="font-semibold text-blue-700">Practised: {record.correct}/{record.attempts} correct</span>}
         </div>
-        {mode !== null && <QuestionTopic kind="made_easy" id={question.id} />}
         <QuestionBody question={question} className="mt-3 text-sm font-bold leading-6 text-slate-900 sm:text-base" />
-        <p className="mt-2 text-xs text-slate-500">{observedSignal(question)} · {question.avgAttemptRate}% of the group attempted it</p>
         <div className="mt-3 flex flex-wrap gap-2">
           <button type="button" onClick={() => onMode("answer")} className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">See answer and explanation</button>
           {ready && <button type="button" aria-expanded={teaching} onClick={() => onMode("teach")} className="rounded-lg border border-violet-300 bg-violet-50 px-3 py-2 text-xs font-bold text-violet-800 hover:bg-violet-100">Teach me</button>}
@@ -368,7 +361,6 @@ function Drill({ question, position, total, onAnswered, onNext }: {
         <span className="rounded-md bg-blue-100 px-2 py-1 text-blue-800">Q{question.number} · {position} of {total}</span>
         <span className="font-mono text-xl font-black text-slate-900">{formatSeconds(seconds)}</span>
       </div>
-      <QuestionTopic kind="made_easy" id={question.id} />
       {saveError && <p role="alert" className="mt-2 text-xs text-amber-800">Saved on this device, but could not sync this attempt to syllabus analysis.</p>}
       <QuestionBody question={question} className="mt-6 text-base font-semibold leading-7 text-slate-900 sm:text-lg" />
       {!revealed ? (
@@ -387,9 +379,6 @@ function Drill({ question, position, total, onAnswered, onNext }: {
         <div className="mt-5 space-y-4">
           <div className={`rounded-xl border p-4 ${selected === question.correctOption ? "border-emerald-200 bg-emerald-50" : "border-rose-200 bg-rose-50"}`}>
             <p className="text-sm font-black">{selected === question.correctOption ? "Correct" : `Not quite: the answer is ${question.correctOption}`}</p>
-            <p className="mt-1 text-xs leading-5 text-slate-700">
-              Your time {formatSeconds(seconds)} · group average {formatSeconds(question.avgTimeSeconds)}
-            </p>
           </div>
           <AnswerAndExplanation question={question} selected={selected} selectedLabel="Your answer" />
           <AskFollowUp kind="made_easy" id={question.id} />
