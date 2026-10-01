@@ -130,6 +130,8 @@ export interface ResultView {
   skipped: number;
   byClause: ClauseBreakdown[];
   questions: ResultQuestion[];
+  /** The scope the test was drawn from, so "Retake" can start the same kind of test (optional: added by the quiz runner). */
+  scope?: QuizScope;
 }
 
 export interface AttemptSummary {

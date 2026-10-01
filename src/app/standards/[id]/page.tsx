@@ -137,6 +137,7 @@ export default function StandardStudyPage() {
         <p className="text-xs font-bold uppercase tracking-wide text-blue-700">{data.standard.code}</p>
         <h1 className="break-words text-xl font-bold text-slate-900 sm:text-2xl">{data.standard.title}</h1>
         <p className="mt-1 text-sm text-slate-600">{t({ en: `Your progress: ${learnedCount} of ${clauses.length} clauses learned`, hi: `आपकी प्रगति: ${clauses.length} में से ${learnedCount} क्लॉज़ सीखे` })}</p>
+        <Link href={`/standards/${encodeURIComponent(id)}/test`} className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white"><span aria-hidden="true">⏱</span>{t({ en: "Timed test", hi: "समयबद्ध टेस्ट" })}</Link>
       </header>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[18rem_minmax(0,1fr)]">
