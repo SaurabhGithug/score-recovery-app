@@ -109,7 +109,6 @@ export function useLearned(userId: string, standardId: string): string[] {
 export interface Progress {
   total: number;
   done: number;
-  percent: number;
   /** First clause (reading order) not yet learned; null while the clause list is unknown or when everything is learned. */
   next: Clause | null;
   allDone: boolean;
@@ -120,7 +119,7 @@ export function computeProgress(totalFromList: number, learned: string[], clause
   const total = clauses ? clauses.length : totalFromList;
   const done = clauses ? clauses.filter(c => marks.has(c.clause_no)).length : Math.min(marks.size, total);
   const next = clauses ? clauses.find(c => !marks.has(c.clause_no)) ?? null : null;
-  return { total, done, percent: total > 0 ? Math.round((100 * done) / total) : 0, next, allDone: total > 0 && done >= total };
+  return { total, done, next, allDone: total > 0 && done >= total };
 }
 
 type Translate = ReturnType<typeof useLang>["t"];
