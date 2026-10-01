@@ -10,7 +10,9 @@ import { BankApiRequestError, createAttempt, getPaper, listPapers } from "@/comp
 import type { MadeEasyOverview } from "@/lib/madeeasy";
 
 type PaperFilter = "all" | BankPaperCode;
+type PastTestFilter = "all" | "test-papers" | "made-easy";
 type SectionPickerState = BankSection[] | "loading" | "error";
+type MadeEasyResult = { userId: string; overview: MadeEasyOverview | null };
 
 export default function PapersPage() {
   return <Suspense fallback={<p className="p-6">Loading tests…</p>}><TestsPage /></Suspense>;
@@ -26,13 +28,14 @@ function TestsPage() {
   const kind: BankPaperKind = params.get("kind") === "mock" ? "mock" : "pyp";
   function setKind(value: BankPaperKind) { router.replace(`/papers?kind=${value}`, { scroll: false }); }
   const [paperFilter, setPaperFilter] = useState<PaperFilter>("all");
+  const [pastTestFilter, setPastTestFilter] = useState<PastTestFilter>("all");
   const [papers, setPapers] = useState<BankPaperSummary[] | null>(null);
   const [loadError, setLoadError] = useState("");
   const [actionError, setActionError] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
   const [sectionPicker, setSectionPicker] = useState<Record<string, SectionPickerState>>({});
   const [reloadToken, setReloadToken] = useState(0);
-  const [madeEasy, setMadeEasy] = useState<MadeEasyOverview | null>(null);
+  const [madeEasyResult, setMadeEasyResult] = useState<MadeEasyResult | null>(null);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -55,10 +58,11 @@ function TestsPage() {
   useEffect(() => {
     if (!currentUser || view !== "past") return;
     let cancelled = false;
+    const userId = currentUser.id;
     fetch("/api/made-easy", { cache: "no-store" })
       .then(async (res) => res.ok ? (await res.json()) as MadeEasyOverview : null)
-      .then((value) => { if (!cancelled) setMadeEasy(value); })
-      .catch(() => { if (!cancelled) setMadeEasy(null); });
+      .then((overview) => { if (!cancelled) setMadeEasyResult({ userId, overview }); })
+      .catch(() => { if (!cancelled) setMadeEasyResult({ userId, overview: null }); });
     return () => { cancelled = true; };
   }, [currentUser, view]);
 
@@ -67,6 +71,15 @@ function TestsPage() {
     .sort((a, b) => b.attempt.startedAt.localeCompare(a.attempt.startedAt)), [papers]);
   const finishedAttempts = pastAttempts.filter(({ attempt }) => attempt.submittedAt);
   const unfinishedAttempts = pastAttempts.filter(({ attempt }) => !attempt.submittedAt);
+  const madeEasyLoading = Boolean(currentUser && view === "past" && madeEasyResult?.userId !== currentUser.id);
+  const madeEasy = currentUser && madeEasyResult?.userId === currentUser.id ? madeEasyResult.overview : null;
+  const madeEasyTests = madeEasy?.tests ?? [];
+  const showTestPapers = pastTestFilter !== "made-easy";
+  const showMadeEasy = pastTestFilter !== "test-papers";
+  const pastTestsReady = (!showTestPapers || papers !== null || Boolean(loadError))
+    && (!showMadeEasy || !madeEasyLoading);
+  const visiblePastTestCount = (showTestPapers && !loadError ? pastAttempts.length : 0)
+    + (showMadeEasy ? madeEasyTests.length : 0);
 
   const filtered = useMemo(() => {
     if (!papers) return [];
@@ -153,15 +166,32 @@ function TestsPage() {
           <Link href="/learn?tab=progress" className="font-semibold text-blue-700 hover:text-blue-800">{t({ en: "Learn practice results →", hi: "सीखें: अभ्यास परिणाम →" })}</Link>
           <Link href="/dashboard" className="text-slate-600 underline hover:text-slate-900">{t({ en: "Older results saved in this browser", hi: "इस ब्राउज़र में सहेजे पुराने परिणाम" })}</Link>
         </p>
-        {loadError && <p role="alert" className="mt-4 text-sm text-rose-700">{loadError} <button type="button" onClick={() => setReloadToken(n => n + 1)} className="underline">Retry</button></p>}
-        {!loadError && papers === null && <p className="mt-5 text-sm text-slate-500">Loading past tests…</p>}
-        {!loadError && papers !== null && pastAttempts.length === 0 && <section className="mt-6 rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center">
-          <h2 className="font-semibold text-slate-900">No test history yet</h2>
-          <p className="mt-1 text-sm text-slate-600">Start a test and it will appear here.</p>
+        <div className="mt-5 flex w-fit max-w-full overflow-x-auto rounded-xl border border-slate-200 bg-white p-1" role="group" aria-label={t({ en: "Filter past tests", hi: "पिछले टेस्ट फ़िल्टर करें" })}>
+          {(["all", "test-papers", "made-easy"] as const).map((filter) => (
+            <button
+              key={filter}
+              type="button"
+              onClick={() => setPastTestFilter(filter)}
+              aria-pressed={pastTestFilter === filter}
+              className={`min-h-10 shrink-0 rounded-lg px-3 text-sm font-semibold transition-colors ${pastTestFilter === filter ? "bg-slate-900 text-white" : "text-slate-600 hover:bg-slate-100"}`}
+            >
+              {filter === "all"
+                ? t({ en: "All", hi: "सभी" })
+                : filter === "test-papers"
+                  ? t({ en: "Test papers", hi: "टेस्ट पेपर" })
+                  : "Made Easy"}
+            </button>
+          ))}
+        </div>
+        {showTestPapers && loadError && <p role="alert" className="mt-4 text-sm text-rose-700">{loadError} <button type="button" onClick={() => setReloadToken(n => n + 1)} className="underline">Retry</button></p>}
+        {!pastTestsReady && <p className="mt-5 text-sm text-slate-500">Loading past tests…</p>}
+        {pastTestsReady && (!showTestPapers || !loadError) && visiblePastTestCount === 0 && <section className="mt-6 rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center">
+          <h2 className="font-semibold text-slate-900">{pastTestFilter === "made-easy" ? "No Made Easy tests yet" : "No test history yet"}</h2>
+          <p className="mt-1 text-sm text-slate-600">{pastTestFilter === "made-easy" ? "Imported Made Easy tests will appear here." : "Start a test and it will appear here."}</p>
           <Link href="/papers" className="mt-4 inline-flex min-h-11 items-center rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white">Find a test →</Link>
         </section>}
-        {!loadError && papers !== null && pastAttempts.length > 0 && <div className="mt-7 space-y-8">
-          {unfinishedAttempts.length > 0 && <section aria-labelledby="continue-tests-heading">
+        {pastTestsReady && visiblePastTestCount > 0 && <div className="mt-7 space-y-8">
+          {showTestPapers && unfinishedAttempts.length > 0 && <section aria-labelledby="continue-tests-heading">
             <div className="flex items-baseline justify-between gap-4">
               <h2 id="continue-tests-heading" className="text-lg font-bold text-slate-950">Continue</h2>
               <span className="text-xs font-semibold text-slate-500">{unfinishedAttempts.length} active</span>
@@ -173,12 +203,12 @@ function TestsPage() {
             </li>)}</ul>
           </section>}
 
-          {madeEasy && <section aria-labelledby="imported-tests-heading">
+          {showMadeEasy && madeEasyTests.length > 0 && <section aria-labelledby="imported-tests-heading">
             <div className="flex items-baseline justify-between gap-4">
               <h2 id="imported-tests-heading" className="text-lg font-bold text-slate-950">Imported from Made Easy</h2>
-              <span className="text-xs font-semibold text-slate-500">{madeEasy.tests.length} tests</span>
+              <span className="text-xs font-semibold text-slate-500">{madeEasyTests.length} tests</span>
             </div>
-            <ul className="mt-3 grid gap-3 sm:grid-cols-2">{madeEasy.tests.map((test) => {
+            <ul className="mt-3 grid gap-3 sm:grid-cols-2">{madeEasyTests.map((test) => {
               const attention = test.summary.incorrect + test.summary.unattempted;
               return <li key={test.code} className="rounded-xl border border-slate-200 bg-white p-4">
                 <div className="flex items-start justify-between gap-3">
@@ -194,7 +224,7 @@ function TestsPage() {
             })}</ul>
           </section>}
 
-          <section aria-labelledby="completed-tests-heading">
+          {showTestPapers && <section aria-labelledby="completed-tests-heading">
             <div className="flex items-baseline justify-between gap-4">
               <h2 id="completed-tests-heading" className="text-lg font-bold text-slate-950">Completed</h2>
               {finishedAttempts.length > 0 && <span className="text-xs font-semibold text-slate-500">{finishedAttempts.length} finished</span>}
@@ -204,7 +234,7 @@ function TestsPage() {
               <p className="mt-1 text-sm text-slate-600">{new Date(attempt.startedAt).toLocaleDateString()} · {attempt.score ?? "—"}/{attempt.maxScore ?? "—"}</p>
               <Link href={`/papers/attempts/${attempt.id}`} className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 hover:text-blue-800">Review answers →</Link>
             </li>)}</ul>}
-          </section>
+          </section>}
         </div>}
       </> : <>
       <details className="mt-2 text-xs text-slate-500">
