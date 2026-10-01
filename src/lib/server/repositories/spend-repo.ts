@@ -1,6 +1,12 @@
 import { getDatabase } from "../db";
 import crypto from "node:crypto";
 
+/**
+ * Postgres advisory-lock key for the spend ledger (any constant; it only has to be the same in
+ * every process). Held for the length of one reserve() transaction.
+ */
+export const SPEND_LOCK_KEY = 1702503017;
+
 /** Ledger of billed LLM calls, used for the server-wide daily spending limit. */
 export class SpendRepository {
   public static async add(entry: { userId: string; documentId: string | null; model: string; costUsd: number }): Promise<void> {
@@ -19,9 +25,12 @@ export class SpendRepository {
   }
 
   /**
-   * Atomically reserves `usd` against the rolling limit: in one BEGIN IMMEDIATE transaction (which
-   * also serialises other processes, e.g. the CLI), refuses when spend since `since` plus `usd`
-   * would exceed `capUsd`, else records a ledger row for the full `usd`. Returns that row's id, or
+   * Atomically reserves `usd` against the rolling limit, serialised across every process and
+   * server instance: on SQLite by the BEGIN IMMEDIATE transaction (one writer at a time); on
+   * Postgres, where a transaction is READ COMMITTED and two of them could otherwise both read the
+   * same total and both pass the cap, by a transaction-scoped advisory lock taken first and
+   * released at commit. Refuses when spend since `since` plus `usd` would exceed `capUsd`, else
+   * records a ledger row for the full `usd`. Returns that row's id, or
    * null when refused. Settle it to the real cost with settle() once the call returns; a crash
    * leaves the worst case recorded, which errs on the side of the limit.
    */
@@ -29,6 +38,7 @@ export class SpendRepository {
     const db = getDatabase();
     const id = `spend_${crypto.randomUUID().replace(/-/g, "").slice(0, 16)}`;
     return db.transaction(async () => {
+      if (db.dialect === "postgres") await db.prepare("SELECT pg_advisory_xact_lock(?)").get(SPEND_LOCK_KEY);
       if ((await SpendRepository.totalSince(entry.since)) + entry.usd > entry.capUsd) {
         return null;
       }
