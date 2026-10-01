@@ -9,6 +9,7 @@ import { UserProfileModal } from "@/components/UserProfileModal";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { InstallAppProvider } from "@/components/InstallAppButton";
 import { ProfileAccessGate } from "@/components/ProfileAccessGate";
+import { SignInGate } from "@/components/SignInGate";
 
 export const metadata: Metadata = {
   title: "Score Recovery — Adaptive Test Platform & Study Library",
@@ -39,12 +40,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <UserProvider>
           <LanguageProvider>
             <AttemptModeProvider>
-              <SiteHeader />
-              <div className="min-w-0 flex-1 flex flex-col pb-6"><ProfileAccessGate>{children}</ProfileAccessGate></div>
-              <SiteFooter />
-              <MobileTabBar />
-              <UserProfileModal />
-              <OnboardingModal />
+              <SignInGate>
+                <SiteHeader />
+                <div className="min-w-0 flex-1 flex flex-col pb-6"><ProfileAccessGate>{children}</ProfileAccessGate></div>
+                <SiteFooter />
+                <MobileTabBar />
+                <UserProfileModal />
+                <OnboardingModal />
+              </SignInGate>
             </AttemptModeProvider>
           </LanguageProvider>
         </UserProvider>

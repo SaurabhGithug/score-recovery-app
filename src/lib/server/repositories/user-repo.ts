@@ -19,8 +19,8 @@ const PUBLIC_USER_COLUMNS = "id, name, normalized_name, created_at, updated_at";
 export type FixedProfileKey = "reema" | "saurabh";
 
 const FIXED_PROFILE_NAMES: Record<FixedProfileKey, string> = {
-  reema: "Reema",
-  saurabh: "Saurabh",
+  reema: "Civil",
+  saurabh: "Mechanical",
 };
 
 export function normalizeName(name: string): string {

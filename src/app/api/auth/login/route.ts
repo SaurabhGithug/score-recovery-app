@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const profile = typeof body.profile === "string" ? body.profile.toLowerCase() : "";
     if (!FIXED_PROFILES.has(profile as FixedProfileKey)) {
-      return NextResponse.json({ error: "Choose Reema or Saurabh." }, { status: 400 });
+      return NextResponse.json({ error: "Choose Civil or Mechanical." }, { status: 400 });
     }
     const user = await UserRepository.findOrCreateFixedProfile(profile as FixedProfileKey);
     const session = await SessionRepository.create(user.id);

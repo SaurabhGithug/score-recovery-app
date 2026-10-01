@@ -16,7 +16,7 @@ export function ProfileAccessGate({ children }: { children: React.ReactNode }) {
   }, [blocked, router]);
 
   if (blocked) {
-    return <main className="mx-auto w-full max-w-xl px-5 py-16 text-sm text-slate-600">Opening Saurabh&apos;s learning space…</main>;
+    return <main className="mx-auto w-full max-w-xl px-5 py-16 text-sm text-slate-600">Opening the Mechanical learning space…</main>;
   }
 
   return children;

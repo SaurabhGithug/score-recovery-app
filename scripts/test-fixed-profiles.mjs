@@ -35,8 +35,8 @@ try {
 
   const reema = await chooseProfile("reema");
   const saurabh = await chooseProfile("saurabh");
-  assert.equal(reema.name, "Reema");
-  assert.equal(saurabh.name, "Saurabh");
+  assert.equal(reema.name, "Civil");
+  assert.equal(saurabh.name, "Mechanical");
   assert.notEqual(reema.id, saurabh.id);
 
   const invalid = await loginRoute.POST(new NextRequest("http://localhost/api/auth/login", {

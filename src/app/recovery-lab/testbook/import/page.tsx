@@ -127,7 +127,7 @@ export default function TestbookImportPage() {
       <details className="mt-5 rounded-2xl border border-slate-200 bg-white p-6">
         <summary className="cursor-pointer text-sm font-semibold text-slate-800">Import a new capture (JSON)</summary>
         <p className="mt-4 text-sm leading-6 text-slate-600">Paste a structured SSC JE Civil capture below. Do not paste API keys here; keys belong in the server’s .env.local file.</p>
-        {!currentUser && <p className="mt-3 text-sm text-amber-800">Before choosing a profile, captures stay on this browser without an owner. Choose Reema or Saurabh and confirm ownership above to attach them.</p>}
+        {!currentUser && <p className="mt-3 text-sm text-amber-800">Before choosing a profile, captures stay on this browser without an owner. Choose Civil or Mechanical and confirm ownership above to attach them.</p>}
         <label className="mt-4 block text-sm font-medium text-slate-700">Capture data
           <textarea aria-label="Structured portal capture" value={payload} onChange={event=>setPayload(event.target.value)} rows={8} spellCheck={false} className="mt-2 block w-full rounded-lg border border-slate-300 bg-slate-50 p-3 font-mono text-xs leading-6 text-slate-800" placeholder='{"schemaVersion":1,"source":{"provider":"Testbook",...}}'/>
         </label>
