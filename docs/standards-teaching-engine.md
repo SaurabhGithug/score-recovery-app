@@ -71,7 +71,7 @@ The generator is driven by a **spec**, not by "write 4 questions about this clau
 
 Every AI-written text carries the "AI-generated" badge. Concepts and summaries are validated before use: each cites verbatim extracts that exist in the clause; prerequisites are acyclic; every unit with a body belongs to exactly one module; a second AI critiques the proposal and disagreements are listed for human review, not silently resolved.
 
-## 7. Data (migration `0012_standard_teaching.sql`, all RLS-on, additive)
+## 7. Data (migration `0013_standard_teaching.sql`, all RLS-on, additive)
 
 - `standard_concepts` — id, standard_id, module_no, module_title, ord, title, summary, extracts (JSON), clause_nos (JSON), prerequisites (JSON), confusable_with (JSON), misconceptions (JSON), content_fp, status (`proposed`|`reviewed`), model, created_at.
 - `standard_question_meta` — question_id (PK), standard_id, concept_id, rung, option_tags (JSON option id → misconception id).
