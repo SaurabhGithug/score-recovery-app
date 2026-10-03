@@ -23,7 +23,8 @@ import { universalKnowledgeBrain } from "../domain/universal-brain";
  * 1. Cycle: Junior Engineer Examination, 2026 (Including IMD Scientific Assistant & DoT Telecom)
  * 2. Online Application Dates: 02.09.2026 to 22.09.2026 (23:00 hrs)
  * 3. Correction Window: 28.09.2026 to 30.09.2026 (23:00 hrs)
- * 4. Paper-I (CBE): October/November, 2026 (Qualifying in nature, +1 / -0.25)
+ * 4. Paper-I (CBE): 02.11.2026 to 06.11.2026, proposed (SSC notice dated 01.10.2026; the
+ *    02.09.2026 notice had said October/November). Qualifying in nature, +1 / -0.25
  * 5. Paper-II (CBE): December, 2026 (Rank & final merit deciding, +3 / -1.0)
  * 6. Vacancies: 1,748 Tentative
  * 7. In-Console CBT Tools (Para 13.11 & 13.12):
@@ -197,6 +198,22 @@ export const SSC_JE_ORGANIZATION_ROLES: ExamOrganizationRole[] = [
 ];
 
 /**
+ * Paper-I dates from SSC's "Important Notice" F. No. HQ-EC033/7/2025-EC, dated 01.10.2026
+ * (read from the PDF on ssc.gov.in on 2026-10-02). The notice says "Proposed Dates", so these
+ * stay tentative: SSC says any change is published only on its website. The notice gives the
+ * date range only; shift and centre arrive on the admit card.
+ */
+export const SSC_JE_PAPER1_SCHEDULE = {
+  startDate: "2026-11-02",
+  endDate: "2026-11-06",
+  dotted: "02.11.2026 to 06.11.2026",
+  short: "2–6 Nov 2026",
+  noticeRef: "F. No. HQ-EC033/7/2025-EC",
+  noticeDate: "01.10.2026",
+  noticeUrl: "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_01102026.pdf",
+} as const;
+
+/**
  * Verified Active Cycle 2026 based on Official Notice HQ-C-3019/1/2026-C-3
  */
 export const SSC_JE_ACTIVE_CYCLE: ExamCycle = {
@@ -209,7 +226,7 @@ export const SSC_JE_ACTIVE_CYCLE: ExamCycle = {
   applicationStartDate: "2026-09-02",
   applicationEndDate: "2026-09-22T23:00:00+05:30",
   correctionWindow: "28.09.2026 to 30.09.2026 (23:00 hours)",
-  tentativeSchedulePaper1: "October/November, 2026",
+  tentativeSchedulePaper1: `${SSC_JE_PAPER1_SCHEDULE.dotted} (proposed; SSC notice dated ${SSC_JE_PAPER1_SCHEDULE.noticeDate})`,
   tentativeSchedulePaper2: "December, 2026",
   totalVacancies: 1748,
   payMatrixLevel: "Level-6 (Rs. 35,400 - 1,12,400/-)",

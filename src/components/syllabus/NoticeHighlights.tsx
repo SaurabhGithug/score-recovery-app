@@ -21,6 +21,7 @@ export function NoticeHighlights({ cycle }: { cycle: ExamCycleRecord }) {
           <li>Wrong-answer penalty: 0.25 in Paper I; 1 mark in Paper II. Objective questions in English and Hindi. (p.22, §13.9–13.10)</li>
           <li>On-screen scientific calculator; reference tables where required. No physical calculator or tables. (p.22, §13.11–13.13)</li>
           <li>Original schedule: applications closed 22 September; correction window 28–30 September, 23:00. Paper I: October/November; Paper II: December — both tentative. (p.1)</li>
+          <li>Update, SSC notice dated 1 October 2026 (F. No. HQ-EC033/7/2025-EC): Paper I proposed for 2–6 November 2026. SSC publishes any change only on its website. <a href="https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_01102026.pdf" target="_blank" rel="noreferrer" className="font-semibold text-teal-800 underline">Read it ↗</a></li>
           <li>Eligibility depends on the post; check qualifications, experience, age and applicable concessions in the full notice. (§2, §5)</li>
         </ul>
       </> : <p className="mt-3">This notice version does not yet have checked highlights. Read the official document below.</p>}

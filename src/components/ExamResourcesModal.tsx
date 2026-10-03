@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ageOnCrucialDate, birthDateFromParts, meetsBasicAgeBand, ELIGIBILITY_NOTICE } from "@/lib/ssc-je/eligibility";
 import {
   SSC_JE_2026_ORGANIZATIONS,
+  SSC_JE_PAPER1_SCHEDULE,
 } from "@/lib/ssc-je/config";
 
 interface ExamResourcesModalProps {
@@ -256,8 +257,8 @@ export function ExamResourcesModal({
                     <strong className="text-slate-900">28 Sep – 30 Sep 2026</strong>
                   </div>
                   <div>
-                    <span className="text-slate-400 block text-[10px] uppercase">Paper-I CBE</span>
-                    <strong className="text-blue-700">Oct / Nov 2026</strong>
+                    <span className="text-slate-400 block text-[10px] uppercase">Paper-I CBE (proposed)</span>
+                    <strong className="text-blue-700">{SSC_JE_PAPER1_SCHEDULE.short}</strong>
                   </div>
                   <div>
                     <span className="text-slate-400 block text-[10px] uppercase">Paper-II CBE</span>

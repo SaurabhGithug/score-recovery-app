@@ -2,7 +2,7 @@
 
 import React, { useState, useId } from "react";
 import { useLang } from "@/lib/i18n";
-import { SSC_JE_2026_ORGANIZATIONS, SSC_JE_ACTIVE_CYCLE, SSC_JE_BRANCHES } from "@/lib/ssc-je/config";
+import { SSC_JE_2026_ORGANIZATIONS, SSC_JE_ACTIVE_CYCLE, SSC_JE_BRANCHES, SSC_JE_PAPER1_SCHEDULE } from "@/lib/ssc-je/config";
 
 interface SscJeNotificationExplorerProps {
   isOpen: boolean;
@@ -461,9 +461,9 @@ export function SscJeNotificationExplorer({
                   <span className="text-xs font-semibold text-purple-700 uppercase tracking-wider">
                     {t({ en: "Paper-I Schedule", hi: "पेपर-I समय सारणी" })}
                   </span>
-                  <p className="mt-1 text-base font-bold text-purple-950">Oct / Nov 2026</p>
+                  <p className="mt-1 text-base font-bold text-purple-950">{SSC_JE_PAPER1_SCHEDULE.short}</p>
                   <p className="mt-0.5 text-[11px] text-purple-800">
-                    {t({ en: "Paper-II: December 2026", hi: "पेपर-II: दिसंबर 2026" })}
+                    {t({ en: "Proposed · Paper-II: December 2026", hi: "प्रस्तावित · पेपर-II: दिसंबर 2026" })}
                   </p>
                 </div>
               </div>
@@ -498,7 +498,15 @@ export function SscJeNotificationExplorer({
                     <span className="font-semibold text-slate-700">
                       {t({ en: "Tentative Schedule of Computer Based Examination (Paper-I)", hi: "कंप्यूटर आधारित परीक्षा (पेपर-I) की संभावित तिथि" })}
                     </span>
-                    <span className="font-bold text-purple-700">October / November, 2026</span>
+                    <span className="font-bold text-purple-700">
+                      {SSC_JE_PAPER1_SCHEDULE.dotted}
+                      <span className="block text-[11px] font-medium text-slate-600">
+                        {t({
+                          en: `Proposed dates · SSC notice dated ${SSC_JE_PAPER1_SCHEDULE.noticeDate} (replaces "October / November" in the 02.09.2026 notice)`,
+                          hi: `प्रस्तावित तिथियाँ · एसएससी नोटिस दिनांक ${SSC_JE_PAPER1_SCHEDULE.noticeDate} (02.09.2026 की अधिसूचना के "अक्टूबर / नवंबर" के स्थान पर)`,
+                        })}
+                      </span>
+                    </span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 p-3 gap-2">
                     <span className="font-semibold text-slate-700">
@@ -519,6 +527,38 @@ export function SscJeNotificationExplorer({
                     <span className="font-mono font-bold text-blue-700">180 030 930 63</span>
                   </div>
                 </div>
+              </div>
+
+              {/* Exam-date notice (01.10.2026): tentative until the admit card */}
+              <div className="rounded-xl border border-purple-200 bg-purple-50/50 p-4 text-xs text-purple-950 space-y-1.5">
+                <p className="font-bold">
+                  {t({
+                    en: `Exam schedule notice · ${SSC_JE_PAPER1_SCHEDULE.noticeDate} (${SSC_JE_PAPER1_SCHEDULE.noticeRef})`,
+                    hi: `परीक्षा कार्यक्रम नोटिस · ${SSC_JE_PAPER1_SCHEDULE.noticeDate} (${SSC_JE_PAPER1_SCHEDULE.noticeRef})`,
+                  })}
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-700">
+                  <li>
+                    {t({
+                      en: `Junior Engineer Examination, 2026 · Paper-I (CBE): ${SSC_JE_PAPER1_SCHEDULE.dotted} (proposed dates).`,
+                      hi: `जूनियर इंजीनियर परीक्षा, 2026 · पेपर-I (सीबीई): ${SSC_JE_PAPER1_SCHEDULE.dotted} (प्रस्तावित तिथियाँ)।`,
+                    })}
+                  </li>
+                  <li>
+                    {t({
+                      en: "SSC says any change will be published only on its website. The notice gives the date range only; your exact date, shift and centre come on the admit card.",
+                      hi: "एसएससी के अनुसार कोई भी बदलाव केवल आयोग की वेबसाइट पर प्रकाशित होगा। नोटिस में केवल तिथि-सीमा है; आपकी सटीक तिथि, शिफ्ट और केंद्र प्रवेश पत्र पर मिलेंगे।",
+                    })}
+                  </li>
+                </ul>
+                <a
+                  href={SSC_JE_PAPER1_SCHEDULE.noticeUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-block font-semibold text-purple-800 underline"
+                >
+                  {t({ en: "Read the official notice (ssc.gov.in) ↗", hi: "आधिकारिक नोटिस पढ़ें (ssc.gov.in) ↗" })}
+                </a>
               </div>
 
               {/* Crucial Cross-Eligibility Notes */}

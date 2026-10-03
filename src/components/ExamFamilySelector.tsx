@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLang } from "@/lib/i18n";
-import { SSC_JE_BRANCHES, SSC_JE_EXAM_ID } from "@/lib/ssc-je/config";
+import { SSC_JE_BRANCHES, SSC_JE_EXAM_ID, SSC_JE_PAPER1_SCHEDULE } from "@/lib/ssc-je/config";
 import { examBrain } from "@/lib/domain/exam-brain";
 import { PlatformStore } from "@/lib/storage/platform-store";
 import { ExamOrganizationRole } from "@/lib/domain/schema";
@@ -125,7 +125,7 @@ export function ExamFamilySelector({ onExamChange }: ExamFamilySelectorProps) {
             </div>
             <div className="rounded-lg bg-white/90 p-2.5 border border-blue-200/80 shadow-2xs">
               <span className="text-[10px] uppercase font-bold text-slate-500 block">{t({ en: "Paper-I (Qualifying)", hi: "पेपर-I (अर्हकारी)" })}</span>
-              <span className="font-bold text-blue-700">Oct/Nov 2026 (+1 / −0.25)</span>
+              <span className="font-bold text-blue-700">{SSC_JE_PAPER1_SCHEDULE.short} (+1 / −0.25)</span>
             </div>
             <div className="rounded-lg bg-white/90 p-2.5 border border-blue-200/80 shadow-2xs">
               <span className="text-[10px] uppercase font-bold text-slate-500 block">{t({ en: "Paper-II (Rank Deciding)", hi: "पेपर-II (मेरिट निर्धारक)" })}</span>

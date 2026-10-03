@@ -6,14 +6,21 @@ import { usePathname } from "next/navigation";
 import { useLang } from "@/lib/i18n";
 import { useAttemptMode } from "@/lib/attempt-mode";
 import { useUser } from "@/lib/user-context";
-import { isLearningOnlyProfile, profileHome } from "@/lib/profile-access";
+import { isCivilProfile, isLearningOnlyProfile, profileHome } from "@/lib/profile-access";
 
 const PRIMARY = [
   { href: "/learn", en: "Learn", hi: "सीखें", icon: "book" },
   { href: "/papers", en: "Tests", hi: "टेस्ट", icon: "paper" },
+  { href: "/calendar", en: "Calendar", hi: "कैलेंडर", icon: "calendar" },
   { href: "/dashboard", en: "Progress", hi: "प्रगति", icon: "chart" },
   { href: "/syllabus", en: "Syllabus", hi: "पाठ्यक्रम", icon: "list" },
 ];
+
+/** The main destinations for this profile: Mechanical has only Learn; the calendar to exam day is for the Civil accounts. */
+function destinationsFor(user: { normalized_name?: string | null } | null) {
+  if (isLearningOnlyProfile(user)) return PRIMARY.slice(0, 1);
+  return PRIMARY.filter(item => item.href !== "/calendar" || isCivilProfile(user));
+}
 
 /** Which main destination the current page belongs to. */
 /** `learningOnly` profiles have a single "Learn" destination that also covers the standards pages (reached from its IS card). */
@@ -29,7 +36,7 @@ function MainNavLinks({ variant }: { variant: "top" | "bottom" }) {
   const { lang } = useLang();
   const { currentUser } = useUser();
   const pathname = usePathname();
-  const destinations = isLearningOnlyProfile(currentUser) ? PRIMARY.slice(0, 1) : PRIMARY;
+  const destinations = destinationsFor(currentUser);
   return <>{destinations.map(item => {
     const active = isActive(item.href, pathname, isLearningOnlyProfile(currentUser));
     const label = lang === "hi" ? item.hi : item.en;
@@ -50,7 +57,7 @@ export function MobileTabBar() {
 
 function NavIcon({ name }: { name: string }) {
   return <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-    {name === "book" ? <><path d="M12 5v15M12 5C8 2 3 4 3 4v15s5-2 9 1c4-3 9-1 9-1V4s-5-2-9 1Z" /></> : name === "list" ? <><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" /></> : name === "paper" ? <><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h4" /></> : <><path d="M4 4v16h16M8 16v-4M13 16V8M18 16V5" /></>}
+    {name === "book" ? <><path d="M12 5v15M12 5C8 2 3 4 3 4v15s5-2 9 1c4-3 9-1 9-1V4s-5-2-9 1Z" /></> : name === "list" ? <><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" /></> : name === "calendar" ? <><rect x="4" y="5" width="16" height="15" rx="2" /><path d="M8 3v4M16 3v4M4 10h16" /></> : name === "paper" ? <><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h4" /></> : <><path d="M4 4v16h16M8 16v-4M13 16V8M18 16V5" /></>}
   </svg>;
 }
 
@@ -58,7 +65,7 @@ function NavigationDrawer({ onClose }: { onClose: () => void }) {
   const { lang, setLang } = useLang();
   const { currentUser, openProfileModal, logout } = useUser();
   const pathname = usePathname();
-  const destinations = isLearningOnlyProfile(currentUser) ? PRIMARY.slice(0, 1) : PRIMARY;
+  const destinations = destinationsFor(currentUser);
   const dialog = useRef<HTMLDialogElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
