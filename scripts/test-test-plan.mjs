@@ -351,17 +351,27 @@ for (const i of preset.items) {
   const progress = (i) => i && JSON.stringify([i.date, i.title, i.status, i.openedAt, i.doneAt, i.result, i.url]);
   const before = new Map(saved.map((i) => [i.id, progress(i)]));
   const up = syncPreset(saved, preset.items);
-  for (const id of [...touchedIds, "own-1"]) assert.equal(progress(up.items.find((i) => i.id === id)), before.get(id), `${id}: kept unchanged`);
+  for (const id of [...touchedIds, "own-1"]) {
+    const was = saved.find((i) => i.id === id);
+    const now = up.items.find((i) => i.id === id);
+    if (now) { assert.equal(progress(now), before.get(id), `${id}: kept unchanged`); continue; }
+    // only opened (no answer, score or link): it moves with the plan and is still waiting for "did you attempt it?"
+    const moved = up.items.find((i) => i.title === was.title);
+    assert.ok(was.status === "planned" && was.openedAt && !was.result && moved && moved.status === "planned" && moved.openedAt === was.openedAt, `${id}: an opened-only row moves with the plan and stays opened`);
+  }
   assert.deepEqual(up.items.find((i) => i.id === "own-1"), saved.find((i) => i.id === "own-1"), "your own item is untouched");
   const keys = up.items.map((i) => `${i.date}|${i.title}`);
   assert.equal(new Set(keys).size, keys.length, "no duplicate date+title rows after the upgrade");
   for (const id of touchedIds) {
-    const row = up.items.find((i) => i.id === id);
-    if (/^IES T\d+ /.test(row.title)) assert.equal(up.items.filter((i) => i.title === row.title).length, 1, `${row.title.slice(0, 20)}: one copy only`);
+    const title = saved.find((i) => i.id === id).title;
+    if (/^IES T\d+ /.test(title)) assert.equal(up.items.filter((i) => i.title === title).length, 1, `${title.slice(0, 20)}: one copy only`);
   }
   // 3 Oct after the re-plan: what the learner touched there, plus the set really taken on IES; untouched practice rows go
   const oct3 = (rows) => rows.filter((i) => i.date === "2026-10-03").map((i) => i.title).sort();
-  const touchedOct3 = saved.filter((i) => i.date === "2026-10-03" && touchedIds.includes(i.id)).map((i) => i.title);
+  // (a row only opened moves with the plan when the plan has that test on another day)
+  const newTitles = new Set(preset.items.map((i) => i.title));
+  const movedAway = (i) => i.status === "planned" && i.openedAt && !i.result && newTitles.has(i.title) && !preset.items.some((p) => p.date === i.date && p.title === i.title);
+  const touchedOct3 = saved.filter((i) => i.date === "2026-10-03" && touchedIds.includes(i.id) && !movedAway(i)).map((i) => i.title);
   assert.deepEqual(oct3(up.items), [...new Set([...touchedOct3, ...oct3(preset.items)])].sort(), "3 Oct: touched rows plus the re-planned rows");
   assert.ok(!up.items.some((i) => i.date === "2026-10-03" && /sprint/.test(i.title)), "3 Oct: no half-test sprint left");
   assert.ok(up.removed > 0 && up.added > 0, "outdated rows go, new ones arrive");
@@ -528,6 +538,28 @@ for (const i of preset.items) {
       assert.equal(fresh.items.filter((i) => i.title === t).length, 1, `update on ${today}: ${t.slice(0, 50)} once`);
     }
     assert.ok(!fresh.items.some((i) => /sprint/.test(i.title)), `update on ${today}: no half-test sprint left`);
+  }
+  // opened T42 (3 Oct) and T37 (4 Oct) from the calendar but never answered: they move to their new days, still "opened"
+  {
+    const saved = fromLive((p) => markOpened(markOpened(p, row(p, "2026-10-03", "IES T42 ").id, "2026-10-03T10:00:00.000Z"), row(p, "2026-10-04", "IES T37 ").id, "2026-10-04T10:00:00.000Z"));
+    const up = syncPreset(refreshFromPreset(saved, preset.items), preset.items, "2026-10-05");
+    for (const [t, opened] of [["IES T42 ", "2026-10-03T10:00:00.000Z"], ["IES T37 ", "2026-10-04T10:00:00.000Z"]]) {
+      const rows = up.items.filter((i) => i.title.startsWith(t));
+      assert.equal(rows.length, 1, `${t}once`);
+      assert.equal(rows[0].date, preset.items.find((i) => i.title.startsWith(t)).date, `${t}moved to its re-planned day`);
+      assert.equal(rows[0].openedAt, opened, `${t}still waits for "did you attempt it?"`);
+    }
+    assert.equal(askPending(up.items).length, 2, "both are still asked");
+    const again = syncPreset(up.items, preset.items, "2026-10-05");
+    assert.deepEqual([again.added, again.removed], [0, 0], "a second update changes nothing");
+  }
+  // opened (not taken) the 4 Oct sprint: that IES set is not used up, so its new speed-set day keeps it
+  {
+    const saved = fromLive((p) => markOpened(p, row(p, "2026-10-04", "Reasoning 2/3 (sprint").id, "2026-10-04T12:00:00.000Z"));
+    const set = row(saved, "2026-10-04", "Reasoning 2/3 (sprint").portalName;
+    const up = syncPreset(refreshFromPreset(saved, preset.items), preset.items, "2026-10-05");
+    const planned = preset.items.find((i) => i.portalName === set && i.title.startsWith("Reasoning 2/3 (speed"));
+    if (planned) assert.ok(up.items.some((i) => i.id === presetId(planned.date, planned.title)), "a set only opened is still planned as a speed set");
   }
   // a late update from the 3 Oct plan still keeps every Made Easy mock and subject test
   const head = JSON.parse(readFileSync(new URL("./fixtures/pyq-plan-preset-2026-10-03.json", import.meta.url), "utf8")).items;

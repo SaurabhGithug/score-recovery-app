@@ -280,7 +280,15 @@ const DAILY_SLOT = /^(Hot-topic drill test|Reasoning [123]\/3)\b/;
  */
 export function syncPreset(items: PlanItem[], preset: PlanInput[], today?: string): { items: PlanItem[]; added: number; removed: number; skipped: number; past: number } {
   const current = new Set(preset.map((input) => presetId(input.date, clean(input.title, MAX_TITLE))));
-  const kept = items.filter((item) => !item.id.startsWith("preset:") || current.has(item.id) || !untouched(item));
+  const slotKey = (date: string, title: string) => { const slot = DAILY_SLOT.exec(title); return slot ? `${date}|${slot[1]}` : ""; };
+  // A built-in row the learner only opened (no answer, score or link of their own) moves with the plan when the plan moved or
+  // renamed it; the new row keeps the "opened" mark, so "did you attempt it?" is still asked.
+  const presetTitles = new Set(preset.map((input) => clean(input.title, MAX_TITLE)));
+  const presetSlots = new Set(preset.map((input) => slotKey(input.date, clean(input.title, MAX_TITLE))).filter(Boolean));
+  const openedOnly = (item: PlanItem) => item.status === "planned" && item.openedAt !== null && item.doneAt === null && item.result === "" && item.url === item.presetUrl;
+  const movable = (item: PlanItem) => item.id.startsWith("preset:") && !current.has(item.id) && openedOnly(item)
+    && (presetTitles.has(item.title) || presetSlots.has(slotKey(item.date, item.title)));
+  const kept = items.filter((item) => !item.id.startsWith("preset:") || current.has(item.id) || (!untouched(item) && !movable(item)));
   const keptIds = new Set(kept.map((item) => item.id));
   const dropped = items.filter((item) => !keptIds.has(item.id));
   const removed = dropped.length;
@@ -288,10 +296,10 @@ export function syncPreset(items: PlanItem[], preset: PlanInput[], today?: strin
   // A test the learner already acted on, kept on an older date, is not added again on its new date.
   const actedOn = new Set(touched.filter((item) => TEST_IDENTITY.test(item.title)).map((item) => item.title));
   // A day keeps the drill or reasoning block the learner already acted on, even if the built-in plan renamed it.
-  const slotKey = (date: string, title: string) => { const slot = DAILY_SLOT.exec(title); return slot ? `${date}|${slot[1]}` : ""; };
   const filledSlots = new Set(touched.map((item) => slotKey(item.date, item.title)).filter(Boolean));
-  // An IES set already opened or taken under an older title (say a half-test sprint) is used up: IES allows one attempt.
-  const usedSets = new Set(touched.filter((item) => item.portalName && USES_IES_SET.test(item.title)).map((item) => item.portalName));
+  // An IES set already taken under an older title (say a half-test sprint) is used up: IES allows one attempt.
+  // Only an attempt or a score says so; a set merely opened or skipped can still be taken.
+  const usedSets = new Set(touched.filter((item) => item.portalName && USES_IES_SET.test(item.title) && (item.status === "attempted" || item.result !== "")).map((item) => item.portalName));
   const ids = new Set(kept.map((item) => item.id));
   const notActedOn = preset.filter((input) => {
     const title = clean(input.title, MAX_TITLE);
@@ -313,7 +321,14 @@ export function syncPreset(items: PlanItem[], preset: PlanInput[], today?: strin
     : notActedOn;
   const past = notActedOn.length - wanted.length;
   const merged = mergePreset(removed > 0 ? kept : items, wanted);
-  return { items: refreshFromPreset(merged.items, preset), added: merged.added, removed, skipped, past };
+  // Carry "opened" over to the row that replaced an opened-only row (same test, or same day and block).
+  const openedFrom = dropped.filter(openedOnly);
+  const carried = openedFrom.length === 0 ? merged.items : merged.items.map((item) => {
+    if (keptIds.has(item.id) || item.openedAt !== null || item.status !== "planned") return item;
+    const from = openedFrom.find((old) => old.title === item.title) ?? openedFrom.find((old) => slotKey(old.date, old.title) !== "" && slotKey(old.date, old.title) === slotKey(item.date, item.title));
+    return from ? { ...item, openedAt: from.openedAt } : item;
+  });
+  return { items: refreshFromPreset(carried, preset), added: merged.added, removed, skipped, past };
 }
 
 const update =(items: PlanItem[], id: string, change: (item: PlanItem) => PlanItem): PlanItem[] => items.map((item) => (item.id === id ? change(item) : item));
