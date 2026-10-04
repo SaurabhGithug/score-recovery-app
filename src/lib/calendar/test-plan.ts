@@ -203,6 +203,9 @@ export function mergePreset(items: PlanItem[], preset: PlanInput[]): { items: Pl
 /** The note older plans gave every hot-topic drill, which pointed into the repository. */
 const REPO_NOTE = /\bdocs\/\S+\.md\b/;
 const DRILL_NOTE = "Re-test yourself on the facts you got wrong in your recent topic tests. Shuffle the options.";
+/** Older plans split one IES reasoning test into two sprints; IES allows one attempt per test. */
+const SPLIT_TEST = /^Reasoning [23]\/3 \(sprint Q/;
+const WHOLE_TEST_NOTE = "IES gives one attempt per test, so this set cannot be split: take it whole, once, in one sitting (aim 25 min)";
 
 /**
  * Built-in items take the current plan's details: series, minutes, note, portal name and built-in link. Nothing else changes:
@@ -221,7 +224,7 @@ export function refreshFromPreset(items: PlanItem[], preset: PlanInput[]): PlanI
     const input = rows.get(item.id);
     if (!input) {
       const series = item.series === "app" && !safeUrl(item.url) ? "other" : item.series;
-      const note = REPO_NOTE.test(item.note) ? DRILL_NOTE : item.note;
+      const note = REPO_NOTE.test(item.note) ? DRILL_NOTE : SPLIT_TEST.test(item.title) ? WHOLE_TEST_NOTE : item.note;
       if (series === item.series && note === item.note) return item;
       changed = true;
       return { ...item, series, note };
@@ -253,7 +256,13 @@ const untouched = (item: PlanItem): boolean =>
  * Items that stand for one specific test: an IES topic test, one of its passes, a full mock, a Made Easy subject test,
  * or a whole IES reasoning or GA set (full block or speed block; IES allows one attempt per test).
  */
-export const TEST_IDENTITY = /^(IES T\d+ |Pass [23] of 3: IES T\d+ |Full mock \(|(GK\/CA: )?Made Easy subject test \d+:|Reasoning [12]\/3 \((full 50 Q, 30 min|speed set, 50 Q in 25 min)\): IES GIR |GK\/CA: IES GA )/;
+export const TEST_IDENTITY = /^(IES T\d+ |Pass [23] of 3: IES T\d+ |Full mock \(|(GK\/CA: )?Made Easy subject test \d+:|Reasoning [12]\/3 \((full \d+ Q, 30 min|speed set, \d+ Q in 25 min)\): IES GIR |GK\/CA: IES GA )/;
+
+/** Whole tests the learner still has to sit: kept even when an update places them on a day already past. */
+const WHOLE_TEST = /^(IES T\d+ |Pass [23] of 3: IES T\d+ |Full mock \(|(GK\/CA: )?Made Easy subject test \d+:)/;
+
+/** Rows that use up one IES reasoning or GA test (IES allows one attempt). Pass rows share their test's name on purpose. */
+const USES_IES_SET = /^(Reasoning [123]\/3 |GK\/CA: IES GA )/;
 
 /** Blocks the built-in plan has at most once a day: the hot-topic drill and each of the three reasoning blocks. */
 const DAILY_SLOT = /^(Hot-topic drill test|Reasoning [123]\/3)\b/;
@@ -263,10 +272,11 @@ const DAILY_SLOT = /^(Hot-topic drill test|Reasoning [123]\/3)\b/;
  * (a) drop built-in items the current plan no longer has, but only if the learner never touched them;
  * (b) add the built-in items that are missing; (c) refresh built-in details (see refreshFromPreset).
  * The learner's own items, and built-in items they opened, attempted, skipped, scored or linked, are never removed.
- * A test or daily block the learner already acted on is not added a second time (`skipped`). When a plan is already loaded,
- * nothing NEW is added to days before `today` (`past`), so an update never back-fills days the learner has finished; but a test
- * or daily block the update moved or renamed is put back even on a past day, so a learner who is behind still sees it as not done.
- * Running it again changes nothing (added 0, removed 0, the same array back).
+ * A test or daily block the learner already acted on is not added a second time (`skipped`), and neither is an IES reasoning or GA
+ * set they already opened or took under another title. When a plan is already loaded, no new daily block is added to days before
+ * `today` (`past`), so an update never back-fills practice the learner has finished; but whole tests (topic tests and their passes,
+ * mocks, Made Easy subject tests) and anything the update moved or renamed are put back even on a past day, so a learner who is
+ * behind still sees them as not done. Running it again changes nothing (added 0, removed 0, the same array back).
  */
 export function syncPreset(items: PlanItem[], preset: PlanInput[], today?: string): { items: PlanItem[]; added: number; removed: number; skipped: number; past: number } {
   const current = new Set(preset.map((input) => presetId(input.date, clean(input.title, MAX_TITLE))));
@@ -280,11 +290,14 @@ export function syncPreset(items: PlanItem[], preset: PlanInput[], today?: strin
   // A day keeps the drill or reasoning block the learner already acted on, even if the built-in plan renamed it.
   const slotKey = (date: string, title: string) => { const slot = DAILY_SLOT.exec(title); return slot ? `${date}|${slot[1]}` : ""; };
   const filledSlots = new Set(touched.map((item) => slotKey(item.date, item.title)).filter(Boolean));
+  // An IES set already opened or taken under an older title (say a half-test sprint) is used up: IES allows one attempt.
+  const usedSets = new Set(touched.filter((item) => item.portalName && USES_IES_SET.test(item.title)).map((item) => item.portalName));
   const ids = new Set(kept.map((item) => item.id));
   const notActedOn = preset.filter((input) => {
     const title = clean(input.title, MAX_TITLE);
     if (ids.has(presetId(input.date, title))) return true;
-    return !actedOn.has(title) && !filledSlots.has(slotKey(input.date, title));
+    const usesUsedSet = USES_IES_SET.test(title) && usedSets.has(clean(input.portalName, MAX_TITLE));
+    return !actedOn.has(title) && !filledSlots.has(slotKey(input.date, title)) && !usesUsedSet;
   });
   const skipped = preset.length - notActedOn.length;
   const loaded = items.some((item) => item.id.startsWith("preset:"));
@@ -296,7 +309,7 @@ export function syncPreset(items: PlanItem[], preset: PlanInput[], today?: strin
     return droppedTitles.has(title) || droppedSlots.has(slotKey(input.date, title));
   };
   const wanted = loaded && today
-    ? notActedOn.filter((input) => input.date >= today || ids.has(presetId(input.date, clean(input.title, MAX_TITLE))) || replaces(input))
+    ? notActedOn.filter((input) => input.date >= today || ids.has(presetId(input.date, clean(input.title, MAX_TITLE))) || replaces(input) || WHOLE_TEST.test(clean(input.title, MAX_TITLE)))
     : notActedOn;
   const past = notActedOn.length - wanted.length;
   const merged = mergePreset(removed > 0 ? kept : items, wanted);

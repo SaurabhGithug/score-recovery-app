@@ -106,14 +106,26 @@ assert.equal(mergePreset(mine, preset.items).items.find((i) => i.id === "mine").
 const days = new Set(preset.items.map((i) => i.date));
 assert.equal(days.size, 30, "3 Oct to 1 Nov is 30 days");
 assert.ok([...days].every((d) => d >= "2026-10-03" && d <= "2026-11-01"));
+// Re-planned on 5 Oct from the IES page: 3-4 Oct keep only what was really taken there.
+const REPLANNED = "2026-10-05";
 for (const d of days) {
   const todays = preset.items.filter((i) => i.date === d);
+  if (d < REPLANNED) {
+    assert.ok(todays.length > 0 && todays.every((i) => /Taken on IES/.test(i.note)), `${d}: only tests already taken on IES`);
+    continue;
+  }
   assert.equal(todays.filter((i) => i.title.startsWith("Reasoning")).length, 3, `${d}: three reasoning blocks`);
   assert.equal(todays.filter((i) => i.title.startsWith("Hot-topic drill")).length, 1, `${d}: one hot-topic drill`);
 }
+assert.deepEqual(preset.items.filter((i) => i.date < REPLANNED).map((i) => i.title.split(" (")[0]).sort(), ["IES T81 Hydrologic Cycle", "Reasoning 1/3", "Reasoning 1/3"], "3-4 Oct: the two reasoning sets and T81 taken on IES");
+for (const t of ["IES T42 ", "IES T37 "]) {
+  const row = preset.items.find((i) => i.title.startsWith(t));
+  assert.ok(row && row.date >= REPLANNED, `${t}not taken by 4 Oct, so it is planned from 5 Oct (${row?.date})`);
+}
 assert.equal(parsePlan(first.items).length, first.items.length, "every preset item survives validation");
 const civil = preset.items.filter((i) => i.title.startsWith("IES T"));
-assert.ok(civil.length === 60 && civil.every((i) => i.portalName && /Test\s*-?\s*\d+/.test(i.portalName)), "every IES Civil test carries its exact portal name");
+// 60 Tier 1-3 tests minus T86, which no longer fits after the 5 Oct re-plan (it is on the optional list in docs/pyq-plan.md)
+assert.ok(civil.length === 59 && !civil.some((i) => i.title.startsWith("IES T86 ")) && civil.every((i) => i.portalName && /Test\s*-?\s*\d+/.test(i.portalName)), "every IES Civil test carries its exact portal name");
 assert.ok(preset.items.filter((i) => i.portalName).length > 120, "reasoning and GA sets carry their portal names too");
 assert.ok(first.items.every((i) => !i.portalName || i.portalName.length <= 200));
 assert.equal(first.items.find((i) => i.title.startsWith("IES T42")).portalName, "Topic wise Test - 42 Estimating,Costing and Valuation _ (Estimating ,Costing and Valuation -42)");
@@ -160,7 +172,7 @@ for (const i of preset.items) {
 for (const prefix of ["Hot-topic drill test", "Analyse today's mock", "Reasoning 1/3: the reasoning section"]) {
   assert.ok(preset.items.filter((i) => i.title.startsWith(prefix)).every((i) => i.series === "other" && !i.url), `${prefix}: a to-do with no Open button`);
 }
-for (const d of days) {
+for (const d of [...days].filter((x) => x >= REPLANNED)) {
   for (const slot of ["Reasoning 1/3", "Reasoning 2/3", "Reasoning 3/3", "Hot-topic drill test"]) {
     assert.equal(preset.items.filter((i) => i.date === d && i.title.startsWith(slot)).length, 1, `${d}: one ${slot}`);
   }
@@ -335,20 +347,23 @@ for (const i of preset.items) {
   touch(oct9, (s, id) => setResult(s, id, "need to redo"));
   saved = addItem(saved, { date: "2026-10-06", title: "My own revision of formulas", series: "other" }, "own-1");
   saved = parsePlan(JSON.parse(JSON.stringify(saved)));            // through storage, like the app
-  const before = new Map(saved.map((i) => [i.id, JSON.stringify(i)]));
+  // Progress, day, title and the learner's own link stay exactly as they were (built-in notes may refresh).
+  const progress = (i) => i && JSON.stringify([i.date, i.title, i.status, i.openedAt, i.doneAt, i.result, i.url]);
+  const before = new Map(saved.map((i) => [i.id, progress(i)]));
   const up = syncPreset(saved, preset.items);
-  for (const id of [...touchedIds, "own-1"]) assert.equal(JSON.stringify(up.items.find((i) => i.id === id)), before.get(id), `${id}: kept unchanged`);
+  for (const id of [...touchedIds, "own-1"]) assert.equal(progress(up.items.find((i) => i.id === id)), before.get(id), `${id}: kept unchanged`);
+  assert.deepEqual(up.items.find((i) => i.id === "own-1"), saved.find((i) => i.id === "own-1"), "your own item is untouched");
   const keys = up.items.map((i) => `${i.date}|${i.title}`);
   assert.equal(new Set(keys).size, keys.length, "no duplicate date+title rows after the upgrade");
   for (const id of touchedIds) {
     const row = up.items.find((i) => i.id === id);
     if (/^IES T\d+ /.test(row.title)) assert.equal(up.items.filter((i) => i.title === row.title).length, 1, `${row.title.slice(0, 20)}: one copy only`);
   }
-  // 3 Oct keeps every test; only its two half-test sprints became one speed set and a review (IES allows one attempt)
+  // 3 Oct after the re-plan: what the learner touched there, plus the set really taken on IES; untouched practice rows go
   const oct3 = (rows) => rows.filter((i) => i.date === "2026-10-03").map((i) => i.title).sort();
-  const sprints = /^Reasoning [23]\/3 \(sprint /;
-  assert.deepEqual(oct3(up.items).filter((t) => !/^Reasoning [23]\/3 /.test(t)), oct3(head).filter((t) => !sprints.test(t)), "3 Oct keeps its tests");
-  assert.deepEqual(oct3(up.items).filter((t) => /^Reasoning [23]\/3 /.test(t)), ["Reasoning 2/3 (speed set, 50 Q in 25 min): IES GIR 22 Jan 2018 Morning", "Reasoning 3/3 (review, 10 min): re-solve today's wrong, guessed and slow reasoning questions"], "3 Oct: the same set, taken whole");
+  const touchedOct3 = saved.filter((i) => i.date === "2026-10-03" && touchedIds.includes(i.id)).map((i) => i.title);
+  assert.deepEqual(oct3(up.items), [...new Set([...touchedOct3, ...oct3(preset.items)])].sort(), "3 Oct: touched rows plus the re-planned rows");
+  assert.ok(!up.items.some((i) => i.date === "2026-10-03" && /sprint/.test(i.title)), "3 Oct: no half-test sprint left");
   assert.ok(up.removed > 0 && up.added > 0, "outdated rows go, new ones arrive");
   const again = syncPreset(up.items, preset.items);
   assert.equal(again.added + again.removed, 0, "updating twice changes nothing");
@@ -365,8 +380,12 @@ for (const i of preset.items) {
   const pastBefore = new Set(saved.filter((i) => i.date < today).map((i) => i.id));
   assert.equal(summarize(saved, today).overdue, 0);
   const up = syncPreset(saved, preset.items, today);
-  assert.equal(summarize(up.items, today).overdue, 0, "nothing new is overdue after the update");
-  assert.ok(up.items.filter((i) => i.date < today).every((i) => pastBefore.has(i.id)), "no new row on a day already past");
+  // Only whole tests the learner has not taken may land on a past day (as not done); never daily practice.
+  const wholeTest = /^(IES T\d+ |Pass [23] of 3: IES T\d+ |Full mock \(|(GK\/CA: )?Made Easy subject test \d+:)/;
+  const newPast = up.items.filter((i) => i.date < today && !pastBefore.has(i.id));
+  assert.ok(newPast.every((i) => wholeTest.test(i.title) && i.status === "planned"), `only whole tests come back on past days: ${newPast.filter((i) => !wholeTest.test(i.title)).map((i) => i.title.slice(0, 30))}`);
+  assert.equal(summarize(up.items, today).overdue, newPast.length, "what is overdue is exactly those tests");
+  assert.ok(up.items.some((i) => i.title.endsWith("Made Easy Full Syllabus Test 1")), "Made Easy mock 1 is kept, not lost");
   assert.ok(up.past > 0, "the rows left off past days are counted");
   assert.ok(up.added > 0, "today and later still get the new rows");
   const have = new Set(up.items.map((i) => i.id));
@@ -374,7 +393,8 @@ for (const i of preset.items) {
   const doneSlots = new Set(up.items.filter((i) => i.status === "attempted").map((i) => `${i.date}|${(/^(Hot-topic drill test|Reasoning [123]\/3)\b/.exec(i.title) ?? [])[1]}`));
   for (const row of mergePreset([], preset.items).items.filter((i) => i.date >= today && !have.has(i.id))) {
     const slot = (/^(Hot-topic drill test|Reasoning [123]\/3)\b/.exec(row.title) ?? [])[1];
-    assert.ok(doneTitles.has(row.title) || (slot && doneSlots.has(`${row.date}|${slot}`)), `${row.date} ${row.title.slice(0, 40)}: missing, but the learner never did it`);
+    const setUsed = row.portalName && up.items.some((i) => i.status === "attempted" && i.portalName === row.portalName && /^(Reasoning|GK\/CA: IES GA)/.test(i.title));
+    assert.ok(doneTitles.has(row.title) || (slot && doneSlots.has(`${row.date}|${slot}`)) || setUsed, `${row.date} ${row.title.slice(0, 40)}: missing, but the learner never did it`);
   }
   const again = syncPreset(up.items, preset.items, today);
   assert.deepEqual([again.added, again.removed], [0, 0], "a second update changes nothing");
@@ -398,11 +418,15 @@ for (const i of preset.items) {
     const openSlots = new Set(saved.filter((i) => i.status === "planned" && slotOf(i.title)).map((i) => `${i.date}|${slotOf(i.title)}`));
     for (const row of preset.items.filter((i) => identity.test(i.title))) {
       const copies = up.items.filter((i) => i.title === row.title).length;
-      if (oldTitles.has(row.title) || row.date >= today || openSlots.has(`${row.date}|${slotOf(row.title)}`)) {
+      const whole = /^(IES T\d+ |Pass [23] of 3: IES T\d+ |Full mock \(|(GK\/CA: )?Made Easy subject test \d+:)/.test(row.title);
+      // IES allows one attempt: a reasoning or GA set the learner already took under an older title is not planned again
+      const setTaken = /^(Reasoning|GK\/CA: IES GA)/.test(row.title) && saved.some((i) => i.status === "attempted" && i.portalName === row.portalName && i.title !== row.title);
+      if (setTaken) { assert.equal(copies, 0, `update on ${today}: ${row.title.slice(0, 45)} uses a set already taken`); continue; }
+      if (whole || oldTitles.has(row.title) || row.date >= today || openSlots.has(`${row.date}|${slotOf(row.title)}`)) {
         assert.equal(copies, 1, `update on ${today}: ${row.title.slice(0, 45)} is in the plan exactly once`);
         if (!doneBefore.has(row.title)) assert.equal(up.items.find((i) => i.title === row.title).status, "planned", `update on ${today}: ${row.title.slice(0, 30)} is still to do`);
       } else {
-        assert.equal(copies, 0, `update on ${today}: ${row.title.slice(0, 45)} is new and on a past day, so it is left out`);
+        assert.equal(copies, 0, `update on ${today}: ${row.title.slice(0, 45)} is new practice on a past day, so it is left out`);
       }
     }
     assert.ok(up.past > 0, `update on ${today}: left-out new rows are counted for the notice`);
@@ -432,6 +456,19 @@ for (const i of preset.items) {
   assert.equal(refreshFromPreset(fixed, preset.items), fixed, "second load: same array back");
 }
 
+// a split-test sprint row the learner kept from an older plan is told to take the set whole (IES: one attempt per test)
+{
+  const old = JSON.parse(readFileSync(new URL("./fixtures/pyq-plan-preset-2026-10-03.json", import.meta.url), "utf8")).items;
+  let saved = parsePlan(JSON.parse(JSON.stringify(mergePreset([], old).items)));
+  const sprint = saved.find((i) => i.date === "2026-10-04" && i.title.startsWith("Reasoning 2/3 (sprint"));
+  saved = markOpened(saved, sprint.id, "2026-10-04T12:00:00.000Z");
+  const up = syncPreset(refreshFromPreset(saved, preset.items), preset.items, "2026-10-04");
+  const kept = up.items.find((i) => i.id === sprint.id);
+  assert.ok(kept && /cannot be split/.test(kept.note), "the kept sprint row says to take the whole set once");
+  assert.equal(up.items.filter((i) => i.date === "2026-10-04" && i.title.startsWith("Reasoning 2/3")).length, 1, "and no second speed block that day");
+  assert.ok(!up.items.some((i) => i.id !== sprint.id && /sprint/.test(i.title)), "every other sprint row is gone");
+}
+
 // a drill, a full reasoning set or a GA set the learner already used is not scheduled a second time by an update
 {
   const head = JSON.parse(readFileSync(new URL("./fixtures/pyq-plan-preset-2026-10-03.json", import.meta.url), "utf8")).items;
@@ -451,8 +488,55 @@ for (const i of preset.items) {
   }
   assert.ok(up.skipped >= 1);
   for (const row of touched) assert.equal(up.items.find((i) => i.id === row.id).status, "attempted", "progress kept");
+  // 4 Oct: the re-planned rows plus the drill the learner already did there, and nothing doubled
   const today = summarize(up.items, "2026-10-04");
-  assert.equal(today.todayTotal, preset.items.filter((i) => i.date === "2026-10-04").length, "today's count is not inflated");
+  assert.equal(today.todayTotal, preset.items.filter((i) => i.date === "2026-10-04").length + 1, "today's count is not inflated");
+}
+
+// the plan live before the 5 Oct re-plan (7325cb8): half-test sprints, T81 on 8 Oct, T42/T37 on 3-4 Oct
+{
+  const live = JSON.parse(readFileSync(new URL("./fixtures/pyq-plan-preset-2026-10-04.json", import.meta.url), "utf8")).items;
+  const ies = JSON.parse(readFileSync(new URL("./fixtures/ies-my-tests-2026-10-04.json", import.meta.url), "utf8"));
+  const questions = new Map(ies.gs.map(([name, , q]) => [name, q]));
+  // every whole IES reasoning set counts as one specific test (titles carry 48-50 Q)
+  for (const i of preset.items.filter((r) => /^Reasoning [12]\/3 \((full|speed)/.test(r.title))) assert.ok(TEST_IDENTITY.test(i.title), `${i.title.slice(0, 50)}: a specific test`);
+  // every reasoning title states the real question count of its IES test
+  for (const i of preset.items.filter((r) => /^Reasoning [12]\/3 \((full|speed)/.test(r.title))) {
+    assert.ok(i.title.includes(` ${questions.get(i.portalName)} Q`), `${i.date} ${i.title.slice(0, 50)}: IES has ${questions.get(i.portalName)} Q`);
+  }
+  const fromLive = (touch) => { let p = mergePreset([], live).items; p = touch(p); return parsePlan(JSON.parse(JSON.stringify(p))); };
+  const row = (p, d, prefix) => p.find((i) => i.date === d && i.title.startsWith(prefix));
+  for (const today of ["2026-10-05", "2026-10-09"]) {
+    // took the 4 Oct set whole and ticked only the Q26-50 sprint row: that IES test is used up, so no speed set for it anywhere
+    const saved = fromLive((p) => setStatus(p, row(p, "2026-10-04", "Reasoning 3/3 (sprint").id, "attempted", "2026-10-04T12:00:00.000Z", "44/50"));
+    const set = row(saved, "2026-10-04", "Reasoning 3/3 (sprint").portalName;
+    const up = syncPreset(refreshFromPreset(saved, preset.items), preset.items, today);
+    const uses = up.items.filter((i) => i.portalName === set);
+    assert.ok(uses.every((i) => i.status === "attempted"), `update on ${today}: ${set.slice(0, 40)} is not planned again (${uses.map((i) => i.date + " " + i.title.slice(0, 25))})`);
+    // no IES reasoning or GA test is planned twice
+    const sets = new Map();
+    for (const i of up.items.filter((r) => r.portalName && /^(Reasoning|GK\/CA: IES GA)/.test(r.title))) sets.set(i.portalName, (sets.get(i.portalName) ?? 0) + 1);
+    assert.ok([...sets.values()].every((n) => n === 1), `update on ${today}: a reasoning or GA set planned twice`);
+    // a learner who did nothing gets the whole re-plan: T42/T37 on their new days, T81 on 4 Oct, every Made Easy test once
+    const fresh = syncPreset(refreshFromPreset(fromLive((p) => p), preset.items), preset.items, today);
+    for (const t of ["IES T42 ", "IES T37 ", "IES T81 "]) {
+      const rows = fresh.items.filter((i) => i.title.startsWith(t));
+      assert.equal(rows.length, 1, `update on ${today}: ${t}once`);
+      assert.equal(rows[0].date, preset.items.find((i) => i.title.startsWith(t)).date, `update on ${today}: ${t}on its re-planned day`);
+    }
+    for (const t of preset.items.filter((i) => /^(Full mock \(|(GK\/CA: )?Made Easy subject test)/.test(i.title)).map((i) => i.title)) {
+      assert.equal(fresh.items.filter((i) => i.title === t).length, 1, `update on ${today}: ${t.slice(0, 50)} once`);
+    }
+    assert.ok(!fresh.items.some((i) => /sprint/.test(i.title)), `update on ${today}: no half-test sprint left`);
+  }
+  // a late update from the 3 Oct plan still keeps every Made Easy mock and subject test
+  const head = JSON.parse(readFileSync(new URL("./fixtures/pyq-plan-preset-2026-10-03.json", import.meta.url), "utf8")).items;
+  for (const today of ["2026-10-07", "2026-10-11"]) {
+    const up = syncPreset(parsePlan(JSON.parse(JSON.stringify(mergePreset([], head).items))), preset.items, today);
+    for (const t of preset.items.filter((i) => /^(Full mock \(|(GK\/CA: )?Made Easy subject test)/.test(i.title)).map((i) => i.title)) {
+      assert.equal(up.items.filter((i) => i.title === t).length, 1, `late update on ${today}: ${t.slice(0, 50)} kept`);
+    }
+  }
 }
 
 console.log("test-plan: all checks passed");

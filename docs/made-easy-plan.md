@@ -1,6 +1,6 @@
 # Made Easy and full-mock plan, 5 Oct to 1 Nov 2026
 
-Built 4 Oct 2026 by `pyq_plan.py`; part of the calendar plan in the app. Exam window: 2-6 Nov 2026 (proposed by SSC).
+Re-planned 5 Oct 2026 by `pyq_plan.py`; part of the calendar plan in the app. Exam window: 2-6 Nov 2026 (proposed by SSC). Made Easy attempts are as last read from the portal (2 Oct); tests done since then: press Skip or Mark attempted in the calendar.
 
 ## Full mocks (200 questions, 120 minutes)
 
@@ -30,13 +30,13 @@ Your Made Easy account (Reema's login) had attempted tests 2, 5, 6, 7, 8, 9, 11 
 | Date | Test | When |
 |---|---|---|
 | Thu 08 Oct | Made Easy subject test 1: History & Culture + Geography (50 Q, 30 min) + 20 min fresh current affairs | GK / CA day |
-| Sun 11 Oct | Made Easy subject test 4: General Science & Technology + Environment (50 Q, 30 min) + 20 min fresh current affairs | GK / CA day |
-| Wed 21 Oct | Made Easy subject test 13: Transportation Engineering (50 Q, 30 min) | right after your IES block on this subject |
+| Tue 13 Oct | Made Easy subject test 4: General Science & Technology + Environment (50 Q, 30 min) + 20 min fresh current affairs | GK / CA day |
+| Mon 19 Oct | Made Easy subject test 13: Transportation Engineering (50 Q, 30 min) | right after your IES block on this subject |
+| Thu 22 Oct | Made Easy subject test 10: Soil Mechanics (50 Q, 30 min) | right after your IES block on this subject |
 | Thu 22 Oct | Made Easy subject test 3: Current Affairs + General Knowledge (50 Q, 30 min) + 20 min fresh current affairs | GK / CA day |
-| Mon 26 Oct | Made Easy subject test 15: Environmental Engineering (50 Q, 30 min) | right after your IES block on this subject |
-| Mon 26 Oct | Made Easy subject test 16: Hydraulics (50 Q, 30 min) | right after your IES block on this subject |
-| Wed 28 Oct | Made Easy subject test 14: RCC Design + Steel Design (50 Q, 30 min) | right after your IES block on this subject |
-| Wed 28 Oct | Made Easy subject test 10: Soil Mechanics (50 Q, 30 min) | right after your IES block on this subject |
+| Mon 26 Oct | Made Easy subject test 14: RCC Design + Steel Design (50 Q, 30 min) | right after your IES block on this subject |
+| Wed 28 Oct | Made Easy subject test 15: Environmental Engineering (50 Q, 30 min) | right after your IES block on this subject |
+| Fri 30 Oct | Made Easy subject test 16: Hydraulics (50 Q, 30 min) | right after your IES block on this subject |
 
 ## Caveats
 

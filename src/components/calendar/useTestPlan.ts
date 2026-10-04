@@ -13,6 +13,9 @@ export function useTestPlan(userId: string | null | undefined) {
   const [loadedKey, setLoadedKey] = useState<string | null>(null);
   const [saveFailed, setSaveFailed] = useState(false);
   const itemsRef = useRef<PlanItem[]>([]);
+  /** Which version of the built-in plan this plan was last loaded or updated from ("built" date), or null if never. */
+  const [presetStamp, setPresetStamp] = useState<string | null>(null);
+  const stampKey = key ? `${key}:preset` : null;
   /** False after a save failed (private window, full storage), until one succeeds again. */
   const savedOk = useRef(true);
 
@@ -21,14 +24,17 @@ export function useTestPlan(userId: string | null | undefined) {
     // localStorage is browser-only: read it after mount, outside the effect body.
     void Promise.resolve().then(() => {
       let loaded: PlanItem[] = [];
+      let stamp: string | null = null;
       try {
         const raw = window.localStorage.getItem(key);
         loaded = raw ? parsePlan(JSON.parse(raw)) : [];
+        stamp = window.localStorage.getItem(`${key}:preset`);
       } catch {
         loaded = [];
       }
       itemsRef.current = loaded;
       setItems(loaded);
+      setPresetStamp(stamp);
       setLoadedKey(key);
     });
   }, [key]);
@@ -81,5 +87,12 @@ export function useTestPlan(userId: string | null | undefined) {
     }
   }, [key, loadedKey]);
 
-  return { items, ready, commit, saveFailed };
+  /** Remember that the plan now matches this version of the built-in plan. */
+  const markPresetSynced = useCallback((built: string) => {
+    if (!stampKey) return;
+    try { window.localStorage.setItem(stampKey, built); } catch { /* the notice may show again; harmless */ }
+    setPresetStamp(built);
+  }, [stampKey]);
+
+  return { items, ready, commit, saveFailed, presetStamp, markPresetSynced };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import {
@@ -11,6 +11,8 @@ import preset from "@/lib/calendar/pyq-plan-preset.json";
 
 type Commit = (update: (current: PlanItem[]) => PlanItem[]) => void;
 const PYQ_PRESET = preset.items as unknown as PlanInput[];
+/** The version of the built-in plan; a saved plan updated from an older one is offered the update. */
+const PRESET_BUILT = preset.built;
 const SERIES_OPTIONS: PlanSeries[] = ["ies", "madeeasy", "app", "other"];
 const btn = "rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-800 hover:bg-slate-50 disabled:opacity-50";
 const btnPrimary = "rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50";
@@ -30,9 +32,10 @@ function TestLink({ item, onOpen, children, className, newTabLabel }: { item: Pl
 }
 
 /** The learner's tests for the chosen day, with "Open test", "did you attempt it?" and progress. */
-export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFailed, commit }: {
+export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFailed, commit, presetStamp, onPresetSynced }: {
   today: string; selected: string; onSelect: (date: string) => void;
   items: PlanItem[]; ready: boolean; saveFailed: boolean; commit: Commit;
+  presetStamp: string | null; onPresetSynced: (built: string) => void;
 }) {
   const { t, lang } = useLang();
   const [askReady, setAskReady] = useState(true);
@@ -88,6 +91,12 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
   const summary = summarize(items, today);
   const asking = askReady ? askPending(items)[0] : undefined;
   const preloaded = items.some((item) => item.id.startsWith("preset:"));
+  // A plan loaded from an older built-in plan: say so, with the size of the change, until the learner updates.
+  const pendingUpdate = useMemo(() => {
+    if (!ready || !preloaded || presetStamp === PRESET_BUILT) return null;
+    const dryRun = syncPreset(items, PYQ_PRESET, today);
+    return dryRun.added + dryRun.removed > 0 ? dryRun : null;
+  }, [ready, preloaded, presetStamp, items, today]);
 
   // Coming back from a test (often by Back on a phone, which restores the old scroll position), bring the question into view.
   const askingId = asking?.id;
@@ -135,6 +144,7 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
       return;
     }
     setMessage("");
+    onPresetSynced(PRESET_BUILT);
     const { added, removed, skipped, past } = counts;
     if (added === 0 && removed === 0) {
       setPlanNotice(t({ en: "Your plan is already up to date.", hi: "आपकी योजना पहले से अद्यतन है।" }));
@@ -181,6 +191,10 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
     {!ready && <p className="text-sm text-slate-500">{t({ en: "Loading your plan…", hi: "आपकी योजना लोड हो रही है…" })}</p>}
     {saveFailed && <p role="alert" className="rounded-lg bg-amber-50 p-3 text-sm text-amber-900">{t({ en: "This browser would not save your plan (private window or full storage). Changes will be lost when you close the page.", hi: "यह ब्राउज़र आपकी योजना सहेज नहीं पा रहा। पेज बंद करने पर बदलाव खो जाएँगे।" })}</p>}
     {message && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-800">{message}</p>}
+    {pendingUpdate && <div role="status" className="flex flex-wrap items-center gap-3 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
+      <p className="min-w-0 flex-1">{t({ en: `The built-in plan has changed (${pendingUpdate.added} new or moved, ${pendingUpdate.removed} outdated). Update to get it; your progress is kept.`, hi: `योजना बदल गई है (${pendingUpdate.added} नए या खिसकाए गए, ${pendingUpdate.removed} पुराने)। अपडेट करें; आपकी प्रगति बनी रहेगी।` })}</p>
+      <button type="button" className={btnPrimary} onClick={loadOrUpdatePlan}>{t({ en: "Update now", hi: "अभी अपडेट करें" })}</button>
+    </div>}
 
     {asking && <div ref={bannerRef} tabIndex={-1} role="alertdialog" aria-labelledby="ask-heading" className="rounded-xl border-2 border-blue-600 bg-blue-50 p-4 outline-none">
       <p id="ask-heading" className="font-semibold text-slate-900">{t({ en: "Did you attempt this test?", hi: "क्या आपने यह टेस्ट दिया?" })}</p>
@@ -266,7 +280,7 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
         ? t({ en: "Update PYQ plan", hi: "पिछले वर्षों के प्रश्नों की योजना अपडेट करें" })
         : t({ en: "Load PYQ plan (3 Oct - 1 Nov)", hi: "पिछले वर्षों के प्रश्नों की योजना लोड करें (3 अक्टूबर - 1 नवंबर)" })}</button>
       {planNotice && <p role="status" className="text-sm text-slate-700">{planNotice}</p>}
-      <p className="text-xs text-slate-500">{t({ en: "Adds the IES topic tests (every hot test three times: the full test, then two shorter redo passes), three reasoning blocks a day and the daily hot-topic drill. Updating keeps your progress: anything you opened, attempted, skipped, scored or linked stays, and your own tests are never changed. A built-in test you remove comes back when you update; press Skip instead if you don't plan to do it. The plan is saved in this browser for your profile.", hi: "IES के विषयवार टेस्ट (हर हॉट टेस्ट तीन बार: पहले पूरा टेस्ट, फिर दो छोटे दोहराव), रोज़ तीन रीज़निंग ब्लॉक और रोज़ का हॉट-टॉपिक ड्रिल जोड़ता है। अपडेट करने पर आपकी प्रगति बनी रहती है: जो टेस्ट आपने खोला, दिया, छोड़ा या जिसमें स्कोर या लिंक जोड़ा, वह रहता है, और आपके अपने टेस्ट कभी नहीं बदलते। योजना का जो टेस्ट आप हटाते हैं, वह अपडेट करने पर लौट आता है; अगर उसे नहीं देना है तो 'छोड़ें' दबाएँ। योजना आपकी प्रोफ़ाइल के लिए इसी ब्राउज़र में सहेजी जाती है।" })}</p>
+      <p className="text-xs text-slate-500">{t({ en: "Adds the IES topic tests (every hot test three times: the full test, then two shorter redo passes), three reasoning blocks a day, the Made Easy mocks and subject tests, and the daily hot-topic drill. IES gives one attempt per test, so the redo passes and the reasoning review work from the test's Report. Updating keeps your progress: anything you opened, attempted, skipped, scored or linked stays, and your own tests are never changed. A built-in test you remove comes back when you update; press Skip instead if you don't plan to do it. The plan is saved in this browser for your profile.", hi: "IES के विषयवार टेस्ट (हर हॉट टेस्ट तीन बार: पहले पूरा टेस्ट, फिर दो छोटे दोहराव), रोज़ तीन रीज़निंग ब्लॉक, Made Easy के मॉक और विषयवार टेस्ट और रोज़ का हॉट-टॉपिक ड्रिल जोड़ता है। IES हर टेस्ट एक ही बार देने देता है, इसलिए दोहराव और रीज़निंग समीक्षा टेस्ट की Report से होती है। अपडेट करने पर आपकी प्रगति बनी रहती है: जो टेस्ट आपने खोला, दिया, छोड़ा या जिसमें स्कोर या लिंक जोड़ा, वह रहता है, और आपके अपने टेस्ट कभी नहीं बदलते। योजना का जो टेस्ट आप हटाते हैं, वह अपडेट करने पर लौट आता है; अगर उसे नहीं देना है तो 'छोड़ें' दबाएँ। योजना आपकी प्रोफ़ाइल के लिए इसी ब्राउज़र में सहेजी जाती है।" })}</p>
     </div>
   </section>;
 }

@@ -23,7 +23,7 @@ export default function CalendarPage() {
   const { t, lang } = useLang();
   const [today, setToday] = useState(() => localIsoDate());
   const { currentUser } = useUser();
-  const { items, ready, commit, saveFailed } = useTestPlan(currentUser?.id);
+  const { items, ready, commit, saveFailed, presetStamp, markPresetSynced } = useTestPlan(currentUser?.id);
   const [picked, setPicked] = useState<string | null>(null);
   const selected = picked ?? today;
   const marks = dayMarks(items);
@@ -71,7 +71,7 @@ export default function CalendarPage() {
       </p>
     </section>
 
-    <TestPlanPanel today={today} selected={selected} onSelect={setPicked} items={items} ready={ready} saveFailed={saveFailed} commit={commit} />
+    <TestPlanPanel today={today} selected={selected} onSelect={setPicked} items={items} ready={ready} saveFailed={saveFailed} commit={commit} presetStamp={presetStamp} onPresetSynced={markPresetSynced} />
 
     {months.map((monthKey) => {
       const cells = monthCells(monthKey);
