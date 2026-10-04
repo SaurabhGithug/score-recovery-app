@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  addItem, askPending, clearOpened, dayMarks, refreshFromPreset, isValidDate, itemsOn, linkFor, markOpened, mergePreset,
+  TEST_IDENTITY, addItem, askPending, clearOpened, dayMarks, refreshFromPreset, isValidDate, itemsOn, linkFor, markOpened, mergePreset,
   parsePlan, planStorageKey, presetId, removeItem, safeUrl, setResult, setStatus, setUrl, summarize, syncPreset,
 } from "../src/lib/calendar/test-plan.ts";
 
@@ -127,6 +127,30 @@ assert.deepEqual(filled, first.items, "only the names were missing");
 assert.equal(refreshFromPreset(filled, preset.items), filled, "nothing to fill, same array back");
 const own = addItem([], { date: "2026-10-03", title: "IES T42 Estimating, Costing and Valuation (315 Q, 197 min)", series: "ies" }, "mine2");
 assert.equal(refreshFromPreset(own, preset.items)[0].portalName, "", "your own items are never renamed");
+
+// the plan matches the IES series as the portal showed it on 4 Oct, and respects its one-attempt rule
+{
+  const ies = JSON.parse(readFileSync(new URL("./fixtures/ies-my-tests-2026-10-04.json", import.meta.url), "utf8"));
+  const timer = new Map([...ies.civil, ...ies.gs].map(([name, minutes, questions]) => [name, { minutes, questions }]));
+  assert.equal(ies.civil.length, 106, "106 Civil topic tests");
+  assert.equal(ies.gs.length, 131, "131 GS tests");
+  for (const i of preset.items.filter((row) => row.portalName)) {
+    assert.ok(timer.has(i.portalName), `${i.date} ${i.title.slice(0, 40)}: "${i.portalName}" is not a test on IES`);
+  }
+  for (const i of preset.items.filter((row) => /^IES T\d+ /.test(row.title))) {
+    const t = timer.get(i.portalName);
+    assert.equal(i.minutes, t.minutes, `${i.title.slice(0, 30)}: minutes are the IES timer`);
+    assert.ok(i.title.includes(`(${t.questions} Q, ${t.minutes} min)`), `${i.title.slice(0, 30)}: title shows the IES size`);
+  }
+  // one attempt per IES test: a reasoning or GA set is planned once, and no row splits a test into parts
+  const sets = preset.items.filter((i) => /Reasoning|Awareness/.test(i.portalName ?? ""));
+  const uses = new Map();
+  for (const i of sets) uses.set(i.portalName, [...(uses.get(i.portalName) ?? []), i.date]);
+  for (const [name, dates] of uses) assert.equal(dates.length, 1, `${name.slice(0, 50)} is planned ${dates.length} times (${dates.join(", ")})`);
+  assert.ok(!preset.items.some((i) => /sprint|Q1-25|Q26-50/i.test(i.title)), "no row asks for half of an IES test");
+  assert.ok(preset.items.filter((i) => i.title.startsWith("Reasoning 2/3 (speed set")).every((i) => i.portalName && i.series === "ies"), "every speed block is a whole IES test");
+  assert.ok(preset.items.filter((i) => i.title.startsWith("Pass ")).every((i) => /one attempt/.test(i.note)), "redo passes say IES allows one attempt");
+}
 
 // built-in rows open something real: an in-app row always carries its own page, and no note points into the repo
 for (const i of preset.items) {
@@ -320,7 +344,11 @@ for (const i of preset.items) {
     const row = up.items.find((i) => i.id === id);
     if (/^IES T\d+ /.test(row.title)) assert.equal(up.items.filter((i) => i.title === row.title).length, 1, `${row.title.slice(0, 20)}: one copy only`);
   }
-  assert.deepEqual(up.items.filter((i) => i.date === "2026-10-03").map((i) => i.title).sort(), head.filter((i) => i.date === "2026-10-03").map((i) => i.title).sort(), "3 Oct is unchanged");
+  // 3 Oct keeps every test; only its two half-test sprints became one speed set and a review (IES allows one attempt)
+  const oct3 = (rows) => rows.filter((i) => i.date === "2026-10-03").map((i) => i.title).sort();
+  const sprints = /^Reasoning [23]\/3 \(sprint /;
+  assert.deepEqual(oct3(up.items).filter((t) => !/^Reasoning [23]\/3 /.test(t)), oct3(head).filter((t) => !sprints.test(t)), "3 Oct keeps its tests");
+  assert.deepEqual(oct3(up.items).filter((t) => /^Reasoning [23]\/3 /.test(t)), ["Reasoning 2/3 (speed set, 50 Q in 25 min): IES GIR 22 Jan 2018 Morning", "Reasoning 3/3 (review, 10 min): re-solve today's wrong, guessed and slow reasoning questions"], "3 Oct: the same set, taken whole");
   assert.ok(up.removed > 0 && up.added > 0, "outdated rows go, new ones arrive");
   const again = syncPreset(up.items, preset.items);
   assert.equal(again.added + again.removed, 0, "updating twice changes nothing");
@@ -357,7 +385,7 @@ for (const i of preset.items) {
 // a learner who is behind updates late: tests the update moves between past days stay in the plan, not done, exactly once
 {
   const head = JSON.parse(readFileSync(new URL("./fixtures/pyq-plan-preset-2026-10-03.json", import.meta.url), "utf8")).items;
-  const identity = /^(IES T\d+ |Pass [23] of 3: IES T\d+ |Full mock \(|(GK\/CA: )?Made Easy subject test \d+:|Reasoning 1\/3 \(full 50 Q, 30 min\): IES GIR |GK\/CA: IES GA )/;
+  const identity = TEST_IDENTITY;
   for (const today of ["2026-10-08", "2026-10-09", "2026-10-12", "2026-10-15"]) {
     let saved = mergePreset([], head).items;
     for (const row of saved.filter((i) => i.date <= "2026-10-05")) saved = setStatus(saved, row.id, "attempted", `${row.date}T12:00:00.000Z`);
@@ -365,9 +393,12 @@ for (const i of preset.items) {
     const up = syncPreset(saved, preset.items, today);
     const doneBefore = new Set(saved.filter((i) => i.status === "attempted").map((i) => i.title));
     const oldTitles = new Set(head.map((i) => i.title));
+    // a daily block the update renamed on a day the learner never touched is replaced, not dropped
+    const slotOf = (t) => (/^(Hot-topic drill test|Reasoning [123]\/3)\b/.exec(t) ?? [])[1];
+    const openSlots = new Set(saved.filter((i) => i.status === "planned" && slotOf(i.title)).map((i) => `${i.date}|${slotOf(i.title)}`));
     for (const row of preset.items.filter((i) => identity.test(i.title))) {
       const copies = up.items.filter((i) => i.title === row.title).length;
-      if (oldTitles.has(row.title) || row.date >= today) {
+      if (oldTitles.has(row.title) || row.date >= today || openSlots.has(`${row.date}|${slotOf(row.title)}`)) {
         assert.equal(copies, 1, `update on ${today}: ${row.title.slice(0, 45)} is in the plan exactly once`);
         if (!doneBefore.has(row.title)) assert.equal(up.items.find((i) => i.title === row.title).status, "planned", `update on ${today}: ${row.title.slice(0, 30)} is still to do`);
       } else {

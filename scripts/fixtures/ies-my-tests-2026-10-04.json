@@ -1,0 +1,1198 @@
+{
+"source": "IES Master My Tests page (ehub.iesmaster.org/student/testment/test), read 2026-10-04: SSC-JE Previous Years Practice Set Tech CE and Tech - GS",
+"fields": [
+"portal name exactly as shown",
+"IES timer (minutes)",
+"questions"
+],
+"rule": "IES gives one attempt per test: after submitting, Attempt Now becomes Report.",
+"civil": [
+[
+"Topic wise Test -106 Miscellaneous (Surveying -106)",
+6,
+8
+],
+[
+"Topic wise Test -105 Contouring (Surveying -105)",
+18,
+26
+],
+[
+"Topic wise Test -104 Plane Table (Surveying -104)",
+15,
+22
+],
+[
+"Topic wise Test -103 Measurement of Area and Volume (Surveying -103)",
+20,
+31
+],
+[
+"Topic wise Test -102 Curves (Surveying -102)",
+7,
+11
+],
+[
+"Topic wise Test -101 Levelling (Surveying -101)",
+47,
+75
+],
+[
+"Topic wise Test -100 Traversing (Surveying -100)",
+12,
+18
+],
+[
+"Topic wise Test -99 Theodolite and Tacheometry (Surveying -99)",
+30,
+45
+],
+[
+"Topic wise Test -98 Compass Surveying (Surveying) -98",
+43,
+67
+],
+[
+"Topic wise Test -97 Linear Measurements (Surveying) -97",
+51,
+81
+],
+[
+"Topic wise Test -96 Fundamentals of Surveying (Surveying) -96)",
+35,
+53
+],
+[
+"Topic wise Test -95 Railway & Airport Transportation Engineering -95)",
+30,
+45
+],
+[
+"Topic wise Test -94 Highway Construction (Highway Construction -94)",
+9,
+13
+],
+[
+"Topic wise Test -93 Pavement Design (Transportation Engineering -93)",
+17,
+27
+],
+[
+"Topic wise Test -92 Surface Highway Materials (Transportation Engineering -92)",
+19,
+29
+],
+[
+"Topic wise Test -91 Traffic Engineering (Transportation Engineering -91)",
+13,
+20
+],
+[
+"Topic wise Test -90 Geometric Design (Transportation Engineering -90)",
+42,
+66
+],
+[
+"Topic wise Test -89 Highway Development and Planning (Transportation Engineering - 89)",
+5,
+8
+],
+[
+"Topic wise Test -88 Hydraulic Structure and River Training (Irrigation Engineering - 88)",
+30,
+46
+],
+[
+"Topic wise Test -87 Canal Design (Irrigation Engineering - 87)",
+20,
+30
+],
+[
+"Topic wise Test -86 Water Required of crops,Soil Moisture and Plant Relationship (Irrigation Engineering - 86)",
+33,
+49
+],
+[
+"Topic wise Test -85 Irrigation and Method of Irrigation (Irrigation Engineering - 85)",
+15,
+22
+],
+[
+"Topic wise Test -84 Ground water Hydrology (Irrigation Engineering - 84)",
+2,
+3
+],
+[
+"Topic wise Test -83 Floods (Irrigation Engineering - 83)",
+2,
+3
+],
+[
+"Topic wise Test -82 Runoff and Hydrograph (Irrigation Engineering - 82)",
+11,
+17
+],
+[
+"Topic wise Test -81 Hydrologicla Cycle (Irrigation Engineering - 81)",
+10,
+15
+],
+[
+"Topic wise Test -80 Hydraulic Machines (Hydraulics - 80)",
+27,
+42
+],
+[
+"Topic wise Test -79 Open Channel Flow (Hydraulics - 79)",
+40,
+62
+],
+[
+"Topic wise Test -78 Modal Analysis and Dimensional Analysis (Hydraulics - 78)",
+9,
+13
+],
+[
+"Topic wise Test -77 Flow Through Pipes (Hydraulics - 77)",
+22,
+35
+],
+[
+"Topic wisTopic wise Test -76 Drag and Lift (Hydraulics - 76)e",
+5,
+8
+],
+[
+"Topic wise Test -75 Boundary Layer Theory (Hydraulics - 75)",
+3,
+5
+],
+[
+"Topic wise Test -74 Turbulent Flow (Hydraulics - 74)",
+5,
+7
+],
+[
+"Topic wise Test -73 Laminar Flow (Hydraulics - 73)",
+9,
+13
+],
+[
+"Topic wise Test -72 Weirs and Notches (Hydraulics - 72)",
+13,
+20
+],
+[
+"Topic wise Test -71 Fluid Dynamics (Hydraulics - 71)",
+31,
+48
+],
+[
+"Topic wise Test -70 Fluid Kinematics (Hydraulics - 70)",
+16,
+25
+],
+[
+"Topic wise Test -69 Buoyancy and Floatation (Hydraulics - 69)",
+15,
+24
+],
+[
+"Topic wise Test -68 Liquid in Relative Equilibrium (Hydraulics - 68)",
+2,
+3
+],
+[
+"Topic wise Test -67 Hydrostatic Pressure (Hydraulics - 67)",
+33,
+51
+],
+[
+"Topic wise Test -66 Fluid Properties (Hydraulics - 66)",
+50,
+77
+],
+[
+"Topic wise Test -65 Expansive Soils (Soil Mechanics - 65)",
+1,
+1
+],
+[
+"Topic wise Test -64 Soil Exploration (Soil Mechanics - 64)",
+2,
+2
+],
+[
+"Topic wise Test -63 Deep Foundation (Soil Mechanics - 63)",
+7,
+10
+],
+[
+"Topic wise Test -62 Shallow Foundation (Soil Mechanics - 62)",
+15,
+24
+],
+[
+"Topic wise Test -61 Earth Pressure and Retaining Walls (Soil Mechanics - 61)",
+13,
+20
+],
+[
+"Topic wise Test -60 Shear Strength of Soil (Soil Mechanics - 60)",
+19,
+30
+],
+[
+"Topic wise Test -59 Compressibility and Consolidation (Soil Mechanics - 59)",
+12,
+18
+],
+[
+"Topic wise Test -58 Seepage through Soil (Soil Mechanics-58)",
+5,
+7
+],
+[
+"Topic wise Test -57 Effective Stress, Capillarity and Permeability (Soil Mechanics -57)",
+13,
+20
+],
+[
+"Topic wise Test -56 Soil Compaction (Soil Mechanics -56)",
+10,
+15
+],
+[
+"Topic wise Test -55 Clay Mineral and Soil Structure (Soil Mechanics -55)",
+3,
+4
+],
+[
+"Topic wise Test -54 Classification of Soil_ (Soil Mechanics -54)",
+22,
+31
+],
+[
+"Topic wise Test -53 Origin of Soil Water Relationship (Soil Mechanics -53)",
+76,
+120
+],
+[
+"Topic wise Test - 52 Air Pollution _ (Environmental Engineering-52)",
+17,
+27
+],
+[
+"Topic wise Test- 51 Solid Wasted Management (Environmental Engineering 51)",
+9,
+14
+],
+[
+"Topic wise Test - 50 Sewage Treatment _ (Environmental Engineering -50)",
+20,
+29
+],
+[
+"Topic wise Test - 49 Design of Sewerage System and Sewer Appurtenances_ (Environmental Engineering - 49)",
+22,
+33
+],
+[
+"Topic wise Test - 48 Biochemical Reactions in Treatment of Waste Water _ (Environmental Engineering -48)",
+5,
+8
+],
+[
+"Topic wise Test - 47 Waste Water Characteristics _ (Environmental Engineering -47)",
+10,
+15
+],
+[
+"Topic wise Test - 46 Distribution System _ (Environmental Engineering -46)",
+7,
+11
+],
+[
+"Topic wise Test - 45 Treatment of Water _ (Environmental Engineering-45)",
+30,
+44
+],
+[
+"Topic wise Test - 44 Quality Parameters of Water_ (Environmental Engineering -44)",
+18,
+26
+],
+[
+"Topic wise Test - 43 Water Demand, Its Source & Conveyance_ (Environmental Engineering -43)",
+18,
+23
+],
+[
+"Topic wise Test - 42 Estimating,Costing and Valuation _ (Estimating ,Costing and Valuation -42)",
+197,
+315
+],
+[
+", Bitumenous Material and Miscellaneous _ (BMC & Concrete Technology -41)",
+26,
+41
+],
+[
+"Topic wise Test - 40 Paints and Varnishes _ (BMC & Concrete Technology-40)",
+20,
+31
+],
+[
+"Topicwise Test - 39 Timber and Wood Based Product _ (BMC & Concrete Technology -39)",
+40,
+62
+],
+[
+"Topicwise Test - 38 Aggregates _ (BMC & Concrete Technology-38)",
+60,
+93
+],
+[
+"Topicwise Test - 37 Concrete_ (BMC & Concrete Technology -37)",
+217,
+347
+],
+[
+"Topicwise Test - 36 Cement,Lime and Mortar _ (BMC & Concrete Technology -36)",
+146,
+234
+],
+[
+"Topicwise Test - 35 Bricks and Bricks Masonry _ (BMC & Concrete Technology-35)",
+60,
+95
+],
+[
+"Topicwise Test - 34 Building stones and Rocks _ (BMC& Concrete Technology -34)",
+42,
+67
+],
+[
+"Topicwise Test - 33 Industrial building_ (STEEL -33)",
+10,
+13
+],
+[
+"Topicwise Test - 32 Plastic Analysis_ (STEEL -32)",
+8,
+14
+],
+[
+"Topicwise Test - 31 Design of Plate Girders_ (STEEL -31)",
+9,
+12
+],
+[
+"Topicwise Test - 30 Design of beams_ (STEEL -30)",
+15,
+22
+],
+[
+"Topicwise Test - 29 Design of Compression members_ (STEEL -29)",
+52,
+83
+],
+[
+"Topicwise Test - 28 Design of Tension Members _ (STEEL -28)",
+20,
+32
+],
+[
+"Topicwise Test - 27 Connections _ (STEEL -27)",
+57,
+91
+],
+[
+"Topicwise Test - 26 General Design Requirements _ (STEEL -26)",
+35,
+55
+],
+[
+"Topicwise Test - 25 Prestressed Concrete _ RCC-25",
+6,
+9
+],
+[
+"Topicwise Test - 24 Retaining Wall, Staircase, Water Tank and Lintels _ RCC-24",
+12,
+20
+],
+[
+"Topicwise Test - 23 Footings _ RCC-23",
+17,
+26
+],
+[
+"Topicwise Test - 22 Columns _ RCC-22",
+30,
+45
+],
+[
+"Topicwise Test - 21 Design of Slab _ RCC-21",
+41,
+62
+],
+[
+"Topicwise Test - 20 Design of Beams _ RCC-20",
+52,
+82
+],
+[
+"Topicwise Test - 19 Bond and Anchorage _ RCC-19",
+25,
+36
+],
+[
+"Topicwise Test - 18 Limit State of Collapse in Shear _ RCC-18",
+17,
+27
+],
+[
+"Topicwise Test - 17 Introduction of Limit State and Working Stress Methods _ RCC-17",
+110,
+175
+],
+[
+"Topicwise Test - 16 Arches _ SA-16",
+14,
+22
+],
+[
+"Topicwise Test - 15 Influence Line Diagram _ SA-15",
+4,
+6
+],
+[
+"Topicwise Test - 14 Trusses_ SA-14",
+18,
+29
+],
+[
+"Topicwise Test - 13 Method of Structure Analysis (Statically Indeterminate Structure)_ SA-13",
+10,
+16
+],
+[
+"Topicwise Test - 12 Determinacy Indeterminacy and Stability of Structures_ SA-12",
+27,
+43
+],
+[
+"Topicwise Test - 11 Moment of Inertia_ SA-11",
+16,
+26
+],
+[
+"Topicwise Test - 10 Thick and Thin Cylinders/Spheres_ SA-10",
+8,
+10
+],
+[
+"Topicwise Test - 9 Springs_ SA-09",
+7,
+10
+],
+[
+"Topicwise Test - 8 Columns_ SA-08 (PART-A)",
+25,
+35
+],
+[
+"Topicwise Test -7 Torsion of Circular Shafts_ SA-07",
+16,
+23
+],
+[
+"Topicwise Test -6 Shear Stress in Beams_ SA-06",
+15,
+22
+],
+[
+"Topicwise Test -5 Bending Stress in Beams _ SA-05",
+22,
+34
+],
+[
+"Topicwise Test -4 Transformation of Stress and Strain _ SA-04",
+18,
+26
+],
+[
+"Topicwise Test -3 Deflection of Beams _ SA-03",
+25,
+32
+],
+[
+"Topicwise Test -2 Shear Force and Bending Moment _ SA-02",
+40,
+60
+],
+[
+"Topicwise Test -1 Strength of Materials _ SA-01",
+90,
+136
+]
+],
+"gs": [
+[
+"62_General Intelligence and Reasoning 2022 16 NOV 2022 (Evening Session)",
+30,
+50
+],
+[
+"61_General Intelligence and Reasoning 2022 16 NOV 2022 (Afternoon Session)",
+30,
+50
+],
+[
+"60_General Intelligence and Reasoning 2022 16 NOV 2022 (Morning Session)",
+30,
+50
+],
+[
+"59_General Intelligence and Reasoning 2022 15 NOV 2022 (Evening Session)",
+30,
+50
+],
+[
+"58_General Intelligence and Reasoning 2022 15 NOV 2022 (Afternoon Session)",
+30,
+50
+],
+[
+"57_General Intelligence and Reasoning 2022 15 NOV 2022 (Morning Session)",
+30,
+50
+],
+[
+"56_General Intelligence and Reasoning 2022 14 NOV 2022 (Evening Session)",
+30,
+50
+],
+[
+"55_General Intelligence and Reasoning 2022 14 NOV 2022 (Afternoon Session)",
+30,
+50
+],
+[
+"54_General Intelligence and Reasoning 2022 14 NOV 2022 (Morning Session)",
+30,
+50
+],
+[
+"53_General Intelligence and Reasoning 2020 24 March 2021 (Evening Session)",
+30,
+50
+],
+[
+"52_General Intelligence and Reasoning 2020 24 March 2021 (Morning Session)",
+30,
+50
+],
+[
+"51_General Intelligence and Reasoning 2020 23 March 2021 (Evening Session)",
+30,
+50
+],
+[
+"50_General Intelligence and Reasoning 2020 23 March 2021 (Morning Session)",
+30,
+50
+],
+[
+"49_General Intelligence and Reasoning 2020 22 March 2021 (Evening Session)",
+30,
+49
+],
+[
+"48_General Intelligence and Reasoning 2020 22 March 2021 (Morning Session)",
+30,
+50
+],
+[
+"47_General Intelligence and Reasoning 2019 11 Dec 2020 (Evening Session)",
+30,
+50
+],
+[
+"46_General Intelligence and Reasoning 2019 11 Dec 2020 (Morning Session)",
+30,
+50
+],
+[
+"45_General Intelligence and Reasoning 2019 10 Dec 2020 (Evening Session)",
+30,
+50
+],
+[
+"44_General Intelligence and Reasoning 2019 30 Oct 2020 (Evening Session)",
+30,
+50
+],
+[
+"43_General Intelligence and Reasoning 2019 30 Oct 2020 (Morning Session)",
+30,
+50
+],
+[
+"42_General Intelligence and Reasoning 2019 29 Oct 2020 (Evening Session)",
+30,
+50
+],
+[
+"41_General Intelligence and Reasoning 2019 29 Oct 2020 (Morning Session)",
+30,
+49
+],
+[
+"40_General Intelligence and Reasoning 2019 28 Oct 2020 (Evening Session)",
+30,
+50
+],
+[
+"39_General Intelligence and Reasoning 2019 28 Oct 2020 (Evening Session)",
+30,
+50
+],
+[
+"38_General Intelligence and Reasoning 2019 28 Oct 2020 (Morning Session)",
+30,
+50
+],
+[
+"37_General Intelligence and Reasoning 2019 27 Oct 2020 (Evening Session)",
+30,
+50
+],
+[
+"36_General Intelligence and Reasoning 2019 27 Oct 2020 (Morning Session)",
+30,
+50
+],
+[
+"35_General Intelligence and Reasoning 2018 27 Sept 2019 (Evening Session)",
+30,
+50
+],
+[
+"34_General Intelligence and Reasoning 2018 27 Sept 2019 (Morning Session)",
+30,
+49
+],
+[
+"33_General Intelligence and Reasoning 2018 26 Sept 2019 (Evening Session)",
+30,
+50
+],
+[
+"32_General Intelligence and Reasoning 2018 26 Sept 2019 (Morning Session)",
+30,
+48
+],
+[
+"31_ General Intelligence and Reasoning 2018 25 Sept 2019 (Evening Session)",
+30,
+50
+],
+[
+"30_ General Intelligence and Reasoning 2018 25 Sept 2019 (Morning Session)",
+30,
+49
+],
+[
+"29_ General Intelligence and Reasoning 2018 23 Sept 2019 (Evening Session)",
+30,
+50
+],
+[
+"28_General Intelligence and Reasoning 2018 23 Sept 2019 (Morning Session)",
+30,
+50
+],
+[
+"67_General Awareness 2022 16 NOV 2022 (Evening Session)",
+30,
+50
+],
+[
+"66_General Awareness 2022 16 NOV 2022 (Afternoon Session)",
+30,
+50
+],
+[
+"65_General Awareness 2022 16 NOV 2022 (Morning Session)",
+30,
+50
+],
+[
+"64_General Awareness 2022 15 NOV 2022 (Evening Session)",
+30,
+50
+],
+[
+"63_General Awareness 2022 15 NOV 2022 (Afternoon Session)",
+30,
+50
+],
+[
+"62_General Awareness 2022 15 NOV 2022 (Morning Session)",
+30,
+50
+],
+[
+"61_General Awareness 2022 14 NOV 2022 (Evening Session)",
+30,
+50
+],
+[
+"60_General Awareness 2022 14 NOV 2022 (Afternoon Session)",
+30,
+50
+],
+[
+"59_General Awareness 2022 14 NOV 2022 (Morning Session)",
+30,
+50
+],
+[
+"58_General Awareness 2020 24 March 2021 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"57_General Awareness 2020 24 March 2021 (Morning Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"56_General Awareness 2020 23 March 2021 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"55_General Awareness 2020 23 March 2021 (Morning Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"54_General Awareness 2020 22 March 2021 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"53_General Awareness 2020 22 March 2021 (Morning Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"52_General Awareness 2019 11 Dec 2020 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"51_General Awareness 2019 11 Dec 2020 (Morning Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"50_General Awareness 2019 10 Dec 2020 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"49_General Awareness 2019 30 Oct 2020 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"48_General Awareness 2019 30 Oct 2020 (Morning Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"47_General Awareness 2019 29 Oct 2020 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"46_General Awareness 2019 29 Oct 2020 (Morning Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"45_General Awareness 2019 28 Oct 2020 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"44_General Awareness 2019 28 Oct 2020 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"43_General Awareness 2019 28 Oct 2020 (Morning Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"42_General Awareness 2019 27 Oct 2020 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"41_General Awareness 2019 27 Oct 2020 (Morning Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"40_General Awareness 2018 27 Sept 2019 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"39_General Awareness 2018 27 Sept 2019 (Morning Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"38_General Awareness 2018 26 Sept 2019 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"37_General Awareness 2018 26 Sept 2019 (Morning Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"36_General Awareness 2018 25 Sept 2019 (Evening Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"35_General Awareness 2018 25 Sept 2019 (Morning Session) SSC JE PRACTICE",
+30,
+50
+],
+[
+"34_General Awareness 2018 23 Sept 2019 (Evening Session) (SSC JE PRACTICE)",
+30,
+50
+],
+[
+"33_General Awareness 2018 23 Sept 2019 (Morning Session) (SSC JE PRACTICE)",
+30,
+50
+],
+[
+"32_General Awareness - 2017 (29th Jan_2018, Evening Session) (SSC JE PRACTICE)",
+30,
+50
+],
+[
+"31_General Awareness - 2017 (29th Jan_2018, Morning Session) (SSC JE PRACTICE)",
+30,
+50
+],
+[
+"General Intelligence and Reasoning - 2017 (29th Jan_2018, Morning Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2017 (29th Jan_2018, Evening Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2017 (27th Jan_2018, Morning Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2017 (27th Jan_2018, Evening Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2017 (25th Jan_2018, Morning Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2017 (25th Jan_2018, Evening Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2017 (24th Jan_2018, Morning Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2017 (24th Jan_2018, Evening Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2017 (23rd Jan_2018, Morning Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2017 (23rd Jan_2018, Evening Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2017 (22nd Jan_2018, Morning Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2017 (22nd Jan_2018, Evening Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2016 (4th March_2017, Morning Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2016 (4th March_2017, Evening Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2016 (3rd March_2017, Morning Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2016 (3rd March_2017, Evening Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2016 (2nd March_2017, Morning Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2016 (2nd March_2017, Evening Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2016 (1st March_2017, Morning Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2016 (1st March_2017, Evening Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2015",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2014 (Morning Session)",
+40,
+49
+],
+[
+"General Intelligence and Reasoning - 2014 (Evening Session)",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2013",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2012",
+40,
+50
+],
+[
+"General Intelligence and Reasoning - 2011",
+40,
+49
+],
+[
+"General Intelligence and Reasoning - 2010",
+40,
+50
+],
+[
+"General Awareness - 2017 (27th Jan_2018, Evening Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2017 (27th Jan_2018, Morning Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2007 (SSC JE PRACTICE)",
+20,
+25
+],
+[
+"General Awareness - 2017 (29th Jan_2018, Morning Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2017 (29th Jan_2018, Evening Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2017 (25th Jan_2018, Morning Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2017 (25th Jan2018, Evening Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2017 (24th Jan2018, Morning Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2017 (24th Jan_2018, Evening Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2017 (23rd Jan2018, Evening Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2017 (23nd Jan_2018, Morning Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2017 (22nd Jan_2018, Morning Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2017 (22nd Jan_2018, Evening Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2016 (4th March_2017, Morning Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2016 (4th March_2017, Evening Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2016 (3rd March_2017, Morning Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2016 (3rd March_2017, Evening Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2016 (2nd March2017, Morning Session) (SSC JE PRACTICE)",
+40,
+49
+],
+[
+"General Awareness - 2016 (2nd March_2017, Evening Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2016 (1st March2017, Morning Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2016 (1st March2017, Evening Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2015 (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2014 (Morning Session) (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2014 (Evening Session) (SSC JE PRACTICE)",
+40,
+49
+],
+[
+"General Awareness - 2013 (SSC JE PRACTICE)",
+40,
+49
+],
+[
+"General Awareness - 2012 (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2011 (SSC JE PRACTICE)",
+40,
+49
+],
+[
+"General Awareness - 2010 (SSC JE PRACTICE)",
+40,
+50
+],
+[
+"General Awareness - 2009 (SSC JE PRACTICE)",
+20,
+25
+],
+[
+"General Awareness - 2008 (SSC JE PRACTICE)",
+20,
+25
+],
+[
+"General Awareness - 2005 (SSC JE PRACTICE)",
+20,
+24
+],
+[
+"General Awareness - 2004 (SSC JE PRACTICE)",
+20,
+24
+]
+]
+}

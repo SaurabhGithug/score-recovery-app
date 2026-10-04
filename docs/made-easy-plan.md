@@ -18,7 +18,7 @@ Built 4 Oct 2026 by `pyq_plan.py`; part of the calendar plan in the app. Exam wi
 | 10 | Sat 31 Oct | SSC JE 2024 Paper-I, 06 Jun 2024, 17:00 shift (real paper, in this app) - optional | this app: `/papers/sscje-civil-p1-2024-06-06-1700/instructions` |
 
 - Every 2-4 days; never on a Pass-2 review day (7, 14, 21, 28 Oct). The first one (6 Oct) is your baseline.
-- On a mock day there are no IES topic tests: mock (120 min), analysis (about 90 min), two reasoning sprints and a 20-minute drill. The mock's reasoning section counts as reasoning block 1.
+- On a mock day there are no IES topic tests: mock (120 min), analysis (about 90 min), a reasoning speed set and a 10-minute review, and a 20-minute drill. The mock's reasoning section counts as reasoning block 1.
 - 31 Oct is optional: take it only if your exam shift is on 4-6 Nov, and keep its analysis to 60 minutes. If your shift is on 2 or 3 Nov, rest instead.
 - **Analysis:** mark every wrong, guessed and slow question as concept, silly, time or guess; log Reasoning, GA and Civil scores and attempts; the weak sub-topics feed the next review day and drills.
 - **Track** your total against your target (UR 135, OBC 132) and your reasoning attempts against the ladder (38 / 42 / 46 / 48-50 at 90%+).

@@ -1,5 +1,7 @@
 # IES Master + Made Easy test calendar, 3 Oct to 1 Nov 2026
 
+> **Superseded (4 Oct 2026).** Follow `docs/pyq-plan.md` and `docs/made-easy-plan.md`, which are the plan in the app's calendar. This early draft splits IES reasoning tests into two sprints, but IES gives one attempt per test, and its mock list is out of date.
+
 Built 2 Oct 2026. Exam window: **2-6 Nov 2026 (proposed by SSC; shift and centre come on the admit card)**. Priority: **raise Technical (Civil) marks**; three timed Reasoning blocks and a 30-minute hot-fact drill every non-mock day; GK / Current Affairs a few times a week. Typical non-mock day: about 5-6 hours including review, so trim the sectional tests first if you have less.
 
 ## Rules this plan follows

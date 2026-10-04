@@ -249,8 +249,11 @@ export function refreshFromPreset(items: PlanItem[], preset: PlanInput[]): PlanI
 const untouched = (item: PlanItem): boolean =>
   item.status === "planned" && item.openedAt === null && item.doneAt === null && item.result === "" && item.url === item.presetUrl;
 
-/** Items that stand for one specific test (an IES topic test, one of its passes, a full mock, a Made Easy subject test, a full reasoning or GA set). */
-const TEST_IDENTITY = /^(IES T\d+ |Pass [23] of 3: IES T\d+ |Full mock \(|(GK\/CA: )?Made Easy subject test \d+:|Reasoning 1\/3 \(full 50 Q, 30 min\): IES GIR |GK\/CA: IES GA )/;
+/**
+ * Items that stand for one specific test: an IES topic test, one of its passes, a full mock, a Made Easy subject test,
+ * or a whole IES reasoning or GA set (full block or speed block; IES allows one attempt per test).
+ */
+export const TEST_IDENTITY = /^(IES T\d+ |Pass [23] of 3: IES T\d+ |Full mock \(|(GK\/CA: )?Made Easy subject test \d+:|Reasoning [12]\/3 \((full 50 Q, 30 min|speed set, 50 Q in 25 min)\): IES GIR |GK\/CA: IES GA )/;
 
 /** Blocks the built-in plan has at most once a day: the hot-topic drill and each of the three reasoning blocks. */
 const DAILY_SLOT = /^(Hot-topic drill test|Reasoning [123]\/3)\b/;
