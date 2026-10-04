@@ -31,6 +31,11 @@ function TestLink({ item, onOpen, children, className, newTabLabel }: { item: Pl
   </>;
 }
 
+/** A day's rows in the order they are done: mock, topic tests, passes, Made Easy, reasoning 1-3, GK, drill; your own rows last. */
+const DAY_ORDER = [/^Full mock/, /^Analyse/, /^IES T/, /^Pass /, /^Made Easy subject/, /^Reasoning 1\/3/, /^Reasoning 2\/3/, /^Reasoning 3\/3/, /^GK\/CA/, /^Hot-topic drill/];
+const dayRank = (item: PlanItem) => { const n = DAY_ORDER.findIndex((re) => re.test(item.title)); return n === -1 ? DAY_ORDER.length : n; };
+const sortForDay = (rows: PlanItem[]) => rows.map((item, index) => ({ item, index })).sort((a, b) => dayRank(a.item) - dayRank(b.item) || a.index - b.index).map(({ item }) => item);
+
 /** The learner's tests for the chosen day, with "Open test", "did you attempt it?" and progress. */
 export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFailed, commit, presetStamp, onPresetSynced }: {
   today: string; selected: string; onSelect: (date: string) => void;
@@ -87,7 +92,7 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
   const now = () => new Date().toISOString();
   const locale = lang === "hi" ? "hi-IN" : "en-IN";
   const dayTitle = new Date(`${selected}T00:00:00Z`).toLocaleDateString(locale, { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
-  const dayItems = itemsOn(items, selected);
+  const dayItems = sortForDay(itemsOn(items, selected));
   const summary = summarize(items, today);
   const asking = askReady ? askPending(items)[0] : undefined;
   const preloaded = items.some((item) => item.id.startsWith("preset:"));
