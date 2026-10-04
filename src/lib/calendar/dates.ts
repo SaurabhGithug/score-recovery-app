@@ -26,6 +26,20 @@ export function shiftMonth(monthKey: string, delta: number): string {
   return new Date(Date.UTC(year, month - 1 + delta, 1)).toISOString().slice(0, 7);
 }
 
+/**
+ * The first month the calendar shows: this month, or an earlier month that still holds a planned day (so a plan's early days
+ * stay reachable after the month turns), never more than six months back, and never after `lastMonth`.
+ */
+export function firstCalendarMonth(today: string, planDates: Iterable<string>, lastMonth: string): string {
+  const floor = shiftMonth(today.slice(0, 7), -6);
+  let first = today.slice(0, 7);
+  for (const date of planDates) {
+    const month = date.slice(0, 7);
+    if (month < first && month >= floor) first = month;
+  }
+  return first < lastMonth ? first : lastMonth;
+}
+
 /** Every month from `first` to `last` inclusive (YYYY-MM). Empty if `last` is before `first`. */
 export function monthsBetween(first: string, last: string): string[] {
   const months: string[] = [];

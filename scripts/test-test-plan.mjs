@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  addItem, askPending, clearOpened, dayMarks, fillPortalNames, isValidDate, itemsOn, linkFor, markOpened, mergePreset,
+  addItem, askPending, clearOpened, dayMarks, refreshFromPreset, isValidDate, itemsOn, linkFor, markOpened, mergePreset,
   parsePlan, planStorageKey, presetId, removeItem, safeUrl, setResult, setStatus, setUrl, summarize, syncPreset,
 } from "../src/lib/calendar/test-plan.ts";
 
@@ -120,12 +120,43 @@ assert.equal(first.items.find((i) => i.title.startsWith("IES T42")).portalName, 
 
 // older saved plans get exact names filled in, nothing else changes
 const stripped = first.items.map((i) => ({ ...i, portalName: "" }));
-const filled = fillPortalNames(stripped, preset.items);
+const filled = refreshFromPreset(stripped, preset.items);
 assert.equal(filled.filter((i) => i.portalName).length, first.items.filter((i) => i.portalName).length);
 assert.equal(filled.length, stripped.length);
-assert.equal(fillPortalNames(filled, preset.items), filled, "nothing to fill, same array back");
+assert.deepEqual(filled, first.items, "only the names were missing");
+assert.equal(refreshFromPreset(filled, preset.items), filled, "nothing to fill, same array back");
 const own = addItem([], { date: "2026-10-03", title: "IES T42 Estimating, Costing and Valuation (315 Q, 197 min)", series: "ies" }, "mine2");
-assert.equal(fillPortalNames(own, preset.items)[0].portalName, "", "your own items are never renamed");
+assert.equal(refreshFromPreset(own, preset.items)[0].portalName, "", "your own items are never renamed");
+
+// built-in rows open something real: an in-app row always carries its own page, and no note points into the repo
+for (const i of preset.items) {
+  assert.ok(i.series !== "app" || i.url, `${i.date} ${i.title.slice(0, 40)}: an in-app row needs its own link, not the paper list`);
+  assert.ok(!/docs\/|\.md\b/.test(i.note ?? ""), `${i.date}: a note a learner cannot open`);
+}
+for (const prefix of ["Hot-topic drill test", "Analyse today's mock", "Reasoning 1/3: the reasoning section"]) {
+  assert.ok(preset.items.filter((i) => i.title.startsWith(prefix)).every((i) => i.series === "other" && !i.url), `${prefix}: a to-do with no Open button`);
+}
+for (const d of days) {
+  for (const slot of ["Reasoning 1/3", "Reasoning 2/3", "Reasoning 3/3", "Hot-topic drill test"]) {
+    assert.equal(preset.items.filter((i) => i.date === d && i.title.startsWith(slot)).length, 1, `${d}: one ${slot}`);
+  }
+}
+
+// a plan saved before a built-in fix takes the fix on its next load: details change, progress and own links do not
+{
+  const oldPreset = preset.items.map((i) => (i.title.startsWith("Hot-topic drill") ? { ...i, series: "app", note: "Use docs/hot-fact-families.md" } : i));
+  let saved = parsePlan(JSON.parse(JSON.stringify(mergePreset([], oldPreset).items)));
+  const drills = saved.filter((i) => i.title.startsWith("Hot-topic drill"));
+  saved = setStatus(saved, drills[0].id, "attempted", "2026-10-03T12:00:00.000Z", "18/20");
+  saved = setUrl(saved, drills[1].id, "https://example.com/my-drill");
+  const fixed = refreshFromPreset(saved, preset.items);
+  assert.ok(fixed.filter((i) => i.title.startsWith("Hot-topic drill")).every((i) => i.series === "other" && !i.note.includes("docs/")), "every drill row is fixed");
+  assert.equal(linkFor(fixed.find((i) => i.id === drills[2].id)), "", "an untouched drill row has no Open link");
+  assert.deepEqual((({ status, result, doneAt }) => ({ status, result, doneAt }))(fixed.find((i) => i.id === drills[0].id)), { status: "attempted", result: "18/20", doneAt: "2026-10-03T12:00:00.000Z" }, "progress is kept");
+  assert.equal(fixed.find((i) => i.id === drills[1].id).url, "https://example.com/my-drill", "a link the learner saved is kept");
+  assert.deepEqual(fixed.map((i) => i.id), saved.map((i) => i.id), "no row added, removed or moved");
+  assert.equal(refreshFromPreset(fixed, preset.items), fixed, "second load: same array back");
+}
 
 // every hot test three times: Pass 1 on its day, then Pass 2 and Pass 3 on later days
 const passItems = preset.items.filter((i) => /^Pass [23] of 3: IES T\d+ /.test(i.title));
@@ -294,6 +325,52 @@ for (const i of preset.items) {
   const again = syncPreset(up.items, preset.items);
   assert.equal(again.added + again.removed, 0, "updating twice changes nothing");
   assert.equal(again.items.length, up.items.length);
+}
+
+// a late update never back-fills days already past: the learner did everything up to 6 Oct on the 3 Oct plan, then updates on 7 Oct
+{
+  const head = JSON.parse(readFileSync(new URL("./fixtures/pyq-plan-preset-2026-10-03.json", import.meta.url), "utf8")).items;
+  const today = "2026-10-07";
+  let saved = mergePreset([], head).items;
+  for (const row of saved.filter((i) => i.date < today)) saved = setStatus(saved, row.id, "attempted", `${row.date}T12:00:00.000Z`);
+  saved = parsePlan(JSON.parse(JSON.stringify(saved)));
+  const pastBefore = new Set(saved.filter((i) => i.date < today).map((i) => i.id));
+  assert.equal(summarize(saved, today).overdue, 0);
+  const up = syncPreset(saved, preset.items, today);
+  assert.equal(summarize(up.items, today).overdue, 0, "nothing new is overdue after the update");
+  assert.ok(up.items.filter((i) => i.date < today).every((i) => pastBefore.has(i.id)), "no new row on a day already past");
+  assert.ok(up.past > 0, "the rows left off past days are counted");
+  assert.ok(up.added > 0, "today and later still get the new rows");
+  const have = new Set(up.items.map((i) => i.id));
+  const missing = mergePreset([], preset.items).items.filter((i) => i.date >= today && !have.has(i.id));
+  assert.ok(missing.length <= up.skipped, "every current row from today on is in the plan, except ones the learner already did");
+  const again = syncPreset(up.items, preset.items, today);
+  assert.deepEqual([again.added, again.removed], [0, 0], "a second update changes nothing");
+  // a first load still brings the whole plan, past days included
+  assert.equal(syncPreset([], preset.items, today).added, preset.items.length);
+}
+
+// a drill, a full reasoning set or a GA set the learner already used is not scheduled a second time by an update
+{
+  const head = JSON.parse(readFileSync(new URL("./fixtures/pyq-plan-preset-2026-10-03.json", import.meta.url), "utf8")).items;
+  let saved = mergePreset([], head).items;
+  const pick = (date, prefix) => saved.find((i) => i.date === date && i.title.startsWith(prefix));
+  const touched = [pick("2026-10-04", "Hot-topic drill"), pick("2026-10-06", "Reasoning 1/3 (full 50 Q"), pick("2026-10-06", "GK/CA: IES GA")].filter(Boolean);
+  assert.equal(touched.length, 3, "the 3 Oct plan has a 4 Oct drill and a 6 Oct GIR full set and GA set");
+  for (const row of touched) saved = setStatus(saved, row.id, "attempted", "2026-10-04T12:00:00.000Z", "done");
+  saved = parsePlan(JSON.parse(JSON.stringify(saved)));
+  const up = syncPreset(saved, preset.items, "2026-10-04");
+  assert.equal(up.items.filter((i) => i.date === "2026-10-04" && i.title.startsWith("Hot-topic drill")).length, 1, "4 Oct keeps one drill");
+  for (const row of touched.slice(1)) assert.equal(up.items.filter((i) => i.title === row.title).length, 1, `${row.title.slice(0, 40)}: one copy only`);
+  for (const d of new Set(up.items.map((i) => i.date))) {
+    for (const slot of ["Reasoning 1/3", "Reasoning 2/3", "Reasoning 3/3", "Hot-topic drill test"]) {
+      assert.ok(up.items.filter((i) => i.date === d && i.title.startsWith(slot)).length <= 1, `${d}: at most one ${slot} after the update`);
+    }
+  }
+  assert.ok(up.skipped >= 1);
+  for (const row of touched) assert.equal(up.items.find((i) => i.id === row.id).status, "attempted", "progress kept");
+  const today = summarize(up.items, "2026-10-04");
+  assert.equal(today.todayTotal, preset.items.filter((i) => i.date === "2026-10-04").length, "today's count is not inflated");
 }
 
 console.log("test-plan: all checks passed");

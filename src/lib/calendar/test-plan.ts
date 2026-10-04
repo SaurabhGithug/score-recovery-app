@@ -55,6 +55,7 @@ export const SERIES_LINK: Record<PlanSeries, string> = {
   ies: "https://ehub.iesmaster.org/student/testment/test",
   madeeasy: "https://www.madeeasy.in/prep/mock-test-details/ce-ssc-je-2026-cbt-1-online-test-series",
   app: "/papers",
+  // No Open button: a to-do such as the hot-topic drill or a mock analysis, which has no page of its own.
   other: "",
 };
 
@@ -200,22 +201,33 @@ export function mergePreset(items: PlanItem[], preset: PlanInput[]): { items: Pl
 }
 
 /**
- * Plans loaded before the exact test names existed get them filled in: only built-in items that have no name yet,
- * and only the name. Nothing is added, removed or changed otherwise. Returns the same array when nothing changes.
+ * Built-in items take the current plan's details: series, minutes, note, portal name and built-in link. Nothing else changes:
+ * not the day, title or progress, and not a link the learner saved themselves. Runs on every load, so a fix to the built-in plan
+ * (for example a row that should have no Open button) reaches plans saved earlier without pressing Update.
+ * Returns the same array when nothing changes.
  */
-export function fillPortalNames(items: PlanItem[], preset: PlanInput[]): PlanItem[] {
-  const names = new Map<string, string>();
-  for (const input of preset) {
-    const title = clean(input.title, MAX_TITLE);
-    const name = clean(input.portalName, MAX_TITLE);
-    if (name) names.set(presetId(input.date, title), name);
-  }
+export function refreshFromPreset(items: PlanItem[], preset: PlanInput[]): PlanItem[] {
+  const rows = new Map<string, PlanInput>();
+  for (const input of preset) rows.set(presetId(input.date, clean(input.title, MAX_TITLE)), input);
   let changed = false;
   const next = items.map((item) => {
-    const name = !item.portalName && item.id.startsWith("preset:") ? names.get(item.id) : undefined;
-    if (!name) return item;
+    const input = item.id.startsWith("preset:") ? rows.get(item.id) : undefined;
+    if (!input) return item;
+    const presetUrl = safeUrl(input.url);
+    const fresh: PlanItem = {
+      ...item,
+      series: SERIES.includes(input.series) ? input.series : "other",
+      minutes: clampMinutes(input.minutes),
+      note: clean(input.note, MAX_NOTE),
+      portalName: clean(input.portalName, MAX_TITLE) || item.portalName,
+      presetUrl,
+      url: item.url === item.presetUrl ? presetUrl : item.url,
+    };
+    const same = fresh.series === item.series && fresh.minutes === item.minutes && fresh.note === item.note
+      && fresh.portalName === item.portalName && fresh.presetUrl === item.presetUrl && fresh.url === item.url;
+    if (same) return item;
     changed = true;
-    return { ...item, portalName: name };
+    return fresh;
   });
   return changed ? next : items;
 }
@@ -224,30 +236,43 @@ export function fillPortalNames(items: PlanItem[], preset: PlanInput[]): PlanIte
 const untouched = (item: PlanItem): boolean =>
   item.status === "planned" && item.openedAt === null && item.doneAt === null && item.result === "" && item.url === item.presetUrl;
 
-/** Items that stand for one specific test (an IES topic test, one of its passes, a full mock, a Made Easy subject test). */
-const TEST_IDENTITY = /^(IES T\d+ |Pass [23] of 3: IES T\d+ |Full mock \(|(GK\/CA: )?Made Easy subject test \d+:)/;
+/** Items that stand for one specific test (an IES topic test, one of its passes, a full mock, a Made Easy subject test, a full reasoning or GA set). */
+const TEST_IDENTITY = /^(IES T\d+ |Pass [23] of 3: IES T\d+ |Full mock \(|(GK\/CA: )?Made Easy subject test \d+:|Reasoning 1\/3 \(full 50 Q, 30 min\): IES GIR |GK\/CA: IES GA )/;
+
+/** Blocks the built-in plan has at most once a day: the hot-topic drill and each of the three reasoning blocks. */
+const DAILY_SLOT = /^(Hot-topic drill test|Reasoning [123]\/3)\b/;
 
 /**
  * Bring a saved plan up to date with the current built-in plan:
  * (a) drop built-in items the current plan no longer has, but only if the learner never touched them;
- * (b) add the built-in items that are missing; (c) fill in exact portal names.
+ * (b) add the built-in items that are missing; (c) refresh built-in details (see refreshFromPreset).
  * The learner's own items, and built-in items they opened, attempted, skipped, scored or linked, are never removed.
+ * A test or daily block the learner already acted on is not added a second time (`skipped`), and when a plan is already
+ * loaded, nothing new is added to days before `today` (`past`), so an update never back-fills days the learner has finished.
  * Running it again changes nothing (added 0, removed 0, the same array back).
  */
-export function syncPreset(items: PlanItem[], preset: PlanInput[]): { items: PlanItem[]; added: number; removed: number; skipped: number } {
+export function syncPreset(items: PlanItem[], preset: PlanInput[], today?: string): { items: PlanItem[]; added: number; removed: number; skipped: number; past: number } {
   const current = new Set(preset.map((input) => presetId(input.date, clean(input.title, MAX_TITLE))));
   const kept = items.filter((item) => !item.id.startsWith("preset:") || current.has(item.id) || !untouched(item));
   const removed = items.length - kept.length;
+  const touched = kept.filter((item) => item.id.startsWith("preset:") && !untouched(item));
   // A test the learner already acted on, kept on an older date, is not added again on its new date.
-  const actedOn = new Set(kept.filter((item) => !untouched(item) && TEST_IDENTITY.test(item.title)).map((item) => item.title));
+  const actedOn = new Set(touched.filter((item) => TEST_IDENTITY.test(item.title)).map((item) => item.title));
+  // A day keeps the drill or reasoning block the learner already acted on, even if the built-in plan renamed it.
+  const slotKey = (date: string, title: string) => { const slot = DAILY_SLOT.exec(title); return slot ? `${date}|${slot[1]}` : ""; };
+  const filledSlots = new Set(touched.map((item) => slotKey(item.date, item.title)).filter(Boolean));
   const ids = new Set(kept.map((item) => item.id));
-  const wanted = preset.filter((input) => {
+  const notActedOn = preset.filter((input) => {
     const title = clean(input.title, MAX_TITLE);
-    return !(actedOn.has(title) && !ids.has(presetId(input.date, title)));
+    if (ids.has(presetId(input.date, title))) return true;
+    return !actedOn.has(title) && !filledSlots.has(slotKey(input.date, title));
   });
-  const skipped = preset.length - wanted.length;
+  const skipped = preset.length - notActedOn.length;
+  const loaded = items.some((item) => item.id.startsWith("preset:"));
+  const wanted = loaded && today ? notActedOn.filter((input) => input.date >= today || ids.has(presetId(input.date, clean(input.title, MAX_TITLE)))) : notActedOn;
+  const past = notActedOn.length - wanted.length;
   const merged = mergePreset(removed > 0 ? kept : items, wanted);
-  return { items: fillPortalNames(merged.items, preset), added: merged.added, removed, skipped };
+  return { items: refreshFromPreset(merged.items, preset), added: merged.added, removed, skipped, past };
 }
 
 const update =(items: PlanItem[], id: string, change: (item: PlanItem) => PlanItem): PlanItem[] => items.map((item) => (item.id === id ? change(item) : item));

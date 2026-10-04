@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { daysBetween, localIsoDate, monthCells, monthsBetween, shiftMonth, weekdayOf } from "../src/lib/calendar/dates.ts";
+import { daysBetween, firstCalendarMonth, localIsoDate, monthCells, monthsBetween, shiftMonth, weekdayOf } from "../src/lib/calendar/dates.ts";
 
 assert.equal(daysBetween("2026-10-02", "2026-11-02"), 31);
 assert.equal(daysBetween("2026-11-02", "2026-10-02"), -31);
@@ -16,6 +16,13 @@ assert.deepEqual(monthsBetween("2026-10", "2026-11"), ["2026-10", "2026-11"]);
 assert.deepEqual(monthsBetween("2026-11", "2026-11"), ["2026-11"]);
 assert.deepEqual(monthsBetween("2026-12", "2027-02"), ["2026-12", "2027-01", "2027-02"]);
 assert.deepEqual(monthsBetween("2026-11", "2026-10"), []);
+
+// From 1 Nov the October days of the plan are still on the calendar; with no plan only this month shows
+assert.equal(firstCalendarMonth("2026-11-01", ["2026-10-03", "2026-11-01"], "2026-11"), "2026-10");
+assert.equal(firstCalendarMonth("2026-11-01", [], "2026-11"), "2026-11");
+assert.equal(firstCalendarMonth("2026-10-04", ["2026-10-03"], "2026-11"), "2026-10");
+assert.equal(firstCalendarMonth("2026-11-01", ["2025-01-05"], "2026-11"), "2026-11", "a stray old date does not add a year of months");
+assert.equal(firstCalendarMonth("2026-12-10", ["2026-12-01"], "2026-11"), "2026-11", "never after the exam month");
 
 // October 2026 starts on a Thursday and has 31 days: 4 blanks, 31 dates, padded to 5 whole weeks
 const october = monthCells("2026-10");

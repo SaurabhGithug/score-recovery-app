@@ -32,7 +32,7 @@ IES test time: 2216 min of Pass 1, 654 min of Pass 2, 372 min of Pass 3 (54.0 h)
 
 | Date | Tests | Reasoning | GK / CA | Drill | Min |
 |---|---|---|---|---|---|
-| Sat 03 Oct | IES T42 Estimating, Costing and Valuation (315 Q, 197 min) | IES GIR 14 Nov 2022 Morning; IES GIR 22 Jan 2018 Morning; IES GIR 22 Jan 2018 Morning | IES GA 14 Nov 2022 Morning + 20 min fresh current affairs | Use docs/hot-fact-families.md; shuffle options | 331 |
+| Sat 03 Oct | IES T42 Estimating, Costing and Valuation (315 Q, 197 min) | IES GIR 14 Nov 2022 Morning; IES GIR 22 Jan 2018 Morning; IES GIR 22 Jan 2018 Morning | IES GA 14 Nov 2022 Morning + 20 min fresh current affairs | Re-test yourself on the facts you got wrong in today's topic test. Shuffle the options. | 331 |
 | Sun 04 Oct | IES T37 Concrete (347 Q, 217 min) | IES GIR 14 Nov 2022 Afternoon; IES GIR 22 Jan 2018 Evening; IES GIR 22 Jan 2018 Evening | - | Facts behind D+1: T42. Shuffle the options. | 301 |
 | Mon 05 Oct | IES T38 Aggregates (93 Q, 60 min); IES T39 Timber and Wood Based Product (62 Q, 40 min) | IES GIR 14 Nov 2022 Evening; IES GIR 23 Jan 2018 Morning; IES GIR 23 Jan 2018 Morning | - | Facts behind D+1: T37. Shuffle the options. | 184 |
 | Tue 06 Oct | MOCK: Made Easy Full Syllabus Test 1; Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess | the reasoning section of today's full mock (no extra set); IES GIR 23 Jan 2018 Evening; IES GIR 23 Jan 2018 Evening | - | Facts behind D+1: T38, T39; D+3: T42. Shuffle the options. | 254 |

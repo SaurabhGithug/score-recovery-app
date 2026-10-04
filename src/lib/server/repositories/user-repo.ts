@@ -16,12 +16,24 @@ interface UserWithPassword extends UserRecord {
 
 const PUBLIC_USER_COLUMNS = "id, name, normalized_name, created_at, updated_at";
 
-export type FixedProfileKey = "reema" | "saurabh";
+export type FixedProfileKey = "reema" | "saurabh" | "saurabh-civil";
 
-const FIXED_PROFILE_NAMES: Record<FixedProfileKey, string> = {
-  reema: "Civil",
-  saurabh: "Mechanical",
+/**
+ * The profiles offered on the sign-in screen. `normalizedName` is what access rules and data
+ * ownership key on (see profile-access.ts); `name` is only what the learner sees.
+ * "saurabh-civil" is a Civil account of its own: same content as Civil, separate progress.
+ */
+const FIXED_PROFILES: Record<FixedProfileKey, { name: string; normalizedName: string; id: string }> = {
+  reema: { name: "Civil", normalizedName: "reema", id: "usr_profile_reema" },
+  saurabh: { name: "Mechanical", normalizedName: "saurabh", id: "usr_profile_saurabh" },
+  "saurabh-civil": { name: "Saurabh Civil", normalizedName: "saurabh civil", id: "usr_profile_saurabh_civil" },
 };
+
+export const FIXED_PROFILE_KEYS = Object.keys(FIXED_PROFILES) as FixedProfileKey[];
+
+export function isFixedProfileKey(value: unknown): value is FixedProfileKey {
+  return typeof value === "string" && Object.hasOwn(FIXED_PROFILES, value);
+}
 
 export function normalizeName(name: string): string {
   return name.trim().toLowerCase().replace(/\s+/g, " ");
@@ -29,11 +41,11 @@ export function normalizeName(name: string): string {
 
 export class UserRepository {
   public static async findOrCreateFixedProfile(profile: FixedProfileKey): Promise<UserRecord> {
-    const displayName = FIXED_PROFILE_NAMES[profile];
+    const { name: displayName, normalizedName, id: profileId } = FIXED_PROFILES[profile];
     const db = getDatabase();
     const existing = await db.prepare(
       `SELECT ${PUBLIC_USER_COLUMNS} FROM users WHERE normalized_name = ? ORDER BY created_at ASC LIMIT 1`
-    ).get<UserRecord>(profile);
+    ).get<UserRecord>(normalizedName);
 
     if (existing) {
       if (existing.name === displayName) return existing;
@@ -43,7 +55,6 @@ export class UserRepository {
       return { ...existing, name: displayName, updated_at: updatedAt };
     }
 
-    const id = `usr_profile_${profile}`;
     const now = new Date().toISOString();
     await db.prepare(`
       INSERT INTO users (id, name, normalized_name, password_hash, created_at, updated_at)
@@ -52,11 +63,11 @@ export class UserRepository {
         name = excluded.name,
         normalized_name = excluded.normalized_name,
         updated_at = excluded.updated_at
-    `).run(id, displayName, profile, now, now);
+    `).run(profileId, displayName, normalizedName, now, now);
 
     const user = await db.prepare(
       `SELECT ${PUBLIC_USER_COLUMNS} FROM users WHERE id = ? LIMIT 1`
-    ).get<UserRecord>(id);
+    ).get<UserRecord>(profileId);
     if (!user) throw new Error("Could not create the selected profile.");
     return user;
   }

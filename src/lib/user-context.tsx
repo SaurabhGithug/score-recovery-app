@@ -10,7 +10,7 @@ export interface User {
   updated_at: string;
 }
 
-export type FixedProfile = "reema" | "saurabh";
+export type FixedProfile = "reema" | "saurabh" | "saurabh-civil";
 
 export interface PreparationContext {
   id: string;

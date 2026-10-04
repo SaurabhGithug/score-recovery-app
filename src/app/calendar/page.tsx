@@ -7,7 +7,7 @@ import { TestPlanPanel } from "@/components/calendar/TestPlanPanel";
 import { useTestPlan } from "@/components/calendar/useTestPlan";
 import { dayMarks } from "@/lib/calendar/test-plan";
 import { SSC_JE_PAPER1_SCHEDULE } from "@/lib/ssc-je/config";
-import { daysBetween, localIsoDate, monthCells, monthsBetween } from "@/lib/calendar/dates";
+import { daysBetween, firstCalendarMonth, localIsoDate, monthCells, monthsBetween } from "@/lib/calendar/dates";
 import type { Bilingual } from "@/lib/types";
 
 const WEEKDAYS: Bilingual[] = [
@@ -48,8 +48,13 @@ export default function CalendarPage() {
       ? t({ en: "Paper-I window is on now", hi: "पेपर-I की अवधि अभी चल रही है" })
       : `${daysToExam} ${dayWord} ${t({ en: "to Paper-I", hi: "पेपर-I में" })}`;
 
-  const firstMonth = today.slice(0, 7) < EXAM_MONTH ? today.slice(0, 7) : EXAM_MONTH;
-  const months = monthsBetween(firstMonth, EXAM_MONTH);
+  const months = monthsBetween(firstCalendarMonth(today, items.map((item) => item.date), EXAM_MONTH), EXAM_MONTH);
+
+  /** Show the tapped day's tests: they are in the plan above the month grids, often a long way up on a phone. */
+  const pickDate = (date: string) => {
+    setPicked(date);
+    requestAnimationFrame(() => document.getElementById("plan-day")?.scrollIntoView({ block: "start" }));
+  };
 
   return <main className="mx-auto w-full max-w-3xl flex-1 space-y-5 px-4 py-6 sm:px-6 sm:py-8">
     <header>
@@ -87,7 +92,7 @@ export default function CalendarPage() {
                 const mark = marks[date];
                 const isSelected = date === selected;
                 return <td key={date} className={`h-14 rounded-lg border text-center align-top ${isExam ? "border-slate-900 bg-slate-900 text-white" : "border-slate-200 bg-slate-50"} ${isPast && !isExam ? "text-slate-400" : ""} ${isSelected ? "ring-2 ring-blue-500 ring-offset-1" : ""}`}>
-                  <button type="button" onClick={() => setPicked(date)} aria-pressed={isSelected} aria-label={`${date}${mark ? `, ${mark.done} of ${mark.total} tests done` : ""}`} className="block h-full w-full">
+                  <button type="button" onClick={() => pickDate(date)} aria-pressed={isSelected} aria-label={`${date}${mark ? `, ${mark.done} of ${mark.total} tests done` : ""}`} className="block h-full w-full">
                     <span aria-current={isToday ? "date" : undefined} className={`mt-1.5 inline-flex h-7 min-w-7 items-center justify-center rounded-full px-1 text-sm ${isToday ? "bg-blue-600 font-bold text-white" : "font-semibold"}`}>{Number(date.slice(8))}</span>
                     {isToday && <span className="sr-only"> {t({ en: "today", hi: "आज" })}</span>}
                     {isExam && <span className="block text-[10px] font-medium leading-tight">{t({ en: "Exam", hi: "परीक्षा" })}</span>}

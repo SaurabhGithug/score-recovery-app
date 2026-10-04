@@ -6,10 +6,11 @@ import type { FixedProfile } from "@/lib/user-context";
 
 const PROFILES: { id: FixedProfile; name: string; initial: string; description: string }[] = [
   { id: "reema", name: "Civil", initial: "C", description: "Open the Civil learning space" },
+  { id: "saurabh-civil", name: "Saurabh Civil", initial: "SC", description: "Open Saurabh's own Civil learning space" },
   { id: "saurabh", name: "Mechanical", initial: "M", description: "Open the Mechanical learning space" },
 ];
 
-/** The Civil / Mechanical buttons, shared by the sign-in screen and the switch-profile dialog. */
+/** The profile buttons (Civil, Saurabh Civil, Mechanical), shared by the sign-in screen and the switch-profile dialog. */
 export function ProfileChoices() {
   const { selectProfile } = useUser();
   const [submittingProfile, setSubmittingProfile] = useState<FixedProfile | null>(null);

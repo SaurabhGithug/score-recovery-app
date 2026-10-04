@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import {
   SERIES_LABEL, addItem, askPending, clearOpened, isInternalLink, itemsOn, linkFor, markOpened, syncPreset,
-  fillPortalNames, removeItem, setResult, setStatus, setUrl, summarize, type PlanInput, type PlanItem, type PlanSeries,
+  refreshFromPreset, removeItem, setResult, setStatus, setUrl, summarize, type PlanInput, type PlanItem, type PlanSeries,
 } from "@/lib/calendar/test-plan";
 import preset from "@/lib/calendar/pyq-plan-preset.json";
 
@@ -43,6 +43,9 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
   const [form,setForm] = useState({ title: "", series: "ies" as PlanSeries, url: "", minutes: "" });
   const [formError, setFormError] = useState("");
   const [copied, setCopied] = useState<string | null>(null);
+  const bannerRef = useRef<HTMLDivElement>(null);
+  /** When the question last appeared for a test, so a quick double tap cannot also answer the next one. */
+  const askShownAt = useRef(0);
 
   // When the learner comes back from the test tab, ask whether they attempted it.
   useEffect(() => {
@@ -55,10 +58,11 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
     return () => { document.removeEventListener("visibilitychange", back); window.removeEventListener("focus", back); window.removeEventListener("pageshow", shown); };
   }, []);
 
+  // Built-in rows saved earlier pick up fixes to the built-in plan (names, links, which rows have an Open button).
   useEffect(() => {
     if (!ready) return;
     void Promise.resolve().then(() => {
-      try { commit((current) => fillPortalNames(current, PYQ_PRESET)); } catch { /* still loading */ }
+      try { commit((current) => refreshFromPreset(current, PYQ_PRESET)); } catch { /* still loading */ }
     });
   }, [ready, commit]);
 
@@ -81,15 +85,30 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
   const asking = askReady ? askPending(items)[0] : undefined;
   const preloaded = items.some((item) => item.id.startsWith("preset:"));
 
+  // Coming back from a test (often by Back on a phone, which restores the old scroll position), bring the question into view.
+  const askingId = asking?.id;
+  useEffect(() => {
+    if (!askingId) return;
+    askShownAt.current = performance.now();
+    bannerRef.current?.scrollIntoView({ block: "center" });
+    bannerRef.current?.focus({ preventScroll: true });
+  }, [askingId]);
+
+  const answer = (update: (current: PlanItem[]) => PlanItem[]) => {
+    if (performance.now() - askShownAt.current < 400) return;
+    run(update);
+  };
+
   /** Load the built-in plan, or bring a loaded one up to date. Keeps everything the learner touched or added. */
   function loadOrUpdatePlan() {
-    const counts = { added: 0, removed: 0, skipped: 0 };
+    const counts = { added: 0, removed: 0, skipped: 0, past: 0 };
     try {
       commit((current) => {
-        const synced = syncPreset(current, PYQ_PRESET);
+        const synced = syncPreset(current, PYQ_PRESET, today);
         counts.added = synced.added;
         counts.removed = synced.removed;
         counts.skipped = synced.skipped;
+        counts.past = synced.past;
         return synced.items;
       });
     } catch (error) {
@@ -98,16 +117,21 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
       return;
     }
     setMessage("");
-    const { added, removed, skipped } = counts;
+    const { added, removed, skipped, past } = counts;
+    if (added === 0 && removed === 0) {
+      setPlanNotice(t({ en: "Your plan is already up to date.", hi: "आपकी योजना पहले से अद्यतन है।" }));
+      return;
+    }
     const keptNote = skipped > 0
-      ? t({ en: ` ${skipped} ${skipped === 1 ? "test you already opened, scored or linked stays" : "tests you already opened, scored or linked stay"} on ${skipped === 1 ? "its" : "their"} old day; move ${skipped === 1 ? "it" : "them"} if needed.`, hi: ` आपके खोले, स्कोर किए या लिंक किए ${skipped} टेस्ट अपने पुराने दिन पर ही रहेंगे; ज़रूरत हो तो उन्हें बदलें।` })
+      ? t({ en: ` ${skipped} ${skipped === 1 ? "test you already opened, scored or linked was" : "tests you already opened, scored or linked were"} kept as ${skipped === 1 ? "it was" : "they were"} and not added a second time.`, hi: ` आपके खोले, स्कोर किए या लिंक किए ${skipped} टेस्ट जैसे थे वैसे ही रखे गए, दोबारा नहीं जोड़े गए।` })
       : "";
-    setPlanNotice(added === 0 && removed === 0
-      ? t({ en: "Your plan is already up to date.", hi: "आपकी योजना पहले से अद्यतन है।" }) + keptNote
-      : t({
-        en: `Added ${added}, removed ${removed} outdated ${removed === 1 ? "item" : "items"}. Your progress is kept.`,
-        hi: `${added} जोड़े, ${removed} पुराने आइटम हटाए। आपकी प्रगति बनी रहती है।`,
-      }) + keptNote);
+    const pastNote = past > 0
+      ? t({ en: ` ${past} new ${past === 1 ? "test" : "tests"} on days already past ${past === 1 ? "was" : "were"} left out.`, hi: ` बीते दिनों के ${past} नए टेस्ट नहीं जोड़े गए।` })
+      : "";
+    setPlanNotice(t({
+      en: `Added ${added}, removed ${removed} outdated ${removed === 1 ? "item" : "items"}. Your progress is kept.`,
+      hi: `${added} जोड़े, ${removed} पुराने आइटम हटाए। आपकी प्रगति बनी रहती है।`,
+    }) + keptNote + pastNote);
   }
 
   function submit(event: React.FormEvent) {
@@ -132,7 +156,7 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
         {t({ en: "Today", hi: "आज" })}: <strong>{summary.todayDone}/{summary.todayTotal}</strong> {t({ en: "done", hi: "पूरे" })}
         {summary.todayMinutesLeft > 0 && <> · {summary.todayMinutesLeft} {t({ en: "min left", hi: "मिनट बाकी" })}</>}
         {" · "}{t({ en: "All", hi: "कुल" })}: <strong>{summary.overallDone}/{summary.overallTotal}</strong>
-        {summary.overdue > 0 && <span className="text-amber-700"> · {summary.overdue} {t({ en: "earlier tests not done", hi: "पिछले टेस्ट बाकी" })}</span>}
+        {summary.overdue > 0 && <span className="text-amber-700"> · {summary.overdue} {t({ en: summary.overdue === 1 ? "earlier test not done" : "earlier tests not done", hi: "पिछले टेस्ट बाकी" })}</span>}
       </p>
     </div>
 
@@ -140,22 +164,25 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
     {saveFailed && <p role="alert" className="rounded-lg bg-amber-50 p-3 text-sm text-amber-900">{t({ en: "This browser would not save your plan (private window or full storage). Changes will be lost when you close the page.", hi: "यह ब्राउज़र आपकी योजना सहेज नहीं पा रहा। पेज बंद करने पर बदलाव खो जाएँगे।" })}</p>}
     {message && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-800">{message}</p>}
 
-    {asking && <div role="alertdialog" aria-labelledby="ask-heading" className="rounded-xl border-2 border-blue-600 bg-blue-50 p-4">
+    {asking && <div ref={bannerRef} tabIndex={-1} role="alertdialog" aria-labelledby="ask-heading" className="rounded-xl border-2 border-blue-600 bg-blue-50 p-4 outline-none">
       <p id="ask-heading" className="font-semibold text-slate-900">{t({ en: "Did you attempt this test?", hi: "क्या आपने यह टेस्ट दिया?" })}</p>
       <p className="mt-1 text-sm text-slate-700">{asking.title}</p>
       <label className="mt-3 block text-sm text-slate-700">{t({ en: "Score or how it went (optional)", hi: "स्कोर या कैसा रहा (वैकल्पिक)" })}
         <input value={resultDraft[asking.id] ?? ""} onChange={(e) => setResultDraft({ ...resultDraft, [asking.id]: e.target.value })} maxLength={120} placeholder="32/50, 28 min" className="mt-1 block w-full rounded-lg border border-slate-300 p-2" />
       </label>
       <div className="mt-3 flex flex-wrap gap-2">
-        <button type="button" className={btnPrimary} onClick={() => run((c) => setStatus(c, asking.id, "attempted", now(), resultDraft[asking.id] ?? ""))}>{t({ en: "Yes, I attempted it", hi: "हाँ, दिया" })}</button>
-        <button type="button" className={btn} onClick={() => run((c) => clearOpened(c, asking.id))}>{t({ en: "Not yet", hi: "अभी नहीं" })}</button>
-        <button type="button" className={btn} onClick={() => run((c) => setStatus(c, asking.id, "skipped", now()))}>{t({ en: "Skip it", hi: "छोड़ें" })}</button>
+        <button type="button" className={btnPrimary} onClick={() => answer((c) => setStatus(c, asking.id, "attempted", now(), resultDraft[asking.id] ?? ""))}>{t({ en: "Yes, I attempted it", hi: "हाँ, दिया" })}</button>
+        <button type="button" className={btn} onClick={() => answer((c) => clearOpened(c, asking.id))}>{t({ en: "Not yet", hi: "अभी नहीं" })}</button>
+        <button type="button" className={btn} onClick={() => answer((c) => setStatus(c, asking.id, "skipped", now()))}>{t({ en: "Skip it", hi: "छोड़ें" })}</button>
       </div>
     </div>}
 
     <div className="flex flex-wrap items-center justify-between gap-2">
-      <h3 className="font-medium text-slate-900">{dayTitle}{selected === today && <span className="ml-2 rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">{t({ en: "today", hi: "आज" })}</span>}</h3>
-      {selected !== today && <button type="button" className={btn} onClick={() => onSelect(today)}>{t({ en: "Go to today", hi: "आज पर जाएँ" })}</button>}
+      <h3 id="plan-day" className="scroll-mt-4 font-medium text-slate-900">{dayTitle}{selected === today && <span className="ml-2 rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">{t({ en: "today", hi: "आज" })}</span>}</h3>
+      <div className="flex flex-wrap gap-2">
+        {selected !== today && <button type="button" className={btn} onClick={() => onSelect(today)}>{t({ en: "Go to today", hi: "आज पर जाएँ" })}</button>}
+        <button type="button" className={btn} onClick={() => document.getElementById(`month-${selected.slice(0, 7)}`)?.scrollIntoView({ block: "start" })}>{t({ en: "Pick another day ↓", hi: "दूसरा दिन चुनें ↓" })}</button>
+      </div>
     </div>
 
     {ready && dayItems.length === 0 && <p className="text-sm text-slate-600">{t({ en: "No tests planned for this day. Add one below, or load the PYQ plan.", hi: "इस दिन कोई टेस्ट नहीं है। नीचे जोड़ें या पिछले वर्षों के प्रश्नों की योजना लोड करें।" })}</p>}

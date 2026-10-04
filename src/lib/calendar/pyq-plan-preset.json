@@ -45,9 +45,9 @@
 {
 "date": "2026-10-03",
 "title": "Hot-topic drill test (30 min): today's block, then the facts you missed most",
-"series": "app",
+"series": "other",
 "minutes": 30,
-"note": "Use docs/hot-fact-families.md; shuffle options"
+"note": "Re-test yourself on the facts you got wrong in today's topic test. Shuffle the options."
 },
 {
 "date": "2026-10-04",
@@ -84,7 +84,7 @@
 {
 "date": "2026-10-04",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 1 day ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+1: T42. Shuffle the options."
 },
@@ -131,7 +131,7 @@
 {
 "date": "2026-10-05",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 1 day ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+1: T37. Shuffle the options."
 },
@@ -145,14 +145,14 @@
 {
 "date": "2026-10-06",
 "title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
-"series": "app",
+"series": "other",
 "minutes": 90,
 "note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-06",
 "title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
-"series": "madeeasy",
+"series": "other",
 "minutes": 0,
 "note": "Counts as today's full reasoning block"
 },
@@ -175,7 +175,7 @@
 {
 "date": "2026-10-06",
 "title": "Hot-topic drill test (20 min): facts from your topic tests of 1, 3 days ago",
-"series": "app",
+"series": "other",
 "minutes": 20,
 "note": "Facts behind D+1: T38, T39; D+3: T42. Shuffle the options."
 },
@@ -238,7 +238,7 @@
 {
 "date": "2026-10-07",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 3 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+3: T37. Shuffle the options."
 },
@@ -316,7 +316,7 @@
 {
 "date": "2026-10-08",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 3 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+3: T38, T39. Shuffle the options."
 },
@@ -330,14 +330,14 @@
 {
 "date": "2026-10-09",
 "title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
-"series": "app",
+"series": "other",
 "minutes": 90,
 "note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-09",
 "title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
-"series": "madeeasy",
+"series": "other",
 "minutes": 0,
 "note": "Counts as today's full reasoning block"
 },
@@ -360,7 +360,7 @@
 {
 "date": "2026-10-09",
 "title": "Hot-topic drill test (20 min): facts from your topic tests of 1 day ago",
-"series": "app",
+"series": "other",
 "minutes": 20,
 "note": "Facts behind D+1: T101, T54, T51, T81, T90. Shuffle the options."
 },
@@ -415,7 +415,7 @@
 {
 "date": "2026-10-10",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 7 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+7: T42. Shuffle the options."
 },
@@ -493,7 +493,7 @@
 {
 "date": "2026-10-11",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 1, 3, 7 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+1: T36, T77, T97; D+3: T101, T54, T51, T81, T90; D+7: T37. Shuffle the options."
 },
@@ -507,14 +507,14 @@
 {
 "date": "2026-10-12",
 "title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
-"series": "app",
+"series": "other",
 "minutes": 90,
 "note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-12",
 "title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
-"series": "madeeasy",
+"series": "other",
 "minutes": 0,
 "note": "Counts as today's full reasoning block"
 },
@@ -537,7 +537,7 @@
 {
 "date": "2026-10-12",
 "title": "Hot-topic drill test (20 min): facts from your topic tests of 1, 7 days ago",
-"series": "app",
+"series": "other",
 "minutes": 20,
 "note": "Facts behind D+1: T98, T99, T96, T100, T106; D+7: T38, T39. Shuffle the options."
 },
@@ -592,7 +592,7 @@
 {
 "date": "2026-10-13",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 3 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+3: T36, T77, T97. Shuffle the options."
 },
@@ -743,7 +743,7 @@
 {
 "date": "2026-10-14",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 1, 3 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+1: T17, T18; D+3: T98, T99, T96, T100, T106. Shuffle the options."
 },
@@ -806,7 +806,7 @@
 {
 "date": "2026-10-15",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 7 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+7: T101, T54, T51, T81, T90. Shuffle the options."
 },
@@ -820,14 +820,14 @@
 {
 "date": "2026-10-16",
 "title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
-"series": "app",
+"series": "other",
 "minutes": 90,
 "note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-16",
 "title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
-"series": "madeeasy",
+"series": "other",
 "minutes": 0,
 "note": "Counts as today's full reasoning block"
 },
@@ -850,7 +850,7 @@
 {
 "date": "2026-10-16",
 "title": "Hot-topic drill test (20 min): facts from your topic tests of 1, 3 days ago",
-"series": "app",
+"series": "other",
 "minutes": 20,
 "note": "Facts behind D+1: T20, T21, T22; D+3: T17, T18. Shuffle the options."
 },
@@ -945,7 +945,7 @@
 {
 "date": "2026-10-17",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 7, 14 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+7: T36, T77, T97; D+14: T42. Shuffle the options."
 },
@@ -1016,7 +1016,7 @@
 {
 "date": "2026-10-18",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 1, 3, 7, 14 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+1: T19, T91, T92, T66, T72, T60, T2; D+3: T20, T21, T22; D+7: T98, T99, T96, T100, T106; D+14: T37. Shuffle the options."
 },
@@ -1095,7 +1095,7 @@
 {
 "date": "2026-10-19",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 1, 14 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+1: T1, T57, T34, T35, T87; D+14: T38, T39. Shuffle the options."
 },
@@ -1109,14 +1109,14 @@
 {
 "date": "2026-10-20",
 "title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
-"series": "app",
+"series": "other",
 "minutes": 90,
 "note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-20",
 "title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
-"series": "madeeasy",
+"series": "other",
 "minutes": 0,
 "note": "Counts as today's full reasoning block"
 },
@@ -1139,7 +1139,7 @@
 {
 "date": "2026-10-20",
 "title": "Hot-topic drill test (20 min): facts from your topic tests of 1, 3, 7 days ago",
-"series": "app",
+"series": "other",
 "minutes": 20,
 "note": "Facts behind D+1: T88, T52, T28, T29, T4, T11; D+3: T19, T91, T92, T66, T72, T60, T2; D+7: T17, T18. Shuffle the options."
 },
@@ -1313,7 +1313,7 @@
 {
 "date": "2026-10-21",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 3 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+3: T1, T57, T34, T35, T87. Shuffle the options."
 },
@@ -1383,7 +1383,7 @@
 {
 "date": "2026-10-22",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 3, 7, 14 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+3: T88, T52, T28, T29, T4, T11; D+7: T20, T21, T22; D+14: T101, T54, T51, T81, T90. Shuffle the options."
 },
@@ -1398,14 +1398,14 @@
 {
 "date": "2026-10-23",
 "title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
-"series": "app",
+"series": "other",
 "minutes": 90,
 "note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-23",
 "title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
-"series": "app",
+"series": "other",
 "minutes": 0,
 "note": "Counts as today's full reasoning block"
 },
@@ -1428,7 +1428,7 @@
 {
 "date": "2026-10-23",
 "title": "Hot-topic drill test (20 min): facts from your topic tests of 1 day ago",
-"series": "app",
+"series": "other",
 "minutes": 20,
 "note": "Facts behind D+1: T30, T31, T27, T79. Shuffle the options."
 },
@@ -1523,7 +1523,7 @@
 {
 "date": "2026-10-24",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 7, 14 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+7: T19, T91, T92, T66, T72, T60, T2; D+14: T36, T77, T97. Shuffle the options."
 },
@@ -1537,14 +1537,14 @@
 {
 "date": "2026-10-25",
 "title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
-"series": "app",
+"series": "other",
 "minutes": 90,
 "note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-25",
 "title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
-"series": "madeeasy",
+"series": "other",
 "minutes": 0,
 "note": "Counts as today's full reasoning block"
 },
@@ -1567,7 +1567,7 @@
 {
 "date": "2026-10-25",
 "title": "Hot-topic drill test (20 min): facts from your topic tests of 1, 3, 7, 14 days ago",
-"series": "app",
+"series": "other",
 "minutes": 20,
 "note": "Facts behind D+1: T67, T68, T70, T71, T49, T44, T45, T50; D+3: T30, T31, T27, T79; D+7: T1, T57, T34, T35, T87; D+14: T98, T99, T96, T100, T106. Shuffle the options."
 },
@@ -1676,7 +1676,7 @@
 {
 "date": "2026-10-26",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 7 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+7: T88, T52, T28, T29, T4, T11. Shuffle the options."
 },
@@ -1690,14 +1690,14 @@
 {
 "date": "2026-10-27",
 "title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
-"series": "app",
+"series": "other",
 "minutes": 90,
 "note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-27",
 "title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
-"series": "madeeasy",
+"series": "other",
 "minutes": 0,
 "note": "Counts as today's full reasoning block"
 },
@@ -1720,7 +1720,7 @@
 {
 "date": "2026-10-27",
 "title": "Hot-topic drill test (20 min): facts from your topic tests of 1, 3, 14 days ago",
-"series": "app",
+"series": "other",
 "minutes": 20,
 "note": "Facts behind D+1: T8, T85, T86, T83, T56, T104, T5, T48; D+3: T67, T68, T70, T71, T49, T44, T45, T50; D+14: T17, T18. Shuffle the options."
 },
@@ -1861,7 +1861,7 @@
 {
 "date": "2026-10-28",
 "title": "Hot-topic drill test (30 min): catch-up on your latest topic tests",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Catch-up: facts behind 24 Oct: T67, T68, T70, T71, T49, T44, T45, T50; 26 Oct: T8, T85, T86, T83, T56, T104, T5, T48. Shuffle the options."
 },
@@ -1875,14 +1875,14 @@
 {
 "date": "2026-10-29",
 "title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
-"series": "app",
+"series": "other",
 "minutes": 90,
 "note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-29",
 "title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
-"series": "madeeasy",
+"series": "other",
 "minutes": 0,
 "note": "Counts as today's full reasoning block"
 },
@@ -1905,7 +1905,7 @@
 {
 "date": "2026-10-29",
 "title": "Hot-topic drill test (20 min): facts from your topic tests of 3, 7, 14 days ago",
-"series": "app",
+"series": "other",
 "minutes": 20,
 "note": "Facts behind D+3: T8, T85, T86, T83, T56, T104, T5, T48; D+7: T30, T31, T27, T79; D+14: T20, T21, T22. Shuffle the options."
 },
@@ -2032,7 +2032,7 @@
 {
 "date": "2026-10-30",
 "title": "Hot-topic drill test (30 min): catch-up on your latest topic tests",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Catch-up: facts behind 24 Oct: T67, T68, T70, T71, T49, T44, T45, T50; 26 Oct: T8, T85, T86, T83, T56, T104, T5, T48. Shuffle the options."
 },
@@ -2047,14 +2047,14 @@
 {
 "date": "2026-10-31",
 "title": "Analyse today's mock (about 60 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
-"series": "app",
+"series": "other",
 "minutes": 60,
 "note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-31",
 "title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
-"series": "app",
+"series": "other",
 "minutes": 0,
 "note": "Counts as today's full reasoning block"
 },
@@ -2077,7 +2077,7 @@
 {
 "date": "2026-10-31",
 "title": "Hot-topic drill test (20 min): facts from your topic tests of 7, 14 days ago",
-"series": "app",
+"series": "other",
 "minutes": 20,
 "note": "Facts behind D+7: T67, T68, T70, T71, T49, T44, T45, T50; D+14: T19, T91, T92, T66, T72, T60, T2. Shuffle the options."
 },
@@ -2204,7 +2204,7 @@
 {
 "date": "2026-11-01",
 "title": "Hot-topic drill test (30 min): facts from your topic tests of 14 days ago",
-"series": "app",
+"series": "other",
 "minutes": 30,
 "note": "Facts behind D+14: T1, T57, T34, T35, T87. Shuffle the options."
 }
