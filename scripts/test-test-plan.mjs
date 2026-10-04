@@ -342,12 +342,63 @@ for (const i of preset.items) {
   assert.ok(up.past > 0, "the rows left off past days are counted");
   assert.ok(up.added > 0, "today and later still get the new rows");
   const have = new Set(up.items.map((i) => i.id));
-  const missing = mergePreset([], preset.items).items.filter((i) => i.date >= today && !have.has(i.id));
-  assert.ok(missing.length <= up.skipped, "every current row from today on is in the plan, except ones the learner already did");
+  const doneTitles = new Set(up.items.filter((i) => i.status === "attempted").map((i) => i.title));
+  const doneSlots = new Set(up.items.filter((i) => i.status === "attempted").map((i) => `${i.date}|${(/^(Hot-topic drill test|Reasoning [123]\/3)\b/.exec(i.title) ?? [])[1]}`));
+  for (const row of mergePreset([], preset.items).items.filter((i) => i.date >= today && !have.has(i.id))) {
+    const slot = (/^(Hot-topic drill test|Reasoning [123]\/3)\b/.exec(row.title) ?? [])[1];
+    assert.ok(doneTitles.has(row.title) || (slot && doneSlots.has(`${row.date}|${slot}`)), `${row.date} ${row.title.slice(0, 40)}: missing, but the learner never did it`);
+  }
   const again = syncPreset(up.items, preset.items, today);
   assert.deepEqual([again.added, again.removed], [0, 0], "a second update changes nothing");
   // a first load still brings the whole plan, past days included
   assert.equal(syncPreset([], preset.items, today).added, preset.items.length);
+}
+
+// a learner who is behind updates late: tests the update moves between past days stay in the plan, not done, exactly once
+{
+  const head = JSON.parse(readFileSync(new URL("./fixtures/pyq-plan-preset-2026-10-03.json", import.meta.url), "utf8")).items;
+  const identity = /^(IES T\d+ |Pass [23] of 3: IES T\d+ |Full mock \(|(GK\/CA: )?Made Easy subject test \d+:|Reasoning 1\/3 \(full 50 Q, 30 min\): IES GIR |GK\/CA: IES GA )/;
+  for (const today of ["2026-10-08", "2026-10-09", "2026-10-12", "2026-10-15"]) {
+    let saved = mergePreset([], head).items;
+    for (const row of saved.filter((i) => i.date <= "2026-10-05")) saved = setStatus(saved, row.id, "attempted", `${row.date}T12:00:00.000Z`);
+    saved = parsePlan(JSON.parse(JSON.stringify(saved)));
+    const up = syncPreset(saved, preset.items, today);
+    const doneBefore = new Set(saved.filter((i) => i.status === "attempted").map((i) => i.title));
+    const oldTitles = new Set(head.map((i) => i.title));
+    for (const row of preset.items.filter((i) => identity.test(i.title))) {
+      const copies = up.items.filter((i) => i.title === row.title).length;
+      if (oldTitles.has(row.title) || row.date >= today) {
+        assert.equal(copies, 1, `update on ${today}: ${row.title.slice(0, 45)} is in the plan exactly once`);
+        if (!doneBefore.has(row.title)) assert.equal(up.items.find((i) => i.title === row.title).status, "planned", `update on ${today}: ${row.title.slice(0, 30)} is still to do`);
+      } else {
+        assert.equal(copies, 0, `update on ${today}: ${row.title.slice(0, 45)} is new and on a past day, so it is left out`);
+      }
+    }
+    assert.ok(up.past > 0, `update on ${today}: left-out new rows are counted for the notice`);
+    for (const t of ["IES T101 ", "IES T54 ", "IES T51 ", "IES T81 ", "IES T90 "]) assert.equal(up.items.filter((i) => i.title.startsWith(t)).length, 1, `update on ${today}: ${t}once`);
+    assert.ok(summarize(up.items, today).overdue > 0, `update on ${today}: being behind still shows`);
+    const again = syncPreset(up.items, preset.items, today);
+    assert.deepEqual([again.added, again.removed], [0, 0], `update on ${today}: a second update changes nothing`);
+  }
+}
+
+// a plan saved by the live 3 Oct plan: its renamed drill rows lose the Open button and the repo note on the next load
+{
+  const head = JSON.parse(readFileSync(new URL("./fixtures/pyq-plan-preset-2026-10-03.json", import.meta.url), "utf8")).items;
+  let saved = parsePlan(JSON.parse(JSON.stringify(mergePreset([], head).items)));
+  const oldDrills = saved.filter((i) => i.title.startsWith("Hot-topic drill"));
+  assert.equal(oldDrills.length, 30);
+  saved = setStatus(saved, oldDrills[1].id, "attempted", "2026-10-04T12:00:00.000Z", "16/20");
+  saved = setUrl(saved, oldDrills[2].id, "/papers/sscje-civil-p1-2024-06-06-0900/instructions");
+  const fixed = refreshFromPreset(saved, preset.items);
+  for (const row of fixed.filter((i) => i.title.startsWith("Hot-topic drill"))) {
+    assert.ok(!/docs\//.test(row.note), `${row.date}: no repo note`);
+    if (row.id !== oldDrills[2].id) assert.equal(linkFor(row), "", `${row.date}: a drill row has no Open link`);
+  }
+  assert.equal(linkFor(fixed.find((i) => i.id === oldDrills[2].id)), "/papers/sscje-civil-p1-2024-06-06-0900/instructions", "a link the learner saved still opens");
+  assert.equal(fixed.find((i) => i.id === oldDrills[1].id).result, "16/20", "progress kept");
+  assert.deepEqual(fixed.map((i) => [i.id, i.date, i.title, i.status]), saved.map((i) => [i.id, i.date, i.title, i.status]), "nothing added, removed, moved or renamed");
+  assert.equal(refreshFromPreset(fixed, preset.items), fixed, "second load: same array back");
 }
 
 // a drill, a full reasoning set or a GA set the learner already used is not scheduled a second time by an update

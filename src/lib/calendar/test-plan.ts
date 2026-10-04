@@ -200,10 +200,16 @@ export function mergePreset(items: PlanItem[], preset: PlanInput[]): { items: Pl
   return { items: next, added };
 }
 
+/** The note older plans gave every hot-topic drill, which pointed into the repository. */
+const REPO_NOTE = /\bdocs\/\S+\.md\b/;
+const DRILL_NOTE = "Re-test yourself on the facts you got wrong in your recent topic tests. Shuffle the options.";
+
 /**
  * Built-in items take the current plan's details: series, minutes, note, portal name and built-in link. Nothing else changes:
  * not the day, title or progress, and not a link the learner saved themselves. Runs on every load, so a fix to the built-in plan
  * (for example a row that should have no Open button) reaches plans saved earlier without pressing Update.
+ * Built-in items from an older plan that the current one no longer has (a renamed drill, say) keep their details, except that
+ * a "This app" row with no page of its own gets no Open button and a note pointing into the repository is replaced.
  * Returns the same array when nothing changes.
  */
 export function refreshFromPreset(items: PlanItem[], preset: PlanInput[]): PlanItem[] {
@@ -211,8 +217,15 @@ export function refreshFromPreset(items: PlanItem[], preset: PlanInput[]): PlanI
   for (const input of preset) rows.set(presetId(input.date, clean(input.title, MAX_TITLE)), input);
   let changed = false;
   const next = items.map((item) => {
-    const input = item.id.startsWith("preset:") ? rows.get(item.id) : undefined;
-    if (!input) return item;
+    if (!item.id.startsWith("preset:")) return item;
+    const input = rows.get(item.id);
+    if (!input) {
+      const series = item.series === "app" && !safeUrl(item.url) ? "other" : item.series;
+      const note = REPO_NOTE.test(item.note) ? DRILL_NOTE : item.note;
+      if (series === item.series && note === item.note) return item;
+      changed = true;
+      return { ...item, series, note };
+    }
     const presetUrl = safeUrl(input.url);
     const fresh: PlanItem = {
       ...item,
@@ -247,14 +260,17 @@ const DAILY_SLOT = /^(Hot-topic drill test|Reasoning [123]\/3)\b/;
  * (a) drop built-in items the current plan no longer has, but only if the learner never touched them;
  * (b) add the built-in items that are missing; (c) refresh built-in details (see refreshFromPreset).
  * The learner's own items, and built-in items they opened, attempted, skipped, scored or linked, are never removed.
- * A test or daily block the learner already acted on is not added a second time (`skipped`), and when a plan is already
- * loaded, nothing new is added to days before `today` (`past`), so an update never back-fills days the learner has finished.
+ * A test or daily block the learner already acted on is not added a second time (`skipped`). When a plan is already loaded,
+ * nothing NEW is added to days before `today` (`past`), so an update never back-fills days the learner has finished; but a test
+ * or daily block the update moved or renamed is put back even on a past day, so a learner who is behind still sees it as not done.
  * Running it again changes nothing (added 0, removed 0, the same array back).
  */
 export function syncPreset(items: PlanItem[], preset: PlanInput[], today?: string): { items: PlanItem[]; added: number; removed: number; skipped: number; past: number } {
   const current = new Set(preset.map((input) => presetId(input.date, clean(input.title, MAX_TITLE))));
   const kept = items.filter((item) => !item.id.startsWith("preset:") || current.has(item.id) || !untouched(item));
-  const removed = items.length - kept.length;
+  const keptIds = new Set(kept.map((item) => item.id));
+  const dropped = items.filter((item) => !keptIds.has(item.id));
+  const removed = dropped.length;
   const touched = kept.filter((item) => item.id.startsWith("preset:") && !untouched(item));
   // A test the learner already acted on, kept on an older date, is not added again on its new date.
   const actedOn = new Set(touched.filter((item) => TEST_IDENTITY.test(item.title)).map((item) => item.title));
@@ -269,7 +285,16 @@ export function syncPreset(items: PlanItem[], preset: PlanInput[], today?: strin
   });
   const skipped = preset.length - notActedOn.length;
   const loaded = items.some((item) => item.id.startsWith("preset:"));
-  const wanted = loaded && today ? notActedOn.filter((input) => input.date >= today || ids.has(presetId(input.date, clean(input.title, MAX_TITLE)))) : notActedOn;
+  // What this update just took out: a row with the same title (a moved test) or the same day and block (a renamed drill) replaces it.
+  const droppedTitles = new Set(dropped.map((item) => item.title));
+  const droppedSlots = new Set(dropped.map((item) => slotKey(item.date, item.title)).filter(Boolean));
+  const replaces = (input: PlanInput) => {
+    const title = clean(input.title, MAX_TITLE);
+    return droppedTitles.has(title) || droppedSlots.has(slotKey(input.date, title));
+  };
+  const wanted = loaded && today
+    ? notActedOn.filter((input) => input.date >= today || ids.has(presetId(input.date, clean(input.title, MAX_TITLE))) || replaces(input))
+    : notActedOn;
   const past = notActedOn.length - wanted.length;
   const merged = mergePreset(removed > 0 ? kept : items, wanted);
   return { items: refreshFromPreset(merged.items, preset), added: merged.added, removed, skipped, past };

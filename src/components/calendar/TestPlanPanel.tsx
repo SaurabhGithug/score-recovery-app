@@ -44,8 +44,12 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
   const [formError, setFormError] = useState("");
   const [copied, setCopied] = useState<string | null>(null);
   const bannerRef = useRef<HTMLDivElement>(null);
-  /** When the question last appeared for a test, so a quick double tap cannot also answer the next one. */
-  const askShownAt = useRef(0);
+  /**
+   * Taps in the panel are ignored until this time: just after the question appears or is answered, the layout moves under
+   * the finger, and the second tap of a double tap would otherwise answer the next test or press whatever slid into place.
+   */
+  const ignoreTapsUntil = useRef(0);
+  const holdTaps = () => { ignoreTapsUntil.current = performance.now() + 400; };
 
   // When the learner comes back from the test tab, ask whether they attempted it.
   useEffect(() => {
@@ -89,15 +93,29 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
   const askingId = asking?.id;
   useEffect(() => {
     if (!askingId) return;
-    askShownAt.current = performance.now();
+    ignoreTapsUntil.current = performance.now() + 400;
+    // Never pull the page away from a field the learner is typing in.
+    const active = document.activeElement;
+    if (active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement || active instanceof HTMLSelectElement) return;
     bannerRef.current?.scrollIntoView({ block: "center" });
     bannerRef.current?.focus({ preventScroll: true });
   }, [askingId]);
 
   const answer = (update: (current: PlanItem[]) => PlanItem[]) => {
-    if (performance.now() - askShownAt.current < 400) return;
     run(update);
+    holdTaps();
   };
+  const ignoreQuickTaps = (event: React.MouseEvent) => {
+    if (performance.now() < ignoreTapsUntil.current) { event.preventDefault(); event.stopPropagation(); }
+  };
+
+  /** Back to the month grid of the chosen day, or the nearest month shown. */
+  function showGrid() {
+    const months = [...document.querySelectorAll<HTMLElement>("h2[id^='month-']")];
+    const wanted = `month-${selected.slice(0, 7)}`;
+    const target = months.find((month) => month.id === wanted) ?? (wanted > (months.at(-1)?.id ?? "") ? months.at(-1) : months[0]);
+    target?.scrollIntoView({ block: "start" });
+  }
 
   /** Load the built-in plan, or bring a loaded one up to date. Keeps everything the learner touched or added. */
   function loadOrUpdatePlan() {
@@ -149,7 +167,7 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
     ? t({ en: "Attempted", hi: "दिया गया" })
     : item.status === "skipped" ? t({ en: "Skipped", hi: "छोड़ा गया" }) : t({ en: "Planned", hi: "योजना में" });
 
-  return <section aria-labelledby="plan-heading" className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 sm:p-6">
+  return <section aria-labelledby="plan-heading" onClickCapture={ignoreQuickTaps} className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 sm:p-6">
     <div className="flex flex-wrap items-baseline justify-between gap-2">
       <h2 id="plan-heading" className="text-lg font-semibold text-slate-900">{t({ en: "Test plan", hi: "टेस्ट योजना" })}</h2>
       <p className="text-sm text-slate-600" aria-live="polite">
@@ -181,7 +199,7 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
       <h3 id="plan-day" className="scroll-mt-4 font-medium text-slate-900">{dayTitle}{selected === today && <span className="ml-2 rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">{t({ en: "today", hi: "आज" })}</span>}</h3>
       <div className="flex flex-wrap gap-2">
         {selected !== today && <button type="button" className={btn} onClick={() => onSelect(today)}>{t({ en: "Go to today", hi: "आज पर जाएँ" })}</button>}
-        <button type="button" className={btn} onClick={() => document.getElementById(`month-${selected.slice(0, 7)}`)?.scrollIntoView({ block: "start" })}>{t({ en: "Pick another day ↓", hi: "दूसरा दिन चुनें ↓" })}</button>
+        <button type="button" className={btn} onClick={showGrid}>{t({ en: "Pick another day ↓", hi: "दूसरा दिन चुनें ↓" })}</button>
       </div>
     </div>
 
@@ -209,13 +227,14 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
         {item.status === "planned" && <details className="mt-2 text-xs text-slate-600">
           <summary className="cursor-pointer">{item.url ? t({ en: "Change the direct link", hi: "सीधा लिंक बदलें" }) : t({ en: "Add a direct link to this test", hi: "इस टेस्ट का सीधा लिंक जोड़ें" })}</summary>
           <form className="mt-2 flex gap-2" onSubmit={(e) => { e.preventDefault(); const value = String(new FormData(e.currentTarget).get("url") ?? ""); run((c) => setUrl(c, item.id, value)); }}>
-            <input name="url" defaultValue={item.url} placeholder="https://…" aria-label={t({ en: "Direct link to this test", hi: "इस टेस्ट का सीधा लिंक" })} className="min-w-0 flex-1 rounded-lg border border-slate-300 p-2 text-sm text-slate-900" />
+            <input key={item.url} name="url" defaultValue={item.url} placeholder="https://…" aria-label={t({ en: "Direct link to this test", hi: "इस टेस्ट का सीधा लिंक" })} className="min-w-0 flex-1 rounded-lg border border-slate-300 p-2 text-sm text-slate-900" />
             <button type="submit" className={btn}>{t({ en: "Save", hi: "सहेजें" })}</button>
           </form>
           <p className="mt-1">{t({ en: "IES Master gives no link for each test; paste one here if you find it. Leave it empty to use the series page.", hi: "IES Master हर टेस्ट का अलग लिंक नहीं देता; मिले तो यहाँ चिपकाएँ। खाली छोड़ने पर सीरीज़ का पेज खुलेगा।" })}</p>
         </details>}
         {item.status === "attempted" && <label className="mt-2 block text-xs text-slate-600">{t({ en: "Score / notes", hi: "स्कोर / नोट" })}
-          <input defaultValue={item.result} maxLength={120} placeholder="32/50, 28 min" onBlur={(e) => { if (e.target.value !== item.result) run((c) => setResult(c, item.id, e.target.value)); }} className="mt-1 block w-full rounded-lg border border-slate-300 p-2 text-sm text-slate-900" />
+          {/* Keyed on the saved score, so a score saved in another open copy replaces a stale one here instead of being overwritten on blur. */}
+          <input key={item.result} defaultValue={item.result} maxLength={120} placeholder="32/50, 28 min" onBlur={(e) => { if (e.target.value !== item.result) run((c) => setResult(c, item.id, e.target.value)); }} className="mt-1 block w-full rounded-lg border border-slate-300 p-2 text-sm text-slate-900" />
         </label>}
       </li>)}
     </ul>
