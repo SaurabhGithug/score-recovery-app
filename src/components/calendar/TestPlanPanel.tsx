@@ -83,12 +83,13 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
 
   /** Load the built-in plan, or bring a loaded one up to date. Keeps everything the learner touched or added. */
   function loadOrUpdatePlan() {
-    const counts = { added: 0, removed: 0 };
+    const counts = { added: 0, removed: 0, skipped: 0 };
     try {
       commit((current) => {
         const synced = syncPreset(current, PYQ_PRESET);
         counts.added = synced.added;
         counts.removed = synced.removed;
+        counts.skipped = synced.skipped;
         return synced.items;
       });
     } catch (error) {
@@ -97,13 +98,16 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
       return;
     }
     setMessage("");
-    const { added, removed } = counts;
+    const { added, removed, skipped } = counts;
+    const keptNote = skipped > 0
+      ? t({ en: ` ${skipped} ${skipped === 1 ? "test you already opened, scored or linked stays" : "tests you already opened, scored or linked stay"} on ${skipped === 1 ? "its" : "their"} old day; move ${skipped === 1 ? "it" : "them"} if needed.`, hi: ` आपके खोले, स्कोर किए या लिंक किए ${skipped} टेस्ट अपने पुराने दिन पर ही रहेंगे; ज़रूरत हो तो उन्हें बदलें।` })
+      : "";
     setPlanNotice(added === 0 && removed === 0
-      ? t({ en: "Your plan is already up to date.", hi: "आपकी योजना पहले से अद्यतन है।" })
+      ? t({ en: "Your plan is already up to date.", hi: "आपकी योजना पहले से अद्यतन है।" }) + keptNote
       : t({
         en: `Added ${added}, removed ${removed} outdated ${removed === 1 ? "item" : "items"}. Your progress is kept.`,
         hi: `${added} जोड़े, ${removed} पुराने आइटम हटाए। आपकी प्रगति बनी रहती है।`,
-      }));
+      }) + keptNote);
   }
 
   function submit(event: React.FormEvent) {

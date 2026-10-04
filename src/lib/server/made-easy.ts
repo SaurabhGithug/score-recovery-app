@@ -20,7 +20,11 @@ import {
 
 const IMPORT = rawImport as MadeEasyImport;
 
-/** The learner's attempted-tests page on the Made Easy portal (given by Saurabh, 2026-09-30). */
+/**
+ * The learner's attempted-tests page on the Made Easy portal (given by Saurabh, 2026-09-30). It points at the
+ * ATTEMPTED filter on purpose, for capturing finished tests; the calendar's plan link (SERIES_LINK.madeeasy in
+ * src/lib/calendar/test-plan.ts) drops ?tag=attempted so the learner sees the tests still to do.
+ */
 export const MADE_EASY_PORTAL_URL = "https://www.madeeasy.in/prep/mock-test-details/ce-ssc-je-2026-cbt-1-online-test-series?tag=attempted";
 
 export function madeEasyOwner(): string | null {

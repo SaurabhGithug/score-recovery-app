@@ -1,6 +1,6 @@
 {
-"name": "PYQ plan 3 Oct - 1 Nov 2026",
-"built": "2026-10-03",
+"name": "PYQ + mock plan 3 Oct - 1 Nov 2026",
+"built": "2026-10-04",
 "items": [
 {
 "date": "2026-10-03",
@@ -47,7 +47,7 @@
 "title": "Hot-topic drill test (30 min): today's block, then the facts you missed most",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Use docs/hot-fact-families.md; shuffle options"
 },
 {
 "date": "2026-10-04",
@@ -83,10 +83,10 @@
 },
 {
 "date": "2026-10-04",
-"title": "Hot-topic drill test (30 min): D+1: Estimating",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 1 day ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+1: T42. Shuffle the options."
 },
 {
 "date": "2026-10-05",
@@ -130,58 +130,31 @@
 },
 {
 "date": "2026-10-05",
-"title": "Hot-topic drill test (30 min): D+1: Concrete",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 1 day ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+1: T37. Shuffle the options."
 },
 {
 "date": "2026-10-06",
-"title": "IES T101 Levelling (75 Q, 47 min)",
-"series": "ies",
-"minutes": 47,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -101 Levelling (Surveying -101)"
+"title": "Full mock (200 Q, 120 min): Made Easy Full Syllabus Test 1",
+"series": "madeeasy",
+"minutes": 120,
+"note": "Exam conditions: one sitting, 120 minutes, no pausing. Log your Reasoning, GA and Civil scores separately."
 },
 {
 "date": "2026-10-06",
-"title": "IES T54 Classification of Soil (31 Q, 22 min)",
-"series": "ies",
-"minutes": 22,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -54 Classification of Soil_ (Soil Mechanics -54)"
+"title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
+"series": "app",
+"minutes": 90,
+"note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-06",
-"title": "IES T51 Solid Waste Management (14 Q, 9 min)",
-"series": "ies",
-"minutes": 9,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test- 51 Solid Wasted Management (Environmental Engineering 51)"
-},
-{
-"date": "2026-10-06",
-"title": "IES T81 Hydrologic Cycle (15 Q, 10 min)",
-"series": "ies",
-"minutes": 10,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -81 Hydrologicla Cycle (Irrigation Engineering - 81)"
-},
-{
-"date": "2026-10-06",
-"title": "IES T90 Geometric Design (66 Q, 42 min)",
-"series": "ies",
-"minutes": 42,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -90 Geometric Design (Transportation Engineering -90)"
-},
-{
-"date": "2026-10-06",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 15 Nov 2022 Morning",
-"series": "ies",
-"minutes": 30,
-"note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "57_General Intelligence and Reasoning 2022 15 NOV 2022 (Morning Session)"
+"title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
+"series": "madeeasy",
+"minutes": 0,
+"note": "Counts as today's full reasoning block"
 },
 {
 "date": "2026-10-06",
@@ -201,18 +174,10 @@
 },
 {
 "date": "2026-10-06",
-"title": "GK/CA: IES GA 14 Nov 2022 Afternoon + 20 min fresh current affairs",
-"series": "ies",
-"minutes": 50,
-"note": "GA is 2022 or older; add fresh current affairs",
-"portalName": "60_General Awareness 2022 14 NOV 2022 (Afternoon Session)"
-},
-{
-"date": "2026-10-06",
-"title": "Hot-topic drill test (30 min): D+1: Aggregates+Timber and Wood Based Pr, D+3: Estimating",
+"title": "Hot-topic drill test (20 min): facts from your topic tests of 1, 3 days ago",
 "series": "app",
-"minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"minutes": 20,
+"note": "Facts behind D+1: T38, T39; D+3: T42. Shuffle the options."
 },
 {
 "date": "2026-10-07",
@@ -248,51 +213,11 @@
 },
 {
 "date": "2026-10-07",
-"title": "Pass 2 of 3: IES T101 Levelling - redo your wrong and guessed questions (about 15 min)",
-"series": "ies",
-"minutes": 15,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -101 Levelling (Surveying -101)"
-},
-{
-"date": "2026-10-07",
-"title": "Pass 2 of 3: IES T54 Classification of Soil - redo your wrong and guessed questions (about 7 min)",
-"series": "ies",
-"minutes": 7,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -54 Classification of Soil_ (Soil Mechanics -54)"
-},
-{
-"date": "2026-10-07",
-"title": "Pass 2 of 3: IES T51 Solid Waste Management - redo your wrong and guessed questions (about 5 min)",
-"series": "ies",
-"minutes": 5,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test- 51 Solid Wasted Management (Environmental Engineering 51)"
-},
-{
-"date": "2026-10-07",
-"title": "Pass 2 of 3: IES T81 Hydrologic Cycle - redo your wrong and guessed questions (about 5 min)",
-"series": "ies",
-"minutes": 5,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -81 Hydrologicla Cycle (Irrigation Engineering - 81)"
-},
-{
-"date": "2026-10-07",
-"title": "Pass 2 of 3: IES T90 Geometric Design - redo your wrong and guessed questions (about 13 min)",
-"series": "ies",
-"minutes": 13,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -90 Geometric Design (Transportation Engineering -90)"
-},
-{
-"date": "2026-10-07",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 15 Nov 2022 Afternoon",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 15 Nov 2022 Morning",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "58_General Intelligence and Reasoning 2022 15 NOV 2022 (Afternoon Session)"
+"portalName": "57_General Intelligence and Reasoning 2022 15 NOV 2022 (Morning Session)"
 },
 {
 "date": "2026-10-07",
@@ -312,42 +237,58 @@
 },
 {
 "date": "2026-10-07",
-"title": "Hot-topic drill test (30 min): D+1: Levelling+Classification of Soil+Solid Waste Management, D+3: Concrete",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 3 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+3: T37. Shuffle the options."
 },
 {
 "date": "2026-10-08",
-"title": "IES T77 Flow Through Pipes (35 Q, 22 min)",
+"title": "IES T101 Levelling (75 Q, 47 min)",
+"series": "ies",
+"minutes": 47,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -101 Levelling (Surveying -101)"
+},
+{
+"date": "2026-10-08",
+"title": "IES T54 Classification of Soil (31 Q, 22 min)",
 "series": "ies",
 "minutes": 22,
 "note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -77 Flow Through Pipes (Hydraulics - 77)"
+"portalName": "Topic wise Test -54 Classification of Soil_ (Soil Mechanics -54)"
 },
 {
 "date": "2026-10-08",
-"title": "IES T97 Linear Measurements (81 Q, 51 min)",
+"title": "IES T51 Solid Waste Management (14 Q, 9 min)",
 "series": "ies",
-"minutes": 51,
+"minutes": 9,
 "note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -97 Linear Measurements (Surveying) -97"
+"portalName": "Topic wise Test- 51 Solid Wasted Management (Environmental Engineering 51)"
 },
 {
 "date": "2026-10-08",
-"title": "IES T98 Compass Surveying (67 Q, 43 min)",
+"title": "IES T81 Hydrologic Cycle (15 Q, 10 min)",
 "series": "ies",
-"minutes": 43,
+"minutes": 10,
 "note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -98 Compass Surveying (Surveying) -98"
+"portalName": "Topic wise Test -81 Hydrologicla Cycle (Irrigation Engineering - 81)"
 },
 {
 "date": "2026-10-08",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 15 Nov 2022 Evening",
+"title": "IES T90 Geometric Design (66 Q, 42 min)",
+"series": "ies",
+"minutes": 42,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -90 Geometric Design (Transportation Engineering -90)"
+},
+{
+"date": "2026-10-08",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 15 Nov 2022 Afternoon",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "59_General Intelligence and Reasoning 2022 15 NOV 2022 (Evening Session)"
+"portalName": "58_General Intelligence and Reasoning 2022 15 NOV 2022 (Afternoon Session)"
 },
 {
 "date": "2026-10-08",
@@ -367,58 +308,38 @@
 },
 {
 "date": "2026-10-08",
-"title": "GK/CA: IES GA 14 Nov 2022 Evening + 20 min fresh current affairs",
-"series": "ies",
+"title": "GK/CA: Made Easy subject test 1: History & Culture + Geography (50 Q, 30 min) + 20 min fresh current affairs",
+"series": "madeeasy",
 "minutes": 50,
-"note": "GA is 2022 or older; add fresh current affairs",
-"portalName": "61_General Awareness 2022 14 NOV 2022 (Evening Session)"
+"note": "Open Test 1 in your Made Easy CBT-1 series"
 },
 {
 "date": "2026-10-08",
-"title": "Hot-topic drill test (30 min): D+3: Aggregates+Timber and Wood Based Pr",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 3 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+3: T38, T39. Shuffle the options."
 },
 {
 "date": "2026-10-09",
-"title": "IES T99 Theodolite and Tacheometry (45 Q, 30 min)",
-"series": "ies",
-"minutes": 30,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -99 Theodolite and Tacheometry (Surveying -99)"
+"title": "Full mock (200 Q, 120 min): Made Easy Full Syllabus Test 2",
+"series": "madeeasy",
+"minutes": 120,
+"note": "Exam conditions: one sitting, 120 minutes, no pausing. Log your Reasoning, GA and Civil scores separately."
 },
 {
 "date": "2026-10-09",
-"title": "IES T96 Fundamentals of Surveying (53 Q, 35 min)",
-"series": "ies",
-"minutes": 35,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -96 Fundamentals of Surveying (Surveying) -96)"
+"title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
+"series": "app",
+"minutes": 90,
+"note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-09",
-"title": "IES T100 Traversing (18 Q, 12 min)",
-"series": "ies",
-"minutes": 12,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -100 Traversing (Surveying -100)"
-},
-{
-"date": "2026-10-09",
-"title": "IES T106 Miscellaneous (8 Q, 6 min)",
-"series": "ies",
-"minutes": 6,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -106 Miscellaneous (Surveying -106)"
-},
-{
-"date": "2026-10-09",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 16 Nov 2022 Morning",
-"series": "ies",
-"minutes": 30,
-"note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "60_General Intelligence and Reasoning 2022 16 NOV 2022 (Morning Session)"
+"title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
+"series": "madeeasy",
+"minutes": 0,
+"note": "Counts as today's full reasoning block"
 },
 {
 "date": "2026-10-09",
@@ -438,10 +359,10 @@
 },
 {
 "date": "2026-10-09",
-"title": "Hot-topic drill test (30 min): D+1: Flow Through Pipes+Linear Measurements+Compass Surveying, D+3: Levelling+Classification of Soil+Solid Waste Management",
+"title": "Hot-topic drill test (20 min): facts from your topic tests of 1 day ago",
 "series": "app",
-"minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"minutes": 20,
+"note": "Facts behind D+1: T101, T54, T51, T81, T90. Shuffle the options."
 },
 {
 "date": "2026-10-10",
@@ -453,11 +374,27 @@
 },
 {
 "date": "2026-10-10",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 16 Nov 2022 Afternoon",
+"title": "IES T77 Flow Through Pipes (35 Q, 22 min)",
+"series": "ies",
+"minutes": 22,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -77 Flow Through Pipes (Hydraulics - 77)"
+},
+{
+"date": "2026-10-10",
+"title": "IES T97 Linear Measurements (81 Q, 51 min)",
+"series": "ies",
+"minutes": 51,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -97 Linear Measurements (Surveying) -97"
+},
+{
+"date": "2026-10-10",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 15 Nov 2022 Evening",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "61_General Intelligence and Reasoning 2022 16 NOV 2022 (Afternoon Session)"
+"portalName": "59_General Intelligence and Reasoning 2022 15 NOV 2022 (Evening Session)"
 },
 {
 "date": "2026-10-10",
@@ -477,58 +414,65 @@
 },
 {
 "date": "2026-10-10",
-"title": "GK/CA: IES GA 15 Nov 2022 Morning + 20 min fresh current affairs",
-"series": "ies",
-"minutes": 50,
-"note": "GA is 2022 or older; add fresh current affairs",
-"portalName": "62_General Awareness 2022 15 NOV 2022 (Morning Session)"
-},
-{
-"date": "2026-10-10",
-"title": "Hot-topic drill test (30 min): D+1: Theodolite and Tacheomet+Fundamentals of Surveyin+Traversing, D+7: Estimating",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 7 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+7: T42. Shuffle the options."
 },
 {
 "date": "2026-10-11",
-"title": "IES T17 Introduction of Limit State and Working Stress Methods (175 Q, 110 min)",
+"title": "GK/CA: Made Easy subject test 4: General Science & Technology + Environment (50 Q, 30 min) + 20 min fresh current affairs",
+"series": "madeeasy",
+"minutes": 50,
+"note": "Open Test 4 in your Made Easy CBT-1 series"
+},
+{
+"date": "2026-10-11",
+"title": "IES T98 Compass Surveying (67 Q, 43 min)",
 "series": "ies",
-"minutes": 110,
+"minutes": 43,
 "note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 17 Introduction of Limit State and Working Stress Methods _ RCC-17"
+"portalName": "Topic wise Test -98 Compass Surveying (Surveying) -98"
 },
 {
 "date": "2026-10-11",
-"title": "IES T18 Limit State of Collapse in Shear (27 Q, 17 min)",
+"title": "IES T99 Theodolite and Tacheometry (45 Q, 30 min)",
 "series": "ies",
-"minutes": 17,
+"minutes": 30,
 "note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 18 Limit State of Collapse in Shear _ RCC-18"
+"portalName": "Topic wise Test -99 Theodolite and Tacheometry (Surveying -99)"
 },
 {
 "date": "2026-10-11",
-"title": "IES T20 Design of Beams (82 Q, 52 min)",
+"title": "IES T96 Fundamentals of Surveying (53 Q, 35 min)",
 "series": "ies",
-"minutes": 52,
+"minutes": 35,
 "note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 20 Design of Beams _ RCC-20"
+"portalName": "Topic wise Test -96 Fundamentals of Surveying (Surveying) -96)"
 },
 {
 "date": "2026-10-11",
-"title": "IES T21 Design of Slab (62 Q, 41 min)",
+"title": "IES T100 Traversing (18 Q, 12 min)",
 "series": "ies",
-"minutes": 41,
+"minutes": 12,
 "note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 21 Design of Slab _ RCC-21"
+"portalName": "Topic wise Test -100 Traversing (Surveying -100)"
 },
 {
 "date": "2026-10-11",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 16 Nov 2022 Evening",
+"title": "IES T106 Miscellaneous (8 Q, 6 min)",
+"series": "ies",
+"minutes": 6,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -106 Miscellaneous (Surveying -106)"
+},
+{
+"date": "2026-10-11",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 16 Nov 2022 Morning",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "62_General Intelligence and Reasoning 2022 16 NOV 2022 (Evening Session)"
+"portalName": "60_General Intelligence and Reasoning 2022 16 NOV 2022 (Morning Session)"
 },
 {
 "date": "2026-10-11",
@@ -548,50 +492,31 @@
 },
 {
 "date": "2026-10-11",
-"title": "Hot-topic drill test (30 min): D+1: Cement, D+3: Flow Through Pipes+Linear Measurements+Compass Surveying, D+7: Concrete",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 1, 3, 7 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+1: T36, T77, T97; D+3: T101, T54, T51, T81, T90; D+7: T37. Shuffle the options."
 },
 {
 "date": "2026-10-12",
-"title": "IES T22 Columns (45 Q, 30 min)",
-"series": "ies",
-"minutes": 30,
-"note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 22 Columns _ RCC-22"
+"title": "Full mock (200 Q, 120 min): Made Easy Full Syllabus Test 3",
+"series": "madeeasy",
+"minutes": 120,
+"note": "Exam conditions: one sitting, 120 minutes, no pausing. Log your Reasoning, GA and Civil scores separately."
 },
 {
 "date": "2026-10-12",
-"title": "IES T19 Bond and Anchorage (36 Q, 25 min)",
-"series": "ies",
-"minutes": 25,
-"note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 19 Bond and Anchorage _ RCC-19"
+"title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
+"series": "app",
+"minutes": 90,
+"note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-12",
-"title": "IES T91 Traffic Engineering (20 Q, 13 min)",
-"series": "ies",
-"minutes": 13,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -91 Traffic Engineering (Transportation Engineering -91)"
-},
-{
-"date": "2026-10-12",
-"title": "IES T92 Surface Highway Materials (29 Q, 19 min)",
-"series": "ies",
-"minutes": 19,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -92 Surface Highway Materials (Transportation Engineering -92)"
-},
-{
-"date": "2026-10-12",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 22 Mar 2021 Morning",
-"series": "ies",
-"minutes": 30,
-"note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "48_General Intelligence and Reasoning 2020 22 March 2021 (Morning Session)"
+"title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
+"series": "madeeasy",
+"minutes": 0,
+"note": "Counts as today's full reasoning block"
 },
 {
 "date": "2026-10-12",
@@ -611,50 +536,34 @@
 },
 {
 "date": "2026-10-12",
-"title": "Hot-topic drill test (30 min): D+1: Introduction of Limit St+Limit State of Collapse +Design of Beams, D+3: Theodolite and Tacheomet+Fundamentals of Surveyin+Traversing, D+7: Aggregates+Timber and Wood Based Pr",
+"title": "Hot-topic drill test (20 min): facts from your topic tests of 1, 7 days ago",
 "series": "app",
-"minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"minutes": 20,
+"note": "Facts behind D+1: T98, T99, T96, T100, T106; D+7: T38, T39. Shuffle the options."
 },
 {
 "date": "2026-10-13",
-"title": "IES T66 Fluid Properties (77 Q, 50 min)",
+"title": "IES T17 Introduction of Limit State and Working Stress Methods (175 Q, 110 min)",
 "series": "ies",
-"minutes": 50,
+"minutes": 110,
 "note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -66 Fluid Properties (Hydraulics - 66)"
+"portalName": "Topicwise Test - 17 Introduction of Limit State and Working Stress Methods _ RCC-17"
 },
 {
 "date": "2026-10-13",
-"title": "IES T72 Weirs and Notches (20 Q, 13 min)",
+"title": "IES T18 Limit State of Collapse in Shear (27 Q, 17 min)",
 "series": "ies",
-"minutes": 13,
+"minutes": 17,
 "note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -72 Weirs and Notches (Hydraulics - 72)"
+"portalName": "Topicwise Test - 18 Limit State of Collapse in Shear _ RCC-18"
 },
 {
 "date": "2026-10-13",
-"title": "IES T60 Shear Strength of Soil (30 Q, 19 min)",
-"series": "ies",
-"minutes": 19,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -60 Shear Strength of Soil (Soil Mechanics - 60)"
-},
-{
-"date": "2026-10-13",
-"title": "IES T2 Shear Force and Bending Moment (60 Q, 40 min)",
-"series": "ies",
-"minutes": 40,
-"note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test -2 Shear Force and Bending Moment _ SA-02"
-},
-{
-"date": "2026-10-13",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 22 Mar 2021 Evening",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 16 Nov 2022 Afternoon",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "49_General Intelligence and Reasoning 2020 22 March 2021 (Evening Session)"
+"portalName": "61_General Intelligence and Reasoning 2022 16 NOV 2022 (Afternoon Session)"
 },
 {
 "date": "2026-10-13",
@@ -674,18 +583,66 @@
 },
 {
 "date": "2026-10-13",
-"title": "GK/CA: IES GA 15 Nov 2022 Afternoon + 20 min fresh current affairs",
+"title": "GK/CA: IES GA 14 Nov 2022 Afternoon + 20 min fresh current affairs",
 "series": "ies",
 "minutes": 50,
 "note": "GA is 2022 or older; add fresh current affairs",
-"portalName": "63_General Awareness 2022 15 NOV 2022 (Afternoon Session)"
+"portalName": "60_General Awareness 2022 14 NOV 2022 (Afternoon Session)"
 },
 {
 "date": "2026-10-13",
-"title": "Hot-topic drill test (30 min): D+1: Columns+Bond and Anchorage+Traffic Engineering, D+3: Cement, D+7: Levelling+Classification of Soil+Solid Waste Management",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 3 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+3: T36, T77, T97. Shuffle the options."
+},
+{
+"date": "2026-10-14",
+"title": "Pass 2 of 3: IES T101 Levelling - redo your wrong and guessed questions (about 15 min)",
+"series": "ies",
+"minutes": 15,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -101 Levelling (Surveying -101)"
+},
+{
+"date": "2026-10-14",
+"title": "Pass 2 of 3: IES T54 Classification of Soil - redo your wrong and guessed questions (about 7 min)",
+"series": "ies",
+"minutes": 7,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -54 Classification of Soil_ (Soil Mechanics -54)"
+},
+{
+"date": "2026-10-14",
+"title": "Pass 2 of 3: IES T51 Solid Waste Management - redo your wrong and guessed questions (about 5 min)",
+"series": "ies",
+"minutes": 5,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test- 51 Solid Wasted Management (Environmental Engineering 51)"
+},
+{
+"date": "2026-10-14",
+"title": "Pass 2 of 3: IES T81 Hydrologic Cycle - redo your wrong and guessed questions (about 5 min)",
+"series": "ies",
+"minutes": 5,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -81 Hydrologicla Cycle (Irrigation Engineering - 81)"
+},
+{
+"date": "2026-10-14",
+"title": "Pass 2 of 3: IES T90 Geometric Design - redo your wrong and guessed questions (about 13 min)",
+"series": "ies",
+"minutes": 13,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -90 Geometric Design (Transportation Engineering -90)"
+},
+{
+"date": "2026-10-14",
+"title": "Pass 2 of 3: IES T36 Cement, Lime and Mortar - redo your wrong and guessed questions (about 44 min)",
+"series": "ies",
+"minutes": 44,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topicwise Test - 36 Cement,Lime and Mortar _ (BMC & Concrete Technology -36)"
 },
 {
 "date": "2026-10-14",
@@ -745,14 +702,6 @@
 },
 {
 "date": "2026-10-14",
-"title": "Pass 2 of 3: IES T36 Cement, Lime and Mortar - redo your wrong and guessed questions (about 44 min)",
-"series": "ies",
-"minutes": 44,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test - 36 Cement,Lime and Mortar _ (BMC & Concrete Technology -36)"
-},
-{
-"date": "2026-10-14",
 "title": "Pass 2 of 3: IES T17 Introduction of Limit State and Working Stress Methods - redo your wrong and guessed questions (about 33 min)",
 "series": "ies",
 "minutes": 33,
@@ -769,91 +718,11 @@
 },
 {
 "date": "2026-10-14",
-"title": "Pass 2 of 3: IES T20 Design of Beams - redo your wrong and guessed questions (about 16 min)",
-"series": "ies",
-"minutes": 16,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test - 20 Design of Beams _ RCC-20"
-},
-{
-"date": "2026-10-14",
-"title": "Pass 2 of 3: IES T21 Design of Slab - redo your wrong and guessed questions (about 13 min)",
-"series": "ies",
-"minutes": 13,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test - 21 Design of Slab _ RCC-21"
-},
-{
-"date": "2026-10-14",
-"title": "Pass 2 of 3: IES T22 Columns - redo your wrong and guessed questions (about 9 min)",
-"series": "ies",
-"minutes": 9,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test - 22 Columns _ RCC-22"
-},
-{
-"date": "2026-10-14",
-"title": "Pass 2 of 3: IES T19 Bond and Anchorage - redo your wrong and guessed questions (about 8 min)",
-"series": "ies",
-"minutes": 8,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test - 19 Bond and Anchorage _ RCC-19"
-},
-{
-"date": "2026-10-14",
-"title": "Pass 2 of 3: IES T91 Traffic Engineering - redo your wrong and guessed questions (about 5 min)",
-"series": "ies",
-"minutes": 5,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -91 Traffic Engineering (Transportation Engineering -91)"
-},
-{
-"date": "2026-10-14",
-"title": "Pass 2 of 3: IES T92 Surface Highway Materials - redo your wrong and guessed questions (about 6 min)",
-"series": "ies",
-"minutes": 6,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -92 Surface Highway Materials (Transportation Engineering -92)"
-},
-{
-"date": "2026-10-14",
-"title": "Pass 2 of 3: IES T66 Fluid Properties - redo your wrong and guessed questions (about 15 min)",
-"series": "ies",
-"minutes": 15,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -66 Fluid Properties (Hydraulics - 66)"
-},
-{
-"date": "2026-10-14",
-"title": "Pass 2 of 3: IES T72 Weirs and Notches - redo your wrong and guessed questions (about 5 min)",
-"series": "ies",
-"minutes": 5,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -72 Weirs and Notches (Hydraulics - 72)"
-},
-{
-"date": "2026-10-14",
-"title": "Pass 2 of 3: IES T60 Shear Strength of Soil - redo your wrong and guessed questions (about 6 min)",
-"series": "ies",
-"minutes": 6,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -60 Shear Strength of Soil (Soil Mechanics - 60)"
-},
-{
-"date": "2026-10-14",
-"title": "Pass 2 of 3: IES T2 Shear Force and Bending Moment - redo your wrong and guessed questions (about 12 min)",
-"series": "ies",
-"minutes": 12,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test -2 Shear Force and Bending Moment _ SA-02"
-},
-{
-"date": "2026-10-14",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 23 Mar 2021 Morning",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 16 Nov 2022 Evening",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "50_General Intelligence and Reasoning 2020 23 March 2021 (Morning Session)"
+"portalName": "62_General Intelligence and Reasoning 2022 16 NOV 2022 (Evening Session)"
 },
 {
 "date": "2026-10-14",
@@ -873,34 +742,42 @@
 },
 {
 "date": "2026-10-14",
-"title": "Hot-topic drill test (30 min): D+1: Fluid Properties+Weirs and Notches+Shear Strength of Soil, D+3: Introduction of Limit St+Limit State of Collapse +Design of Beams",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 1, 3 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+1: T17, T18; D+3: T98, T99, T96, T100, T106. Shuffle the options."
 },
 {
 "date": "2026-10-15",
-"title": "IES T1 Strength of Materials (136 Q, 90 min)",
+"title": "IES T20 Design of Beams (82 Q, 52 min)",
 "series": "ies",
-"minutes": 90,
+"minutes": 52,
 "note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test -1 Strength of Materials _ SA-01"
+"portalName": "Topicwise Test - 20 Design of Beams _ RCC-20"
 },
 {
 "date": "2026-10-15",
-"title": "IES T57 Effective Stress, Capillarity and Permeability (20 Q, 13 min)",
+"title": "IES T21 Design of Slab (62 Q, 41 min)",
 "series": "ies",
-"minutes": 13,
+"minutes": 41,
 "note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -57 Effective Stress, Capillarity and Permeability (Soil Mechanics -57)"
+"portalName": "Topicwise Test - 21 Design of Slab _ RCC-21"
 },
 {
 "date": "2026-10-15",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 23 Mar 2021 Evening",
+"title": "IES T22 Columns (45 Q, 30 min)",
+"series": "ies",
+"minutes": 30,
+"note": "Hot-topic PYQ test",
+"portalName": "Topicwise Test - 22 Columns _ RCC-22"
+},
+{
+"date": "2026-10-15",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 22 Mar 2021 Morning",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "51_General Intelligence and Reasoning 2020 23 March 2021 (Evening Session)"
+"portalName": "48_General Intelligence and Reasoning 2020 22 March 2021 (Morning Session)"
 },
 {
 "date": "2026-10-15",
@@ -920,50 +797,39 @@
 },
 {
 "date": "2026-10-15",
-"title": "GK/CA: IES GA 15 Nov 2022 Evening + 20 min fresh current affairs",
+"title": "GK/CA: IES GA 14 Nov 2022 Evening + 20 min fresh current affairs",
 "series": "ies",
 "minutes": 50,
 "note": "GA is 2022 or older; add fresh current affairs",
-"portalName": "64_General Awareness 2022 15 NOV 2022 (Evening Session)"
+"portalName": "61_General Awareness 2022 14 NOV 2022 (Evening Session)"
 },
 {
 "date": "2026-10-15",
-"title": "Hot-topic drill test (30 min): D+3: Columns+Bond and Anchorage+Traffic Engineering, D+7: Flow Through Pipes+Linear Measurements+Compass Surveying",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 7 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+7: T101, T54, T51, T81, T90. Shuffle the options."
 },
 {
 "date": "2026-10-16",
-"title": "IES T34 Building Stones and Rocks (67 Q, 42 min)",
-"series": "ies",
-"minutes": 42,
-"note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 34 Building stones and Rocks _ (BMC & Concrete Technology-34)"
+"title": "Full mock (200 Q, 120 min): Made Easy Full Syllabus Test 4",
+"series": "madeeasy",
+"minutes": 120,
+"note": "Exam conditions: one sitting, 120 minutes, no pausing. Log your Reasoning, GA and Civil scores separately."
 },
 {
 "date": "2026-10-16",
-"title": "IES T35 Bricks and Brick Masonry (95 Q, 60 min)",
-"series": "ies",
-"minutes": 60,
-"note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 35 Bricks and Bricks Masonry _ (BMC & Concrete Technology -35)"
+"title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
+"series": "app",
+"minutes": 90,
+"note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
 },
 {
 "date": "2026-10-16",
-"title": "IES T87 Canal Design (30 Q, 20 min)",
-"series": "ies",
-"minutes": 20,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -87 Canal Design (Irrigation Engineering - 87)"
-},
-{
-"date": "2026-10-16",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 24 Mar 2021 Morning",
-"series": "ies",
-"minutes": 30,
-"note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "52_General Intelligence and Reasoning 2020 24 March 2021 (Morning Session)"
+"title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
+"series": "madeeasy",
+"minutes": 0,
+"note": "Counts as today's full reasoning block"
 },
 {
 "date": "2026-10-16",
@@ -983,74 +849,74 @@
 },
 {
 "date": "2026-10-16",
-"title": "Hot-topic drill test (30 min): D+1: Strength of Materials+Effective Stress, D+3: Fluid Properties+Weirs and Notches+Shear Strength of Soil, D+7: Theodolite and Tacheomet+Fundamentals of Surveyin+Traversing",
+"title": "Hot-topic drill test (20 min): facts from your topic tests of 1, 3 days ago",
 "series": "app",
-"minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
-},
-{
-"date": "2026-10-17",
-"title": "IES T88 Hydraulic Structure and River Training (46 Q, 30 min)",
-"series": "ies",
-"minutes": 30,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -88 Hydraulic Structure and River Training (Irrigation Engineering - 88)"
-},
-{
-"date": "2026-10-17",
-"title": "IES T52 Air Pollution (27 Q, 17 min)",
-"series": "ies",
-"minutes": 17,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test - 52 Air Pollution _ (Environmental Engineering-52)"
-},
-{
-"date": "2026-10-17",
-"title": "IES T28 Design of Tension Members (32 Q, 20 min)",
-"series": "ies",
 "minutes": 20,
-"note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 28 Design of Tension Members _ (STEEL -28)"
+"note": "Facts behind D+1: T20, T21, T22; D+3: T17, T18. Shuffle the options."
 },
 {
 "date": "2026-10-17",
-"title": "IES T29 Design of Compression Members (83 Q, 52 min)",
+"title": "IES T19 Bond and Anchorage (36 Q, 25 min)",
 "series": "ies",
-"minutes": 52,
+"minutes": 25,
 "note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 29 Design of Compression members_ (STEEL -29)"
+"portalName": "Topicwise Test - 19 Bond and Anchorage _ RCC-19"
 },
 {
 "date": "2026-10-17",
-"title": "IES T30 Design of Beams (22 Q, 15 min)",
+"title": "IES T91 Traffic Engineering (20 Q, 13 min)",
 "series": "ies",
-"minutes": 15,
+"minutes": 13,
 "note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 30 Design of beams_ (STEEL -30)"
+"portalName": "Topic wise Test -91 Traffic Engineering (Transportation Engineering -91)"
 },
 {
 "date": "2026-10-17",
-"title": "IES T31 Design of Plate Girders (12 Q, 9 min)",
+"title": "IES T92 Surface Highway Materials (29 Q, 19 min)",
 "series": "ies",
-"minutes": 9,
+"minutes": 19,
 "note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 31 Design of Plate Girders_ (STEEL -31)"
+"portalName": "Topic wise Test -92 Surface Highway Materials (Transportation Engineering -92)"
 },
 {
 "date": "2026-10-17",
-"title": "IES T27 Connections (91 Q, 57 min)",
+"title": "IES T66 Fluid Properties (77 Q, 50 min)",
 "series": "ies",
-"minutes": 57,
+"minutes": 50,
 "note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 27 Connections _ (STEEL -27)"
+"portalName": "Topic wise Test -66 Fluid Properties (Hydraulics - 66)"
 },
 {
 "date": "2026-10-17",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 24 Mar 2021 Evening",
+"title": "IES T72 Weirs and Notches (20 Q, 13 min)",
+"series": "ies",
+"minutes": 13,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -72 Weirs and Notches (Hydraulics - 72)"
+},
+{
+"date": "2026-10-17",
+"title": "IES T60 Shear Strength of Soil (30 Q, 19 min)",
+"series": "ies",
+"minutes": 19,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -60 Shear Strength of Soil (Soil Mechanics - 60)"
+},
+{
+"date": "2026-10-17",
+"title": "IES T2 Shear Force and Bending Moment (60 Q, 40 min)",
+"series": "ies",
+"minutes": 40,
+"note": "Hot-topic PYQ test",
+"portalName": "Topicwise Test -2 Shear Force and Bending Moment _ SA-02"
+},
+{
+"date": "2026-10-17",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 22 Mar 2021 Evening",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "53_General Intelligence and Reasoning 2020 24 March 2021 (Evening Session)"
+"portalName": "49_General Intelligence and Reasoning 2020 22 March 2021 (Evening Session)"
 },
 {
 "date": "2026-10-17",
@@ -1070,114 +936,66 @@
 },
 {
 "date": "2026-10-17",
-"title": "GK/CA: IES GA 16 Nov 2022 Morning + 20 min fresh current affairs",
+"title": "GK/CA: IES GA 15 Nov 2022 Morning + 20 min fresh current affairs",
 "series": "ies",
 "minutes": 50,
 "note": "GA is 2022 or older; add fresh current affairs",
-"portalName": "65_General Awareness 2022 16 NOV 2022 (Morning Session)"
+"portalName": "62_General Awareness 2022 15 NOV 2022 (Morning Session)"
 },
 {
 "date": "2026-10-17",
-"title": "Hot-topic drill test (30 min): D+1: Building Stones and Rock+Bricks and Brick Masonry+Canal Design, D+7: Cement, D+14: Estimating",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 7, 14 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+7: T36, T77, T97; D+14: T42. Shuffle the options."
 },
 {
 "date": "2026-10-18",
-"title": "IES T79 Open Channel Flow (62 Q, 40 min)",
+"title": "IES T1 Strength of Materials (136 Q, 90 min)",
 "series": "ies",
-"minutes": 40,
+"minutes": 90,
 "note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -79 Open Channel Flow (Hydraulics - 79)"
+"portalName": "Topicwise Test -1 Strength of Materials _ SA-01"
 },
 {
 "date": "2026-10-18",
-"title": "IES T67 Hydrostatic Pressure (51 Q, 33 min)",
+"title": "IES T57 Effective Stress, Capillarity and Permeability (20 Q, 13 min)",
 "series": "ies",
-"minutes": 33,
+"minutes": 13,
 "note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -67 Hydrostatic Pressure (Hydraulics - 67)"
+"portalName": "Topic wise Test -57 Effective Stress, Capillarity and Permeability (Soil Mechanics -57)"
 },
 {
 "date": "2026-10-18",
-"title": "IES T68 Liquid in Relative Equilibrium (3 Q, 2 min)",
+"title": "IES T34 Building Stones and Rocks (67 Q, 42 min)",
 "series": "ies",
-"minutes": 2,
+"minutes": 42,
 "note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -68 Liquid in Relative Equilibrium (Hydraulics - 68)"
+"portalName": "Topicwise Test - 34 Building stones and Rocks _ (BMC & Concrete Technology-34)"
 },
 {
 "date": "2026-10-18",
-"title": "IES T70 Fluid Kinematics (25 Q, 16 min)",
+"title": "IES T35 Bricks and Brick Masonry (95 Q, 60 min)",
 "series": "ies",
-"minutes": 16,
+"minutes": 60,
 "note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -70 Fluid Kinematics (Hydraulics - 70)"
+"portalName": "Topicwise Test - 35 Bricks and Bricks Masonry _ (BMC & Concrete Technology -35)"
 },
 {
 "date": "2026-10-18",
-"title": "IES T71 Fluid Dynamics (48 Q, 31 min)",
-"series": "ies",
-"minutes": 31,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -71 Fluid Dynamics (Hydraulics - 71)"
-},
-{
-"date": "2026-10-18",
-"title": "IES T49 Design of Sewerage System and Sewer Appurtenances (33 Q, 22 min)",
-"series": "ies",
-"minutes": 22,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test - 49 Design of Sewerage System and Sewer Appurtenances_ (Environmental Engineering - 49)"
-},
-{
-"date": "2026-10-18",
-"title": "IES T44 Quality Parameters of Water (26 Q, 18 min)",
-"series": "ies",
-"minutes": 18,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test - 44 Quality Parameters of Water_ (Environmental Engineering -44)"
-},
-{
-"date": "2026-10-18",
-"title": "IES T45 Treatment of Water (44 Q, 30 min)",
-"series": "ies",
-"minutes": 30,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test - 45 Treatment of Water _ (Environmental Engineering-45)"
-},
-{
-"date": "2026-10-18",
-"title": "IES T48 Biochemical Reactions in Treatment of Waste Water (8 Q, 5 min)",
-"series": "ies",
-"minutes": 5,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test - 48 Biochemical Reactions in Treatment of Waste Water _ (Environmental Engineering -48)"
-},
-{
-"date": "2026-10-18",
-"title": "IES T50 Sewage Treatment (29 Q, 20 min)",
+"title": "IES T87 Canal Design (30 Q, 20 min)",
 "series": "ies",
 "minutes": 20,
 "note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test - 50 Sewage Treatment _ (Environmental Engineering -50)"
+"portalName": "Topic wise Test -87 Canal Design (Irrigation Engineering - 87)"
 },
 {
 "date": "2026-10-18",
-"title": "IES T4 Transformation of Stress and Strain (26 Q, 18 min)",
-"series": "ies",
-"minutes": 18,
-"note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test -4 Transformation of Stress and Strain _ SA-04"
-},
-{
-"date": "2026-10-18",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 27 Oct 2020 Morning",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 23 Mar 2021 Morning",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "36_General Intelligence and Reasoning 2019 27 Oct 2020 (Morning Session)"
+"portalName": "50_General Intelligence and Reasoning 2020 23 March 2021 (Morning Session)"
 },
 {
 "date": "2026-10-18",
@@ -1197,10 +1015,50 @@
 },
 {
 "date": "2026-10-18",
-"title": "Hot-topic drill test (30 min): D+1: Hydraulic Structure and +Air Pollution+Design of Tension Member, D+3: Strength of Materials+Effective Stress, D+7: Introduction of Limit St+Limit State of Collapse +Design of Beams, D+14: Concrete",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 1, 3, 7, 14 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+1: T19, T91, T92, T66, T72, T60, T2; D+3: T20, T21, T22; D+7: T98, T99, T96, T100, T106; D+14: T37. Shuffle the options."
+},
+{
+"date": "2026-10-19",
+"title": "IES T88 Hydraulic Structure and River Training (46 Q, 30 min)",
+"series": "ies",
+"minutes": 30,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -88 Hydraulic Structure and River Training (Irrigation Engineering - 88)"
+},
+{
+"date": "2026-10-19",
+"title": "IES T52 Air Pollution (27 Q, 17 min)",
+"series": "ies",
+"minutes": 17,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test - 52 Air Pollution _ (Environmental Engineering-52)"
+},
+{
+"date": "2026-10-19",
+"title": "IES T28 Design of Tension Members (32 Q, 20 min)",
+"series": "ies",
+"minutes": 20,
+"note": "Hot-topic PYQ test",
+"portalName": "Topicwise Test - 28 Design of Tension Members _ (STEEL -28)"
+},
+{
+"date": "2026-10-19",
+"title": "IES T29 Design of Compression Members (83 Q, 52 min)",
+"series": "ies",
+"minutes": 52,
+"note": "Hot-topic PYQ test",
+"portalName": "Topicwise Test - 29 Design of Compression members_ (STEEL -29)"
+},
+{
+"date": "2026-10-19",
+"title": "IES T4 Transformation of Stress and Strain (26 Q, 18 min)",
+"series": "ies",
+"minutes": 18,
+"note": "Hot-topic PYQ test",
+"portalName": "Topicwise Test -4 Transformation of Stress and Strain _ SA-04"
 },
 {
 "date": "2026-10-19",
@@ -1212,59 +1070,11 @@
 },
 {
 "date": "2026-10-19",
-"title": "IES T5 Bending Stress in Beams (34 Q, 22 min)",
-"series": "ies",
-"minutes": 22,
-"note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test -5 Bending Stress in Beams _ SA-05"
-},
-{
-"date": "2026-10-19",
-"title": "IES T8 Columns (35 Q, 25 min)",
-"series": "ies",
-"minutes": 25,
-"note": "Hot-topic PYQ test",
-"portalName": "Topicwise Test - 8 Columns_ SA-08 (PART-A)"
-},
-{
-"date": "2026-10-19",
-"title": "IES T85 Irrigation and Methods of Irrigation (22 Q, 15 min)",
-"series": "ies",
-"minutes": 15,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -85 Irrigation and Method of Irrigation (Irrigation Engineering - 85)"
-},
-{
-"date": "2026-10-19",
-"title": "IES T86 Water Requirement of Crops, Soil Moisture and Plant Relationship (49 Q, 33 min)",
-"series": "ies",
-"minutes": 33,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -86 Water Required of crops,Soil Moisture and Plant Relationship (Irrigation Engineering - 86)"
-},
-{
-"date": "2026-10-19",
-"title": "IES T83 Floods (3 Q, 2 min)",
-"series": "ies",
-"minutes": 2,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -83 Floods (Irrigation Engineering - 83)"
-},
-{
-"date": "2026-10-19",
-"title": "IES T56 Soil Compaction (15 Q, 10 min)",
-"series": "ies",
-"minutes": 10,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -56 Soil Compaction (Soil Mechanics -56)"
-},
-{
-"date": "2026-10-19",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 27 Oct 2020 Evening",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 23 Mar 2021 Evening",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "37_General Intelligence and Reasoning 2019 27 Oct 2020 (Evening Session)"
+"portalName": "51_General Intelligence and Reasoning 2020 23 March 2021 (Evening Session)"
 },
 {
 "date": "2026-10-19",
@@ -1284,26 +1094,31 @@
 },
 {
 "date": "2026-10-19",
-"title": "Hot-topic drill test (30 min): D+1: Open Channel Flow+Hydrostatic Pressure+Liquid in Relative Equil, D+3: Building Stones and Rock+Bricks and Brick Masonry+Canal Design, D+7: Columns+Bond and Anchorage+Traffic Engineering, D+14: Aggregates+Timber and Wood Based Pr",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 1, 14 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+1: T1, T57, T34, T35, T87; D+14: T38, T39. Shuffle the options."
 },
 {
 "date": "2026-10-20",
-"title": "IES T104 Plane Table (22 Q, 15 min)",
-"series": "ies",
-"minutes": 15,
-"note": "Hot-topic PYQ test",
-"portalName": "Topic wise Test -104 Plane Table (Surveying -104)"
+"title": "Full mock (200 Q, 120 min): Made Easy Full Syllabus Test 5",
+"series": "madeeasy",
+"minutes": 120,
+"note": "Exam conditions: one sitting, 120 minutes, no pausing. Log your Reasoning, GA and Civil scores separately."
 },
 {
 "date": "2026-10-20",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 28 Oct 2020 Morning",
-"series": "ies",
-"minutes": 30,
-"note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "38_General Intelligence and Reasoning 2019 28 Oct 2020 (Morning Session)"
+"title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
+"series": "app",
+"minutes": 90,
+"note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
+},
+{
+"date": "2026-10-20",
+"title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
+"series": "madeeasy",
+"minutes": 0,
+"note": "Counts as today's full reasoning block"
 },
 {
 "date": "2026-10-20",
@@ -1323,18 +1138,97 @@
 },
 {
 "date": "2026-10-20",
-"title": "GK/CA: IES GA 16 Nov 2022 Afternoon + 20 min fresh current affairs",
-"series": "ies",
-"minutes": 50,
-"note": "GA is 2022 or older; add fresh current affairs",
-"portalName": "66_General Awareness 2022 16 NOV 2022 (Afternoon Session)"
+"title": "Hot-topic drill test (20 min): facts from your topic tests of 1, 3, 7 days ago",
+"series": "app",
+"minutes": 20,
+"note": "Facts behind D+1: T88, T52, T28, T29, T4, T11; D+3: T19, T91, T92, T66, T72, T60, T2; D+7: T17, T18. Shuffle the options."
 },
 {
-"date": "2026-10-20",
-"title": "Hot-topic drill test (30 min): D+1: Moment of Inertia+Bending Stress in Beams+Columns, D+3: Hydraulic Structure and +Air Pollution+Design of Tension Member, D+7: Fluid Properties+Weirs and Notches+Shear Strength of Soil, D+14: Levelling+Classification of Soil+Solid Waste Management",
-"series": "app",
+"date": "2026-10-21",
+"title": "Made Easy subject test 13: Transportation Engineering (50 Q, 30 min) - unseen check after your IES Transportation Engineering block",
+"series": "madeeasy",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Open Test 13 in your Made Easy CBT-1 series. Compare your accuracy with your IES tests on this subject."
+},
+{
+"date": "2026-10-21",
+"title": "Pass 2 of 3: IES T20 Design of Beams - redo your wrong and guessed questions (about 16 min)",
+"series": "ies",
+"minutes": 16,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topicwise Test - 20 Design of Beams _ RCC-20"
+},
+{
+"date": "2026-10-21",
+"title": "Pass 2 of 3: IES T21 Design of Slab - redo your wrong and guessed questions (about 13 min)",
+"series": "ies",
+"minutes": 13,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topicwise Test - 21 Design of Slab _ RCC-21"
+},
+{
+"date": "2026-10-21",
+"title": "Pass 2 of 3: IES T22 Columns - redo your wrong and guessed questions (about 9 min)",
+"series": "ies",
+"minutes": 9,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topicwise Test - 22 Columns _ RCC-22"
+},
+{
+"date": "2026-10-21",
+"title": "Pass 2 of 3: IES T19 Bond and Anchorage - redo your wrong and guessed questions (about 8 min)",
+"series": "ies",
+"minutes": 8,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topicwise Test - 19 Bond and Anchorage _ RCC-19"
+},
+{
+"date": "2026-10-21",
+"title": "Pass 2 of 3: IES T91 Traffic Engineering - redo your wrong and guessed questions (about 5 min)",
+"series": "ies",
+"minutes": 5,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -91 Traffic Engineering (Transportation Engineering -91)"
+},
+{
+"date": "2026-10-21",
+"title": "Pass 2 of 3: IES T92 Surface Highway Materials - redo your wrong and guessed questions (about 6 min)",
+"series": "ies",
+"minutes": 6,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -92 Surface Highway Materials (Transportation Engineering -92)"
+},
+{
+"date": "2026-10-21",
+"title": "Pass 2 of 3: IES T66 Fluid Properties - redo your wrong and guessed questions (about 15 min)",
+"series": "ies",
+"minutes": 15,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -66 Fluid Properties (Hydraulics - 66)"
+},
+{
+"date": "2026-10-21",
+"title": "Pass 2 of 3: IES T72 Weirs and Notches - redo your wrong and guessed questions (about 5 min)",
+"series": "ies",
+"minutes": 5,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -72 Weirs and Notches (Hydraulics - 72)"
+},
+{
+"date": "2026-10-21",
+"title": "Pass 2 of 3: IES T60 Shear Strength of Soil - redo your wrong and guessed questions (about 6 min)",
+"series": "ies",
+"minutes": 6,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -60 Shear Strength of Soil (Soil Mechanics - 60)"
+},
+{
+"date": "2026-10-21",
+"title": "Pass 2 of 3: IES T2 Shear Force and Bending Moment - redo your wrong and guessed questions (about 12 min)",
+"series": "ies",
+"minutes": 12,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topicwise Test -2 Shear Force and Bending Moment _ SA-02"
 },
 {
 "date": "2026-10-21",
@@ -1394,11 +1288,11 @@
 },
 {
 "date": "2026-10-21",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 28 Oct 2020 Evening",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 24 Mar 2021 Morning",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "39_General Intelligence and Reasoning 2019 28 Oct 2020 (Evening Session)"
+"portalName": "52_General Intelligence and Reasoning 2020 24 March 2021 (Morning Session)"
 },
 {
 "date": "2026-10-21",
@@ -1418,18 +1312,50 @@
 },
 {
 "date": "2026-10-21",
-"title": "Hot-topic drill test (30 min): D+1: Plane Table, D+3: Open Channel Flow+Hydrostatic Pressure+Liquid in Relative Equil",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 3 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+3: T1, T57, T34, T35, T87. Shuffle the options."
 },
 {
 "date": "2026-10-22",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 29 Oct 2020 Morning",
+"title": "IES T30 Design of Beams (22 Q, 15 min)",
+"series": "ies",
+"minutes": 15,
+"note": "Hot-topic PYQ test",
+"portalName": "Topicwise Test - 30 Design of beams_ (STEEL -30)"
+},
+{
+"date": "2026-10-22",
+"title": "IES T31 Design of Plate Girders (12 Q, 9 min)",
+"series": "ies",
+"minutes": 9,
+"note": "Hot-topic PYQ test",
+"portalName": "Topicwise Test - 31 Design of Plate Girders_ (STEEL -31)"
+},
+{
+"date": "2026-10-22",
+"title": "IES T27 Connections (91 Q, 57 min)",
+"series": "ies",
+"minutes": 57,
+"note": "Hot-topic PYQ test",
+"portalName": "Topicwise Test - 27 Connections _ (STEEL -27)"
+},
+{
+"date": "2026-10-22",
+"title": "IES T79 Open Channel Flow (62 Q, 40 min)",
+"series": "ies",
+"minutes": 40,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -79 Open Channel Flow (Hydraulics - 79)"
+},
+{
+"date": "2026-10-22",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 24 Mar 2021 Evening",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "41_General Intelligence and Reasoning 2019 29 Oct 2020 (Morning Session)"
+"portalName": "53_General Intelligence and Reasoning 2020 24 March 2021 (Evening Session)"
 },
 {
 "date": "2026-10-22",
@@ -1449,211 +1375,364 @@
 },
 {
 "date": "2026-10-22",
-"title": "GK/CA: IES GA 16 Nov 2022 Evening + 20 min fresh current affairs",
-"series": "ies",
+"title": "GK/CA: Made Easy subject test 3: Current Affairs + General Knowledge (50 Q, 30 min) + 20 min fresh current affairs",
+"series": "madeeasy",
 "minutes": 50,
-"note": "GA is 2022 or older; add fresh current affairs",
-"portalName": "67_General Awareness 2022 16 NOV 2022 (Evening Session)"
+"note": "Open Test 3 in your Made Easy CBT-1 series"
 },
 {
 "date": "2026-10-22",
-"title": "Hot-topic drill test (30 min): D+3: Moment of Inertia+Bending Stress in Beams+Columns, D+7: Strength of Materials+Effective Stress, D+14: Flow Through Pipes+Linear Measurements+Compass Surveying",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 3, 7, 14 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+3: T88, T52, T28, T29, T4, T11; D+7: T20, T21, T22; D+14: T101, T54, T51, T81, T90. Shuffle the options."
 },
 {
 "date": "2026-10-23",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 29 Oct 2020 Evening",
+"title": "Full mock (200 Q, 120 min): SSC JE 2024 Paper-I, 06 Jun 2024, 09:00 shift (real paper, in this app)",
+"series": "app",
+"minutes": 120,
+"note": "Exam conditions: one sitting, 120 minutes, no pausing. Log your Reasoning, GA and Civil scores separately.",
+"url": "/papers/sscje-civil-p1-2024-06-06-0900/instructions"
+},
+{
+"date": "2026-10-23",
+"title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
+"series": "app",
+"minutes": 90,
+"note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
+},
+{
+"date": "2026-10-23",
+"title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
+"series": "app",
+"minutes": 0,
+"note": "Counts as today's full reasoning block"
+},
+{
+"date": "2026-10-23",
+"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR 29 Oct 2020 Evening",
 "series": "ies",
-"minutes": 30,
-"note": "Target: attempt more, keep accuracy 90%+",
+"minutes": 12,
+"note": "Speed block",
 "portalName": "42_General Intelligence and Reasoning 2019 29 Oct 2020 (Evening Session)"
 },
 {
 "date": "2026-10-23",
-"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR repeat lowest-accuracy set",
+"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR 29 Oct 2020 Evening",
 "series": "ies",
 "minutes": 12,
-"note": "Speed block"
+"note": "Speed block",
+"portalName": "42_General Intelligence and Reasoning 2019 29 Oct 2020 (Evening Session)"
 },
 {
 "date": "2026-10-23",
-"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR repeat lowest-accuracy set",
-"series": "ies",
-"minutes": 12,
-"note": "Speed block"
-},
-{
-"date": "2026-10-23",
-"title": "Hot-topic drill test (30 min): D+3: Plane Table, D+7: Building Stones and Rock+Bricks and Brick Masonry+Canal Design, D+14: Theodolite and Tacheomet+Fundamentals of Surveyin+Traversing",
+"title": "Hot-topic drill test (20 min): facts from your topic tests of 1 day ago",
 "series": "app",
-"minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"minutes": 20,
+"note": "Facts behind D+1: T30, T31, T27, T79. Shuffle the options."
 },
 {
 "date": "2026-10-24",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 30 Oct 2020 Morning",
+"title": "IES T67 Hydrostatic Pressure (51 Q, 33 min)",
+"series": "ies",
+"minutes": 33,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -67 Hydrostatic Pressure (Hydraulics - 67)"
+},
+{
+"date": "2026-10-24",
+"title": "IES T68 Liquid in Relative Equilibrium (3 Q, 2 min)",
+"series": "ies",
+"minutes": 2,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -68 Liquid in Relative Equilibrium (Hydraulics - 68)"
+},
+{
+"date": "2026-10-24",
+"title": "IES T70 Fluid Kinematics (25 Q, 16 min)",
+"series": "ies",
+"minutes": 16,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -70 Fluid Kinematics (Hydraulics - 70)"
+},
+{
+"date": "2026-10-24",
+"title": "IES T71 Fluid Dynamics (48 Q, 31 min)",
+"series": "ies",
+"minutes": 31,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -71 Fluid Dynamics (Hydraulics - 71)"
+},
+{
+"date": "2026-10-24",
+"title": "IES T49 Design of Sewerage System and Sewer Appurtenances (33 Q, 22 min)",
+"series": "ies",
+"minutes": 22,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test - 49 Design of Sewerage System and Sewer Appurtenances_ (Environmental Engineering - 49)"
+},
+{
+"date": "2026-10-24",
+"title": "IES T44 Quality Parameters of Water (26 Q, 18 min)",
+"series": "ies",
+"minutes": 18,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test - 44 Quality Parameters of Water_ (Environmental Engineering -44)"
+},
+{
+"date": "2026-10-24",
+"title": "IES T45 Treatment of Water (44 Q, 30 min)",
+"series": "ies",
+"minutes": 30,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test - 45 Treatment of Water _ (Environmental Engineering-45)"
+},
+{
+"date": "2026-10-24",
+"title": "IES T50 Sewage Treatment (29 Q, 20 min)",
+"series": "ies",
+"minutes": 20,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test - 50 Sewage Treatment _ (Environmental Engineering -50)"
+},
+{
+"date": "2026-10-24",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 27 Oct 2020 Morning",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
+"portalName": "36_General Intelligence and Reasoning 2019 27 Oct 2020 (Morning Session)"
+},
+{
+"date": "2026-10-24",
+"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR 30 Oct 2020 Morning",
+"series": "ies",
+"minutes": 12,
+"note": "Speed block",
 "portalName": "43_General Intelligence and Reasoning 2019 30 Oct 2020 (Morning Session)"
 },
 {
 "date": "2026-10-24",
-"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR repeat lowest-accuracy set",
+"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR 30 Oct 2020 Morning",
 "series": "ies",
 "minutes": 12,
-"note": "Speed block"
+"note": "Speed block",
+"portalName": "43_General Intelligence and Reasoning 2019 30 Oct 2020 (Morning Session)"
 },
 {
 "date": "2026-10-24",
-"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR repeat lowest-accuracy set",
-"series": "ies",
-"minutes": 12,
-"note": "Speed block"
-},
-{
-"date": "2026-10-24",
-"title": "GK/CA: IES GA 22 Mar 2021 Morning + 20 min fresh current affairs",
-"series": "ies",
-"minutes": 50,
-"note": "GA is 2022 or older; add fresh current affairs",
-"portalName": "53_General Awareness 2020 22 March 2021 (Morning Session) SSC JE PRACTICE"
-},
-{
-"date": "2026-10-24",
-"title": "Hot-topic drill test (30 min): D+7: Hydraulic Structure and +Air Pollution+Design of Tension Member, D+14: Cement",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 7, 14 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+7: T19, T91, T92, T66, T72, T60, T2; D+14: T36, T77, T97. Shuffle the options."
 },
 {
 "date": "2026-10-25",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 30 Oct 2020 Evening",
+"title": "Full mock (200 Q, 120 min): Made Easy Full Syllabus Test 6",
+"series": "madeeasy",
+"minutes": 120,
+"note": "Exam conditions: one sitting, 120 minutes, no pausing. Log your Reasoning, GA and Civil scores separately."
+},
+{
+"date": "2026-10-25",
+"title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
+"series": "app",
+"minutes": 90,
+"note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
+},
+{
+"date": "2026-10-25",
+"title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
+"series": "madeeasy",
+"minutes": 0,
+"note": "Counts as today's full reasoning block"
+},
+{
+"date": "2026-10-25",
+"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR 30 Oct 2020 Evening",
 "series": "ies",
-"minutes": 30,
-"note": "Target: attempt more, keep accuracy 90%+",
+"minutes": 12,
+"note": "Speed block",
 "portalName": "44_General Intelligence and Reasoning 2019 30 Oct 2020 (Evening Session)"
 },
 {
 "date": "2026-10-25",
-"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR repeat lowest-accuracy set",
+"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR 30 Oct 2020 Evening",
 "series": "ies",
 "minutes": 12,
-"note": "Speed block"
+"note": "Speed block",
+"portalName": "44_General Intelligence and Reasoning 2019 30 Oct 2020 (Evening Session)"
 },
 {
 "date": "2026-10-25",
-"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR repeat lowest-accuracy set",
-"series": "ies",
-"minutes": 12,
-"note": "Speed block"
-},
-{
-"date": "2026-10-25",
-"title": "Hot-topic drill test (30 min): D+7: Open Channel Flow+Hydrostatic Pressure+Liquid in Relative Equil, D+14: Introduction of Limit St+Limit State of Collapse +Design of Beams",
+"title": "Hot-topic drill test (20 min): facts from your topic tests of 1, 3, 7, 14 days ago",
 "series": "app",
-"minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"minutes": 20,
+"note": "Facts behind D+1: T67, T68, T70, T71, T49, T44, T45, T50; D+3: T30, T31, T27, T79; D+7: T1, T57, T34, T35, T87; D+14: T98, T99, T96, T100, T106. Shuffle the options."
 },
 {
 "date": "2026-10-26",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 10 Dec 2020 Evening",
+"title": "IES T8 Columns (35 Q, 25 min)",
+"series": "ies",
+"minutes": 25,
+"note": "Hot-topic PYQ test",
+"portalName": "Topicwise Test - 8 Columns_ SA-08 (PART-A)"
+},
+{
+"date": "2026-10-26",
+"title": "IES T85 Irrigation and Methods of Irrigation (22 Q, 15 min)",
+"series": "ies",
+"minutes": 15,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -85 Irrigation and Method of Irrigation (Irrigation Engineering - 85)"
+},
+{
+"date": "2026-10-26",
+"title": "IES T86 Water Requirement of Crops, Soil Moisture and Plant Relationship (49 Q, 33 min)",
+"series": "ies",
+"minutes": 33,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -86 Water Required of crops,Soil Moisture and Plant Relationship (Irrigation Engineering - 86)"
+},
+{
+"date": "2026-10-26",
+"title": "IES T83 Floods (3 Q, 2 min)",
+"series": "ies",
+"minutes": 2,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -83 Floods (Irrigation Engineering - 83)"
+},
+{
+"date": "2026-10-26",
+"title": "IES T56 Soil Compaction (15 Q, 10 min)",
+"series": "ies",
+"minutes": 10,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -56 Soil Compaction (Soil Mechanics -56)"
+},
+{
+"date": "2026-10-26",
+"title": "IES T104 Plane Table (22 Q, 15 min)",
+"series": "ies",
+"minutes": 15,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test -104 Plane Table (Surveying -104)"
+},
+{
+"date": "2026-10-26",
+"title": "IES T5 Bending Stress in Beams (34 Q, 22 min)",
+"series": "ies",
+"minutes": 22,
+"note": "Hot-topic PYQ test",
+"portalName": "Topicwise Test -5 Bending Stress in Beams _ SA-05"
+},
+{
+"date": "2026-10-26",
+"title": "IES T48 Biochemical Reactions in Treatment of Waste Water (8 Q, 5 min)",
+"series": "ies",
+"minutes": 5,
+"note": "Hot-topic PYQ test",
+"portalName": "Topic wise Test - 48 Biochemical Reactions in Treatment of Waste Water _ (Environmental Engineering -48)"
+},
+{
+"date": "2026-10-26",
+"title": "Made Easy subject test 15: Environmental Engineering (50 Q, 30 min) - unseen check after your IES Environmental Engineering block",
+"series": "madeeasy",
+"minutes": 30,
+"note": "Open Test 15 in your Made Easy CBT-1 series. Compare your accuracy with your IES tests on this subject."
+},
+{
+"date": "2026-10-26",
+"title": "Made Easy subject test 16: Hydraulics (50 Q, 30 min) - unseen check after your IES Hydraulics block",
+"series": "madeeasy",
+"minutes": 30,
+"note": "Open Test 16 in your Made Easy CBT-1 series. Compare your accuracy with your IES tests on this subject."
+},
+{
+"date": "2026-10-26",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 27 Oct 2020 Evening",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
+"portalName": "37_General Intelligence and Reasoning 2019 27 Oct 2020 (Evening Session)"
+},
+{
+"date": "2026-10-26",
+"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR 10 Dec 2020 Evening",
+"series": "ies",
+"minutes": 12,
+"note": "Speed block",
 "portalName": "45_General Intelligence and Reasoning 2019 10 Dec 2020 (Evening Session)"
 },
 {
 "date": "2026-10-26",
-"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR repeat lowest-accuracy set",
+"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR 10 Dec 2020 Evening",
 "series": "ies",
 "minutes": 12,
-"note": "Speed block"
+"note": "Speed block",
+"portalName": "45_General Intelligence and Reasoning 2019 10 Dec 2020 (Evening Session)"
 },
 {
 "date": "2026-10-26",
-"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR repeat lowest-accuracy set",
-"series": "ies",
-"minutes": 12,
-"note": "Speed block"
-},
-{
-"date": "2026-10-26",
-"title": "Hot-topic drill test (30 min): D+7: Moment of Inertia+Bending Stress in Beams+Columns, D+14: Columns+Bond and Anchorage+Traffic Engineering",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 7 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+7: T88, T52, T28, T29, T4, T11. Shuffle the options."
 },
 {
 "date": "2026-10-27",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 11 Dec 2020 Morning",
+"title": "Full mock (200 Q, 120 min): Made Easy Full Syllabus Test 7",
+"series": "madeeasy",
+"minutes": 120,
+"note": "Exam conditions: one sitting, 120 minutes, no pausing. Log your Reasoning, GA and Civil scores separately."
+},
+{
+"date": "2026-10-27",
+"title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
+"series": "app",
+"minutes": 90,
+"note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
+},
+{
+"date": "2026-10-27",
+"title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
+"series": "madeeasy",
+"minutes": 0,
+"note": "Counts as today's full reasoning block"
+},
+{
+"date": "2026-10-27",
+"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR 11 Dec 2020 Morning",
 "series": "ies",
-"minutes": 30,
-"note": "Target: attempt more, keep accuracy 90%+",
+"minutes": 12,
+"note": "Speed block",
 "portalName": "46_General Intelligence and Reasoning 2019 11 Dec 2020 (Morning Session)"
 },
 {
 "date": "2026-10-27",
-"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR repeat lowest-accuracy set",
+"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR 11 Dec 2020 Morning",
 "series": "ies",
 "minutes": 12,
-"note": "Speed block"
+"note": "Speed block",
+"portalName": "46_General Intelligence and Reasoning 2019 11 Dec 2020 (Morning Session)"
 },
 {
 "date": "2026-10-27",
-"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR repeat lowest-accuracy set",
-"series": "ies",
-"minutes": 12,
-"note": "Speed block"
-},
-{
-"date": "2026-10-27",
-"title": "GK/CA: IES GA 22 Mar 2021 Evening + 20 min fresh current affairs",
-"series": "ies",
-"minutes": 50,
-"note": "GA is 2022 or older; add fresh current affairs",
-"portalName": "54_General Awareness 2020 22 March 2021 (Evening Session) SSC JE PRACTICE"
-},
-{
-"date": "2026-10-27",
-"title": "Hot-topic drill test (30 min): D+7: Plane Table, D+14: Fluid Properties+Weirs and Notches+Shear Strength of Soil",
+"title": "Hot-topic drill test (20 min): facts from your topic tests of 1, 3, 14 days ago",
 "series": "app",
+"minutes": 20,
+"note": "Facts behind D+1: T8, T85, T86, T83, T56, T104, T5, T48; D+3: T67, T68, T70, T71, T49, T44, T45, T50; D+14: T17, T18. Shuffle the options."
+},
+{
+"date": "2026-10-28",
+"title": "Made Easy subject test 14: RCC Design + Steel Design (50 Q, 30 min) - unseen check after your IES RCC Design block",
+"series": "madeeasy",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Open Test 14 in your Made Easy CBT-1 series. Compare your accuracy with your IES tests on this subject."
 },
 {
 "date": "2026-10-28",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 11 Dec 2020 Evening",
-"series": "ies",
-"minutes": 30,
-"note": "Target: attempt more, keep accuracy 90%+",
-"portalName": "47_General Intelligence and Reasoning 2019 11 Dec 2020 (Evening Session)"
-},
-{
-"date": "2026-10-28",
-"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR repeat lowest-accuracy set",
-"series": "ies",
-"minutes": 12,
-"note": "Speed block"
-},
-{
-"date": "2026-10-28",
-"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR repeat lowest-accuracy set",
-"series": "ies",
-"minutes": 12,
-"note": "Speed block"
-},
-{
-"date": "2026-10-28",
-"title": "Hot-topic drill test (30 min): today's block, then the facts you missed most",
-"series": "app",
-"minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
-},
-{
-"date": "2026-10-29",
 "title": "Pass 3 of 3: IES T37 Concrete - redo your wrong and guessed questions (about 44 min)",
 "series": "ies",
 "minutes": 44,
@@ -1661,23 +1740,47 @@
 "portalName": "Topicwise Test - 37 Concrete_ (BMC & Concrete Technology -37)"
 },
 {
-"date": "2026-10-29",
-"title": "Pass 3 of 3: IES T96 Fundamentals of Surveying - redo your wrong and guessed questions (about 7 min)",
+"date": "2026-10-28",
+"title": "Pass 3 of 3: IES T38 Aggregates - redo your wrong and guessed questions (about 12 min)",
 "series": "ies",
-"minutes": 7,
+"minutes": 12,
 "note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -96 Fundamentals of Surveying (Surveying) -96)"
+"portalName": "Topicwise Test - 38 Aggregates _ (BMC & Concrete Technology-38)"
 },
 {
-"date": "2026-10-29",
-"title": "Pass 3 of 3: IES T100 Traversing - redo your wrong and guessed questions (about 5 min)",
+"date": "2026-10-28",
+"title": "Pass 3 of 3: IES T101 Levelling - redo your wrong and guessed questions (about 10 min)",
+"series": "ies",
+"minutes": 10,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -101 Levelling (Surveying -101)"
+},
+{
+"date": "2026-10-28",
+"title": "Pass 3 of 3: IES T54 Classification of Soil - redo your wrong and guessed questions (about 5 min)",
 "series": "ies",
 "minutes": 5,
 "note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -100 Traversing (Surveying -100)"
+"portalName": "Topic wise Test -54 Classification of Soil_ (Soil Mechanics -54)"
 },
 {
-"date": "2026-10-29",
+"date": "2026-10-28",
+"title": "Pass 3 of 3: IES T51 Solid Waste Management - redo your wrong and guessed questions (about 5 min)",
+"series": "ies",
+"minutes": 5,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test- 51 Solid Wasted Management (Environmental Engineering 51)"
+},
+{
+"date": "2026-10-28",
+"title": "Pass 3 of 3: IES T20 Design of Beams - redo your wrong and guessed questions (about 11 min)",
+"series": "ies",
+"minutes": 11,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topicwise Test - 20 Design of Beams _ RCC-20"
+},
+{
+"date": "2026-10-28",
 "title": "Pass 3 of 3: IES T22 Columns - redo your wrong and guessed questions (about 6 min)",
 "series": "ies",
 "minutes": 6,
@@ -1685,15 +1788,31 @@
 "portalName": "Topicwise Test - 22 Columns _ RCC-22"
 },
 {
-"date": "2026-10-29",
-"title": "Pass 3 of 3: IES T66 Fluid Properties - redo your wrong and guessed questions (about 10 min)",
+"date": "2026-10-28",
+"title": "Pass 3 of 3: IES T92 Surface Highway Materials - redo your wrong and guessed questions (about 5 min)",
 "series": "ies",
-"minutes": 10,
+"minutes": 5,
 "note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -66 Fluid Properties (Hydraulics - 66)"
+"portalName": "Topic wise Test -92 Surface Highway Materials (Transportation Engineering -92)"
 },
 {
-"date": "2026-10-29",
+"date": "2026-10-28",
+"title": "Pass 3 of 3: IES T2 Shear Force and Bending Moment - redo your wrong and guessed questions (about 8 min)",
+"series": "ies",
+"minutes": 8,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topicwise Test -2 Shear Force and Bending Moment _ SA-02"
+},
+{
+"date": "2026-10-28",
+"title": "Pass 3 of 3: IES T57 Effective Stress, Capillarity and Permeability - redo your wrong and guessed questions (about 5 min)",
+"series": "ies",
+"minutes": 5,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -57 Effective Stress, Capillarity and Permeability (Soil Mechanics -57)"
+},
+{
+"date": "2026-10-28",
 "title": "Pass 3 of 3: IES T34 Building Stones and Rocks - redo your wrong and guessed questions (about 9 min)",
 "series": "ies",
 "minutes": 9,
@@ -1701,15 +1820,7 @@
 "portalName": "Topicwise Test - 34 Building stones and Rocks _ (BMC & Concrete Technology-34)"
 },
 {
-"date": "2026-10-29",
-"title": "Pass 3 of 3: IES T87 Canal Design - redo your wrong and guessed questions (about 5 min)",
-"series": "ies",
-"minutes": 5,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -87 Canal Design (Irrigation Engineering - 87)"
-},
-{
-"date": "2026-10-29",
+"date": "2026-10-28",
 "title": "Pass 3 of 3: IES T52 Air Pollution - redo your wrong and guessed questions (about 5 min)",
 "series": "ies",
 "minutes": 5,
@@ -1717,41 +1828,86 @@
 "portalName": "Topic wise Test - 52 Air Pollution _ (Environmental Engineering-52)"
 },
 {
-"date": "2026-10-29",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 23 Sep 2019 Morning",
+"date": "2026-10-28",
+"title": "Made Easy subject test 10: Soil Mechanics (50 Q, 30 min) - unseen check after your IES Soil Mechanics block",
+"series": "madeeasy",
+"minutes": 30,
+"note": "Open Test 10 in your Made Easy CBT-1 series. Compare your accuracy with your IES tests on this subject."
+},
+{
+"date": "2026-10-28",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 28 Oct 2020 Morning",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
+"portalName": "38_General Intelligence and Reasoning 2019 28 Oct 2020 (Morning Session)"
+},
+{
+"date": "2026-10-28",
+"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR 11 Dec 2020 Evening",
+"series": "ies",
+"minutes": 12,
+"note": "Speed block",
+"portalName": "47_General Intelligence and Reasoning 2019 11 Dec 2020 (Evening Session)"
+},
+{
+"date": "2026-10-28",
+"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR 11 Dec 2020 Evening",
+"series": "ies",
+"minutes": 12,
+"note": "Speed block",
+"portalName": "47_General Intelligence and Reasoning 2019 11 Dec 2020 (Evening Session)"
+},
+{
+"date": "2026-10-28",
+"title": "Hot-topic drill test (30 min): catch-up on your latest topic tests",
+"series": "app",
+"minutes": 30,
+"note": "Catch-up: facts behind 24 Oct: T67, T68, T70, T71, T49, T44, T45, T50; 26 Oct: T8, T85, T86, T83, T56, T104, T5, T48. Shuffle the options."
+},
+{
+"date": "2026-10-29",
+"title": "Full mock (200 Q, 120 min): Made Easy Full Syllabus Test 8",
+"series": "madeeasy",
+"minutes": 120,
+"note": "Exam conditions: one sitting, 120 minutes, no pausing. Log your Reasoning, GA and Civil scores separately."
+},
+{
+"date": "2026-10-29",
+"title": "Analyse today's mock (about 90 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
+"series": "app",
+"minutes": 90,
+"note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
+},
+{
+"date": "2026-10-29",
+"title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
+"series": "madeeasy",
+"minutes": 0,
+"note": "Counts as today's full reasoning block"
+},
+{
+"date": "2026-10-29",
+"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR 23 Sep 2019 Morning",
+"series": "ies",
+"minutes": 12,
+"note": "Speed block",
 "portalName": "28_General Intelligence and Reasoning 2018 23 Sept 2019 (Morning Session)"
 },
 {
 "date": "2026-10-29",
-"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR repeat lowest-accuracy set",
+"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR 23 Sep 2019 Morning",
 "series": "ies",
 "minutes": 12,
-"note": "Speed block"
+"note": "Speed block",
+"portalName": "28_General Intelligence and Reasoning 2018 23 Sept 2019 (Morning Session)"
 },
 {
 "date": "2026-10-29",
-"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR repeat lowest-accuracy set",
-"series": "ies",
-"minutes": 12,
-"note": "Speed block"
-},
-{
-"date": "2026-10-29",
-"title": "GK/CA: IES GA 23 Mar 2021 Morning + 20 min fresh current affairs",
-"series": "ies",
-"minutes": 50,
-"note": "GA is 2022 or older; add fresh current affairs",
-"portalName": "55_General Awareness 2020 23 March 2021 (Morning Session) SSC JE PRACTICE"
-},
-{
-"date": "2026-10-29",
-"title": "Hot-topic drill test (30 min): D+14: Strength of Materials+Effective Stress",
+"title": "Hot-topic drill test (20 min): facts from your topic tests of 3, 7, 14 days ago",
 "series": "app",
-"minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"minutes": 20,
+"note": "Facts behind D+3: T8, T85, T86, T83, T56, T104, T5, T48; D+7: T30, T31, T27, T79; D+14: T20, T21, T22. Shuffle the options."
 },
 {
 "date": "2026-10-30",
@@ -1763,11 +1919,19 @@
 },
 {
 "date": "2026-10-30",
-"title": "Pass 3 of 3: IES T81 Hydrologic Cycle - redo your wrong and guessed questions (about 5 min)",
+"title": "Pass 3 of 3: IES T77 Flow Through Pipes - redo your wrong and guessed questions (about 5 min)",
 "series": "ies",
 "minutes": 5,
 "note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -81 Hydrologicla Cycle (Irrigation Engineering - 81)"
+"portalName": "Topic wise Test -77 Flow Through Pipes (Hydraulics - 77)"
+},
+{
+"date": "2026-10-30",
+"title": "Pass 3 of 3: IES T97 Linear Measurements - redo your wrong and guessed questions (about 11 min)",
+"series": "ies",
+"minutes": 11,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -97 Linear Measurements (Surveying) -97"
 },
 {
 "date": "2026-10-30",
@@ -1776,6 +1940,30 @@
 "minutes": 9,
 "note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
 "portalName": "Topic wise Test -98 Compass Surveying (Surveying) -98"
+},
+{
+"date": "2026-10-30",
+"title": "Pass 3 of 3: IES T96 Fundamentals of Surveying - redo your wrong and guessed questions (about 7 min)",
+"series": "ies",
+"minutes": 7,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -96 Fundamentals of Surveying (Surveying) -96)"
+},
+{
+"date": "2026-10-30",
+"title": "Pass 3 of 3: IES T100 Traversing - redo your wrong and guessed questions (about 5 min)",
+"series": "ies",
+"minutes": 5,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -100 Traversing (Surveying -100)"
+},
+{
+"date": "2026-10-30",
+"title": "Pass 3 of 3: IES T106 Miscellaneous - redo your wrong and guessed questions (about 5 min)",
+"series": "ies",
+"minutes": 5,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -106 Miscellaneous (Surveying -106)"
 },
 {
 "date": "2026-10-30",
@@ -1795,19 +1983,19 @@
 },
 {
 "date": "2026-10-30",
-"title": "Pass 3 of 3: IES T92 Surface Highway Materials - redo your wrong and guessed questions (about 5 min)",
+"title": "Pass 3 of 3: IES T60 Shear Strength of Soil - redo your wrong and guessed questions (about 5 min)",
 "series": "ies",
 "minutes": 5,
 "note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -92 Surface Highway Materials (Transportation Engineering -92)"
+"portalName": "Topic wise Test -60 Shear Strength of Soil (Soil Mechanics - 60)"
 },
 {
 "date": "2026-10-30",
-"title": "Pass 3 of 3: IES T35 Bricks and Brick Masonry - redo your wrong and guessed questions (about 12 min)",
+"title": "Pass 3 of 3: IES T1 Strength of Materials - redo your wrong and guessed questions (about 18 min)",
 "series": "ies",
-"minutes": 12,
+"minutes": 18,
 "note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test - 35 Bricks and Bricks Masonry _ (BMC & Concrete Technology -35)"
+"portalName": "Topicwise Test -1 Strength of Materials _ SA-01"
 },
 {
 "date": "2026-10-30",
@@ -1819,149 +2007,79 @@
 },
 {
 "date": "2026-10-30",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 23 Sep 2019 Evening",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 28 Oct 2020 Evening",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
+"portalName": "39_General Intelligence and Reasoning 2019 28 Oct 2020 (Evening Session)"
+},
+{
+"date": "2026-10-30",
+"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR 23 Sep 2019 Evening",
+"series": "ies",
+"minutes": 12,
+"note": "Speed block",
 "portalName": "29_ General Intelligence and Reasoning 2018 23 Sept 2019 (Evening Session)"
 },
 {
 "date": "2026-10-30",
-"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR repeat lowest-accuracy set",
+"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR 23 Sep 2019 Evening",
 "series": "ies",
 "minutes": 12,
-"note": "Speed block"
+"note": "Speed block",
+"portalName": "29_ General Intelligence and Reasoning 2018 23 Sept 2019 (Evening Session)"
 },
 {
 "date": "2026-10-30",
-"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR repeat lowest-accuracy set",
-"series": "ies",
-"minutes": 12,
-"note": "Speed block"
-},
-{
-"date": "2026-10-30",
-"title": "Hot-topic drill test (30 min): D+14: Building Stones and Rock+Bricks and Brick Masonry+Canal Design",
+"title": "Hot-topic drill test (30 min): catch-up on your latest topic tests",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Catch-up: facts behind 24 Oct: T67, T68, T70, T71, T49, T44, T45, T50; 26 Oct: T8, T85, T86, T83, T56, T104, T5, T48. Shuffle the options."
 },
 {
 "date": "2026-10-31",
-"title": "Pass 3 of 3: IES T38 Aggregates - redo your wrong and guessed questions (about 12 min)",
+"title": "Full mock (200 Q, 120 min): SSC JE 2024 Paper-I, 06 Jun 2024, 17:00 shift (real paper, in this app) - optional",
+"series": "app",
+"minutes": 120,
+"note": "Optional: take it only if your exam shift is on 4-6 Nov; if it is on 2 or 3 Nov, skip it and rest. Exam conditions: one sitting, 120 minutes, no pausing. Log your Reasoning, GA and Civil scores separately.",
+"url": "/papers/sscje-civil-p1-2024-06-06-1700/instructions"
+},
+{
+"date": "2026-10-31",
+"title": "Analyse today's mock (about 60 min): mark every wrong, guessed and slow question as concept, silly, time or guess",
+"series": "app",
+"minutes": 60,
+"note": "Write the weak sub-topics into your error log; they become your next retake and drill items."
+},
+{
+"date": "2026-10-31",
+"title": "Reasoning 1/3: the reasoning section of today's full mock (no extra set)",
+"series": "app",
+"minutes": 0,
+"note": "Counts as today's full reasoning block"
+},
+{
+"date": "2026-10-31",
+"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR 25 Sep 2019 Morning",
 "series": "ies",
 "minutes": 12,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test - 38 Aggregates _ (BMC & Concrete Technology-38)"
-},
-{
-"date": "2026-10-31",
-"title": "Pass 3 of 3: IES T54 Classification of Soil - redo your wrong and guessed questions (about 5 min)",
-"series": "ies",
-"minutes": 5,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -54 Classification of Soil_ (Soil Mechanics -54)"
-},
-{
-"date": "2026-10-31",
-"title": "Pass 3 of 3: IES T51 Solid Waste Management - redo your wrong and guessed questions (about 5 min)",
-"series": "ies",
-"minutes": 5,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test- 51 Solid Wasted Management (Environmental Engineering 51)"
-},
-{
-"date": "2026-10-31",
-"title": "Pass 3 of 3: IES T90 Geometric Design - redo your wrong and guessed questions (about 9 min)",
-"series": "ies",
-"minutes": 9,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -90 Geometric Design (Transportation Engineering -90)"
-},
-{
-"date": "2026-10-31",
-"title": "Pass 3 of 3: IES T97 Linear Measurements - redo your wrong and guessed questions (about 11 min)",
-"series": "ies",
-"minutes": 11,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -97 Linear Measurements (Surveying) -97"
-},
-{
-"date": "2026-10-31",
-"title": "Pass 3 of 3: IES T36 Cement, Lime and Mortar - redo your wrong and guessed questions (about 30 min)",
-"series": "ies",
-"minutes": 30,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test - 36 Cement,Lime and Mortar _ (BMC & Concrete Technology -36)"
-},
-{
-"date": "2026-10-31",
-"title": "Pass 3 of 3: IES T19 Bond and Anchorage - redo your wrong and guessed questions (about 5 min)",
-"series": "ies",
-"minutes": 5,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test - 19 Bond and Anchorage _ RCC-19"
-},
-{
-"date": "2026-10-31",
-"title": "Pass 3 of 3: IES T72 Weirs and Notches - redo your wrong and guessed questions (about 5 min)",
-"series": "ies",
-"minutes": 5,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -72 Weirs and Notches (Hydraulics - 72)"
-},
-{
-"date": "2026-10-31",
-"title": "Pass 3 of 3: IES T60 Shear Strength of Soil - redo your wrong and guessed questions (about 5 min)",
-"series": "ies",
-"minutes": 5,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -60 Shear Strength of Soil (Soil Mechanics - 60)"
-},
-{
-"date": "2026-10-31",
-"title": "Pass 3 of 3: IES T2 Shear Force and Bending Moment - redo your wrong and guessed questions (about 8 min)",
-"series": "ies",
-"minutes": 8,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test -2 Shear Force and Bending Moment _ SA-02"
-},
-{
-"date": "2026-10-31",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 25 Sep 2019 Morning",
-"series": "ies",
-"minutes": 30,
-"note": "Target: attempt more, keep accuracy 90%+",
+"note": "Speed block",
 "portalName": "30_ General Intelligence and Reasoning 2018 25 Sept 2019 (Morning Session)"
 },
 {
 "date": "2026-10-31",
-"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR repeat lowest-accuracy set",
+"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR 25 Sep 2019 Morning",
 "series": "ies",
 "minutes": 12,
-"note": "Speed block"
+"note": "Speed block",
+"portalName": "30_ General Intelligence and Reasoning 2018 25 Sept 2019 (Morning Session)"
 },
 {
 "date": "2026-10-31",
-"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR repeat lowest-accuracy set",
-"series": "ies",
-"minutes": 12,
-"note": "Speed block"
-},
-{
-"date": "2026-10-31",
-"title": "GK/CA: IES GA 23 Mar 2021 Evening + 20 min fresh current affairs",
-"series": "ies",
-"minutes": 50,
-"note": "GA is 2022 or older; add fresh current affairs",
-"portalName": "56_General Awareness 2020 23 March 2021 (Evening Session) SSC JE PRACTICE"
-},
-{
-"date": "2026-10-31",
-"title": "Hot-topic drill test (30 min): D+14: Hydraulic Structure and +Air Pollution+Design of Tension Member",
+"title": "Hot-topic drill test (20 min): facts from your topic tests of 7, 14 days ago",
 "series": "app",
-"minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"minutes": 20,
+"note": "Facts behind D+7: T67, T68, T70, T71, T49, T44, T45, T50; D+14: T19, T91, T92, T66, T72, T60, T2. Shuffle the options."
 },
 {
 "date": "2026-11-01",
@@ -1973,19 +2091,27 @@
 },
 {
 "date": "2026-11-01",
-"title": "Pass 3 of 3: IES T101 Levelling - redo your wrong and guessed questions (about 10 min)",
-"series": "ies",
-"minutes": 10,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -101 Levelling (Surveying -101)"
-},
-{
-"date": "2026-11-01",
-"title": "Pass 3 of 3: IES T77 Flow Through Pipes - redo your wrong and guessed questions (about 5 min)",
+"title": "Pass 3 of 3: IES T81 Hydrologic Cycle - redo your wrong and guessed questions (about 5 min)",
 "series": "ies",
 "minutes": 5,
 "note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -77 Flow Through Pipes (Hydraulics - 77)"
+"portalName": "Topic wise Test -81 Hydrologicla Cycle (Irrigation Engineering - 81)"
+},
+{
+"date": "2026-11-01",
+"title": "Pass 3 of 3: IES T90 Geometric Design - redo your wrong and guessed questions (about 9 min)",
+"series": "ies",
+"minutes": 9,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -90 Geometric Design (Transportation Engineering -90)"
+},
+{
+"date": "2026-11-01",
+"title": "Pass 3 of 3: IES T36 Cement, Lime and Mortar - redo your wrong and guessed questions (about 30 min)",
+"series": "ies",
+"minutes": 30,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topicwise Test - 36 Cement,Lime and Mortar _ (BMC & Concrete Technology -36)"
 },
 {
 "date": "2026-11-01",
@@ -1994,14 +2120,6 @@
 "minutes": 6,
 "note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
 "portalName": "Topic wise Test -99 Theodolite and Tacheometry (Surveying -99)"
-},
-{
-"date": "2026-11-01",
-"title": "Pass 3 of 3: IES T106 Miscellaneous - redo your wrong and guessed questions (about 5 min)",
-"series": "ies",
-"minutes": 5,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -106 Miscellaneous (Surveying -106)"
 },
 {
 "date": "2026-11-01",
@@ -2021,56 +2139,74 @@
 },
 {
 "date": "2026-11-01",
-"title": "Pass 3 of 3: IES T20 Design of Beams - redo your wrong and guessed questions (about 11 min)",
-"series": "ies",
-"minutes": 11,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test - 20 Design of Beams _ RCC-20"
-},
-{
-"date": "2026-11-01",
-"title": "Pass 3 of 3: IES T1 Strength of Materials - redo your wrong and guessed questions (about 18 min)",
-"series": "ies",
-"minutes": 18,
-"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topicwise Test -1 Strength of Materials _ SA-01"
-},
-{
-"date": "2026-11-01",
-"title": "Pass 3 of 3: IES T57 Effective Stress, Capillarity and Permeability - redo your wrong and guessed questions (about 5 min)",
+"title": "Pass 3 of 3: IES T19 Bond and Anchorage - redo your wrong and guessed questions (about 5 min)",
 "series": "ies",
 "minutes": 5,
 "note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
-"portalName": "Topic wise Test -57 Effective Stress, Capillarity and Permeability (Soil Mechanics -57)"
+"portalName": "Topicwise Test - 19 Bond and Anchorage _ RCC-19"
 },
 {
 "date": "2026-11-01",
-"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 25 Sep 2019 Evening",
+"title": "Pass 3 of 3: IES T66 Fluid Properties - redo your wrong and guessed questions (about 10 min)",
+"series": "ies",
+"minutes": 10,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -66 Fluid Properties (Hydraulics - 66)"
+},
+{
+"date": "2026-11-01",
+"title": "Pass 3 of 3: IES T72 Weirs and Notches - redo your wrong and guessed questions (about 5 min)",
+"series": "ies",
+"minutes": 5,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -72 Weirs and Notches (Hydraulics - 72)"
+},
+{
+"date": "2026-11-01",
+"title": "Pass 3 of 3: IES T35 Bricks and Brick Masonry - redo your wrong and guessed questions (about 12 min)",
+"series": "ies",
+"minutes": 12,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topicwise Test - 35 Bricks and Bricks Masonry _ (BMC & Concrete Technology -35)"
+},
+{
+"date": "2026-11-01",
+"title": "Pass 3 of 3: IES T87 Canal Design - redo your wrong and guessed questions (about 5 min)",
+"series": "ies",
+"minutes": 5,
+"note": "Re-sit the test if the portal allows it; otherwise open its solutions and re-solve your wrong and guessed questions without looking",
+"portalName": "Topic wise Test -87 Canal Design (Irrigation Engineering - 87)"
+},
+{
+"date": "2026-11-01",
+"title": "Reasoning 1/3 (full 50 Q, 30 min): IES GIR 29 Oct 2020 Morning",
 "series": "ies",
 "minutes": 30,
 "note": "Target: attempt more, keep accuracy 90%+",
+"portalName": "41_General Intelligence and Reasoning 2019 29 Oct 2020 (Morning Session)"
+},
+{
+"date": "2026-11-01",
+"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR 25 Sep 2019 Evening",
+"series": "ies",
+"minutes": 12,
+"note": "Speed block",
 "portalName": "31_ General Intelligence and Reasoning 2018 25 Sept 2019 (Evening Session)"
 },
 {
 "date": "2026-11-01",
-"title": "Reasoning 2/3 (sprint Q1-25, 12 min): IES GIR repeat lowest-accuracy set",
+"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR 25 Sep 2019 Evening",
 "series": "ies",
 "minutes": 12,
-"note": "Speed block"
+"note": "Speed block",
+"portalName": "31_ General Intelligence and Reasoning 2018 25 Sept 2019 (Evening Session)"
 },
 {
 "date": "2026-11-01",
-"title": "Reasoning 3/3 (sprint Q26-50, 12 min): IES GIR repeat lowest-accuracy set",
-"series": "ies",
-"minutes": 12,
-"note": "Speed block"
-},
-{
-"date": "2026-11-01",
-"title": "Hot-topic drill test (30 min): D+14: Open Channel Flow+Hydrostatic Pressure+Liquid in Relative Equil",
+"title": "Hot-topic drill test (30 min): facts from your topic tests of 14 days ago",
 "series": "app",
 "minutes": 30,
-"note": "See docs/hot-fact-families.md; shuffle options"
+"note": "Facts behind D+14: T1, T57, T34, T35, T87. Shuffle the options."
 }
 ]
 }

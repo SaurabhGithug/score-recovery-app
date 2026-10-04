@@ -17,6 +17,8 @@ export interface PlanItem {
   series: PlanSeries;
   /** Optional link to the exact test; empty means "use the series link". */
   url: string;
+  /** The link the built-in plan gave this item ("" for the learner's own items). A url equal to it is not a learner action. */
+  presetUrl: string;
   minutes: number;
   note: string;
   status: PlanStatus;
@@ -51,7 +53,7 @@ export const SERIES_LABEL: Record<PlanSeries, string> = {
  */
 export const SERIES_LINK: Record<PlanSeries, string> = {
   ies: "https://ehub.iesmaster.org/student/testment/test",
-  madeeasy: "https://www.madeeasy.in/prep/mock-test-details/ce-ssc-je-2026-cbt-1-online-test-series?tag=attempted",
+  madeeasy: "https://www.madeeasy.in/prep/mock-test-details/ce-ssc-je-2026-cbt-1-online-test-series",
   app: "/papers",
   other: "",
 };
@@ -138,6 +140,7 @@ export function parsePlan(raw: unknown): PlanItem[] {
       portalName: clean(e.portalName, MAX_TITLE),
       series: SERIES.includes(e.series as PlanSeries) ? (e.series as PlanSeries) : "other",
       url: safeUrl(e.url),
+      presetUrl: safeUrl(e.presetUrl),
       minutes: clampMinutes(e.minutes),
       note: clean(e.note, MAX_NOTE),
       status,
@@ -149,7 +152,7 @@ export function parsePlan(raw: unknown): PlanItem[] {
   return items.sort(byDate);
 }
 
-export function addItem(items: PlanItem[], input: PlanInput, id: string = makeId()): PlanItem[] {
+export function addItem(items: PlanItem[], input: PlanInput, id: string = makeId(), fromPreset = false): PlanItem[] {
   const title = clean(input.title, MAX_TITLE);
   if (!title) throw new Error("Give the test a name.");
   if (!isValidDate(input.date)) throw new Error("Pick a valid date.");
@@ -161,6 +164,7 @@ export function addItem(items: PlanItem[], input: PlanInput, id: string = makeId
     portalName: clean(input.portalName, MAX_TITLE),
     series: SERIES.includes(input.series) ? input.series : "other",
     url: safeUrl(input.url),
+    presetUrl: fromPreset ? safeUrl(input.url) : "",
     minutes: clampMinutes(input.minutes),
     note: clean(input.note, MAX_NOTE),
     status: "planned",
@@ -184,7 +188,7 @@ export function mergePreset(items: PlanItem[], preset: PlanInput[]): { items: Pl
     const id = presetId(input.date, title);
     if (have.has(key) || ids.has(id)) continue;
     try {
-      next = addItem(next, input, id);
+      next = addItem(next, input, id, true);
       have.add(key);
       ids.add(id);
       added += 1;
@@ -218,7 +222,10 @@ export function fillPortalNames(items: PlanItem[], preset: PlanInput[]): PlanIte
 
 /** A built-in item the learner has never acted on: not opened, attempted or skipped, and no score or link of their own. */
 const untouched = (item: PlanItem): boolean =>
-  item.status === "planned" && item.openedAt === null && item.doneAt === null && item.result === "" && item.url === "";
+  item.status === "planned" && item.openedAt === null && item.doneAt === null && item.result === "" && item.url === item.presetUrl;
+
+/** Items that stand for one specific test (an IES topic test, one of its passes, a full mock, a Made Easy subject test). */
+const TEST_IDENTITY = /^(IES T\d+ |Pass [23] of 3: IES T\d+ |Full mock \(|(GK\/CA: )?Made Easy subject test \d+:)/;
 
 /**
  * Bring a saved plan up to date with the current built-in plan:
@@ -227,12 +234,20 @@ const untouched = (item: PlanItem): boolean =>
  * The learner's own items, and built-in items they opened, attempted, skipped, scored or linked, are never removed.
  * Running it again changes nothing (added 0, removed 0, the same array back).
  */
-export function syncPreset(items: PlanItem[], preset: PlanInput[]): { items: PlanItem[]; added: number; removed: number } {
+export function syncPreset(items: PlanItem[], preset: PlanInput[]): { items: PlanItem[]; added: number; removed: number; skipped: number } {
   const current = new Set(preset.map((input) => presetId(input.date, clean(input.title, MAX_TITLE))));
   const kept = items.filter((item) => !item.id.startsWith("preset:") || current.has(item.id) || !untouched(item));
   const removed = items.length - kept.length;
-  const merged = mergePreset(removed > 0 ? kept : items, preset);
-  return { items: fillPortalNames(merged.items, preset), added: merged.added, removed };
+  // A test the learner already acted on, kept on an older date, is not added again on its new date.
+  const actedOn = new Set(kept.filter((item) => !untouched(item) && TEST_IDENTITY.test(item.title)).map((item) => item.title));
+  const ids = new Set(kept.map((item) => item.id));
+  const wanted = preset.filter((input) => {
+    const title = clean(input.title, MAX_TITLE);
+    return !(actedOn.has(title) && !ids.has(presetId(input.date, title)));
+  });
+  const skipped = preset.length - wanted.length;
+  const merged = mergePreset(removed > 0 ? kept : items, wanted);
+  return { items: fillPortalNames(merged.items, preset), added: merged.added, removed, skipped };
 }
 
 const update =(items: PlanItem[], id: string, change: (item: PlanItem) => PlanItem): PlanItem[] => items.map((item) => (item.id === id ? change(item) : item));
