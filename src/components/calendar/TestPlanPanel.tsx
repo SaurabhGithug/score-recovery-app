@@ -15,7 +15,7 @@ const PYQ_PRESET = preset.items as unknown as PlanInput[];
 const PRESET_BUILT = preset.built;
 const SERIES_OPTIONS: PlanSeries[] = ["ies", "madeeasy", "app", "other"];
 /** Series names short enough for a row's second line on a phone. */
-const SHORT_SERIES: Record<PlanSeries, string> = { ies: "IES", madeeasy: "Made Easy", app: "This app", other: "To-do" };
+const SHORT_SERIES: Record<PlanSeries, string> = { ies: "IES", madeeasy: "Made Easy", app: "This app", other: "Other" };
 const btn = "rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-800 hover:bg-slate-50 disabled:opacity-50";
 const btnPrimary = "rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50";
 
@@ -34,17 +34,18 @@ function TestLink({ item, onOpen, children, className, label }: { item: PlanItem
 function NewTabLink({ item, onOpen, children }: { item: PlanItem; onOpen: () => void; children: React.ReactNode }) {
   const href = linkFor(item);
   if (!href || isInternalLink(href)) return null;
-  return <a href={href} target="_blank" rel="noreferrer" onClick={onOpen} className="text-xs font-medium text-slate-600 underline">{children}</a>;
+  return <a href={href} target="_blank" rel="noreferrer" onClick={onOpen} className="inline-flex min-h-11 items-center text-xs font-medium text-slate-600 underline">{children}</a>;
 }
 
 /**
  * A row's title without its bracketed size, which is shown once on the line below:
  * "IES T38 Aggregates (93 Q, 60 min)" -> "IES T38 Aggregates" + "93 Q"; "Reasoning 3/3 (review, 10 min): ..." -> "Reasoning 3/3: ..." + "review".
+ * Only when the minutes in the bracket are the row's own minutes; otherwise the title is shown whole.
  */
-export function rowTitle(title: string): { text: string; size: string } {
-  const m = /^(.*?) \(([^()]*\bmin)\)(.*)$/.exec(title);
-  if (!m) return { text: title, size: "" };
-  return { text: `${m[1]}${m[3]}`, size: m[2].replace(/,?\s*(?:about |in )?\d+ min$/, "").trim() };
+export function rowTitle(title: string, minutes: number): { text: string; size: string } {
+  const m = /^(.*?) \(([^()]*?)(?:,\s*|\s+)?(?:about |in )?(\d+) min\)(.*)$/.exec(title);
+  if (!m || Number(m[3]) !== minutes || /[^\w\s]$/.test(m[2])) return { text: title, size: "" };
+  return { text: `${m[1]}${m[4]}`, size: m[2].trim() };
 }
 
 /** A day's rows in the order they are done: mock, topic tests, passes, Made Easy, reasoning 1-3, GK, drill; your own rows last. */
@@ -76,6 +77,12 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
    */
   const ignoreTapsUntil = useRef(0);
   const holdTaps = () => { ignoreTapsUntil.current = performance.now() + 400; };
+  // Opening a row can close another one above it; keep the opened row's details on screen.
+  useEffect(() => {
+    if (openRow) document.getElementById(`plan-row-${openRow}`)?.scrollIntoView({ block: "nearest" });
+  }, [openRow]);
+  /** The tick circle does not move, so it only needs to ignore a repeat tap on the same row. */
+  const lastTick = useRef({ id: "", until: 0 });
 
   // When the learner comes back from the test tab, ask whether they attempted it.
   useEffect(() => {
@@ -246,20 +253,33 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
         return <li key={item.id} className={`rounded-xl border p-3 ${done ? "border-emerald-200 bg-emerald-50/60" : skipped ? "border-slate-200 bg-slate-50" : "border-slate-200"}`}>
           <div className="flex items-start gap-3">
             {/* One tap marks it done; tap again to undo. */}
-            <button type="button" aria-pressed={done} aria-label={done ? t({ en: `Mark not done: ${item.title}`, hi: `बाकी करें: ${item.title}` }) : t({ en: `Mark attempted: ${item.title}`, hi: `दिया गया करें: ${item.title}` })}
-              onClick={() => { run((c) => setStatus(c, item.id, done || skipped ? "planned" : "attempted", now())); holdTaps(); }}
+            <button type="button" aria-label={done ? t({ en: `Mark not done: ${item.title}`, hi: `बाकी करें: ${item.title}` }) : skipped ? t({ en: `Undo skip: ${item.title}`, hi: `छोड़ना वापस लें: ${item.title}` }) : t({ en: `Mark attempted: ${item.title}`, hi: `दिया गया करें: ${item.title}` })}
+              onClick={() => {
+                if (lastTick.current.id === item.id && performance.now() < lastTick.current.until) return;
+                lastTick.current = { id: item.id, until: performance.now() + 400 };
+                run((c) => setStatus(c, item.id, done || skipped ? "planned" : "attempted", now()));
+                if (!done && !skipped) setOpenRow(item.id);   // ticked: show the score box
+              }}
               className="group -my-2 -ml-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full">
               <span aria-hidden="true" className={`flex h-7 w-7 items-center justify-center rounded-full border-2 text-sm font-bold ${done ? "border-emerald-600 bg-emerald-600 text-white" : skipped ? "border-slate-300 bg-slate-200 text-slate-500" : "border-slate-400 text-transparent group-hover:border-emerald-600"}`}>{skipped ? "–" : "✓"}</span>
             </button>
-            <button type="button" aria-expanded={expanded} aria-controls={detailsId} onClick={() => setOpenRow(expanded ? null : item.id)} className="min-w-0 flex-1 text-left">
-              <span className={`text-sm font-medium ${expanded ? "block" : "line-clamp-2"} ${done ? "text-emerald-900" : skipped ? "text-slate-500 line-through" : "text-slate-900"}`}>{rowTitle(item.title).text}</span>
+            <button type="button" aria-expanded={expanded} aria-controls={detailsId} onClick={() => { setOpenRow(expanded ? null : item.id); holdTaps(); }} className="flex min-w-0 flex-1 items-start gap-1 text-left">
+              <span className="min-w-0 flex-1">
+              <span className={`text-sm font-medium ${expanded ? "block" : "line-clamp-2"} ${done ? "text-emerald-900" : skipped ? "text-slate-500 line-through" : "text-slate-900"}`}>{rowTitle(item.title, item.minutes).text}</span>
               <span className="mt-0.5 block truncate text-xs text-slate-500">
-                {SHORT_SERIES[item.series]}{rowTitle(item.title).size && ` · ${rowTitle(item.title).size}`}{item.minutes > 0 && ` · ${item.minutes} min`}
+                {linkFor(item) ? SHORT_SERIES[item.series] : t({ en: "To-do", hi: "करना है" })}{rowTitle(item.title, item.minutes).size && ` · ${rowTitle(item.title, item.minutes).size}`}{item.minutes > 0 && ` · ${item.minutes} min`}
+                {/^Optional/.test(item.note) && ` · ${t({ en: "optional", hi: "वैकल्पिक" })}`}
                 {done && ` · ${t({ en: "done", hi: "दिया" })}${item.result ? `: ${item.result}` : ""}`}
                 {skipped && ` · ${t({ en: "skipped", hi: "छोड़ा" })}`}
               </span>
+              </span>
+              <span aria-hidden="true" className="shrink-0 text-base leading-5 text-slate-500">{expanded ? "▾" : "▸"}</span>
             </button>
-            {item.status === "planned" && <TestLink item={item} label={openLabel(item)} className={`${btnPrimary} shrink-0`} onOpen={() => { setAskReady(false); run((c) => markOpened(c, item.id, now())); }}>{t({ en: "Open ↗", hi: "खोलें ↗" })}</TestLink>}
+            {item.status === "planned" && <TestLink item={item} label={`${openLabel(item).replace(/ ↗$/, "")}: ${rowTitle(item.title, item.minutes).text}`} className={`${btnPrimary} inline-flex min-h-11 shrink-0 items-center`} onOpen={() => {
+              // The portal lists tests by name; copy it on the way so it can be pasted into the page's search.
+              if (item.portalName) void navigator.clipboard?.writeText(item.portalName).catch(() => {});
+              setAskReady(false); run((c) => markOpened(c, item.id, now()));
+            }}>{t({ en: "Open ↗", hi: "खोलें ↗" })}</TestLink>}
           </div>
           {expanded && <div id={detailsId} className="mt-3 space-y-3 border-t border-slate-200/70 pt-3 text-xs text-slate-600 sm:pl-10">
             {item.note && <p>{item.note}</p>}
@@ -273,6 +293,7 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
             </label>}
             <div className="flex flex-wrap items-center gap-2">
               {item.status === "planned" && <button type="button" className={btn} onClick={() => { run((c) => setStatus(c, item.id, "skipped", now())); holdTaps(); }}>{t({ en: "Skip", hi: "छोड़ें" })}</button>}
+              {skipped && <button type="button" className={btn} onClick={() => { run((c) => setStatus(c, item.id, "planned", now())); holdTaps(); }}>{t({ en: "Undo skip", hi: "छोड़ना वापस लें" })}</button>}
               <button type="button" className={btn} onClick={() => { run((c) => removeItem(c, item.id)); holdTaps(); }}>{t({ en: "Remove", hi: "हटाएँ" })}</button>
               {item.status === "planned" && <NewTabLink item={item} onOpen={() => { setAskReady(false); run((c) => markOpened(c, item.id, now())); }}>{t({ en: "Open in a new tab ↗", hi: "नए टैब में खोलें ↗" })}</NewTabLink>}
             </div>

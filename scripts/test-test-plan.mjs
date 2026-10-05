@@ -553,13 +553,30 @@ for (const i of preset.items) {
     const again = syncPreset(up.items, preset.items, "2026-10-05");
     assert.deepEqual([again.added, again.removed], [0, 0], "a second update changes nothing");
   }
-  // opened (not taken) the 4 Oct sprint: that IES set is not used up, so its new speed-set day keeps it
+  // opened the 4 Oct sprint: its kept row holds that IES set and still asks; the set is not planned a second time
   {
     const saved = fromLive((p) => markOpened(p, row(p, "2026-10-04", "Reasoning 2/3 (sprint").id, "2026-10-04T12:00:00.000Z"));
     const set = row(saved, "2026-10-04", "Reasoning 2/3 (sprint").portalName;
     const up = syncPreset(refreshFromPreset(saved, preset.items), preset.items, "2026-10-05");
-    const planned = preset.items.find((i) => i.portalName === set && i.title.startsWith("Reasoning 2/3 (speed"));
-    if (planned) assert.ok(up.items.some((i) => i.id === presetId(planned.date, planned.title)), "a set only opened is still planned as a speed set");
+    const rows = up.items.filter((i) => i.portalName === set);
+    assert.equal(rows.length, 1, "the opened set is planned once, on its kept row");
+    assert.ok(rows[0].openedAt && askPending(up.items).some((i) => i.id === rows[0].id), "and it still asks about that set");
+  }
+  // opened the 5 Oct sprint (set P): the new 5 Oct speed set is a different set (Q), so the mark must not jump to Q
+  {
+    const saved = fromLive((p) => markOpened(p, row(p, "2026-10-05", "Reasoning 2/3 (sprint").id, "2026-10-05T08:00:00.000Z"));
+    const opened = row(saved, "2026-10-05", "Reasoning 2/3 (sprint");
+    const up = syncPreset(refreshFromPreset(saved, preset.items), preset.items, "2026-10-05");
+    const asked = askPending(up.items);
+    assert.equal(asked.length, 1, "one question");
+    assert.equal(asked[0].portalName, opened.portalName, "the question names the set that was opened");
+    assert.equal(up.items.filter((i) => i.portalName === opened.portalName).length, 1, "that set is not planned again elsewhere");
+  }
+  // an opened drill does not move onto other days' drills (drill titles repeat)
+  {
+    const saved = fromLive((p) => markOpened(p, row(p, "2026-10-05", "Hot-topic drill").id, "2026-10-05T08:00:00.000Z"));
+    const up = syncPreset(refreshFromPreset(saved, preset.items), preset.items, "2026-10-05");
+    assert.ok(askPending(up.items).length <= 1 && askPending(up.items).every((i) => i.date === "2026-10-05"), "the drill's question stays on its day, once");
   }
   // a late update from the 3 Oct plan still keeps every Made Easy mock and subject test
   const head = JSON.parse(readFileSync(new URL("./fixtures/pyq-plan-preset-2026-10-03.json", import.meta.url), "utf8")).items;

@@ -283,11 +283,13 @@ export function syncPreset(items: PlanItem[], preset: PlanInput[], today?: strin
   const slotKey = (date: string, title: string) => { const slot = DAILY_SLOT.exec(title); return slot ? `${date}|${slot[1]}` : ""; };
   // A built-in row the learner only opened (no answer, score or link of their own) moves with the plan when the plan moved or
   // renamed it; the new row keeps the "opened" mark, so "did you attempt it?" is still asked.
-  const presetTitles = new Set(preset.map((input) => clean(input.title, MAX_TITLE)));
-  const presetSlots = new Set(preset.map((input) => slotKey(input.date, clean(input.title, MAX_TITLE))).filter(Boolean));
+  // Same test only: a whole-test title found on another day, or the same day and block holding the same IES test (a renamed row).
+  const presetTests = new Set(preset.map((input) => clean(input.title, MAX_TITLE)).filter((title) => TEST_IDENTITY.test(title)));
+  const sameSlotTest = (date: string, title: string, portalName: string) => { const slot = slotKey(date, title); return slot && portalName ? `${slot}|${portalName}` : ""; };
+  const presetSlots = new Set(preset.map((input) => sameSlotTest(input.date, clean(input.title, MAX_TITLE), clean(input.portalName, MAX_TITLE))).filter(Boolean));
   const openedOnly = (item: PlanItem) => item.status === "planned" && item.openedAt !== null && item.doneAt === null && item.result === "" && item.url === item.presetUrl;
   const movable = (item: PlanItem) => item.id.startsWith("preset:") && !current.has(item.id) && openedOnly(item)
-    && (presetTitles.has(item.title) || presetSlots.has(slotKey(item.date, item.title)));
+    && ((TEST_IDENTITY.test(item.title) && presetTests.has(item.title)) || presetSlots.has(sameSlotTest(item.date, item.title, item.portalName)));
   const kept = items.filter((item) => !item.id.startsWith("preset:") || current.has(item.id) || (!untouched(item) && !movable(item)));
   const keptIds = new Set(kept.map((item) => item.id));
   const dropped = items.filter((item) => !keptIds.has(item.id));
@@ -297,9 +299,9 @@ export function syncPreset(items: PlanItem[], preset: PlanInput[], today?: strin
   const actedOn = new Set(touched.filter((item) => TEST_IDENTITY.test(item.title)).map((item) => item.title));
   // A day keeps the drill or reasoning block the learner already acted on, even if the built-in plan renamed it.
   const filledSlots = new Set(touched.map((item) => slotKey(item.date, item.title)).filter(Boolean));
-  // An IES set already taken under an older title (say a half-test sprint) is used up: IES allows one attempt.
-  // Only an attempt or a score says so; a set merely opened or skipped can still be taken.
-  const usedSets = new Set(touched.filter((item) => item.portalName && USES_IES_SET.test(item.title) && (item.status === "attempted" || item.result !== "")).map((item) => item.portalName));
+  // An IES set already opened or taken under an older title (say a half-test sprint) is held by that row: IES allows one attempt,
+  // and the kept row still asks "did you attempt it?". Only a set the learner skipped can be planned again.
+  const usedSets = new Set(touched.filter((item) => item.portalName && USES_IES_SET.test(item.title) && (item.status === "attempted" || item.result !== "" || item.openedAt !== null)).map((item) => item.portalName));
   const ids = new Set(kept.map((item) => item.id));
   const notActedOn = preset.filter((input) => {
     const title = clean(input.title, MAX_TITLE);
@@ -325,7 +327,8 @@ export function syncPreset(items: PlanItem[], preset: PlanInput[], today?: strin
   const openedFrom = dropped.filter(openedOnly);
   const carried = openedFrom.length === 0 ? merged.items : merged.items.map((item) => {
     if (keptIds.has(item.id) || item.openedAt !== null || item.status !== "planned") return item;
-    const from = openedFrom.find((old) => old.title === item.title) ?? openedFrom.find((old) => slotKey(old.date, old.title) !== "" && slotKey(old.date, old.title) === slotKey(item.date, item.title));
+    const from = openedFrom.find((old) => TEST_IDENTITY.test(old.title) && old.title === item.title)
+      ?? openedFrom.find((old) => sameSlotTest(old.date, old.title, old.portalName) !== "" && sameSlotTest(old.date, old.title, old.portalName) === sameSlotTest(item.date, item.title, item.portalName));
     return from ? { ...item, openedAt: from.openedAt } : item;
   });
   return { items: refreshFromPreset(carried, preset), added: merged.added, removed, skipped, past };
