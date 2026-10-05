@@ -14,6 +14,8 @@ const PYQ_PRESET = preset.items as unknown as PlanInput[];
 /** The version of the built-in plan; a saved plan updated from an older one is offered the update. */
 const PRESET_BUILT = preset.built;
 const SERIES_OPTIONS: PlanSeries[] = ["ies", "madeeasy", "app", "other"];
+/** Series names short enough for a row's second line on a phone. */
+const SHORT_SERIES: Record<PlanSeries, string> = { ies: "IES", madeeasy: "Made Easy", app: "This app", other: "To-do" };
 const btn = "rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-800 hover:bg-slate-50 disabled:opacity-50";
 const btnPrimary = "rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50";
 
@@ -21,14 +23,28 @@ const btnPrimary = "rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text
  * Opens in the SAME tab: built-in app browsers (and some phone browsers) silently block new tabs to other sites,
  * which made the button look dead. The "new tab" link is a second way for normal browsers.
  */
-function TestLink({ item, onOpen, children, className, newTabLabel }: { item: PlanItem; onOpen: () => void; children: React.ReactNode; className: string; newTabLabel: string }) {
+function TestLink({ item, onOpen, children, className, label }: { item: PlanItem; onOpen: () => void; children: React.ReactNode; className: string; label: string }) {
   const href = linkFor(item);
   if (!href) return null;
-  if (isInternalLink(href)) return <Link href={href} onClick={onOpen} className={className}>{children}</Link>;
-  return <>
-    <a href={href} onClick={onOpen} className={className}>{children}</a>
-    <a href={href} target="_blank" rel="noreferrer" onClick={onOpen} className="self-center text-xs font-medium text-slate-600 underline">{newTabLabel}</a>
-  </>;
+  if (isInternalLink(href)) return <Link href={href} onClick={onOpen} aria-label={label} className={className}>{children}</Link>;
+  return <a href={href} onClick={onOpen} aria-label={label} className={className}>{children}</a>;
+}
+
+/** A second way in for normal browsers, kept out of the way in the row's details. */
+function NewTabLink({ item, onOpen, children }: { item: PlanItem; onOpen: () => void; children: React.ReactNode }) {
+  const href = linkFor(item);
+  if (!href || isInternalLink(href)) return null;
+  return <a href={href} target="_blank" rel="noreferrer" onClick={onOpen} className="text-xs font-medium text-slate-600 underline">{children}</a>;
+}
+
+/**
+ * A row's title without its bracketed size, which is shown once on the line below:
+ * "IES T38 Aggregates (93 Q, 60 min)" -> "IES T38 Aggregates" + "93 Q"; "Reasoning 3/3 (review, 10 min): ..." -> "Reasoning 3/3: ..." + "review".
+ */
+export function rowTitle(title: string): { text: string; size: string } {
+  const m = /^(.*?) \(([^()]*\bmin)\)(.*)$/.exec(title);
+  if (!m) return { text: title, size: "" };
+  return { text: `${m[1]}${m[3]}`, size: m[2].replace(/,?\s*(?:about |in )?\d+ min$/, "").trim() };
 }
 
 /** A day's rows in the order they are done: mock, topic tests, passes, Made Easy, reasoning 1-3, GK, drill; your own rows last. */
@@ -51,6 +67,8 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
   const [form,setForm] = useState({ title: "", series: "ies" as PlanSeries, url: "", minutes: "" });
   const [formError, setFormError] = useState("");
   const [copied, setCopied] = useState<string | null>(null);
+  /** The row whose details are open (one at a time keeps a phone screen short). */
+  const [openRow, setOpenRow] = useState<string | null>(null);
   const bannerRef = useRef<HTMLDivElement>(null);
   /**
    * Taps in the panel are ignored until this time: just after the question appears or is answered, the layout moves under
@@ -178,10 +196,6 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
     }
   }
 
-  const statusLabel = (item: PlanItem) => item.status === "attempted"
-    ? t({ en: "Attempted", hi: "दिया गया" })
-    : item.status === "skipped" ? t({ en: "Skipped", hi: "छोड़ा गया" }) : t({ en: "Planned", hi: "योजना में" });
-
   return <section aria-labelledby="plan-heading" onClickCapture={ignoreQuickTaps} className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 sm:p-6">
     <div className="flex flex-wrap items-baseline justify-between gap-2">
       <h2 id="plan-heading" className="text-lg font-semibold text-slate-900">{t({ en: "Test plan", hi: "टेस्ट योजना" })}</h2>
@@ -224,38 +238,55 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
 
     {ready && dayItems.length === 0 && <p className="text-sm text-slate-600">{t({ en: "No tests planned for this day. Add one below, or load the PYQ plan.", hi: "इस दिन कोई टेस्ट नहीं है। नीचे जोड़ें या पिछले वर्षों के प्रश्नों की योजना लोड करें।" })}</p>}
     <ul className="space-y-2">
-      {dayItems.map((item) => <li key={item.id} className={`rounded-xl border p-3 ${item.status === "attempted" ? "border-emerald-200 bg-emerald-50/60" : item.status === "skipped" ? "border-slate-200 bg-slate-50 text-slate-500" : "border-slate-200"}`}>
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className={`text-sm font-medium ${item.status === "attempted" ? "text-emerald-900" : "text-slate-900"}`}>{item.title}</p>
-            <p className="mt-0.5 text-xs text-slate-500">{SERIES_LABEL[item.series]}{item.minutes > 0 && ` · ${item.minutes} min`}{item.note && ` · ${item.note}`}</p>
-            {item.portalName && item.status === "planned" && <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-700">
-              <span>{t({ en: "Find on the portal:", hi: "पोर्टल पर यह नाम खोजें:" })} <strong className="break-words font-semibold">{item.portalName}</strong></span>
-              <button type="button" onClick={() => void copyName(item)} className="rounded border border-slate-300 px-2 py-0.5 text-xs font-medium text-slate-700 hover:bg-slate-50">{copied === item.id ? t({ en: "Copied", hi: "कॉपी हुआ" }) : t({ en: "Copy name", hi: "नाम कॉपी करें" })}</button>
-            </p>}
+      {dayItems.map((item) => {
+        const expanded = openRow === item.id;
+        const done = item.status === "attempted";
+        const skipped = item.status === "skipped";
+        const detailsId = `plan-row-${item.id}`;
+        return <li key={item.id} className={`rounded-xl border p-3 ${done ? "border-emerald-200 bg-emerald-50/60" : skipped ? "border-slate-200 bg-slate-50" : "border-slate-200"}`}>
+          <div className="flex items-start gap-3">
+            {/* One tap marks it done; tap again to undo. */}
+            <button type="button" aria-pressed={done} aria-label={done ? t({ en: `Mark not done: ${item.title}`, hi: `बाकी करें: ${item.title}` }) : t({ en: `Mark attempted: ${item.title}`, hi: `दिया गया करें: ${item.title}` })}
+              onClick={() => { run((c) => setStatus(c, item.id, done || skipped ? "planned" : "attempted", now())); holdTaps(); }}
+              className="group -my-2 -ml-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full">
+              <span aria-hidden="true" className={`flex h-7 w-7 items-center justify-center rounded-full border-2 text-sm font-bold ${done ? "border-emerald-600 bg-emerald-600 text-white" : skipped ? "border-slate-300 bg-slate-200 text-slate-500" : "border-slate-400 text-transparent group-hover:border-emerald-600"}`}>{skipped ? "–" : "✓"}</span>
+            </button>
+            <button type="button" aria-expanded={expanded} aria-controls={detailsId} onClick={() => setOpenRow(expanded ? null : item.id)} className="min-w-0 flex-1 text-left">
+              <span className={`text-sm font-medium ${expanded ? "block" : "line-clamp-2"} ${done ? "text-emerald-900" : skipped ? "text-slate-500 line-through" : "text-slate-900"}`}>{rowTitle(item.title).text}</span>
+              <span className="mt-0.5 block truncate text-xs text-slate-500">
+                {SHORT_SERIES[item.series]}{rowTitle(item.title).size && ` · ${rowTitle(item.title).size}`}{item.minutes > 0 && ` · ${item.minutes} min`}
+                {done && ` · ${t({ en: "done", hi: "दिया" })}${item.result ? `: ${item.result}` : ""}`}
+                {skipped && ` · ${t({ en: "skipped", hi: "छोड़ा" })}`}
+              </span>
+            </button>
+            {item.status === "planned" && <TestLink item={item} label={openLabel(item)} className={`${btnPrimary} shrink-0`} onOpen={() => { setAskReady(false); run((c) => markOpened(c, item.id, now())); }}>{t({ en: "Open ↗", hi: "खोलें ↗" })}</TestLink>}
           </div>
-          <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${item.status === "attempted" ? "bg-emerald-600 text-white" : item.status === "skipped" ? "bg-slate-300 text-slate-700" : "bg-slate-100 text-slate-700"}`}>{statusLabel(item)}</span>
-        </div>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {item.status === "planned" && <TestLink item={item} className={btnPrimary} newTabLabel={t({ en: "or open in a new tab ↗", hi: "या नए टैब में खोलें ↗" })} onOpen={() => { setAskReady(false); run((c) => markOpened(c, item.id, now())); }}>{openLabel(item)}</TestLink>}
-          {item.status === "planned" && <button type="button" className={btn} onClick={() => run((c) => setStatus(c, item.id, "attempted", now()))}>{t({ en: "Mark attempted", hi: "दिया गया करें" })}</button>}
-          {item.status === "planned" && <button type="button" className={btn} onClick={() => run((c) => setStatus(c, item.id, "skipped", now()))}>{t({ en: "Skip", hi: "छोड़ें" })}</button>}
-          {item.status !== "planned" && <button type="button" className={btn} onClick={() => run((c) => setStatus(c, item.id, "planned", now()))}>{t({ en: "Undo", hi: "वापस करें" })}</button>}
-          <button type="button" className={btn} onClick={() => run((c) => removeItem(c, item.id))}>{t({ en: "Remove", hi: "हटाएँ" })}</button>
-        </div>
-        {item.status === "planned" && <details className="mt-2 text-xs text-slate-600">
-          <summary className="cursor-pointer">{item.url ? t({ en: "Change the direct link", hi: "सीधा लिंक बदलें" }) : t({ en: "Add a direct link to this test", hi: "इस टेस्ट का सीधा लिंक जोड़ें" })}</summary>
-          <form className="mt-2 flex gap-2" onSubmit={(e) => { e.preventDefault(); const value = String(new FormData(e.currentTarget).get("url") ?? ""); run((c) => setUrl(c, item.id, value)); }}>
-            <input key={item.url} name="url" defaultValue={item.url} placeholder="https://…" aria-label={t({ en: "Direct link to this test", hi: "इस टेस्ट का सीधा लिंक" })} className="min-w-0 flex-1 rounded-lg border border-slate-300 p-2 text-sm text-slate-900" />
-            <button type="submit" className={btn}>{t({ en: "Save", hi: "सहेजें" })}</button>
-          </form>
-          <p className="mt-1">{t({ en: "IES Master gives no link for each test; paste one here if you find it. Leave it empty to use the series page.", hi: "IES Master हर टेस्ट का अलग लिंक नहीं देता; मिले तो यहाँ चिपकाएँ। खाली छोड़ने पर सीरीज़ का पेज खुलेगा।" })}</p>
-        </details>}
-        {item.status === "attempted" && <label className="mt-2 block text-xs text-slate-600">{t({ en: "Score / notes", hi: "स्कोर / नोट" })}
-          {/* Keyed on the saved score, so a score saved in another open copy replaces a stale one here instead of being overwritten on blur. */}
-          <input key={item.result} defaultValue={item.result} maxLength={120} placeholder="32/50, 28 min" onBlur={(e) => { if (e.target.value !== item.result) run((c) => setResult(c, item.id, e.target.value)); }} className="mt-1 block w-full rounded-lg border border-slate-300 p-2 text-sm text-slate-900" />
-        </label>}
-      </li>)}
+          {expanded && <div id={detailsId} className="mt-3 space-y-3 border-t border-slate-200/70 pt-3 text-xs text-slate-600 sm:pl-10">
+            {item.note && <p>{item.note}</p>}
+            {item.portalName && <p className="flex flex-wrap items-center gap-2 text-slate-700">
+              <span className="min-w-0">{t({ en: "Find on the portal:", hi: "पोर्टल पर यह नाम खोजें:" })} <strong className="break-words font-semibold">{item.portalName}</strong></span>
+              <button type="button" onClick={() => void copyName(item)} className="rounded border border-slate-300 px-2 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50">{copied === item.id ? t({ en: "Copied", hi: "कॉपी हुआ" }) : t({ en: "Copy name", hi: "नाम कॉपी करें" })}</button>
+            </p>}
+            {done && <label className="block">{t({ en: "Score / notes", hi: "स्कोर / नोट" })}
+              {/* Keyed on the saved score, so a score saved in another open copy replaces a stale one here instead of being overwritten on blur. */}
+              <input key={item.result} defaultValue={item.result} maxLength={120} placeholder="32/50, 28 min" onBlur={(e) => { if (e.target.value !== item.result) run((c) => setResult(c, item.id, e.target.value)); }} className="mt-1 block w-full rounded-lg border border-slate-300 p-2 text-sm text-slate-900" />
+            </label>}
+            <div className="flex flex-wrap items-center gap-2">
+              {item.status === "planned" && <button type="button" className={btn} onClick={() => { run((c) => setStatus(c, item.id, "skipped", now())); holdTaps(); }}>{t({ en: "Skip", hi: "छोड़ें" })}</button>}
+              <button type="button" className={btn} onClick={() => { run((c) => removeItem(c, item.id)); holdTaps(); }}>{t({ en: "Remove", hi: "हटाएँ" })}</button>
+              {item.status === "planned" && <NewTabLink item={item} onOpen={() => { setAskReady(false); run((c) => markOpened(c, item.id, now())); }}>{t({ en: "Open in a new tab ↗", hi: "नए टैब में खोलें ↗" })}</NewTabLink>}
+            </div>
+            {item.status === "planned" && <details>
+              <summary className="cursor-pointer">{item.url ? t({ en: "Change the direct link", hi: "सीधा लिंक बदलें" }) : t({ en: "Add a direct link to this test", hi: "इस टेस्ट का सीधा लिंक जोड़ें" })}</summary>
+              <form className="mt-2 flex gap-2" onSubmit={(e) => { e.preventDefault(); const value = String(new FormData(e.currentTarget).get("url") ?? ""); run((c) => setUrl(c, item.id, value)); }}>
+                <input key={item.url} name="url" defaultValue={item.url} placeholder="https://…" aria-label={t({ en: "Direct link to this test", hi: "इस टेस्ट का सीधा लिंक" })} className="min-w-0 flex-1 rounded-lg border border-slate-300 p-2 text-sm text-slate-900" />
+                <button type="submit" className={btn}>{t({ en: "Save", hi: "सहेजें" })}</button>
+              </form>
+              <p className="mt-1">{t({ en: "IES Master gives no link for each test; paste one here if you find it. Leave it empty to use the series page.", hi: "IES Master हर टेस्ट का अलग लिंक नहीं देता; मिले तो यहाँ चिपकाएँ। खाली छोड़ने पर सीरीज़ का पेज खुलेगा।" })}</p>
+            </details>}
+          </div>}
+        </li>;
+      })}
     </ul>
 
     <details className="rounded-xl border border-slate-200 p-3">
@@ -285,7 +316,7 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
         ? t({ en: "Update PYQ plan", hi: "पिछले वर्षों के प्रश्नों की योजना अपडेट करें" })
         : t({ en: "Load PYQ plan (3 Oct - 1 Nov)", hi: "पिछले वर्षों के प्रश्नों की योजना लोड करें (3 अक्टूबर - 1 नवंबर)" })}</button>
       {planNotice && <p role="status" className="text-sm text-slate-700">{planNotice}</p>}
-      <p className="text-xs text-slate-500">{t({ en: "Adds the IES topic tests (every hot test three times: the full test, then two shorter redo passes), three reasoning blocks a day, the Made Easy mocks and subject tests, and the daily hot-topic drill. IES gives one attempt per test, so the redo passes and the reasoning review work from the test's Report. Updating keeps your progress: anything you opened, attempted, skipped, scored or linked stays, and your own tests are never changed. A built-in test you remove comes back when you update; press Skip instead if you don't plan to do it. The plan is saved in this browser for your profile.", hi: "IES के विषयवार टेस्ट (हर हॉट टेस्ट तीन बार: पहले पूरा टेस्ट, फिर दो छोटे दोहराव), रोज़ तीन रीज़निंग ब्लॉक, Made Easy के मॉक और विषयवार टेस्ट और रोज़ का हॉट-टॉपिक ड्रिल जोड़ता है। IES हर टेस्ट एक ही बार देने देता है, इसलिए दोहराव और रीज़निंग समीक्षा टेस्ट की Report से होती है। अपडेट करने पर आपकी प्रगति बनी रहती है: जो टेस्ट आपने खोला, दिया, छोड़ा या जिसमें स्कोर या लिंक जोड़ा, वह रहता है, और आपके अपने टेस्ट कभी नहीं बदलते। योजना का जो टेस्ट आप हटाते हैं, वह अपडेट करने पर लौट आता है; अगर उसे नहीं देना है तो 'छोड़ें' दबाएँ। योजना आपकी प्रोफ़ाइल के लिए इसी ब्राउज़र में सहेजी जाती है।" })}</p>
+      <details className="w-full text-xs text-slate-500"><summary className="cursor-pointer">{t({ en: "How the plan works", hi: "योजना कैसे काम करती है" })}</summary><p className="mt-2">{t({ en: "Adds the IES topic tests (every hot test three times: the full test, then two shorter redo passes), three reasoning blocks a day, the Made Easy mocks and subject tests, and the daily hot-topic drill. IES gives one attempt per test, so the redo passes and the reasoning review work from the test's Report. Updating keeps your progress: anything you opened, attempted, skipped, scored or linked stays, and your own tests are never changed. A built-in test you remove comes back when you update; press Skip instead if you don't plan to do it. The plan is saved in this browser for your profile.", hi: "IES के विषयवार टेस्ट (हर हॉट टेस्ट तीन बार: पहले पूरा टेस्ट, फिर दो छोटे दोहराव), रोज़ तीन रीज़निंग ब्लॉक, Made Easy के मॉक और विषयवार टेस्ट और रोज़ का हॉट-टॉपिक ड्रिल जोड़ता है। IES हर टेस्ट एक ही बार देने देता है, इसलिए दोहराव और रीज़निंग समीक्षा टेस्ट की Report से होती है। अपडेट करने पर आपकी प्रगति बनी रहती है: जो टेस्ट आपने खोला, दिया, छोड़ा या जिसमें स्कोर या लिंक जोड़ा, वह रहता है, और आपके अपने टेस्ट कभी नहीं बदलते। योजना का जो टेस्ट आप हटाते हैं, वह अपडेट करने पर लौट आता है; अगर उसे नहीं देना है तो 'छोड़ें' दबाएँ। योजना आपकी प्रोफ़ाइल के लिए इसी ब्राउज़र में सहेजी जाती है।" })}</p></details>
     </div>
   </section>;
 }
