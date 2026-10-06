@@ -9,7 +9,8 @@ import {
 } from "@/lib/calendar/test-plan";
 import preset from "@/lib/calendar/pyq-plan-preset.json";
 
-type Commit = (update: (current: PlanItem[]) => PlanItem[]) => void;
+/** Applies a change and saves it; false when the browser would not save it. */
+type Commit = (update: (current: PlanItem[]) => PlanItem[]) => boolean;
 const PYQ_PRESET = preset.items as unknown as PlanInput[];
 /** The version of the built-in plan; a saved plan updated from an older one is offered the update. */
 const PRESET_BUILT = preset.built;
@@ -54,10 +55,12 @@ const dayRank = (item: PlanItem) => { const n = DAY_ORDER.findIndex((re) => re.t
 const sortForDay = (rows: PlanItem[]) => rows.map((item, index) => ({ item, index })).sort((a, b) => dayRank(a.item) - dayRank(b.item) || a.index - b.index).map(({ item }) => item);
 
 /** The learner's tests for the chosen day, with "Open test", "did you attempt it?" and progress. */
-export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFailed, commit, presetStamp, onPresetSynced }: {
+export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFailed, commit, presetStamp, onPresetSynced, autoLoaded = false }: {
   today: string; selected: string; onSelect: (date: string) => void;
   items: PlanItem[]; ready: boolean; saveFailed: boolean; commit: Commit;
   presetStamp: string | null; onPresetSynced: (built: string) => void;
+  /** The built-in plan was filled in on this visit because this browser had none (a new phone). */
+  autoLoaded?: boolean;
 }) {
   const { t, lang } = useLang();
   const [askReady, setAskReady] = useState(true);
@@ -159,8 +162,9 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
   /** Load the built-in plan, or bring a loaded one up to date. Keeps everything the learner touched or added. */
   function loadOrUpdatePlan() {
     const counts = { added: 0, removed: 0, skipped: 0, past: 0 };
+    let saved = false;
     try {
-      commit((current) => {
+      saved = commit((current) => {
         const synced = syncPreset(current, PYQ_PRESET, today);
         counts.added = synced.added;
         counts.removed = synced.removed;
@@ -174,7 +178,8 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
       return;
     }
     setMessage("");
-    onPresetSynced(PRESET_BUILT);
+    // Mark the plan as up to date only once it is saved: a stamp over an unsaved plan would read as "cleared on purpose" next visit.
+    if (saved) onPresetSynced(PRESET_BUILT);
     const { added, removed, skipped, past } = counts;
     if (added === 0 && removed === 0) {
       setPlanNotice(t({ en: "Your plan is already up to date.", hi: "आपकी योजना पहले से अद्यतन है।" }));
@@ -217,6 +222,7 @@ export function TestPlanPanel({ today, selected, onSelect, items, ready, saveFai
     {!ready && <p className="text-sm text-slate-500">{t({ en: "Loading your plan…", hi: "आपकी योजना लोड हो रही है…" })}</p>}
     {saveFailed && <p role="alert" className="rounded-lg bg-amber-50 p-3 text-sm text-amber-900">{t({ en: "This browser would not save your plan (private window or full storage). Changes will be lost when you close the page.", hi: "यह ब्राउज़र आपकी योजना सहेज नहीं पा रहा। पेज बंद करने पर बदलाव खो जाएँगे।" })}</p>}
     {message && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-800">{message}</p>}
+    {autoLoaded && <p role="status" className="rounded-lg bg-blue-50 p-3 text-sm text-blue-950">{t({ en: "The test plan was loaded on this device. Ticks and scores are saved separately on each phone or browser, so anything you marked on another device does not show here.", hi: "टेस्ट योजना इस डिवाइस पर लोड की गई। टिक और स्कोर हर फ़ोन या ब्राउज़र में अलग-अलग सहेजे जाते हैं, इसलिए दूसरे डिवाइस पर जो चिह्नित किया वह यहाँ नहीं दिखेगा।" })}</p>}
     {pendingUpdate && <div role="status" className="flex flex-wrap items-center gap-3 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
       <p className="min-w-0 flex-1">{t({ en: `The built-in plan has changed (${pendingUpdate.added} new or moved, ${pendingUpdate.removed} outdated). Update to get it; your progress is kept.`, hi: `योजना बदल गई है (${pendingUpdate.added} नए या खिसकाए गए, ${pendingUpdate.removed} पुराने)। अपडेट करें; आपकी प्रगति बनी रहेगी।` })}</p>
       <button type="button" className={btnPrimary} onClick={loadOrUpdatePlan}>{t({ en: "Update now", hi: "अभी अपडेट करें" })}</button>

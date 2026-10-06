@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLang } from "@/lib/i18n";
 import { useUser } from "@/lib/user-context";
+import { isCivilProfile } from "@/lib/profile-access";
 import { TestPlanPanel } from "@/components/calendar/TestPlanPanel";
 import { useTestPlan } from "@/components/calendar/useTestPlan";
 import { dayMarks } from "@/lib/calendar/test-plan";
@@ -23,7 +24,8 @@ export default function CalendarPage() {
   const { t, lang } = useLang();
   const [today, setToday] = useState(() => localIsoDate());
   const { currentUser } = useUser();
-  const { items, ready, commit, saveFailed, presetStamp, markPresetSynced } = useTestPlan(currentUser?.id);
+  // Only the profiles that have the calendar get a plan: another profile opening /calendar is sent away and must not have one written for it.
+  const { items, ready, commit, saveFailed, presetStamp, markPresetSynced, autoLoaded } = useTestPlan(currentUser && isCivilProfile(currentUser) ? currentUser.id : null);
   const [picked, setPicked] = useState<string | null>(null);
   const selected = picked ?? today;
   const marks = dayMarks(items);
@@ -71,7 +73,7 @@ export default function CalendarPage() {
       </p>
     </section>
 
-    <TestPlanPanel today={today} selected={selected} onSelect={setPicked} items={items} ready={ready} saveFailed={saveFailed} commit={commit} presetStamp={presetStamp} onPresetSynced={markPresetSynced} />
+    <TestPlanPanel today={today} selected={selected} onSelect={setPicked} items={items} ready={ready} saveFailed={saveFailed} commit={commit} presetStamp={presetStamp} onPresetSynced={markPresetSynced} autoLoaded={autoLoaded} />
 
     {months.map((monthKey) => {
       const cells = monthCells(monthKey);
