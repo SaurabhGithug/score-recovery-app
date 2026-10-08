@@ -1,3 +1,5 @@
+> **Superseded by the 8 October full-coverage update.** See [Complete IES Civil calendar](complete-ies-plan-2026-10-08.md). The calendar and `pyq-plan.csv` now include all 106 technical tests. The selection, omissions and day-by-day table below describe the historical 5 October plan.
+
 # Study plan, 3 Oct to 1 Nov 2026: PYQ topic tests, three passes, mocks and Made Easy
 
 Re-planned 5 Oct 2026 by `pyq_plan.py` from the IES My Tests page read late on 4 Oct. Already taken there: reasoning sets 14 Nov 2022 Morning and Afternoon (3 and 4 Oct) and T81 Hydrologic Cycle (4 Oct); T42 and T37, planned for 3 and 4 Oct, were not taken yet, so they moved to the next free days. The page lists 106 Civil topic tests, 62 reasoning and 69 General Awareness tests, each with its IES time and question count. The same plan is in the app (calendar, `Load / Update PYQ plan`). Exam window: 2-6 Nov 2026 (proposed by SSC). Made Easy details: `docs/made-easy-plan.md`.
@@ -75,3 +77,4 @@ T9 Springs, T10 Thick and Thin Cylinders/Spheres, T25 Prestressed Concrete, T33 
 ## Results log (fill after every test)
 | Date | Test | Pass (1/2/3) | Attempted | Correct | Wrong | Score | Minutes | Accuracy % | Weak sub-topic / mistake type |
 |---|---|---|---|---|---|---|---|---|---|
+

@@ -124,8 +124,9 @@ for (const t of ["IES T42 ", "IES T37 "]) {
 }
 assert.equal(parsePlan(first.items).length, first.items.length, "every preset item survives validation");
 const civil = preset.items.filter((i) => i.title.startsWith("IES T"));
-// 60 Tier 1-3 tests minus T86, which no longer fits after the 5 Oct re-plan (it is on the optional list in docs/pyq-plan.md)
-assert.ok(civil.length === 59 && !civil.some((i) => i.title.startsWith("IES T86 ")) && civil.every((i) => i.portalName && /Test\s*-?\s*\d+/.test(i.portalName)), "every IES Civil test carries its exact portal name");
+// The 8 Oct expansion includes every Civil test, including T41 whose portal label lacks "Test".
+assert.equal(civil.length, 106, "all 106 IES Civil tests are scheduled");
+assert.ok(civil.some((i) => i.title.startsWith("IES T86 ")) && civil.every((i) => i.portalName), "every IES Civil test carries its exact portal name");
 assert.ok(preset.items.filter((i) => i.portalName).length > 120, "reasoning and GA sets carry their portal names too");
 assert.ok(first.items.every((i) => !i.portalName || i.portalName.length <= 200));
 assert.equal(first.items.find((i) => i.title.startsWith("IES T42")).portalName, "Topic wise Test - 42 Estimating,Costing and Valuation _ (Estimating ,Costing and Valuation -42)");
@@ -231,7 +232,11 @@ const meSubject = preset.items.filter((i) => /Made Easy subject test \d+:/.test(
 const meNos = meSubject.map((i) => Number(i.title.match(/subject test (\d+):/)[1])).sort((a, b) => a - b);
 assert.deepEqual(meNos, [1, 3, 4, 10, 13, 14, 15, 16], "every Made Easy subject test not yet attempted (as of 2 Oct) is planned once");
 assert.ok(meSubject.every((i) => !mockDays.has(i.date)), "no subject test on a mock day");
-for (const d of new Set(preset.items.map((i) => i.date).filter((d) => d !== "2026-10-03"))) assert.ok(preset.items.filter((i) => i.date === d).reduce((a, i) => a + i.minutes, 0) <= 330, `${d}: at most 330 planned minutes`);
+for (const d of new Set(preset.items.map((i) => i.date).filter((d) => d !== "2026-10-03"))) {
+  const expanded = preset.items.some((i) => i.date === d && i.title.startsWith("Review added technical tests"));
+  const limit = expanded ? 450 : 330;
+  assert.ok(preset.items.filter((i) => i.date === d).reduce((a, i) => a + i.minutes, 0) <= limit, `${d}: at most ${limit} planned minutes`);
+}
 assert.equal(parsePlan(mergePreset([], preset.items).items).filter((i) => i.url).length, 2, "the in-app mock links survive validation");
 
 // a link that came with the built-in plan is not a learner action: the row can still be moved or removed by an update
@@ -589,3 +594,4 @@ for (const i of preset.items) {
 }
 
 console.log("test-plan: all checks passed");
+
