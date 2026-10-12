@@ -4,16 +4,7 @@ The other person only ever sees `PROMPT-FOR-CODEX.txt`. You do these four things
 
 1. **Push the code.** The GitHub copy is behind this folder (about 55 files changed here, including the Codex provider). The clone gets only what is pushed. Commit and push branch `claude/app-snapshot-2026-09-30`.
 2. **Decide the repo's visibility.** Codex can clone without a login only if the repo is public. Before you switch it, know that the repo contains `src/lib/madeeasy-import.json` (Made Easy question text, Reema's licensed material) and ISRO/IES question files under `docs/`. Safer: keep it private and add the other person's GitHub account as a collaborator (they run `gh auth login` once).
-3. **Create `.env.civil-laptop`** in this folder (it is git-ignored) with exactly these four lines, using the `DATABASE_URL` from your `.env.production.local`:
-
-   ```
-   DATABASE_URL=<copy the value from .env.production.local>
-   LLM_PROVIDER=codex
-   FOLLOWUP_PROVIDER=codex
-   REGISTRATION_MODE=closed
-   ```
-
-   Send that file privately (AirDrop, WhatsApp to one person). It is a master key to the live database: never paste it into the prompt, a chat group or GitHub.
+3. **Create `.env.civil-laptop`** by running `node scripts/make-laptop-env.mjs` in this folder. It copies the live `DATABASE_URL` and the Codex settings into that git-ignored file without printing anything. Send the file privately (AirDrop, WhatsApp to one person). It is a master key to the live database: never paste it into the prompt, a chat group or GitHub.
 4. **Send `PROMPT-FOR-CODEX.txt`** to be pasted into Codex on the other laptop, and tell them which ChatGPT account to sign in with.
 
 ## Known gaps
