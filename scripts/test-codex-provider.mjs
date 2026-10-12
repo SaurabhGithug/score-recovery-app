@@ -32,7 +32,7 @@ await test("runs read-only in an empty temp folder, prompt on stdin, API keys re
   await new CodexProvider().completeJson(request);
   delete process.env.OPENAI_API_KEY; delete process.env.CODEX_API_KEY;
   const [c] = calls();
-  assert.deepEqual(c.args.slice(0, 4), ["exec", "--sandbox", "read-only", "--skip-git-repo-check"]);
+  assert.deepEqual(c.args.slice(0, 5), ["exec", "--sandbox", "read-only", "--skip-git-repo-check", "--ignore-user-config"]);
   assert.equal(c.args.at(-1), "-");
   assert.ok(!c.args.some((a) => a.includes("SYSTEM-TEXT") || a.includes("USER-TEXT")), "prompt is never an argument");
   assert.ok(c.stdin.includes("SYSTEM-TEXT") && c.stdin.includes("USER-TEXT"));

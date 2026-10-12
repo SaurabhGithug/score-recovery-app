@@ -13,5 +13,8 @@ if (process.env.FAKE_CODEX_LOG) appendFileSync(process.env.FAKE_CODEX_LOG, JSON.
 if (mode === "not-logged-in") { console.error("ERROR: Not logged in. Please run codex login"); process.exit(1); }
 if (mode === "limit") { console.error("You've hit your usage limit. Try again in 3 hours."); process.exit(1); }
 const out = args[args.indexOf("--output-last-message") + 1];
-const reply = stdin.includes('"sum": 4') ? '{"sum": 4}' : mode === "fenced" ? 'Sure!\n```json\n{"answer":"B"}\n```' : mode === "prose" ? "I think the answer is B." : '{"answer":"B"}';
+const demo = stdin.includes("You check a tutor's answer")
+  ? '{"verdict":"consistent","issues":[],"keyConcern":false}'
+  : stdin.includes('{"answer"') ? JSON.stringify({ answer: "[Demo reply from the stand-in Codex — the real one answers here.]\n\nThis is where ChatGPT's explanation of your question will appear, using your Codex plan." }) : null;
+const reply = demo ?? stdin.includes('"sum": 4') ? '{"sum": 4}' : mode === "fenced" ? 'Sure!\n```json\n{"answer":"B"}\n```' : mode === "prose" ? "I think the answer is B." : '{"answer":"B"}';
 writeFileSync(out, reply);

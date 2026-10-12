@@ -90,14 +90,17 @@ function describeFailure(r: RunResult): LlmError {
     return new LlmError(r.spawnError.code === "ENOENT" ? NOT_INSTALLED : `Could not start Codex: ${r.spawnError.message}`, { fatal: true });
   }
   if (r.timedOut) return new LlmError("Codex took too long to answer. Try again.", { retryable: false });
-  const text = `${r.stderr}\n${r.stdout}`;
+  const all = `${r.stderr}\n${r.stdout}`;
+  const errors = all.split("\n").filter((l) => /^\s*(ERROR|error)\b/.test(l)).join("\n");
+  const text = errors || all;
   if (/not logged in|log ?in required|please (log ?in|sign ?in)|unauthori[sz]ed|\b401\b|invalid (api )?key|token (has )?expired|refresh token/i.test(text)) {
     return new LlmError(NOT_SIGNED_IN, { fatal: true });
   }
   if (/usage limit|rate limit|quota|too many requests|\b429\b|try again (later|in)/i.test(text)) {
     return new LlmError("The ChatGPT plan's Codex usage limit was reached. Wait for it to reset (it says when in the ChatGPT app) and try again.", { fatal: true });
   }
-  const tail = text.trim().split("\n").slice(-3).join(" ").slice(0, 240);
+  const quoted = errors.match(/"message":"([^"]+)"/)?.[1];
+  const tail = quoted ?? text.trim().split("\n").slice(-3).join(" ").slice(0, 240);
   return new LlmError(`Codex stopped with an error${tail ? `: ${tail}` : "."}`, { retryable: false });
 }
 
@@ -156,6 +159,9 @@ export class CodexProvider implements LlmProvider {
         "exec",
         "--sandbox", "read-only",
         "--skip-git-repo-check",
+        // The person's own ~/.codex/config.toml may pick a model their plan can't use (seen on
+        // 2026-10-12: gpt-6-sol rejected for a ChatGPT account); the sign-in itself is kept.
+        "--ignore-user-config",
         "--output-last-message", outFile,
         ...(chosen ? ["-m", chosen] : []),
         "-c", `model_reasoning_effort="${effort}"`,
