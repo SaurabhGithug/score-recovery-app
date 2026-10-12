@@ -7,13 +7,15 @@ import type { StudyCitation } from "@/lib/study-evidence";
 import { StudyPack, type StudyPackData } from "./StudyPack";
 import { AiGeneratedBadge } from "./AiGeneratedBadge";
 import { TopicLinks, useQuestionContext } from "./QuestionTopic";
+import { SendToChatGpt } from "./SendToChatGpt";
+import { MarkQuestion } from "../marks/MarkQuestion";
 
 export { AiGeneratedBadge };
 
 interface Answer {
   evidence?: StudyCitation[];
   answer: string;
-  provider: "google" | "deepseek";
+  provider: "google" | "deepseek" | "codex";
   model: string;
   grounded: boolean;
   sources: { title: string; uri: string }[];
@@ -238,6 +240,7 @@ export function StructuredAnswer({ answer, evidence }: { answer: string; evidenc
 }
 
 function providerLabel(meta: Answer): string {
+  if (meta.provider === "codex") return meta.grounded ? "ChatGPT (Codex), used web sources" : "ChatGPT (Codex), not web-checked";
   const who = meta.provider === "google" ? `Google ${meta.model.replace(/^gemini-/, "Gemini ")}` : `DeepSeek ${meta.model.replace(/^deepseek-/, "")}`;
   return meta.grounded ? `${who}, used Google Search sources` : `${who}, not web-checked`;
 }
@@ -374,9 +377,15 @@ export function AskFollowUp({ kind, id, lesson = false }: { kind: "made_easy" | 
 
   if (!open) {
     return (
-      <button type="button" onClick={() => setOpen(true)} className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-lg border border-violet-200 bg-white px-3 py-2 text-xs font-semibold text-violet-800 hover:bg-violet-50">
-        {t({ en: "Ask a follow-up question", hi: "आगे का प्रश्न पूछें" })}
-      </button>
+      <div className="mt-3 space-y-2">
+        <MarkQuestion kind={kind} id={id} />
+        <div className="flex flex-wrap items-start gap-2">
+          <button type="button" onClick={() => setOpen(true)} className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-violet-200 bg-white px-3 py-2 text-xs font-semibold text-violet-800 hover:bg-violet-50">
+            {t({ en: "Ask a follow-up question", hi: "आगे का प्रश्न पूछें" })}
+          </button>
+          <SendToChatGpt kind={kind} id={id} />
+        </div>
+      </div>
     );
   }
 
@@ -386,6 +395,7 @@ export function AskFollowUp({ kind, id, lesson = false }: { kind: "made_easy" | 
         <h4 className="text-xs font-bold uppercase tracking-wide text-violet-900">{t({ en: "Ask a follow-up question", hi: "आगे का प्रश्न पूछें" })}</h4>
         {!lesson && <button type="button" onClick={() => setOpen(false)} className="text-xs text-slate-500 underline">{t({ en: "Close", hi: "बंद करें" })}</button>}
       </div>
+      <div className="mt-2 space-y-2"><MarkQuestion kind={kind} id={id} /><SendToChatGpt kind={kind} id={id} /></div>
 
       {context?.data && <>
         {!lesson && <TopicLinks context={context.data} />}

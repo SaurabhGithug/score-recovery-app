@@ -1,5 +1,6 @@
 import { handle, HttpError, isRecord, jsonOk, readJsonBody, requireUser } from "@/lib/server/bank/http";
 import { studyPack } from "@/lib/server/followup/followup";
+import { logActivity } from "@/lib/server/activity";
 
 /**
  * POST /api/ai/study-pack { kind: "made_easy" | "bank", id, generate?: boolean } → { pack, pending, error }
@@ -25,6 +26,9 @@ export async function POST(req: Request) {
     if (origin && host && !sameHost(origin, host)) throw new HttpError(403, "Ask from within the app.");
     const body = await readJsonBody(req, 4 * 1024);
     if (!isRecord(body)) throw new HttpError(400, "A JSON object is required.");
-    return jsonOk(await studyPack(user.id, { kind: body.kind, id: body.id, generate: body.generate }));
+    const pack = await studyPack(user.id, { kind: body.kind, id: body.id, generate: body.generate });
+    // Logged when the learner asks for the notes, not on the background checks that follow.
+    if (body.generate === true) await logActivity(req, user.id, "ai.studypack.open", { kind: body.kind === "bank" ? "bank" : "made_easy", id: String(body.id) });
+    return jsonOk(pack);
   });
 }

@@ -56,3 +56,7 @@ __pycache__/
 /docs/isro-jpa-previous-papers-third-party/
 /docs/*.zip
 .neon
+
+# second-laptop launchers are generated per computer
+/Start Score Recovery.command
+/Start Score Recovery.bat

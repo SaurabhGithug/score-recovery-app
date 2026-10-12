@@ -10,6 +10,8 @@ import { OnboardingModal } from "@/components/OnboardingModal";
 import { InstallAppProvider } from "@/components/InstallAppButton";
 import { ProfileAccessGate } from "@/components/ProfileAccessGate";
 import { SignInGate } from "@/components/SignInGate";
+import { ActivityTracker } from "@/components/ActivityTracker";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Score Recovery — Adaptive Test Platform & Study Library",
@@ -41,6 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <LanguageProvider>
             <AttemptModeProvider>
               <SignInGate>
+                <Suspense fallback={null}><ActivityTracker /></Suspense>
                 <SiteHeader />
                 <div className="min-w-0 flex-1 flex flex-col pb-6"><ProfileAccessGate>{children}</ProfileAccessGate></div>
                 <SiteFooter />

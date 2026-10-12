@@ -50,7 +50,8 @@ export interface MadeEasyTestSummary {
   unattempted: number;
   rank: number;
   participants: number;
-  percentile: number;
+  /** null when the portal shows "--" (it does at last rank); never derived from rank. */
+  percentile: number | null;
   accuracy: number;
   timeMinutes: number;
   averageScore: number;

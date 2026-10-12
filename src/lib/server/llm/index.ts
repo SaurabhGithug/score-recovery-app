@@ -1,3 +1,4 @@
+import { CodexProvider } from "./codex-provider";
 import { DeepSeekProvider } from "./deepseek";
 import { GeminiProvider } from "./gemini-provider";
 import { MixedProvider } from "./mixed-provider";
@@ -6,7 +7,9 @@ import { LlmProvider } from "./types";
 
 /**
  * Server-side LLM configuration, read from environment variables (.env.local, never committed):
- *   LLM_PROVIDER                mixed | deepseek | google | mock. When unset: mixed when both keys
+ *   LLM_PROVIDER                codex | mixed | deepseek | google | mock. codex: every AI call runs
+ *                               through the Codex CLI signed in to a ChatGPT account (no API keys).
+ *                               When unset: mixed when both keys
  *                               have values, else whichever of deepseek / google has a key.
  *                               mixed: Gemini writes explanations and questions and blind-solves
  *                               past-paper questions (anchored to their source key); DeepSeek
@@ -75,6 +78,19 @@ export function getLlmSetup(): LlmSetup {
     };
   }
 
+  if (providerName === "codex") {
+    // One model for everything: it writes, and a second independent run re-solves. No per-call price.
+    return {
+      configured: true,
+      unavailableReason: null,
+      provider: new CodexProvider(),
+      generationModel: "codex",
+      checkModel: "codex",
+      explainCheckModel: "codex",
+      ...limits,
+    };
+  }
+
   if (providerName === "mixed") {
     const generationModel = process.env.GEMINI_GENERATION_MODEL?.trim() || "gemini-3.8-flash";
     const checkModel = process.env.DEEPSEEK_CHECK_MODEL?.trim() || "deepseek-v4-pro";
@@ -119,7 +135,7 @@ export function getLlmSetup(): LlmSetup {
   if (providerName !== "deepseek") {
     return {
       configured: false,
-      unavailableReason: `Unknown LLM_PROVIDER "${providerName}". Use "mixed", "deepseek", "google" or "mock".`,
+      unavailableReason: `Unknown LLM_PROVIDER "${providerName}". Use "codex", "mixed", "deepseek", "google" or "mock".`,
       provider: null,
       generationModel,
       checkModel,

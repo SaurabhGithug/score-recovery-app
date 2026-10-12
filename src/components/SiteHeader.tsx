@@ -99,6 +99,7 @@ function NavigationDrawer({ onClose }: { onClose: () => void }) {
           <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold">{currentUser?.name?.slice(0, 1).toUpperCase() || "SR"}</span>
           <div className="min-w-0"><p className="text-xs text-slate-500">{lang === "hi" ? "खाता" : "Account"}</p><p className="break-words text-sm font-medium">{currentUser?.name || (lang === "hi" ? "साइन इन नहीं है" : "Not signed in")}</p></div>
         </div>
+        {currentUser && <Link href="/activity" onClick={onClose} className="mt-3 flex min-h-11 items-center rounded-lg px-2 text-sm font-medium text-slate-700 hover:bg-slate-50">{lang === "hi" ? "मेरी गतिविधि" : "My activity"}</Link>}
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
           <button type="button" className="min-h-11 rounded-lg px-2 text-sm font-medium text-slate-700 hover:bg-slate-50" onClick={() => { onClose(); openProfileModal(); }}>{currentUser ? (lang === "hi" ? "प्रोफ़ाइल बदलें" : "Switch profile") : (lang === "hi" ? "प्रोफ़ाइल चुनें" : "Choose profile")}</button>
           {currentUser && <button type="button" className="min-h-11 rounded-lg px-2 text-sm text-slate-500 hover:bg-slate-50" onClick={() => { onClose(); void logout(); }}>{lang === "hi" ? "प्रोफ़ाइल छोड़ें" : "Leave profile"}</button>}

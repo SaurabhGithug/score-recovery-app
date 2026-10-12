@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { SessionRepository } from "@/lib/server/repositories/session-repo";
 import { UserRepository, isFixedProfileKey } from "@/lib/server/repositories/user-repo";
 import { attachSessionCookie } from "@/lib/server/session-cookie";
+import { logActivity } from "@/lib/server/activity";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,6 +13,7 @@ export async function POST(req: NextRequest) {
     }
     const user = await UserRepository.findOrCreateFixedProfile(profile);
     const session = await SessionRepository.create(user.id);
+    await logActivity(req, user.id, "auth.signin", undefined, { profile });
     const response = NextResponse.json({ user });
     attachSessionCookie(response, session.token);
     return response;

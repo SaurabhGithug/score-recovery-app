@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/server/auth";
 import { getDatabase } from "@/lib/server/db";
+import { logActivity } from "@/lib/server/activity";
 
 interface NoteRow {
   id: string;
@@ -58,6 +59,7 @@ export async function POST(req: Request) {
       model = excluded.model, evidence = excluded.evidence, updated_at = excluded.updated_at`
   ).run(id, user.id, sourceKind, sourceId, title, noteBody, bodyHash, model, evidence, now, now);
   const saved = await getDatabase().prepare("SELECT * FROM revision_notes WHERE user_id = ? AND source_kind = ? AND source_id = ? AND body_hash = ?").get<NoteRow>(user.id, sourceKind, sourceId, bodyHash);
+  await logActivity(req, user.id, "note.save", { kind: sourceKind === "bank" ? "bank" : "made_easy", id: sourceId }, { title });
   return NextResponse.json({ note: saved ? output(saved) : null }, { status: 201 });
 }
 

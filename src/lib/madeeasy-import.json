@@ -4,7 +4,7 @@
     "provider": "MADE EASY",
     "series": "CE-SSC-JE 2026 CBT-1 Online Test Series",
     "capturedOn": "2026-09-29",
-    "scope": "Attempt-level results plus incorrect and unattempted question content from four completed tests.",
+    "scope": "Attempt-level results plus incorrect and unattempted question content from eight completed tests (Tests 2, 5, 9 and 12 captured 2026-09-29; Tests 6, 7, 8 and 11 added 2026-10-02).",
     "integrityPolicy": "Portal-visible facts only. Questions are shown from the portal's own HTML (text and its images); anything that could not be recaptured stays flagged visual_review_required and out of practice. Nothing is reconstructed or guessed.",
     "ownerUserId": "usr_709c4be274f64011",
     "ownerNote": "Reema's Made Easy account; only this app user may see these results (decided by Saurabh, 2026-09-30).",
@@ -16,6 +16,22 @@
         "test-05": "cb441590fb103adf189e016f852a39125faf35cf3df4a695f72881cb0562924e",
         "test-09": "007e6b80a79e2daea6158f87dbadce6a979bbe80316e508b79fe78a97404a730",
         "test-12": "583d393d61b0f4cc03e9a1a98da74410c4749dc004f76c35440203b2eb36ec5c"
+      }
+    },
+    "added": {
+      "capturedOn": "2026-10-02",
+      "tests": [
+        "test-06",
+        "test-07",
+        "test-08",
+        "test-11"
+      ],
+      "method": "Portal result page and solution view in the owner's own signed-in session (built-in browser); question, option and explanation HTML, the learner's answer, timing and cohort stats read from the page's Apollo cache. Image links kept (images stay on the portal's public image host).",
+      "files": {
+        "test-06": "16091a06759e1f4f053121c927f5ed9fd03effe0562b02231580076cd4797715",
+        "test-07": "1912d8f523d46852e67ef9a899d0835a80f94b422bb5abff102721859926adbd",
+        "test-08": "afff3fe35e37bc911e0cfd944f4677805ea4a734a56224ce629ffb5d33253410",
+        "test-11": "dd34eb203a993e33af737f17e907f85fc1a68880b4ab5086468f115662c01d60"
       }
     }
   },
@@ -2249,6 +2265,2508 @@
       ]
     },
     {
+      "code": "test-06",
+      "title": "Directions and Distance Test + Series + Coding and Decoding + Word Formation",
+      "summary": {
+        "score": 30,
+        "maxScore": 50,
+        "correct": 31,
+        "incorrect": 4,
+        "unattempted": 15,
+        "rank": 4,
+        "participants": 11,
+        "percentile": 63.64,
+        "accuracy": 88,
+        "timeMinutes": 30,
+        "averageScore": 23.52,
+        "highestScore": 33.5,
+        "averageAccuracy": 79,
+        "medianScore": 25
+      },
+      "attentionQuestions": [
+        {
+          "id": "test-06-q03",
+          "number": 3,
+          "status": "incorrect",
+          "timeSeconds": 141,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 90,
+          "avgTimeSeconds": 101.9,
+          "question": "In a certain code ‘PRISM’ is written as ‘OSHTL’ and ‘RUBLE’ is written as ‘QVAMD’. How will ‘WHORL’ be written in that code?",
+          "options": [
+            {
+              "id": "A",
+              "text": "XIPSM"
+            },
+            {
+              "id": "B",
+              "text": "XIPSM"
+            },
+            {
+              "id": "C",
+              "text": "UINSK"
+            },
+            {
+              "id": "D",
+              "text": "XGPQM"
+            }
+          ],
+          "selectedOption": "D",
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "C (Chosen by 55.56% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>In a certain code &lsquo;PRISM&rsquo; is written as &lsquo;OSHTL&rsquo; and &lsquo;RUBLE&rsquo; is written as &lsquo;QVAMD&rsquo;. How will&nbsp;&lsquo;WHORL&rsquo; be written in that code?</p>",
+          "optionsHtml": [
+            "<p>XIPSM</p>",
+            "<p>XIPSM</p>",
+            "<p>UINSK</p>",
+            "<p>XGPQM</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip28-1778757474841.png\"></p>"
+        },
+        {
+          "id": "test-06-q06",
+          "number": 6,
+          "status": "incorrect",
+          "timeSeconds": 46,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 100,
+          "avgTimeSeconds": 74.6,
+          "question": "In a certain code language, ‘EAT’ is written as ‘318’ and ‘CHAIR’ is written as ‘24156’, then how ‘TEACHER’ be written in that code language?",
+          "options": [
+            {
+              "id": "A",
+              "text": "8313426"
+            },
+            {
+              "id": "B",
+              "text": "8312436"
+            },
+            {
+              "id": "C",
+              "text": "8321436"
+            },
+            {
+              "id": "D",
+              "text": "8312346"
+            }
+          ],
+          "selectedOption": "A",
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 90% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>In a certain code language, &lsquo;EAT&rsquo; is written as &lsquo;318&rsquo; and &lsquo;CHAIR&rsquo; is written as &lsquo;24156&rsquo;, then how&nbsp;&lsquo;TEACHER&rsquo; be written in that code language?</p>",
+          "optionsHtml": [
+            "<p>8313426</p>",
+            "<p>8312436</p>",
+            "<p>8321436</p>",
+            "<p>8312346</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip25-1778757355057.png\"></p>"
+        },
+        {
+          "id": "test-06-q11",
+          "number": 11,
+          "status": "unattempted",
+          "timeSeconds": 22,
+          "marksAwarded": 0,
+          "avgAttemptRate": 20,
+          "avgTimeSeconds": 81.2,
+          "question": "There are six members in a family. This year the father died and he has a son Ramesh, and a son is born to Ramesh. The average age of the family is the same now as it was 10 years back. At what age has the father of Ramesh died?",
+          "options": [
+            {
+              "id": "A",
+              "text": "60 years"
+            },
+            {
+              "id": "B",
+              "text": "50 years"
+            },
+            {
+              "id": "C",
+              "text": "64 years"
+            },
+            {
+              "id": "D",
+              "text": "72 years"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "Age of father of Ramesh at the time of death = 6 × 10 = 60 years",
+          "deceptiveChoice": "B (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>There are six members in a family. This year the father died and he has a son Ramesh, and a son&nbsp;is born to Ramesh. The average age of the family is the same now as it was 10 years back. At what&nbsp;age has the father of Ramesh died?</p>",
+          "optionsHtml": [
+            "<p>60 years</p>",
+            "<p>50 years</p>",
+            "<p>64 years</p>",
+            "<p>72 years</p>"
+          ],
+          "explanationHtml": "<p>Age of father of Ramesh at the time of death = 6 &times; 10 = 60 years</p>"
+        },
+        {
+          "id": "test-06-q18",
+          "number": 18,
+          "status": "incorrect",
+          "timeSeconds": 45,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 90,
+          "avgTimeSeconds": 32.1,
+          "question": "In a certain language , ‘792’ means ‘God is good’, ‘847’ means ‘rose is beautiful’ and ‘546’ means ‘children are beautiful’. Which digit means ‘Rose’ in that language?",
+          "options": [
+            {
+              "id": "A",
+              "text": "8"
+            },
+            {
+              "id": "B",
+              "text": "7"
+            },
+            {
+              "id": "C",
+              "text": "2"
+            },
+            {
+              "id": "D",
+              "text": "9"
+            }
+          ],
+          "selectedOption": "A",
+          "correctOption": "D",
+          "explanation": "[image]",
+          "deceptiveChoice": "A (Chosen by 100% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>In a certain language , &lsquo;792&rsquo; means &lsquo;God is good&rsquo;, &lsquo;847&rsquo; means &lsquo;rose is beautiful&rsquo; and &lsquo;546&rsquo; means&nbsp;&lsquo;children are beautiful&rsquo;. Which digit means &lsquo;Rose&rsquo; in that language?</p>",
+          "optionsHtml": [
+            "<p>8</p>",
+            "<p>7</p>",
+            "<p>2</p>",
+            "<p>9</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip21-1778757208882.png\"></p>"
+        },
+        {
+          "id": "test-06-q21",
+          "number": 21,
+          "status": "unattempted",
+          "timeSeconds": 82,
+          "marksAwarded": 0,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 70.1,
+          "question": "In a certain code, LAKE is written as OZPV. How will ‘BACK’ be in that code?",
+          "options": [
+            {
+              "id": "A",
+              "text": "ZYXP"
+            },
+            {
+              "id": "B",
+              "text": "ZYPX"
+            },
+            {
+              "id": "C",
+              "text": "ZYPX"
+            },
+            {
+              "id": "D",
+              "text": "YZPX"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "D (Chosen by 87.5% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>In a certain code, LAKE is written as OZPV. How will &lsquo;BACK&rsquo; be in that code?</p>",
+          "optionsHtml": [
+            "<p>ZYXP</p>",
+            "<p>ZYPX</p>",
+            "<p>ZYPX</p>",
+            "<p>YZPX</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip18-1778757083618.png\"></p>"
+        },
+        {
+          "id": "test-06-q29",
+          "number": 29,
+          "status": "unattempted",
+          "timeSeconds": 13,
+          "marksAwarded": 0,
+          "avgAttemptRate": 40,
+          "avgTimeSeconds": 30,
+          "question": "If it is possible to make a meaningful word with the second, fifth, tenth and twelfth letters of the word ‘METROPOLITAN’, which of the following will be the third letter of that word? If no such word can be made given X as the answer and if more than one such word can be made give M as the answer.",
+          "options": [
+            {
+              "id": "A",
+              "text": "N"
+            },
+            {
+              "id": "B",
+              "text": "Q"
+            },
+            {
+              "id": "C",
+              "text": "M"
+            },
+            {
+              "id": "D",
+              "text": "X"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "The second, fifth, tenth and twelfth letters of the word METROPOLITAN are E, O, T and N respectively. The word formed are NOTE and TONE.",
+          "deceptiveChoice": "A (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>If it is possible to make a meaningful word with the second, fifth, tenth and twelfth letters of the&nbsp;word &lsquo;METROPOLITAN&rsquo;, which of the following will be the third letter of that word? If no such&nbsp;word can be made given X as the answer and if more than one such word can be made give M as&nbsp;the answer.</p>",
+          "optionsHtml": [
+            "<p>N</p>",
+            "<p>Q</p>",
+            "<p>M</p>",
+            "<p>X</p>"
+          ],
+          "explanationHtml": "<p>The second, fifth, tenth and twelfth letters of the word METROPOLITAN are E, O, T and N&nbsp;respectively. The word formed are NOTE and TONE.</p>"
+        },
+        {
+          "id": "test-06-q30",
+          "number": 30,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 50,
+          "avgTimeSeconds": 34.9,
+          "question": "In this question, a statement is given followed by three conclusions. Choose the conclusion(s) which best fit(s) logically :\nStatement: F ≤ H < J ≥ V > E\nConclusions:\nI. H < V\nII. J > E\nIII. F < E",
+          "options": [
+            {
+              "id": "A",
+              "text": "Only conclusion I is true"
+            },
+            {
+              "id": "B",
+              "text": "Only conclusion II is true"
+            },
+            {
+              "id": "C",
+              "text": "Only conclusion III is true"
+            },
+            {
+              "id": "D",
+              "text": "Only conclusions I and III are true"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "Only J > E is correct.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>In this question, a statement is given followed by three conclusions. Choose the conclusion(s)&nbsp;which best fit(s) logically :<br><br>Statement: F &le; H &lt; J &ge; V &gt; E<br>Conclusions:<br>I. H &lt; V<br>II. J &gt; E<br>III. F &lt; E</p>",
+          "optionsHtml": [
+            "<p>Only conclusion I is true</p>",
+            "<p>Only conclusion II is true</p>",
+            "<p>Only conclusion III is true</p>",
+            "<p>Only conclusions I and III are true</p>"
+          ],
+          "explanationHtml": "<p>Only J &gt; E is correct.</p>"
+        },
+        {
+          "id": "test-06-q34",
+          "number": 34,
+          "status": "unattempted",
+          "timeSeconds": 72,
+          "marksAwarded": 0,
+          "avgAttemptRate": 50,
+          "avgTimeSeconds": 15.5,
+          "question": "If ‘PALE’ is coded as 2134, ‘EARTH’ is coded as 41590, how is ‘PEARL’ coded?",
+          "options": [
+            {
+              "id": "A",
+              "text": "25430"
+            },
+            {
+              "id": "B",
+              "text": "25413"
+            },
+            {
+              "id": "C",
+              "text": "24153"
+            },
+            {
+              "id": "D",
+              "text": "29530"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 60% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>If &lsquo;PALE&rsquo; is coded as 2134, &lsquo;EARTH&rsquo; is coded as 41590, how is &lsquo;PEARL&rsquo; coded?</p>",
+          "optionsHtml": [
+            "<p>25430</p>",
+            "<p>25413</p>",
+            "<p>24153</p>",
+            "<p>29530</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip32-1778757974036.png\"></p>"
+        },
+        {
+          "id": "test-06-q35",
+          "number": 35,
+          "status": "incorrect",
+          "timeSeconds": 22,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 40,
+          "avgTimeSeconds": 14,
+          "question": "How many meaningful English words can be formed by using letters of the word ‘ALEP’?",
+          "options": [
+            {
+              "id": "A",
+              "text": "one"
+            },
+            {
+              "id": "B",
+              "text": "two"
+            },
+            {
+              "id": "C",
+              "text": "three"
+            },
+            {
+              "id": "D",
+              "text": "more than three"
+            }
+          ],
+          "selectedOption": "D",
+          "correctOption": "C",
+          "explanation": "Such meaningful words are ‘PEAL’, ‘LEAP’ and ‘PALE’",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 50% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>How many meaningful English words can be formed by using letters of the word &lsquo;ALEP&rsquo;?</p>",
+          "optionsHtml": [
+            "<p>one</p>",
+            "<p>two</p>",
+            "<p>three</p>",
+            "<p>more than three</p>"
+          ],
+          "explanationHtml": "<p>Such meaningful words are &lsquo;PEAL&rsquo;, &lsquo;LEAP&rsquo; and &lsquo;PALE&rsquo;</p>"
+        },
+        {
+          "id": "test-06-q38",
+          "number": 38,
+          "status": "unattempted",
+          "timeSeconds": 7,
+          "marksAwarded": 0,
+          "avgAttemptRate": 20,
+          "avgTimeSeconds": 18.3,
+          "question": "Ram and Shyam start walking towards North and cover 20 m. Ram turns to his left and Shyam to his right. After sometimes, Ram walks 10 m in the same direction in which he turned. On the other hand, Shyam walks only 7 m. Later, Ram turns toward his left and Shyam to his right. Both walk 25 m forward. How far is Ram from Shyam now?",
+          "options": [
+            {
+              "id": "A",
+              "text": "10 m"
+            },
+            {
+              "id": "B",
+              "text": "20 m"
+            },
+            {
+              "id": "C",
+              "text": "17 m"
+            },
+            {
+              "id": "D",
+              "text": "5 m"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]\nDistance between Ram and Shyam = (10 + 7) = 17 m.",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Ram and Shyam start walking towards North and cover 20 m. Ram turns to his left and Shyam to&nbsp;his right. After sometimes, Ram walks 10 m in the same direction in which he turned. On the other&nbsp;hand, Shyam walks only 7 m. Later, Ram turns toward his left and Shyam to his right. Both walk&nbsp;25 m forward. How far is Ram from Shyam now?</p>",
+          "optionsHtml": [
+            "<p>10 m</p>",
+            "<p>20 m</p>",
+            "<p>17 m</p>",
+            "<p>5 m</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip6-1778756539056.png\"></p>\n<p>Distance between Ram and Shyam = (10 + 7) = 17 m.</p>"
+        },
+        {
+          "id": "test-06-q41",
+          "number": 41,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 40,
+          "avgTimeSeconds": 30.7,
+          "question": "Find the missing term in the series\n11, 29, 55, .... , 131",
+          "options": [
+            {
+              "id": "A",
+              "text": "110"
+            },
+            {
+              "id": "B",
+              "text": "81"
+            },
+            {
+              "id": "C",
+              "text": "89"
+            },
+            {
+              "id": "D",
+              "text": "78"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 75% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Find the missing term in the series<br>11, 29, 55, .... , 131</p>",
+          "optionsHtml": [
+            "<p>110</p>",
+            "<p>81</p>",
+            "<p>89</p>",
+            "<p>78</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip13-1778756900844.png\"></p>"
+        },
+        {
+          "id": "test-06-q42",
+          "number": 42,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 20,
+          "avgTimeSeconds": 17.7,
+          "question": "Find the missing number in the series\n4, 18, ...., 100, 180, 294",
+          "options": [
+            {
+              "id": "A",
+              "text": "32"
+            },
+            {
+              "id": "B",
+              "text": "36"
+            },
+            {
+              "id": "C",
+              "text": "48"
+            },
+            {
+              "id": "D",
+              "text": "40"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "A (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Find the missing number in the series<br>4, 18, ...., 100, 180, 294</p>",
+          "optionsHtml": [
+            "<p>32</p>",
+            "<p>36</p>",
+            "<p>48</p>",
+            "<p>40</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip12-1778756868225.png\"></p>"
+        },
+        {
+          "id": "test-06-q43",
+          "number": 43,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 20,
+          "avgTimeSeconds": 13.8,
+          "question": "The next term of the series will be\n1, 2, 10, 37, 101, ?",
+          "options": [
+            {
+              "id": "A",
+              "text": "402"
+            },
+            {
+              "id": "B",
+              "text": "206"
+            },
+            {
+              "id": "C",
+              "text": "226"
+            },
+            {
+              "id": "D",
+              "text": "320"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "B (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The next term of the series will be<br>1, 2, 10, 37, 101, ?</p>",
+          "optionsHtml": [
+            "<p>402</p>",
+            "<p>206</p>",
+            "<p>226</p>",
+            "<p>320</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip11-1778756833310.png\"></p>"
+        },
+        {
+          "id": "test-06-q45",
+          "number": 45,
+          "status": "unattempted",
+          "timeSeconds": 7,
+          "marksAwarded": 0,
+          "avgAttemptRate": 30,
+          "avgTimeSeconds": 22.5,
+          "question": "The term which does not follow the pattern of the series will be\n56, 58, 62, 70, 84, 118, 182",
+          "options": [
+            {
+              "id": "A",
+              "text": "58"
+            },
+            {
+              "id": "B",
+              "text": "62"
+            },
+            {
+              "id": "C",
+              "text": "84"
+            },
+            {
+              "id": "D",
+              "text": "118"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 66.67% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The term which does not follow the pattern of the series will be<br>56, 58, 62, 70, 84, 118, 182</p>",
+          "optionsHtml": [
+            "<p>58</p>",
+            "<p>62</p>",
+            "<p>84</p>",
+            "<p>118</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip10-1778756731030.png\"></p>"
+        },
+        {
+          "id": "test-06-q46",
+          "number": 46,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 20,
+          "avgTimeSeconds": 13.3,
+          "question": "Find out the missing term in the number series.\n10, 14, 28, 32, 64, 68, ?",
+          "options": [
+            {
+              "id": "A",
+              "text": "132"
+            },
+            {
+              "id": "B",
+              "text": "72"
+            },
+            {
+              "id": "C",
+              "text": "136"
+            },
+            {
+              "id": "D",
+              "text": "86"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Find out the missing term in the number series.<br>10, 14, 28, 32, 64, 68, ?</p>",
+          "optionsHtml": [
+            "<p>132</p>",
+            "<p>72</p>",
+            "<p>136</p>",
+            "<p>86</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip9-1778756683760.png\"></p>"
+        },
+        {
+          "id": "test-06-q47",
+          "number": 47,
+          "status": "unattempted",
+          "timeSeconds": 24,
+          "marksAwarded": 0,
+          "avgAttemptRate": 30,
+          "avgTimeSeconds": 11.6,
+          "question": "Manoj starts from his house and moves toward North. After walking a distance of 4 km, he turn left. After walking a particular distance, he reaches Sunita’s house. Sunita’s house is at distance of 5 km from Manoj’s house. Then, manoj walked a total distance of",
+          "options": [
+            {
+              "id": "A",
+              "text": "1 km"
+            },
+            {
+              "id": "B",
+              "text": "5 km"
+            },
+            {
+              "id": "C",
+              "text": "7 km"
+            },
+            {
+              "id": "D",
+              "text": "3 km"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "D (Chosen by 66.67% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Manoj starts from his house and moves toward North. After walking a distance of 4 km, he turn&nbsp;left. After walking a particular distance, he reaches Sunita&rsquo;s house. Sunita&rsquo;s house is at distance of&nbsp;5 km from Manoj&rsquo;s house. Then, manoj walked a total distance of</p>",
+          "optionsHtml": [
+            "<p>1 km</p>",
+            "<p>5 km</p>",
+            "<p>7 km</p>",
+            "<p>3 km</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip4-1778756434318.png\"></p>"
+        },
+        {
+          "id": "test-06-q48",
+          "number": 48,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 0,
+          "avgTimeSeconds": 7.6,
+          "question": "Two buses start from the opposite points of a main road, 150 kms apart. The first bus runs for 25 kms straight and takes a right turn and then runs for 15 kms. It then turns left and runs for another 25 kms and takes the direction back to reach the main road. In the meantime, due to a minor breakdown, the other bus has run only 35 kms along the main road. What would be the distance between the two buses at this point?",
+          "options": [
+            {
+              "id": "A",
+              "text": "65 kms"
+            },
+            {
+              "id": "B",
+              "text": "75 kms"
+            },
+            {
+              "id": "C",
+              "text": "80 kms"
+            },
+            {
+              "id": "D",
+              "text": "85 kms"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Two buses start from the opposite points of a main road, 150 kms apart. The first bus runs for 25&nbsp;kms straight and takes a right turn and then runs for 15 kms. It then turns left and runs for&nbsp;another 25 kms and takes the direction back to reach the main road. In the meantime, due to a&nbsp;minor breakdown, the other bus has run only 35 kms along the main road. What would be the&nbsp;distance between the two buses at this point?</p>",
+          "optionsHtml": [
+            "<p>65 kms</p>",
+            "<p>75 kms</p>",
+            "<p>80 kms</p>",
+            "<p>85 kms</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip3-1778756376584.png\"></p>"
+        },
+        {
+          "id": "test-06-q49",
+          "number": 49,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 10,
+          "avgTimeSeconds": 7,
+          "question": "One day, Ravi left home and cycled 10 km South wards turned right and cycled 5 km and turned right and cycled 10 km and turned left and cycled 10 km. How many kilometers will be he now have to cycle in a straight line to reach his home?",
+          "options": [
+            {
+              "id": "A",
+              "text": "10 km"
+            },
+            {
+              "id": "B",
+              "text": "15 km"
+            },
+            {
+              "id": "C",
+              "text": "20 km"
+            },
+            {
+              "id": "D",
+              "text": "25 km"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>One day, Ravi left home and cycled 10 km South wards turned right and cycled 5 km and turned&nbsp;right and cycled 10 km and turned left and cycled 10 km. How many kilometers will be he now&nbsp;have to cycle in a straight line to reach his home?</p>",
+          "optionsHtml": [
+            "<p>10 km</p>",
+            "<p>15 km</p>",
+            "<p>20 km</p>",
+            "<p>25 km</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip2-1778756327071.png\"></p>"
+        },
+        {
+          "id": "test-06-q50",
+          "number": 50,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 10,
+          "avgTimeSeconds": 4.7,
+          "question": "A direction pole was suited on the road crossing. Due to an accident, the pole turned in such a manner that the pointer which was showing East, started showing South, Sita, a traveller went to the wrong direction thinking it to be West. In what direction actually she was travelling?",
+          "options": [
+            {
+              "id": "A",
+              "text": "North"
+            },
+            {
+              "id": "B",
+              "text": "West"
+            },
+            {
+              "id": "C",
+              "text": "East"
+            },
+            {
+              "id": "D",
+              "text": "South"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A direction pole was suited on the road crossing. Due to an accident, the pole turned in such a&nbsp;manner that the pointer which was showing East, started showing South, Sita, a traveller went to&nbsp;the wrong direction thinking it to be West. In what direction actually she was travelling?</p>",
+          "optionsHtml": [
+            "<p>North</p>",
+            "<p>West</p>",
+            "<p>East</p>",
+            "<p>South</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip1-1778756274920.png\"></p>"
+        }
+      ]
+    },
+    {
+      "code": "test-07",
+      "title": "Completion of Figure + Ranking Arrangement + Find the Missing Number + Arrangement of Words in Logical Order + Cubes and Dice",
+      "summary": {
+        "score": 27.5,
+        "maxScore": 50,
+        "correct": 29,
+        "incorrect": 6,
+        "unattempted": 15,
+        "rank": 3,
+        "participants": 7,
+        "percentile": 57.14,
+        "accuracy": 82,
+        "timeMinutes": 30,
+        "averageScore": 21.43,
+        "highestScore": 33.75,
+        "averageAccuracy": 75.81,
+        "medianScore": 22.25
+      },
+      "attentionQuestions": [
+        {
+          "id": "test-07-q06",
+          "number": 6,
+          "status": "unattempted",
+          "timeSeconds": 21,
+          "marksAwarded": 0,
+          "avgAttemptRate": 57.14,
+          "avgTimeSeconds": 27.86,
+          "question": "Which of the following Cube in the answer figure cannot be made based on the unfolded cube in the question figure?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "(c)",
+          "deceptiveChoice": "D (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Which of the following Cube in the answer figure cannot be made based on the unfolded cube in&nbsp;the question figure?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip57-1778769968832.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(c)</p>"
+        },
+        {
+          "id": "test-07-q08",
+          "number": 8,
+          "status": "unattempted",
+          "timeSeconds": 8,
+          "marksAwarded": 0,
+          "avgAttemptRate": 42.86,
+          "avgTimeSeconds": 39.43,
+          "question": "Which of the following cube in the answer figure cannot be made based on the unfolded cube in the question figure?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "(b)",
+          "deceptiveChoice": "A (Chosen by 66.67% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Which of the following cube in the answer figure cannot be made based on the unfolded cube in&nbsp;the question figure?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip55-1778769894590.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(b)</p>"
+        },
+        {
+          "id": "test-07-q09",
+          "number": 9,
+          "status": "unattempted",
+          "timeSeconds": 7,
+          "marksAwarded": 0,
+          "avgAttemptRate": 57.14,
+          "avgTimeSeconds": 25.86,
+          "question": "Which of the following cube in the answer figure cannot be made based on the unfolded cube in the question figure?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "(d)",
+          "deceptiveChoice": "A (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Which of the following cube in the answer figure cannot be made based on the unfolded cube in&nbsp;the question figure?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip54-1778769858935.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(d)</p>"
+        },
+        {
+          "id": "test-07-q11",
+          "number": 11,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 42.86,
+          "avgTimeSeconds": 21.43,
+          "question": "Which of the following cube in the answer figure cannot be made based on the unfolded cube in the question figure?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "(b)",
+          "deceptiveChoice": "A (Chosen by 66.67% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Which of the following cube in the answer figure cannot be made based on the unfolded cube in&nbsp;the question figure?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip52-1778769772351.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(b)</p>"
+        },
+        {
+          "id": "test-07-q12",
+          "number": 12,
+          "status": "incorrect",
+          "timeSeconds": 53,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 85.71,
+          "avgTimeSeconds": 35.29,
+          "question": "How many square are there in the given figure?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "21"
+            },
+            {
+              "id": "B",
+              "text": "18"
+            },
+            {
+              "id": "C",
+              "text": "37"
+            },
+            {
+              "id": "D",
+              "text": "32"
+            }
+          ],
+          "selectedOption": "D",
+          "correctOption": "A",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 83.33% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>How many square are there in the given figure?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip50-1778769699197.png\"></p>",
+          "optionsHtml": [
+            "<p>21</p>",
+            "<p>18</p>",
+            "<p>37</p>",
+            "<p>32</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip51-1778769727312.png\"></p>"
+        },
+        {
+          "id": "test-07-q13",
+          "number": 13,
+          "status": "incorrect",
+          "timeSeconds": 33,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 85.71,
+          "avgTimeSeconds": 33,
+          "question": "Four positions of a cube are shown below. If symbol Sun is at the top, what symbol will be at the bottom ?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": "A",
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 66.67% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Four positions of a cube are shown below. If symbol Sun is at the top, what symbol will be at the&nbsp;bottom ?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip48-1778769640339.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip49-1778769672000.png\"></p>"
+        },
+        {
+          "id": "test-07-q14",
+          "number": 14,
+          "status": "incorrect",
+          "timeSeconds": 36,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 71.43,
+          "avgTimeSeconds": 36.14,
+          "question": "Which answer figure will complete the pattern in the question figure.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": "B",
+          "correctOption": "C",
+          "explanation": "(c)",
+          "deceptiveChoice": "B (Chosen by 40% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Which answer figure will complete the pattern in the question figure.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip47-1778769593864.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(c)</p>"
+        },
+        {
+          "id": "test-07-q24",
+          "number": 24,
+          "status": "unattempted",
+          "timeSeconds": 101,
+          "marksAwarded": 0,
+          "avgAttemptRate": 71.43,
+          "avgTimeSeconds": 60.86,
+          "question": "A series is given with one term missing. Choose the correct alternative from the given ones that will complete the series.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "(a)",
+          "deceptiveChoice": "B (Chosen by 60% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A series is given with one term missing. Choose the correct alternative from the given ones that&nbsp;will complete the series.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip37-1778769093986.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(a)</p>"
+        },
+        {
+          "id": "test-07-q27",
+          "number": 27,
+          "status": "unattempted",
+          "timeSeconds": 69,
+          "marksAwarded": 0,
+          "avgAttemptRate": 42.86,
+          "avgTimeSeconds": 44.14,
+          "question": "Choose the alternative that best replaces the questions the question mark(?) in the given figure.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "105"
+            },
+            {
+              "id": "B",
+              "text": "92"
+            },
+            {
+              "id": "C",
+              "text": "112"
+            },
+            {
+              "id": "D",
+              "text": "89"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Choose the alternative that best replaces the questions the question mark(?) in the given figure.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip31-1778768936289.png\"></p>",
+          "optionsHtml": [
+            "<p>105</p>",
+            "<p>92</p>",
+            "<p>112</p>",
+            "<p>89</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip32-1778768963987.png\"></p>"
+        },
+        {
+          "id": "test-07-q28",
+          "number": 28,
+          "status": "unattempted",
+          "timeSeconds": 12,
+          "marksAwarded": 0,
+          "avgAttemptRate": 0,
+          "avgTimeSeconds": 24.14,
+          "question": "Find the missing number.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "127"
+            },
+            {
+              "id": "B",
+              "text": "142"
+            },
+            {
+              "id": "C",
+              "text": "158"
+            },
+            {
+              "id": "D",
+              "text": "188"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Find the missing number.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip29-1778768892790.png\"></p>",
+          "optionsHtml": [
+            "<p>127</p>",
+            "<p>142</p>",
+            "<p>158</p>",
+            "<p>188</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip30-1778768914547.png\"></p>"
+        },
+        {
+          "id": "test-07-q29",
+          "number": 29,
+          "status": "unattempted",
+          "timeSeconds": 4,
+          "marksAwarded": 0,
+          "avgAttemptRate": 42.86,
+          "avgTimeSeconds": 58.57,
+          "question": "Find the missing number.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "35"
+            },
+            {
+              "id": "B",
+              "text": "36"
+            },
+            {
+              "id": "C",
+              "text": "45"
+            },
+            {
+              "id": "D",
+              "text": "47"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Find the missing number.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip27-1778768850469.png\"></p>",
+          "optionsHtml": [
+            "<p>35</p>",
+            "<p>36</p>",
+            "<p>45</p>",
+            "<p>47</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip28-1778768869305.png\"></p>"
+        },
+        {
+          "id": "test-07-q30",
+          "number": 30,
+          "status": "unattempted",
+          "timeSeconds": 18,
+          "marksAwarded": 0,
+          "avgAttemptRate": 0,
+          "avgTimeSeconds": 24,
+          "question": "Find the missing number.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "52"
+            },
+            {
+              "id": "B",
+              "text": "20"
+            },
+            {
+              "id": "C",
+              "text": "25"
+            },
+            {
+              "id": "D",
+              "text": "40"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Find the missing number.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip19-1778768579515.png\"></p>",
+          "optionsHtml": [
+            "<p>52</p>",
+            "<p>20</p>",
+            "<p>25</p>",
+            "<p>40</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip20-1778768602671.png\"></p>"
+        },
+        {
+          "id": "test-07-q31",
+          "number": 31,
+          "status": "unattempted",
+          "timeSeconds": 12,
+          "marksAwarded": 0,
+          "avgAttemptRate": 0,
+          "avgTimeSeconds": 27.71,
+          "question": "Choose the alternative that best replaces the question mark (?) in the given figure.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "18"
+            },
+            {
+              "id": "B",
+              "text": "14"
+            },
+            {
+              "id": "C",
+              "text": "9"
+            },
+            {
+              "id": "D",
+              "text": "6"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Choose the alternative that best replaces the question mark (?) in the given figure.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip25-1778768738332.png\"></p>",
+          "optionsHtml": [
+            "<p>18</p>",
+            "<p>14</p>",
+            "<p>9</p>",
+            "<p>6</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip26-1778768755497.png\"></p>"
+        },
+        {
+          "id": "test-07-q32",
+          "number": 32,
+          "status": "unattempted",
+          "timeSeconds": 31,
+          "marksAwarded": 0,
+          "avgAttemptRate": 0,
+          "avgTimeSeconds": 37.71,
+          "question": "Find the missing number?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "8"
+            },
+            {
+              "id": "B",
+              "text": "19"
+            },
+            {
+              "id": "C",
+              "text": "25"
+            },
+            {
+              "id": "D",
+              "text": "10"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Find the missing number?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip23-1778768687783.png\"></p>\n<p>&nbsp;</p>",
+          "optionsHtml": [
+            "<p>8</p>",
+            "<p>19</p>",
+            "<p>25</p>",
+            "<p>10</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip24-1778768709851.png\"></p>"
+        },
+        {
+          "id": "test-07-q33",
+          "number": 33,
+          "status": "unattempted",
+          "timeSeconds": 23,
+          "marksAwarded": 0,
+          "avgAttemptRate": 0,
+          "avgTimeSeconds": 28,
+          "question": "Find the missing number.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "48"
+            },
+            {
+              "id": "B",
+              "text": "143"
+            },
+            {
+              "id": "C",
+              "text": "58"
+            },
+            {
+              "id": "D",
+              "text": "128"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Find the missing number.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip21-1778768629102.png\"></p>",
+          "optionsHtml": [
+            "<p>48</p>",
+            "<p>143</p>",
+            "<p>58</p>",
+            "<p>128</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip22-1778768651991.png\"></p>"
+        },
+        {
+          "id": "test-07-q34",
+          "number": 34,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 28.57,
+          "avgTimeSeconds": 24.86,
+          "question": "Find the missing number?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "20160"
+            },
+            {
+              "id": "B",
+              "text": "20600"
+            },
+            {
+              "id": "C",
+              "text": "21060"
+            },
+            {
+              "id": "D",
+              "text": "23040"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Find the missing number?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip17-1778768519946.png\"></p>",
+          "optionsHtml": [
+            "<p>20160</p>",
+            "<p>20600</p>",
+            "<p>21060</p>",
+            "<p>23040</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip18-1778768552953.png\"></p>"
+        },
+        {
+          "id": "test-07-q35",
+          "number": 35,
+          "status": "unattempted",
+          "timeSeconds": 1,
+          "marksAwarded": 0,
+          "avgAttemptRate": 28.57,
+          "avgTimeSeconds": 14,
+          "question": "Find the missing number?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "5"
+            },
+            {
+              "id": "B",
+              "text": "6"
+            },
+            {
+              "id": "C",
+              "text": "4"
+            },
+            {
+              "id": "D",
+              "text": "7"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Find the missing number?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip15-1778768442923.png\"></p>\n<p>&nbsp;</p>",
+          "optionsHtml": [
+            "<p>5</p>",
+            "<p>6</p>",
+            "<p>4</p>",
+            "<p>7</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip16-1778768465766.png\"></p>"
+        },
+        {
+          "id": "test-07-q38",
+          "number": 38,
+          "status": "incorrect",
+          "timeSeconds": 41,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 71.43,
+          "avgTimeSeconds": 29.29,
+          "question": "Arrange the given words in a logical sequence.\n(i) Wearing\n(ii) Cotton\n(iii) Cloth\n(iv) Thread",
+          "options": [
+            {
+              "id": "A",
+              "text": "(ii), (iv), (i), (iii)"
+            },
+            {
+              "id": "B",
+              "text": "(ii), (iv), (iii), (i)"
+            },
+            {
+              "id": "C",
+              "text": "(iv), (ii), (i), (ii)"
+            },
+            {
+              "id": "D",
+              "text": "(iii), (i), (iv), (ii)"
+            }
+          ],
+          "selectedOption": "B",
+          "correctOption": "A",
+          "explanation": "Meaningful order of the words is Cotton, Thread, Wearing, Cloth.",
+          "deceptiveChoice": "B (Chosen by 40% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Arrange the given words in a logical sequence.<br>(i) Wearing <br>(ii) Cotton <br>(iii) Cloth <br>(iv) Thread</p>",
+          "optionsHtml": [
+            "<p>(ii), (iv), (i), (iii)</p>",
+            "<p>(ii), (iv), (iii), (i)</p>",
+            "<p>(iv), (ii), (i), (ii)</p>",
+            "<p>(iii), (i), (iv), (ii)</p>"
+          ],
+          "explanationHtml": "<p>Meaningful order of the words is Cotton, Thread, Wearing, Cloth.</p>"
+        },
+        {
+          "id": "test-07-q39",
+          "number": 39,
+          "status": "incorrect",
+          "timeSeconds": 43,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 57.14,
+          "avgTimeSeconds": 28.14,
+          "question": "Arrange the given words in a logical sequence.\n(i) Curb\n(ii) Grass\n(iii) Butter\n(iv) Milk\n(v) Low",
+          "options": [
+            {
+              "id": "A",
+              "text": "(v), (ii), (iv), (i), (iii)"
+            },
+            {
+              "id": "B",
+              "text": "(v), (ii), (iii), (iv), (i)"
+            },
+            {
+              "id": "C",
+              "text": "(iv), (ii), (v), (iii), (i)"
+            },
+            {
+              "id": "D",
+              "text": "(ii), (v), (iv), (iii), (i)"
+            }
+          ],
+          "selectedOption": "A",
+          "correctOption": "C",
+          "explanation": "Cow → Grass → Milk → Curd → Butter",
+          "deceptiveChoice": "A (Chosen by 75% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Arrange the given words in a logical sequence.<br>(i) Curb <br>(ii) Grass <br>(iii) Butter<br>(iv) Milk <br>(v) Low</p>",
+          "optionsHtml": [
+            "<p>(v), (ii), (iv), (i), (iii)</p>",
+            "<p>(v), (ii), (iii), (iv), (i)</p>",
+            "<p>(iv), (ii), (v), (iii), (i)</p>",
+            "<p>(ii), (v), (iv), (iii), (i)</p>"
+          ],
+          "explanationHtml": "<p>Cow &rarr; Grass &rarr; Milk &rarr; Curd &rarr; Butter</p>"
+        },
+        {
+          "id": "test-07-q45",
+          "number": 45,
+          "status": "unattempted",
+          "timeSeconds": 135,
+          "marksAwarded": 0,
+          "avgAttemptRate": 28.57,
+          "avgTimeSeconds": 37.86,
+          "question": "In a queue, Mr. X is 14^th from the front and Mr. Y is 17^th from the end, while Mr. Z is exactly in between Mr. X and Mr. Y. If Mr. X is ahead of Mr. Y and there are 48 persons in the queue, how many persons are there between Mr. X and Mr. Z?",
+          "options": [
+            {
+              "id": "A",
+              "text": "6"
+            },
+            {
+              "id": "B",
+              "text": "7"
+            },
+            {
+              "id": "C",
+              "text": "8"
+            },
+            {
+              "id": "D",
+              "text": "9"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>In a queue, Mr. X is 14<sup>th</sup> from the front and Mr. Y is 17<sup>th</sup> from the end, while Mr. Z is exactly in&nbsp;between Mr. X and Mr. Y. If Mr. X is ahead of Mr. Y and there are 48 persons in the queue, how&nbsp;many persons are there between Mr. X and Mr. Z?</p>",
+          "optionsHtml": [
+            "<p>6</p>",
+            "<p>7</p>",
+            "<p>8</p>",
+            "<p>9</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip11-1778767384777.png\"></p>"
+        },
+        {
+          "id": "test-07-q47",
+          "number": 47,
+          "status": "incorrect",
+          "timeSeconds": 34,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 57.14,
+          "avgTimeSeconds": 29.86,
+          "question": "The position of how many digits in the number 5314687 will remain unchanged after the digits are rearranged in ascending order within the number?",
+          "options": [
+            {
+              "id": "A",
+              "text": "one"
+            },
+            {
+              "id": "B",
+              "text": "two"
+            },
+            {
+              "id": "C",
+              "text": "three"
+            },
+            {
+              "id": "D",
+              "text": "more than three"
+            }
+          ],
+          "selectedOption": "A",
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "A (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The position of how many digits in the number 5314687 will remain unchanged after the digits are&nbsp;rearranged in ascending order within the number?</p>",
+          "optionsHtml": [
+            "<p>one</p>",
+            "<p>two</p>",
+            "<p>three</p>",
+            "<p>more than three</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip10-1778767279841.png\"></p>"
+        }
+      ]
+    },
+    {
+      "code": "test-08",
+      "title": "Logical Venn Diagram + Paper Cutting, Folding and Mirror images + Matrix reasoning + Syllogism + Statement and Conclusions",
+      "summary": {
+        "score": 31,
+        "maxScore": 50,
+        "correct": 32,
+        "incorrect": 4,
+        "unattempted": 14,
+        "rank": 1,
+        "participants": 9,
+        "percentile": 88.89,
+        "accuracy": 88,
+        "timeMinutes": 30,
+        "averageScore": 23.64,
+        "highestScore": 31,
+        "averageAccuracy": 77.89,
+        "medianScore": 25.5
+      },
+      "attentionQuestions": [
+        {
+          "id": "test-08-q11",
+          "number": 11,
+          "status": "unattempted",
+          "timeSeconds": 65,
+          "marksAwarded": 0,
+          "avgAttemptRate": 88.89,
+          "avgTimeSeconds": 92.44,
+          "question": "A piece of paper is folded and punched as shown below in the question figures. From the given answer figures, indicate how it will appear when opened?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "(a)",
+          "deceptiveChoice": "D (Chosen by 37.5% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A piece of paper is folded and punched as shown below in the question figures. From the given&nbsp;answer figures, indicate how it will appear when opened?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip54-1778832769969.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(a)</p>"
+        },
+        {
+          "id": "test-08-q12",
+          "number": 12,
+          "status": "incorrect",
+          "timeSeconds": 18,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 88.89,
+          "avgTimeSeconds": 33.56,
+          "question": "Choose the figure that best represents the relationship among the classes given below:\nOfficers, Government employees, Men\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": "C",
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "A (Chosen by 37.5% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Choose the figure that best represents the relationship among the classes given below:<br>Officers, Government employees, Men</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip13-1778829769958.png\"></p>\n<p>&nbsp;</p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip14-1778829777502.png\"></p>"
+        },
+        {
+          "id": "test-08-q18",
+          "number": 18,
+          "status": "incorrect",
+          "timeSeconds": 57,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 36.78,
+          "question": "In the following question a statement is given, followed by two conclusions. Select the conclusions which logically follow from this statement:\nStatement: Modern man influences his destiny by the choices he makes unlike in the past.\nConclusion:\nI. Earlier there were fewer option available to man.\nII. There was no desire in the past to influence the destiny.",
+          "options": [
+            {
+              "id": "A",
+              "text": "Only conclusion I follows"
+            },
+            {
+              "id": "B",
+              "text": "Only conclusion II follows"
+            },
+            {
+              "id": "C",
+              "text": "Either I or II follows"
+            },
+            {
+              "id": "D",
+              "text": "Neither I nor II follows"
+            }
+          ],
+          "selectedOption": "D",
+          "correctOption": "A",
+          "explanation": "Clearly, I directly follows from the statement while II cannot be deduced from it.",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 33.33% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>In the following question a statement is given, followed by two conclusions. Select the conclusions&nbsp;which logically follow from this statement:<br><strong>Statement:</strong> Modern man influences his destiny by the choices he makes unlike in the past.<br><strong>Conclusion:</strong><br>I. Earlier there were fewer option available to man.<br>II. There was no desire in the past to influence the destiny.</p>",
+          "optionsHtml": [
+            "<p>Only conclusion I follows</p>",
+            "<p>Only conclusion II follows</p>",
+            "<p>Either I or II follows</p>",
+            "<p>Neither I nor II follows</p>"
+          ],
+          "explanationHtml": "<p>Clearly, I directly follows from the statement while II cannot be deduced from it.</p>"
+        },
+        {
+          "id": "test-08-q29",
+          "number": 29,
+          "status": "incorrect",
+          "timeSeconds": 28,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 21.67,
+          "question": "Given are the scattered pieces of figure from the given options. Find out which figures can be made from these scattered figures.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": "D",
+          "correctOption": "B",
+          "explanation": "(b)",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 83.33% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Given are the scattered pieces of figure from the given options. Find out which&nbsp;figures can be made from these scattered figures.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip4-1778828659710.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(b)</p>"
+        },
+        {
+          "id": "test-08-q33",
+          "number": 33,
+          "status": "incorrect",
+          "timeSeconds": 50,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 55.44,
+          "question": "Which of the answer figure is exactly the mirror image of the given figure, when the mirror is held on the line A B ?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": "D",
+          "correctOption": "B",
+          "explanation": "(b)",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 50% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Which of the answer figure is exactly the mirror image of the given figure, when the mirror is held&nbsp;on the line A B ?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip44-1778832481128.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(b)</p>"
+        },
+        {
+          "id": "test-08-q38",
+          "number": 38,
+          "status": "unattempted",
+          "timeSeconds": 11,
+          "marksAwarded": 0,
+          "avgAttemptRate": 22.22,
+          "avgTimeSeconds": 15,
+          "question": "A word is represented by only one set of number as given in any one of the alternatives. The sets of numbers given in the alternatives are represented by two classes of alphabets as in the two matrices given below. The columns and rows of Matrix I are numbered from 0 to 4 and that of Matrix II are numbered from 5 to 9. A letter from these matrices can be represented first by its row and next by its column, e.g., ‘A’ can be represented by 13, 76, etc. and ‘G’ can be represented by 22,65, etc. Similarly, you have to identify the set for the word ‘PUBLIC.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "12,30, 87,41, 66, 33"
+            },
+            {
+              "id": "B",
+              "text": "99, 30, 87, 77, 23, 44"
+            },
+            {
+              "id": "C",
+              "text": "55, 01, 87, 98, 34, 87"
+            },
+            {
+              "id": "D",
+              "text": "40, 30, 87, 89, 24, 43"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 50% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A word is represented by only one set of number as given in any one of the alternatives. The sets&nbsp;of numbers given in the alternatives are represented by two classes of alphabets as in the two&nbsp;matrices given below. The columns and rows of Matrix I are numbered from 0 to 4 and that of&nbsp;Matrix II are numbered from 5 to 9. A letter from these matrices can be represented first by its row&nbsp;and next by its column, e.g., &lsquo;A&rsquo; can be represented by 13, 76, etc. and &lsquo;G&rsquo; can be represented by&nbsp;22,65, etc. Similarly, you have to identify the set for the word &lsquo;PUBLIC.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip33-1778831216314.png\"></p>",
+          "optionsHtml": [
+            "<p>12,30, 87,41, 66, 33</p>",
+            "<p>99, 30, 87, 77, 23, 44</p>",
+            "<p>55, 01, 87, 98, 34, 87</p>",
+            "<p>40, 30, 87, 89, 24, 43</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip34-1778831247817.png\"></p>"
+        },
+        {
+          "id": "test-08-q39",
+          "number": 39,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 22.22,
+          "avgTimeSeconds": 4.33,
+          "question": "A word is represented by only one set of numbers as given in any one of the alternatives. The sets of numbers given in the alternatives are represented by two classes of alphabets as in two matrices given below. The columns and rows of matrix I and II are numbered from 0 to 4. A letter from these matrices can be represented first by its row and next by its column, e.g, ‘A’ can be represented by 24, 31 etc. and ‘P’ can be represented by 11, 32, etc. Identify the set for the letters AELO.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "31, 00, 23, 22"
+            },
+            {
+              "id": "B",
+              "text": "43, 01, 12, 42"
+            },
+            {
+              "id": "C",
+              "text": "12, 34, 30, 02"
+            },
+            {
+              "id": "D",
+              "text": "12, 30, 42, 14"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "12, 34, 30, 02",
+          "deceptiveChoice": "A (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A word is represented by only one set of numbers as given in any one of the alternatives. The sets&nbsp;of numbers given in the alternatives are represented by two classes of alphabets as in two matrices&nbsp;given below. The columns and rows of matrix I and II are numbered from 0 to 4. A letter from&nbsp;these matrices can be represented first by its row and next by its column, e.g, &lsquo;A&rsquo; can be represented&nbsp;by 24, 31 etc. and &lsquo;P&rsquo; can be represented by 11, 32, etc. Identify the set for the letters AELO.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip32-1778831152114.png\"></p>",
+          "optionsHtml": [
+            "<p>31, 00, 23, 22</p>",
+            "<p>43, 01, 12, 42</p>",
+            "<p>12, 34, 30, 02</p>",
+            "<p>12, 30, 42, 14</p>"
+          ],
+          "explanationHtml": "<p>12, 34, 30, 02</p>"
+        },
+        {
+          "id": "test-08-q40",
+          "number": 40,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 12.22,
+          "question": "In the question, two statements are given, followed by two conclusions, I and II. You have to consider the statements to be true even if it seems to be at variance from commonly known facts.\nYou have to decide which of the given conclusions, if any follows from the given statements:\nStatements:\nI. Some dogs are bats.\nII. Some bats are cats.\nConclusion:\nI. Some dogs are cats.\nII. Some cats are dogs.",
+          "options": [
+            {
+              "id": "A",
+              "text": "Only I follows"
+            },
+            {
+              "id": "B",
+              "text": "Only II follows"
+            },
+            {
+              "id": "C",
+              "text": "Either I or II follows"
+            },
+            {
+              "id": "D",
+              "text": "Neither I or II follows"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>In the question, two statements are given, followed by two conclusions, I and II. You have to&nbsp;consider the statements to be true even if it seems to be at variance from commonly known facts.<br>You have to decide which of the given conclusions, if any follows from the given statements:<br><strong>Statements:</strong><br>I. Some dogs are bats.<br>II. Some bats are cats.<br><strong>Conclusion:</strong><br>I. Some dogs are cats.<br>II. Some cats are dogs.</p>",
+          "optionsHtml": [
+            "<p>Only I follows</p>",
+            "<p>Only II follows</p>",
+            "<p>Either I or II follows</p>",
+            "<p>Neither I or II follows</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip0-1778828408031.png\"></p>"
+        },
+        {
+          "id": "test-08-q41",
+          "number": 41,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 55.56,
+          "avgTimeSeconds": 12.33,
+          "question": "From the given answer figures, select the one in which the question figure is hidden/embedded?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "(d)",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>From the given answer figures, select the one in which the question figure is hidden/embedded?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip55-1778832805711.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(d)</p>"
+        },
+        {
+          "id": "test-08-q42",
+          "number": 42,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 32.56,
+          "question": "Consider the following figures :\n[image]\nIn the figures (I) to (VI) above, some parts are shown to change their positions in regular directions.\nFollowing the same sequence, which of the figures given below will appear at (VII) stage?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Consider the following figures :</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip51-1778832709648.png\"></p>\n<p>In the figures (I) to (VI) above, some parts are shown to change their positions in regular directions.<br>Following the same sequence, which of the figures given below will appear at (VII) stage?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip52-1778832728939.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip53-1778832739588.png\"></p>"
+        },
+        {
+          "id": "test-08-q43",
+          "number": 43,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 22.67,
+          "question": "Select the alternative figure which contains below figure as its part.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "(d)",
+          "deceptiveChoice": "C (Chosen by 100% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Select the alternative figure which contains below figure as its part.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip50-1778832670469.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(d)</p>"
+        },
+        {
+          "id": "test-08-q44",
+          "number": 44,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 55.56,
+          "avgTimeSeconds": 13.44,
+          "question": "Identify the figure that completes the pattern.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "(a)",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Identify the figure that completes the pattern.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip49-1778832642025.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(a)</p>"
+        },
+        {
+          "id": "test-08-q45",
+          "number": 45,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 55.56,
+          "avgTimeSeconds": 10.78,
+          "question": "If a mirror is placed on the line MN, then which of the answer figure is the right image of the given figure?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "(a)",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>If a mirror is placed on the line MN, then which of the answer figure is the right image of the given&nbsp;figure?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip48-1778832615603.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(a)</p>"
+        },
+        {
+          "id": "test-08-q46",
+          "number": 46,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 55.56,
+          "avgTimeSeconds": 14.56,
+          "question": "If a mirror is placed on the line MN, then which of the answer figures is the correct image of the question figure ?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "(d)",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>If a mirror is placed on the line MN, then which of the answer figures is the correct image of the&nbsp;question figure ?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip47-1778832556209.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(d)</p>"
+        },
+        {
+          "id": "test-08-q47",
+          "number": 47,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 66.67,
+          "avgTimeSeconds": 16.11,
+          "question": "Which of the answer figures is exactly the mirror image of the given figure, when the mirror is held on the line AB?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Which of the answer figures is exactly the mirror image of the given figure, when the mirror is&nbsp;held on the line AB?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip45-1778832519521.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip46-1778832529762.png\"></p>"
+        },
+        {
+          "id": "test-08-q48",
+          "number": 48,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 37.44,
+          "question": "A word is represented by only one set of numbers as given in any one of the alternatives. The sets of numbers given in the alternatives are represented by two classes of alphabets as shown in the given two matrices. The columns and rows of Matrix-I are numbered from 0 to 4 and that of Matrix-II are numbered from 5 to 9. A letter from these matrices can be represented first by its row and next by its column, for example ‘U’ can be represented by 30, 41 etc. and ‘E’ can be represented by 85, 67 etc. Similarly, you have to identify the set for the word ‘SWORD’\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "40,31,41,68,01"
+            },
+            {
+              "id": "B",
+              "text": "23,95,14,20,79"
+            },
+            {
+              "id": "C",
+              "text": "11,41,44,85,22"
+            },
+            {
+              "id": "D",
+              "text": "01,34,22,10,75"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "01,34,22,10,75",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A word is represented by only one set of numbers as given in any one of the alternatives. The sets&nbsp;of numbers given in the alternatives are represented by two classes of alphabets as shown in the&nbsp;given two matrices. The columns and rows of Matrix-I are numbered from 0 to 4 and that of&nbsp;Matrix-II are numbered from 5 to 9. A letter from these matrices can be represented first by its&nbsp;row and next by its column, for example &lsquo;U&rsquo; can be represented by 30, 41 etc. and &lsquo;E&rsquo; can be&nbsp;represented by 85, 67 etc. Similarly, you have to identify the set for the word &lsquo;SWORD&rsquo;</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip31-1778831092875.png\"></p>",
+          "optionsHtml": [
+            "<p>40,31,41,68,01</p>",
+            "<p>23,95,14,20,79</p>",
+            "<p>11,41,44,85,22</p>",
+            "<p>01,34,22,10,75</p>"
+          ],
+          "explanationHtml": "<p>01,34,22,10,75</p>"
+        },
+        {
+          "id": "test-08-q49",
+          "number": 49,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 44.44,
+          "avgTimeSeconds": 28.11,
+          "question": "A word is represented by only one set of number as given in one of the alternatives. The set of numbers given in the alternative are represented by two classes of alphabets as in two matrix given below. The column and row of matrix I are number — from 0 to 4 and matrix II are numbered from 5 to 9. A letter from these matrices can be represented first by its row and next by its column, e.g. ‘A’ can be represented by 01, 14 etc. and M can be represented by 56, 58 etc. Similarly, you have to identify the set for the word ‘AMPLE’.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "01, 56, 34, 78, 89"
+            },
+            {
+              "id": "B",
+              "text": "14, 68, 97, 99"
+            },
+            {
+              "id": "C",
+              "text": "22, 95, 00, 57, 88"
+            },
+            {
+              "id": "D",
+              "text": "31, 86, 33, 69, 77"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "22, 95, 00, 57, 88",
+          "deceptiveChoice": "A (Chosen by 75% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A word is represented by only one set of number as given in one of the alternatives. The set of&nbsp;numbers given in the alternative are represented by two classes of alphabets as in two matrix&nbsp;given below. The column and row of matrix I are number &mdash; from 0 to 4 and matrix II are numbered&nbsp;from 5 to 9. A letter from these matrices can be represented first by its row and next by its column,&nbsp;e.g. &lsquo;A&rsquo; can be represented by 01, 14 etc. and M can be represented by 56, 58 etc. Similarly, you&nbsp;have to identify the set for the word &lsquo;AMPLE&rsquo;.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip30-1778831035585.png\"></p>",
+          "optionsHtml": [
+            "<p>01, 56, 34, 78, 89</p>",
+            "<p>14, 68, 97, 99</p>",
+            "<p>22, 95, 00, 57, 88</p>",
+            "<p>31, 86, 33, 69, 77</p>"
+          ],
+          "explanationHtml": "<p>22, 95, 00, 57, 88</p>"
+        },
+        {
+          "id": "test-08-q50",
+          "number": 50,
+          "status": "unattempted",
+          "timeSeconds": 0,
+          "marksAwarded": 0,
+          "avgAttemptRate": 11.11,
+          "avgTimeSeconds": 12.44,
+          "question": "A word is represented by only one set of number as given in one of the alternatives. The set of numbers given in the alternative are represented by two classes of alphabets as in two matrix given below. The column and row of matrix I are number — from 0 to 4 and matrix II are numbered from 5 to 9. A letter from these matrices can be represented first by its row and next by its column, e.g. ‘A’ can be represented by 01, 14 etc. and E can be represented by 55, 66 etc. Similarly, you have to identify the set for the word ‘POWER’.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "13, 67, 56, 99, 132"
+            },
+            {
+              "id": "B",
+              "text": "42, 86, 76, 55, 40"
+            },
+            {
+              "id": "C",
+              "text": "21, 98, 87, 66, 10"
+            },
+            {
+              "id": "D",
+              "text": "34, 75, 68, 75, 24"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "13, 67, 56, 99, 132",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A word is represented by only one set of number as given in one of the alternatives. The set of&nbsp;numbers given in the alternative are represented by two classes of alphabets as in two matrix&nbsp;given below. The column and row of matrix I are number &mdash; from 0 to 4 and matrix II are numbered&nbsp;from 5 to 9. A letter from these matrices can be represented first by its row and next by its column,&nbsp;e.g. &lsquo;A&rsquo; can be represented by 01, 14 etc. and E can be represented by 55, 66 etc. Similarly, you have&nbsp;to identify the set for the word &lsquo;POWER&rsquo;.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip29-1778830964493.png\"></p>",
+          "optionsHtml": [
+            "<p>13, 67, 56, 99, 132</p>",
+            "<p>42, 86, 76, 55, 40</p>",
+            "<p>21, 98, 87, 66, 10</p>",
+            "<p>34, 75, 68, 75, 24</p>"
+          ],
+          "explanationHtml": "<p>13, 67, 56, 99, 132</p>"
+        }
+      ]
+    },
+    {
       "code": "test-09",
       "title": "Building Materials + Concrete Technology + Estimating, Costing and Valuation",
       "summary": {
@@ -3317,6 +5835,1834 @@
             "<p>Full cell (Bethel) process</p>"
           ],
           "explanationHtml": "<p>In the Full Cell or Bethel process, timber is first subjected to vacuum to remove air from wood cells. After that, preservative is forced into the timber under pressure so that maximum absorption is achieved. Hence, it is mainly used when deep penetration and high retention of preservative are required. Therefore, the correct answer is Full cell (Bethel) process.</p>"
+        }
+      ]
+    },
+    {
+      "code": "test-11",
+      "title": "Theory of structures",
+      "summary": {
+        "score": 5.25,
+        "maxScore": 50,
+        "correct": 7,
+        "incorrect": 7,
+        "unattempted": 36,
+        "rank": 6,
+        "participants": 6,
+        "percentile": null,
+        "accuracy": 50,
+        "timeMinutes": 30,
+        "averageScore": 20.6,
+        "highestScore": 33.25,
+        "averageAccuracy": 70.55,
+        "medianScore": 17.75
+      },
+      "attentionQuestions": [
+        {
+          "id": "test-11-q01",
+          "number": 1,
+          "status": "incorrect",
+          "timeSeconds": 149,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 100,
+          "avgTimeSeconds": 114.2,
+          "question": "A conical bar tapers uniformly from a diameter of 40 mm to a diameter of 15 mm in a length of 200 mm. The elongation of the bar under an axial tensile force of 200 kN will be _____ mm.\n(Take young’s modulus, E = 2 × 10^5 MPa)",
+          "options": [
+            {
+              "id": "A",
+              "text": "0.424 mm"
+            },
+            {
+              "id": "B",
+              "text": "0.424 mm"
+            },
+            {
+              "id": "C",
+              "text": "0.628 mm"
+            },
+            {
+              "id": "D",
+              "text": "0.362 mm"
+            }
+          ],
+          "selectedOption": "B",
+          "correctOption": "A",
+          "explanation": "[image]",
+          "deceptiveChoice": "B (Chosen by 60% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A conical bar tapers uniformly from a diameter of 40 mm to a diameter of 15 mm in a length of&nbsp;200 mm. The elongation of the bar under an axial tensile force of 200 kN will be _____ mm.<br>(Take young&rsquo;s modulus, <em>E </em>= 2 &times; 10<sup>5</sup> MPa)</p>",
+          "optionsHtml": [
+            "<p>0.424 mm</p>",
+            "<p>0.424 mm</p>",
+            "<p>0.628 mm</p>",
+            "<p>0.362 mm</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip0-1782383208389.png\"></p>"
+        },
+        {
+          "id": "test-11-q02",
+          "number": 2,
+          "status": "unattempted",
+          "timeSeconds": 19,
+          "marksAwarded": 0,
+          "avgAttemptRate": 60,
+          "avgTimeSeconds": 51.4,
+          "question": "A cubical object of side ‘L’ is confined in all directions between rigid supports. If temperature of the object is raised by T°C, then the stress developed on the face of the cubical object will be",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "As the object is confined in all directions, so compressive stress will develop in all sides on rising the temperature.\n[image]\nLet ‘σ’ be the stress produced. Since object is confined in all directions, hence net deflection is zero in every direction.\n[image]\n[image]",
+          "deceptiveChoice": "A (Chosen by 66.67% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A cubical object of side &lsquo;<em>L</em>&rsquo; is confined in all directions between rigid supports. If temperature of&nbsp;the object is raised by T&deg;C, then the stress developed on the face of the cubical object will be</p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip1-1782383242334.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip2-1782383248054.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip3-1782383252934.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip4-1782383257886.png\"></p>"
+          ],
+          "explanationHtml": "<p>As the object is confined in all directions, so compressive stress will develop in all sides on rising&nbsp;the temperature.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip5-1782383279287.png\"></p>\n<p>Let &lsquo;&sigma;&rsquo; be the stress produced. Since object is confined in all directions, hence net deflection is&nbsp;zero in every direction.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip6-1782383295805.png\"></p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip7-1782383301346.png\"></p>"
+        },
+        {
+          "id": "test-11-q05",
+          "number": 5,
+          "status": "incorrect",
+          "timeSeconds": 75,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 53.2,
+          "question": "Which of the following statements are true?\n1. BMD is one degree higher than loading diagram.\n2. The distance between the two adjacent point of contraflexure is known as focal length.\n3. If shear force changes sign at a section than BM at that section is either maximum or minimum.\n4. Point of contraflexure is the point where curvature and shear force changes its sign.",
+          "options": [
+            {
+              "id": "A",
+              "text": "1, 3 and 4 only"
+            },
+            {
+              "id": "B",
+              "text": "2 and 3 only"
+            },
+            {
+              "id": "C",
+              "text": "1 and 4 only"
+            },
+            {
+              "id": "D",
+              "text": "2, 3 an 4 only"
+            }
+          ],
+          "selectedOption": "D",
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 50% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Which of the following statements are true?<br>1. BMD is one degree higher than loading diagram.<br>2. The distance between the two adjacent point of contraflexure is known as focal length.<br>3. If shear force changes sign at a section than BM at that section is either maximum or minimum.<br>4. Point of contraflexure is the point where curvature and shear force changes its sign.</p>",
+          "optionsHtml": [
+            "<p>1, 3 and 4 only</p>",
+            "<p>2 and 3 only</p>",
+            "<p>1 and 4 only</p>",
+            "<p>2, 3 an 4 only</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip11-1782383441289.png\"></p>"
+        },
+        {
+          "id": "test-11-q06",
+          "number": 6,
+          "status": "incorrect",
+          "timeSeconds": 16,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 58.8,
+          "question": "The slope at the free end for the beam shown in figure will be\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": "D",
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 75% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The slope at the free end for the beam shown in figure will be</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip12-1782383466844.png\"></p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip13-1782383475553.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip14-1782383481751.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip15-1782383486697.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip16-1782383491657.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip17-1782383501566.png\"></p>"
+        },
+        {
+          "id": "test-11-q07",
+          "number": 7,
+          "status": "unattempted",
+          "timeSeconds": 11,
+          "marksAwarded": 0,
+          "avgAttemptRate": 60,
+          "avgTimeSeconds": 39.8,
+          "question": "What is the kinematic indeterminacy for the frame shown below? (Assume members to be inextensible)\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "24"
+            },
+            {
+              "id": "B",
+              "text": "14"
+            },
+            {
+              "id": "C",
+              "text": "13"
+            },
+            {
+              "id": "D",
+              "text": "15"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "A (Chosen by 100% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>What is the kinematic indeterminacy for the frame shown below? (Assume members to be&nbsp;inextensible)</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip18-1782383525906.png\"></p>",
+          "optionsHtml": [
+            "<p>24</p>",
+            "<p>14</p>",
+            "<p>13</p>",
+            "<p>15</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip19-1782383546047.png\"></p>"
+        },
+        {
+          "id": "test-11-q08",
+          "number": 8,
+          "status": "unattempted",
+          "timeSeconds": 4,
+          "marksAwarded": 0,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 71.6,
+          "question": "For the plane truss shown, the number of zero force members for the given loading is.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "4"
+            },
+            {
+              "id": "B",
+              "text": "8"
+            },
+            {
+              "id": "C",
+              "text": "11"
+            },
+            {
+              "id": "D",
+              "text": "13"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "If three members meet at a joint and two of them are collinear, then the third member will carry zero force, provided there is no load on that joint. Thus, using above condition we identify 8 members which carry zero forces.\n[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>For the plane truss shown, the number of zero force members for the given loading is.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip20-1782383566528.png\"></p>",
+          "optionsHtml": [
+            "<p>4</p>",
+            "<p>8</p>",
+            "<p>11</p>",
+            "<p>13</p>"
+          ],
+          "explanationHtml": "<p>If three members meet at a joint and two of them are collinear, then the third member will carry&nbsp;zero force, provided there is no load on that joint. Thus, using above condition we identify 8&nbsp;members which carry zero forces.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip21-1782383596366.png\"></p>"
+        },
+        {
+          "id": "test-11-q09",
+          "number": 9,
+          "status": "unattempted",
+          "timeSeconds": 13,
+          "marksAwarded": 0,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 27.2,
+          "question": "Horizontal thrust for a 3-hinged parabolic arch subjected to uniformly varying load as shown in the figure is _________.\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "Zero"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]\n[image]\n[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Horizontal thrust for a 3-hinged parabolic arch subjected to uniformly varying load as shown in&nbsp;the figure is _________.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip22-1782383629699.png\"></p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip23-1782383636119.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip24-1782383641232.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip25-1782383646301.png\"></p>",
+            "<p>Zero</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip26-1782383659751.png\"></p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip27-1782383666147.png\"></p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip28-1782383673661.png\"></p>"
+        },
+        {
+          "id": "test-11-q10",
+          "number": 10,
+          "status": "unattempted",
+          "timeSeconds": 54,
+          "marksAwarded": 0,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 35.6,
+          "question": "In the Mohr’s circle for strains, radius of Mohr’s circle gives the",
+          "options": [
+            {
+              "id": "A",
+              "text": "Minimum value of normal strain"
+            },
+            {
+              "id": "B",
+              "text": "Maximum value of normal strain"
+            },
+            {
+              "id": "C",
+              "text": "Maximum value of shear strain"
+            },
+            {
+              "id": "D",
+              "text": "Half of maximum value of shear strain"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>In the Mohr&rsquo;s circle for strains, radius of Mohr&rsquo;s circle gives the</p>",
+          "optionsHtml": [
+            "<p>Minimum value of normal strain</p>",
+            "<p>Maximum value of normal strain</p>",
+            "<p>Maximum value of shear strain</p>",
+            "<p>Half of maximum value of shear strain</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip29-1782383711560.png\"></p>"
+        },
+        {
+          "id": "test-11-q11",
+          "number": 11,
+          "status": "unattempted",
+          "timeSeconds": 25,
+          "marksAwarded": 0,
+          "avgAttemptRate": 60,
+          "avgTimeSeconds": 47.2,
+          "question": "A prismatic beam of length L fixed at both ends carries a uniformly distributed load of intensity w per unit length. The distance of point of contraflexure from either end is :",
+          "options": [
+            {
+              "id": "A",
+              "text": "0.207L"
+            },
+            {
+              "id": "B",
+              "text": "0.207L"
+            },
+            {
+              "id": "C",
+              "text": "0.277L"
+            },
+            {
+              "id": "D",
+              "text": "0.25L"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "A (Chosen by 66.67% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A prismatic beam of length <em>L </em>fixed at both ends carries a uniformly distributed load of intensity&nbsp;<em>w </em>per unit length. The distance of point of contraflexure from either end is :</p>",
+          "optionsHtml": [
+            "<p>0.207<em>L</em></p>",
+            "<p>0.207<em>L</em></p>",
+            "<p>0.277<em>L</em></p>",
+            "<p>0.25<em>L</em></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip30-1782383789666.png\"></p>"
+        },
+        {
+          "id": "test-11-q13",
+          "number": 13,
+          "status": "unattempted",
+          "timeSeconds": 43,
+          "marksAwarded": 0,
+          "avgAttemptRate": 100,
+          "avgTimeSeconds": 19.6,
+          "question": "The slope of a bending moment curve which is expressed as a function of distance represents ________.",
+          "options": [
+            {
+              "id": "A",
+              "text": "The load applied"
+            },
+            {
+              "id": "B",
+              "text": "The stiffness at that location"
+            },
+            {
+              "id": "C",
+              "text": "The deflection"
+            },
+            {
+              "id": "D",
+              "text": "The shear force at that section"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The slope of a bending moment curve which is expressed as a function of distance represents&nbsp;________.</p>",
+          "optionsHtml": [
+            "<p>The load applied</p>",
+            "<p>The stiffness at that location</p>",
+            "<p>The deflection</p>",
+            "<p>The shear force at that section</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip32-1782384193712.png\"></p>"
+        },
+        {
+          "id": "test-11-q14",
+          "number": 14,
+          "status": "unattempted",
+          "timeSeconds": 7,
+          "marksAwarded": 0,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 32,
+          "question": "If two springs of stiffness k_1 and k_2 are connected in series, then the stiffness of the combined spring is",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 75% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>If two springs of stiffness <em>k</em><sub>1</sub> and <em>k</em><sub>2</sub> are connected in series, then the stiffness of the combined&nbsp;spring is</p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip33-1782384246250.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip34-1782384253180.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip35-1782384261335.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip36-1782384266057.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip37-1782384275155.png\"></p>"
+        },
+        {
+          "id": "test-11-q15",
+          "number": 15,
+          "status": "unattempted",
+          "timeSeconds": 139,
+          "marksAwarded": 0,
+          "avgAttemptRate": 40,
+          "avgTimeSeconds": 71.8,
+          "question": "Two moments of different magnitudes and same sense are applied to simply supported beam one at each end. If the ratio of their slopes is given as 2, then the ratio of corresponding applied moment is ________.",
+          "options": [
+            {
+              "id": "A",
+              "text": "3/2"
+            },
+            {
+              "id": "B",
+              "text": "4/3"
+            },
+            {
+              "id": "C",
+              "text": "5/4"
+            },
+            {
+              "id": "D",
+              "text": "6/5"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "A (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Two moments of different magnitudes and same sense are applied to simply supported beam one&nbsp;at each end. If the ratio of their slopes is given as 2, then the ratio of corresponding applied&nbsp;moment is ________.</p>",
+          "optionsHtml": [
+            "<p>3/2</p>",
+            "<p>4/3</p>",
+            "<p>5/4</p>",
+            "<p>6/5</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip38-1782384329130.png\"></p>"
+        },
+        {
+          "id": "test-11-q16",
+          "number": 16,
+          "status": "unattempted",
+          "timeSeconds": 19,
+          "marksAwarded": 0,
+          "avgAttemptRate": 100,
+          "avgTimeSeconds": 60.4,
+          "question": "In a cantilever beam of span L and flexural rigidity EI, the total strain energy under a concentrated load P at free end will be :",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 60% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>In a cantilever beam of span <em>L </em>and flexural rigidity <em>EI</em>, the total strain energy under a concentrated&nbsp;load <em>P </em>at free end will be :</p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip39-1782384356654.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip40-1782384361491.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip41-1782384370156.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip42-1782384375018.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip43-1782384400880.png\"></p>"
+        },
+        {
+          "id": "test-11-q17",
+          "number": 17,
+          "status": "unattempted",
+          "timeSeconds": 5,
+          "marksAwarded": 0,
+          "avgAttemptRate": 100,
+          "avgTimeSeconds": 27.8,
+          "question": "For a simply supported beam AB of span L with point load W at point C, distant ‘z’ from left support, of ILD for bending moment at C (M_C) is\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "(b)",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 60% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>For a simply supported beam AB of span <em>L </em>with point load <em>W </em>at point <em>C</em>, distant &lsquo;<em>z</em>&rsquo; from left&nbsp;support, of ILD for bending moment at C (<em>M<sub>C</sub></em>) is</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip44-1782384469512.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>(b)</p>"
+        },
+        {
+          "id": "test-11-q18",
+          "number": 18,
+          "status": "unattempted",
+          "timeSeconds": 5,
+          "marksAwarded": 0,
+          "avgAttemptRate": 60,
+          "avgTimeSeconds": 20,
+          "question": "A bar of steel is of length l and is of uniform thickness t. The width of bar tapers uniformly from ‘a’ at one end to ‘b’ at the other end. What will be extension of rod when it carries an axial pull P?",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]\n[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A bar of steel is of length l and is of uniform thickness t. The width of bar tapers uniformly from&nbsp;&lsquo;<em>a</em>&rsquo; at one end to &lsquo;<em>b</em>&rsquo; at the other end. What will be extension of rod when it carries an axial pull P?</p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip45-1782384532125.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip46-1782384537528.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip47-1782384542927.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip48-1782384547901.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip49-1782384556875.png\"></p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip50-1782384565476.png\"></p>"
+        },
+        {
+          "id": "test-11-q19",
+          "number": 19,
+          "status": "unattempted",
+          "timeSeconds": 8,
+          "marksAwarded": 0,
+          "avgAttemptRate": 100,
+          "avgTimeSeconds": 30.8,
+          "question": "A two-hinged semi-circular arch of radius R carries a concentrated load W at the crown. Assuming uniform flexural rigidity, the horizontal thrust at each support will be",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 80% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A two-hinged semi-circular arch of radius <em>R </em>carries a concentrated load <em>W </em>at the crown. Assuming&nbsp;uniform flexural rigidity, the horizontal thrust at each support will be</p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip51-1782384604691.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip52-1782384610242.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip53-1782384614486.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip54-1782384619227.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip55-1782384631792.png\"></p>"
+        },
+        {
+          "id": "test-11-q20",
+          "number": 20,
+          "status": "unattempted",
+          "timeSeconds": 40,
+          "marksAwarded": 0,
+          "avgAttemptRate": 20,
+          "avgTimeSeconds": 84,
+          "question": "A simply supported beam is loaded as shown in figure\n[image]\nWhich of the following representation of normal and shear stress is NOT correct?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "Bending moment throughout the beam is sagging. Normal bending stresses will be compressive above the neutral axis and tensile below the neutral axis and zero at neutral axis.\nShear stresses are zero at extreme fibres and for positive shear force, the shear stress on left face will be in upward direction through the beam.\nCorrect stress element at D.\n[image]",
+          "deceptiveChoice": "A (Chosen by 100% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A simply supported beam is loaded as shown in figure</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip56-1782384655164.png\"></p>\n<p>Which of the following representation of normal and shear stress is NOT correct?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip57-1782384672076.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p>Bending moment throughout the beam is sagging. Normal bending stresses will be compressive&nbsp;above the neutral axis and tensile below the neutral axis and zero at neutral axis.<br>Shear stresses are zero at extreme fibres and for positive shear force, the shear stress on left face&nbsp;will be in upward direction through the beam.<br>Correct stress element at <em>D</em>.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip58-1782384716559.png\"></p>"
+        },
+        {
+          "id": "test-11-q21",
+          "number": 21,
+          "status": "unattempted",
+          "timeSeconds": 74,
+          "marksAwarded": 0,
+          "avgAttemptRate": 40,
+          "avgTimeSeconds": 56.4,
+          "question": "Bending moment diagram for the loaded beam as shown in figure will be\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "B (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Bending moment diagram for the loaded beam as shown in figure will be</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip59-1782385417189.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip60-1782385441928.png\"></p>"
+        },
+        {
+          "id": "test-11-q22",
+          "number": 22,
+          "status": "unattempted",
+          "timeSeconds": 16,
+          "marksAwarded": 0,
+          "avgAttemptRate": 60,
+          "avgTimeSeconds": 55,
+          "question": "If the depth of a rectangular beam carrying an isolated load at the centre is doubled, the deflection of the beam at midspan will change by a factor of",
+          "options": [
+            {
+              "id": "A",
+              "text": "1/6"
+            },
+            {
+              "id": "B",
+              "text": "1/4"
+            },
+            {
+              "id": "C",
+              "text": "1/2"
+            },
+            {
+              "id": "D",
+              "text": "1/8"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 66.67% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>If the depth of a rectangular beam carrying an isolated load at the centre is doubled, the deflection&nbsp;of the beam at midspan will change by a factor of</p>",
+          "optionsHtml": [
+            "<p>1/6</p>",
+            "<p>1/4</p>",
+            "<p>1/2</p>",
+            "<p>1/8</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip61-1782385484526.png\"></p>"
+        },
+        {
+          "id": "test-11-q24",
+          "number": 24,
+          "status": "unattempted",
+          "timeSeconds": 14,
+          "marksAwarded": 0,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 7.6,
+          "question": "Shear span is defined as the zone where",
+          "options": [
+            {
+              "id": "A",
+              "text": "bending moment is zero"
+            },
+            {
+              "id": "B",
+              "text": "shear force is zero"
+            },
+            {
+              "id": "C",
+              "text": "shear force is constant"
+            },
+            {
+              "id": "D",
+              "text": "bending moment is constant"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Shear span is defined as the zone where shear force is constant. It is the distance between a reaction and the nearest load point.\n[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Shear span is defined as the zone where</p>",
+          "optionsHtml": [
+            "<p>bending moment is zero</p>",
+            "<p>shear force is zero</p>",
+            "<p>shear force is constant</p>",
+            "<p>bending moment is constant</p>"
+          ],
+          "explanationHtml": "<p>Shear span is defined as the zone where shear force is constant. It is the distance between a&nbsp;reaction and the nearest load point.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip0-1782386631973.png\"></p>"
+        },
+        {
+          "id": "test-11-q25",
+          "number": 25,
+          "status": "unattempted",
+          "timeSeconds": 46,
+          "marksAwarded": 0,
+          "avgAttemptRate": 60,
+          "avgTimeSeconds": 58.2,
+          "question": "A simply supported beam of 5 m span is subjected to a clockwise moment of 15 kN-m at a distance of 2 m from left end as shown in the figure.\n[image]\nWhich of the following shows SFD of beam AB?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A simply supported beam of 5 m span is subjected to a clockwise moment of 15 kN-m at a distance&nbsp;of 2 m from left end as shown in the figure.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip66-1782386653218.png\"></p>\n<p>Which of the following shows SFD of beam AB?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip67-1782386669608.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip68-1782386695209.png\"></p>"
+        },
+        {
+          "id": "test-11-q26",
+          "number": 26,
+          "status": "unattempted",
+          "timeSeconds": 3,
+          "marksAwarded": 0,
+          "avgAttemptRate": 40,
+          "avgTimeSeconds": 43,
+          "question": "What is the ordinate of influence line diagram at D for support reaction at B?\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "0"
+            },
+            {
+              "id": "B",
+              "text": "0.2"
+            },
+            {
+              "id": "C",
+              "text": "0.5"
+            },
+            {
+              "id": "D",
+              "text": "0.3"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>What is the ordinate of influence line diagram at <em>D </em>for support reaction at <em>B</em>?</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip69-1782386726731.png\"></p>",
+          "optionsHtml": [
+            "<p>0</p>",
+            "<p>0.2</p>",
+            "<p>0.5</p>",
+            "<p>0.3</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip70-1782386751269.png\"></p>"
+        },
+        {
+          "id": "test-11-q27",
+          "number": 27,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 60,
+          "avgTimeSeconds": 20.2,
+          "question": "The following frame will sway\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "toward left"
+            },
+            {
+              "id": "B",
+              "text": "towards right"
+            },
+            {
+              "id": "C",
+              "text": "no where"
+            },
+            {
+              "id": "D",
+              "text": "can’t be determined"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "Stiffness of CD is less than AB, so frame will sway towards right.",
+          "deceptiveChoice": "C (Chosen by 66.67% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The following frame will sway</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip71-1782386779293.png\"></p>",
+          "optionsHtml": [
+            "<p>toward left</p>",
+            "<p>towards right</p>",
+            "<p>no where</p>",
+            "<p>can&rsquo;t be determined</p>"
+          ],
+          "explanationHtml": "<p>Stiffness of <em>CD </em>is less than <em>AB</em>, so frame will sway towards right.</p>"
+        },
+        {
+          "id": "test-11-q28",
+          "number": 28,
+          "status": "unattempted",
+          "timeSeconds": 9,
+          "marksAwarded": 0,
+          "avgAttemptRate": 60,
+          "avgTimeSeconds": 24.2,
+          "question": "When principle of minimum strain energy is applied to a linearly elastic structure then",
+          "options": [
+            {
+              "id": "A",
+              "text": "It is similar to Castigliano’s theorem-II"
+            },
+            {
+              "id": "B",
+              "text": "It is similar to Castigliano’s theorem-I"
+            },
+            {
+              "id": "C",
+              "text": "It is similar to both Castigliano’s theorem"
+            },
+            {
+              "id": "D",
+              "text": "The unknown displacement can be determined"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "A",
+          "explanation": "Castigliano’s theorem-II comes under the force method of analysis because it gives compatibility condition. Also it is a particular case of principle minimum strain energy, when the structure is linearly elastic.",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 66.67% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>When principle of minimum strain energy is applied to a linearly elastic structure then</p>",
+          "optionsHtml": [
+            "<p>It is similar to Castigliano&rsquo;s theorem-II</p>",
+            "<p>It is similar to Castigliano&rsquo;s theorem-I</p>",
+            "<p>It is similar to both Castigliano&rsquo;s theorem</p>",
+            "<p>The unknown displacement can be determined</p>"
+          ],
+          "explanationHtml": "<p>Castigliano&rsquo;s theorem-II comes under the force method of analysis because it gives compatibility&nbsp;condition. Also it is a particular case of principle minimum strain energy, when the structure is&nbsp;linearly elastic.</p>"
+        },
+        {
+          "id": "test-11-q29",
+          "number": 29,
+          "status": "unattempted",
+          "timeSeconds": 2,
+          "marksAwarded": 0,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 16.8,
+          "question": "Stiffness method of structural analysis starts with",
+          "options": [
+            {
+              "id": "A",
+              "text": "force-deformation relations"
+            },
+            {
+              "id": "B",
+              "text": "equilibrium condition"
+            },
+            {
+              "id": "C",
+              "text": "compatible deformation"
+            },
+            {
+              "id": "D",
+              "text": "equilibrium state of internal stress components"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "equilibrium condition",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 75% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Stiffness method of structural analysis starts with</p>",
+          "optionsHtml": [
+            "<p>force-deformation relations</p>",
+            "<p>equilibrium condition</p>",
+            "<p>compatible deformation</p>",
+            "<p>equilibrium state of internal stress components</p>"
+          ],
+          "explanationHtml": "<p>equilibrium condition</p>"
+        },
+        {
+          "id": "test-11-q30",
+          "number": 30,
+          "status": "unattempted",
+          "timeSeconds": 16,
+          "marksAwarded": 0,
+          "avgAttemptRate": 60,
+          "avgTimeSeconds": 43.2,
+          "question": "For the propped cantilever shown in figure, the vertical reaction at the fixed end is\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "C (Chosen by 66.67% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>For the propped cantilever shown in figure, the vertical reaction at the fixed end is</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip72-1782386915054.png\"></p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip73-1782386921905.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip74-1782386926326.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip75-1782386934128.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip76-1782386938963.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip77-1782386945862.png\"></p>"
+        },
+        {
+          "id": "test-11-q31",
+          "number": 31,
+          "status": "unattempted",
+          "timeSeconds": 8,
+          "marksAwarded": 0,
+          "avgAttemptRate": 20,
+          "avgTimeSeconds": 12,
+          "question": "[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "[image]",
+          "deceptiveChoice": "C (Chosen by 100% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip78-1782386996722.png\"></p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip79-1782387002825.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip80-1782387007505.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip81-1782387014028.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip82-1782387019506.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip83-1782387025901.png\"></p>"
+        },
+        {
+          "id": "test-11-q33",
+          "number": 33,
+          "status": "unattempted",
+          "timeSeconds": 27,
+          "marksAwarded": 0,
+          "avgAttemptRate": 40,
+          "avgTimeSeconds": 22.8,
+          "question": "The shear force diagram for the statically determinate beam shown below is\n[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "(a)"
+            },
+            {
+              "id": "B",
+              "text": "(b)"
+            },
+            {
+              "id": "C",
+              "text": "(c)"
+            },
+            {
+              "id": "D",
+              "text": "(d)"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "[image]\n[image]",
+          "deceptiveChoice": "B (Chosen by 100% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The shear force diagram for the statically determinate beam shown below is</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip86-1782387131554.png\"></p>",
+          "optionsHtml": [
+            "<p>(a)</p>",
+            "<p>(b)</p>",
+            "<p>(c)</p>",
+            "<p>(d)</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip87-1782387176017.png\"></p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip88-1782387183316.png\"></p>"
+        },
+        {
+          "id": "test-11-q34",
+          "number": 34,
+          "status": "unattempted",
+          "timeSeconds": 11,
+          "marksAwarded": 0,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 32.8,
+          "question": "Effective length of steel column effectively held at both ends in position but not restrained in direction is ‘x’ times its length between two ends, where ‘x’ is equal to",
+          "options": [
+            {
+              "id": "A",
+              "text": "0.65"
+            },
+            {
+              "id": "B",
+              "text": "0.85"
+            },
+            {
+              "id": "C",
+              "text": "1.00"
+            },
+            {
+              "id": "D",
+              "text": "2.00"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Effective length of column when it is effectively held at both ends in position but not restrained against rotation.\n[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>Effective length of steel column effectively held at both ends in position but not restrained in&nbsp;direction is &lsquo;<em>x</em>&rsquo; times its length between two ends, where &lsquo;<em>x</em>&rsquo; is equal to</p>",
+          "optionsHtml": [
+            "<p>0.65</p>",
+            "<p>0.85</p>",
+            "<p>1.00</p>",
+            "<p>2.00</p>"
+          ],
+          "explanationHtml": "<p>Effective length of column when it is effectively held at both ends in position but not restrained&nbsp;against rotation.</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip89-1782387245798.png\"></p>"
+        },
+        {
+          "id": "test-11-q35",
+          "number": 35,
+          "status": "unattempted",
+          "timeSeconds": 7,
+          "marksAwarded": 0,
+          "avgAttemptRate": 0,
+          "avgTimeSeconds": 34.6,
+          "question": "A horizontal semi-circular beam of radius ‘R’ is fixed at the ends and carries a uniformly distributed load ‘W’ over the entire length. The bending moment at the fixed supports is",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A horizontal semi-circular beam of radius &lsquo;R&rsquo; is fixed at the ends and carries a uniformly distributed&nbsp;load &lsquo;W&rsquo; over the entire length. The bending moment at the fixed supports is</p>\n<p>&nbsp;</p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip91-1782387280505.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip92-1782387285225.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip93-1782387289831.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip94-1782387296698.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip95-1782387304275.png\"></p>"
+        },
+        {
+          "id": "test-11-q37",
+          "number": 37,
+          "status": "incorrect",
+          "timeSeconds": 25,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 12.8,
+          "question": "The area under stress-strain curve represent",
+          "options": [
+            {
+              "id": "A",
+              "text": "Energy required to cause failure"
+            },
+            {
+              "id": "B",
+              "text": "Breaking strength of material"
+            },
+            {
+              "id": "C",
+              "text": "Hardness of material"
+            },
+            {
+              "id": "D",
+              "text": "Toughness of material"
+            }
+          ],
+          "selectedOption": "B",
+          "correctOption": "D",
+          "explanation": "[image]\nThe area under stress strain curve upto the fracture point gives the modulus of toughness or the toughness per unit volume.",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 75% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The area under stress-strain curve represent</p>",
+          "optionsHtml": [
+            "<p>Energy required to cause failure</p>",
+            "<p>Breaking strength of material</p>",
+            "<p>Hardness of material</p>",
+            "<p>Toughness of material</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip98-1782387436522.png\"></p>\n<p>The area under stress strain curve upto the fracture point gives the modulus of toughness or the&nbsp;toughness per unit volume.</p>"
+        },
+        {
+          "id": "test-11-q38",
+          "number": 38,
+          "status": "incorrect",
+          "timeSeconds": 13,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 22.6,
+          "question": "[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": "A",
+          "correctOption": "D",
+          "explanation": "[image]",
+          "deceptiveChoice": "A (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip99-1782387475430.png\"></p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip100-1782387480853.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip101-1782387485574.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip102-1782387490656.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip103-1782387496813.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip104-1782387502931.png\"></p>"
+        },
+        {
+          "id": "test-11-q39",
+          "number": 39,
+          "status": "unattempted",
+          "timeSeconds": 7,
+          "marksAwarded": 0,
+          "avgAttemptRate": 20,
+          "avgTimeSeconds": 15,
+          "question": "A simply supported beam of span 'L' carrying a UDL of W per unit length. If the beam is propped at its centre then in bending moment diagram, the bending moment is zero at a distance of",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "D",
+          "explanation": "[image]\n[image]\n[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "D (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>A simply supported beam of span 'L' carrying a UDL of W per unit length. If the beam is propped&nbsp;at its centre then in bending moment diagram, the bending moment is zero at a distance of</p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip105-1782387526189.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip106-1782387537912.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip107-1782387544779.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip108-1782387550952.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip109-1782387578031.png\"></p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip110-1782387585728.png\"></p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip111-1782387592388.png\"></p>"
+        },
+        {
+          "id": "test-11-q40",
+          "number": 40,
+          "status": "unattempted",
+          "timeSeconds": 6,
+          "marksAwarded": 0,
+          "avgAttemptRate": 40,
+          "avgTimeSeconds": 19.6,
+          "question": "The first moment of area of a rectangular section of which ‘b’ and depth ‘h’ about centre of gravity is",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "Zero"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "Zero",
+          "deceptiveChoice": "A (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The first moment of area of a rectangular section of which &lsquo;<em>b</em>&rsquo; and depth &lsquo;<em>h</em>&rsquo; about centre of&nbsp;gravity is</p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip112-1782387640708.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip113-1782387645572.png\"></p>",
+            "<p>Zero</p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip114-1782387661035.png\"></p>"
+          ],
+          "explanationHtml": "<p>Zero</p>"
+        },
+        {
+          "id": "test-11-q41",
+          "number": 41,
+          "status": "unattempted",
+          "timeSeconds": 5,
+          "marksAwarded": 0,
+          "avgAttemptRate": 100,
+          "avgTimeSeconds": 31.4,
+          "question": "The ratio of the stiffness of the beam at the near and when the far end is hinged, to the stiffness of the beam at the near end when the far end is fixed",
+          "options": [
+            {
+              "id": "A",
+              "text": "4/3"
+            },
+            {
+              "id": "B",
+              "text": "3/4"
+            },
+            {
+              "id": "C",
+              "text": "1"
+            },
+            {
+              "id": "D",
+              "text": "1/2"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 80% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The ratio of the stiffness of the beam at the near and when the far end is hinged, to the stiffness&nbsp;of the beam at the near end when the far end is fixed</p>",
+          "optionsHtml": [
+            "<p>4/3</p>",
+            "<p>3/4</p>",
+            "<p>1</p>",
+            "<p>1/2</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip115-1782387708871.png\"></p>"
+        },
+        {
+          "id": "test-11-q42",
+          "number": 42,
+          "status": "incorrect",
+          "timeSeconds": 17,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 100,
+          "avgTimeSeconds": 24.2,
+          "question": "The relation between transverse load and shear in a beam is\nWhere symbols have their usual meaning.",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": "B",
+          "correctOption": "A",
+          "explanation": "We know that the relation between shear force and loading rate (w) is such that\n[image]\nIt mean –ve slope of shear force curve represent downward loading rate.\nHence option (a) is correct.",
+          "deceptiveChoice": "",
+          "popularChoice": "A (Chosen by 80% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The relation between transverse load and shear in a beam is</p>\n<p>Where symbols have their usual meaning.</p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip116-1782387727446.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip117-1782387733712.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip118-1782387739602.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip119-1782387744369.png\"></p>"
+          ],
+          "explanationHtml": "<p>We know that the relation between shear force and loading rate (<em>w</em>) is such that</p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip120-1782387773314.png\"></p>\n<p>It mean &ndash;ve slope of shear force curve represent downward loading rate.<br>Hence option (a) is correct.</p>"
+        },
+        {
+          "id": "test-11-q43",
+          "number": 43,
+          "status": "unattempted",
+          "timeSeconds": 9,
+          "marksAwarded": 0,
+          "avgAttemptRate": 40,
+          "avgTimeSeconds": 22,
+          "question": "The fixed beam AB of span 'L' has a hinge C at mid span, a concentrated load W is applied at C, what is the fixed end moment M_A?",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]\n[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The fixed beam <em>AB </em>of span '<em>L</em>' has a hinge <em>C </em>at mid span, a concentrated load W is applied at <em>C</em>,&nbsp;what is the fixed end moment <em>M<sub>A</sub></em>?</p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip121-1782387826819.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip122-1782387831990.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip123-1782387837039.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip124-1782387842161.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip125-1782387851564.png\"></p>\n<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip126-1782387857719.png\"></p>"
+        },
+        {
+          "id": "test-11-q45",
+          "number": 45,
+          "status": "unattempted",
+          "timeSeconds": 44,
+          "marksAwarded": 0,
+          "avgAttemptRate": 60,
+          "avgTimeSeconds": 24.2,
+          "question": "What is the correct sequence of the following material in the decreasing order of their modulus of\nelasticity?\n(1) Steel\n(2) Cast iron\n(3) Aluminium\n(4) Brass\nSelect the correct answer using the codes given below.",
+          "options": [
+            {
+              "id": "A",
+              "text": "1-2-3-4"
+            },
+            {
+              "id": "B",
+              "text": "1-2-4-3"
+            },
+            {
+              "id": "C",
+              "text": "2-1-4-3"
+            },
+            {
+              "id": "D",
+              "text": "3-1-2-4"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 66.67% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>What is the correct sequence of the following material in the decreasing order of their modulus of<br>elasticity?<br>(1) Steel <br>(2) Cast iron<br>(3) Aluminium <br>(4) Brass</p>\n<p>Select the correct answer using the codes given below.</p>",
+          "optionsHtml": [
+            "<p>1-2-3-4</p>",
+            "<p>1-2-4-3</p>",
+            "<p>2-1-4-3</p>",
+            "<p>3-1-2-4</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip134-1782387995751.png\"></p>"
+        },
+        {
+          "id": "test-11-q46",
+          "number": 46,
+          "status": "unattempted",
+          "timeSeconds": 6,
+          "marksAwarded": 0,
+          "avgAttemptRate": 40,
+          "avgTimeSeconds": 14.8,
+          "question": "[image]",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip135-1782388019964.png\"></p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip136-1782388024078.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip137-1782388028068.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip138-1782388032138.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip139-1782388036233.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip140-1782388043568.png\"></p>"
+        },
+        {
+          "id": "test-11-q47",
+          "number": 47,
+          "status": "unattempted",
+          "timeSeconds": 6,
+          "marksAwarded": 0,
+          "avgAttemptRate": 60,
+          "avgTimeSeconds": 9.8,
+          "question": "The effect of sinking of supports by δ is to create a bending moment equal to",
+          "options": [
+            {
+              "id": "A",
+              "text": "[image]"
+            },
+            {
+              "id": "B",
+              "text": "[image]"
+            },
+            {
+              "id": "C",
+              "text": "[image]"
+            },
+            {
+              "id": "D",
+              "text": "[image]"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 100% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The effect of sinking of supports by &delta; is to create a bending moment equal to</p>",
+          "optionsHtml": [
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip141-1782388063826.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip142-1782388068769.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip145-1782388082193.png\"></p>",
+            "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip146-1782388087246.png\"></p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip143-1782388069086.png\"></p>"
+        },
+        {
+          "id": "test-11-q48",
+          "number": 48,
+          "status": "unattempted",
+          "timeSeconds": 8,
+          "marksAwarded": 0,
+          "avgAttemptRate": 40,
+          "avgTimeSeconds": 11.4,
+          "question": "The theorem of three moment equation for a continuous beam expresses the condition of",
+          "options": [
+            {
+              "id": "A",
+              "text": "equilibrium at an intermediate support"
+            },
+            {
+              "id": "B",
+              "text": "slope compatibility at an intermediate support"
+            },
+            {
+              "id": "C",
+              "text": "zero support settlement"
+            },
+            {
+              "id": "D",
+              "text": "none of the above"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "B",
+          "explanation": "[image]\nThus the three moment theorem for continuous beam express condition of slope compatibility at an intermediate support.\nHence option (b) is correct.",
+          "deceptiveChoice": "",
+          "popularChoice": "B (Chosen by 50% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The theorem of three moment equation for a continuous beam expresses the condition of</p>",
+          "optionsHtml": [
+            "<p>equilibrium at an intermediate support</p>",
+            "<p>slope compatibility at an intermediate support</p>",
+            "<p>zero support settlement</p>",
+            "<p>none of the above</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip147-1782388128821.png\"></p>\n<p>Thus the three moment theorem for continuous beam express condition of slope compatibility at&nbsp;an intermediate support.<br>Hence option (b) is correct.</p>"
+        },
+        {
+          "id": "test-11-q49",
+          "number": 49,
+          "status": "incorrect",
+          "timeSeconds": 22,
+          "marksAwarded": -0.25,
+          "avgAttemptRate": 80,
+          "avgTimeSeconds": 15.4,
+          "question": "The force method of structural analysis starts with",
+          "options": [
+            {
+              "id": "A",
+              "text": "equilibrium field"
+            },
+            {
+              "id": "B",
+              "text": "compatible deformation"
+            },
+            {
+              "id": "C",
+              "text": "equilibrium and compatibility conditions"
+            },
+            {
+              "id": "D",
+              "text": "force deformation relation only"
+            }
+          ],
+          "selectedOption": "A",
+          "correctOption": "C",
+          "explanation": "[image]",
+          "deceptiveChoice": "",
+          "popularChoice": "C (Chosen by 50% students)",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The force method of structural analysis starts with</p>",
+          "optionsHtml": [
+            "<p>equilibrium field</p>",
+            "<p>compatible deformation</p>",
+            "<p>equilibrium and compatibility conditions</p>",
+            "<p>force deformation relation only</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip148-1782388188755.png\"></p>"
+        },
+        {
+          "id": "test-11-q50",
+          "number": 50,
+          "status": "unattempted",
+          "timeSeconds": 24,
+          "marksAwarded": 0,
+          "avgAttemptRate": 40,
+          "avgTimeSeconds": 12.4,
+          "question": "The maximum bending moment at a section due to moving loads in a simple beam occurs when:",
+          "options": [
+            {
+              "id": "A",
+              "text": "load covers the entire span"
+            },
+            {
+              "id": "B",
+              "text": "load extends to one side of the section"
+            },
+            {
+              "id": "C",
+              "text": "the section divides the load in the same ratio as it divides the span"
+            },
+            {
+              "id": "D",
+              "text": "the load is placed on both sides of the section in 50 : 50 ratio"
+            }
+          ],
+          "selectedOption": null,
+          "correctOption": "C",
+          "explanation": "[image]\nMaximum BM at section c-c will occurs when average loading just to the left of C is equals to average loading just to right of C. It means section c-c divides load in same ratio as it divide to the span.",
+          "deceptiveChoice": "B (Chosen by 50% students)",
+          "popularChoice": "",
+          "sourceQuality": "verified_source",
+          "questionHtml": "<p>The maximum bending moment at a section due to moving loads in a simple beam occurs when:</p>",
+          "optionsHtml": [
+            "<p>load covers the entire span</p>",
+            "<p>load extends to one side of the section</p>",
+            "<p>the section divides the load in the same ratio as it divides the span</p>",
+            "<p>the load is placed on both sides of the section in 50 : 50 ratio</p>"
+          ],
+          "explanationHtml": "<p><img src=\"https://cdnstatic.madeeasyprime.com/resources/image/mceclip149-1782388227615.png\"></p>\n<p>Maximum BM at section c-c will occurs when average loading just to the left of <em>C </em>is equals to average&nbsp;loading just to right of <em>C</em>. It means section c-c divides load in same ratio as it divide to the span.</p>"
         }
       ]
     },

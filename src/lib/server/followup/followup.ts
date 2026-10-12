@@ -32,17 +32,19 @@ import { optionLabel, textReliable } from "../../../components/bank/optionOrder"
 import { canReadMadeEasy, madeEasyQuestion } from "../made-easy";
 import { getLlmSetup } from "../llm";
 import { DeepSeekProvider, DEEPSEEK_MAX_ATTEMPTS } from "../llm/deepseek";
+import { CodexProvider } from "../llm/codex-provider";
 import { costUsd, geminiRate } from "../generation/pricing";
 import { LlmError, type LlmProvider, type LlmUsage } from "../llm/types";
 import { GeminiError, geminiGenerate, type GeminiImage, type GeminiRequest, type GeminiResult, type GeminiTurn, type GeminiUsage } from "./gemini";
 import { sourceHtmlImages } from "../source-html";
 import { syllabusContext, type SyllabusContext, type TopicCandidate } from "./syllabus-context";
+import { chatGptPrompt } from "./chatgpt-text";
 
 import { STUDY_EVIDENCE_VERSION, currentStudyEvidence, citationIds, type StudyCitation } from "../../study-evidence";
 import { studyEvidence, evidencePrompt } from "./study-evidence";
 
 export type FollowUpContextKind = "made_easy" | "bank";
-export type ProviderName = "google" | "deepseek";
+export type ProviderName = "google" | "deepseek" | "codex";
 
 export interface FollowUpTurn {
   role: "user" | "model";
@@ -134,6 +136,8 @@ interface Facts {
   ownQuestionId: string | undefined;
   /** Source images, in order, with where each appears ("in the question", "option B"...). */
   images: { url: string; where: string }[];
+  /** Bank only: the scanned question crops (key-free, and the original that shows SSC's key). */
+  crop?: { clean: string | null; original: string | null };
 }
 
 function sha(text: string): string {
@@ -202,6 +206,7 @@ async function bankFacts(userId: string, id: string): Promise<Facts> {
     subjectHint: undefined,
     ownQuestionId: q.id,
     images: [],
+    crop: { clean: view.cleanImageUrl ?? null, original: view.imageUrl ?? null },
   };
 }
 
@@ -298,6 +303,8 @@ export interface FollowUpDeps {
   geminiModel: string;
   deepseek: LlmProvider | null;
   deepseekModel: string;
+  /** ChatGPT through the Codex CLI on this computer (FOLLOWUP_PROVIDER=codex); null when not chosen. */
+  codex: LlmProvider | null;
   /** A second Google model that checks practice questions when DeepSeek isn't set up (null: none). */
   geminiCheckModel: string | null;
   capUsd: number;
@@ -330,15 +337,24 @@ async function loadImages(deps: FollowUpDeps, f: Facts): Promise<GeminiImage[] |
   return images.every((img): img is GeminiImage => img !== null) ? images : null;
 }
 
+function followUpProviderName(): ProviderName {
+  const name = (process.env.FOLLOWUP_PROVIDER || "").trim().toLowerCase();
+  if (name === "codex" || name === "deepseek") return name;
+  // One switch for the whole app: LLM_PROVIDER=codex moves follow-ups to ChatGPT too.
+  if (!name && process.env.LLM_PROVIDER?.trim().toLowerCase() === "codex") return "codex";
+  return "google";
+}
+
 export function followUpDeps(): FollowUpDeps {
   const setup = getLlmSetup();
   const deepseekKey = process.env.DEEPSEEK_API_KEY?.trim() || null;
   return {
-    provider: (process.env.FOLLOWUP_PROVIDER || "google").trim().toLowerCase() === "deepseek" ? "deepseek" : "google",
+    provider: followUpProviderName(),
     googleKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY?.trim() || null,
     geminiModel: process.env.GEMINI_FOLLOWUP_MODEL?.trim() || DEFAULT_GEMINI_MODEL,
     deepseek: deepseekKey ? new DeepSeekProvider(deepseekKey) : null,
     deepseekModel: process.env.DEEPSEEK_FOLLOWUP_MODEL?.trim() || DEFAULT_DEEPSEEK_MODEL,
+    codex: followUpProviderName() === "codex" ? new CodexProvider() : null,
     geminiCheckModel: process.env.GEMINI_CHECK_MODEL?.trim() || DEFAULT_GEMINI_CHECK_MODEL,
     capUsd: setup.maxUsdPerDay,
     gemini: geminiGenerate,
@@ -347,10 +363,11 @@ export function followUpDeps(): FollowUpDeps {
 }
 
 function available(deps: FollowUpDeps, provider: ProviderName): boolean {
-  return provider === "google" ? deps.googleKey !== null : deps.deepseek !== null;
+  return provider === "google" ? deps.googleKey !== null : provider === "codex" ? deps.codex !== null : deps.deepseek !== null;
 }
 
 function notSetUp(provider: ProviderName): HttpError {
+  if (provider === "codex") return new HttpError(503, "ChatGPT (Codex) is not set up: add FOLLOWUP_PROVIDER=codex to .env.local, sign in with `codex login`, and restart the app.");
   return provider === "google"
     ? new HttpError(503, "Follow-up answers use Google Gemini, which is not set up yet: add GOOGLE_GENERATIVE_AI_API_KEY (from a billed Google Cloud project) to .env.local and restart the app.")
     : new HttpError(503, "DeepSeek is not set up: DEEPSEEK_API_KEY is missing from .env.local.");
@@ -415,7 +432,19 @@ async function callDeepSeek(deps: FollowUpDeps, userId: string, system: string, 
   }
 }
 
-/** A JSON reply from either provider (no web search). Images go to Gemini only. */
+/** One Codex (ChatGPT subscription) JSON request. Nothing is billed per call, so nothing is reserved. */
+async function callCodex(deps: FollowUpDeps, system: string, user: string, thinking = true): Promise<{ json: unknown; model: string }> {
+  if (!deps.codex) throw notSetUp("codex");
+  try {
+    const result = await deps.codex.completeJson({ model: "codex", system, user, thinking, maxTokens: MAX_OUTPUT_TOKENS });
+    return { json: result.json, model: result.model };
+  } catch (err) {
+    if (err instanceof LlmError) throw new HttpError(err.fatal ? 503 : 502, err.message);
+    throw err;
+  }
+}
+
+/** A JSON reply from any provider (no web search). Images go to Gemini only. */
 async function askJson(
   deps: FollowUpDeps,
   provider: ProviderName,
@@ -427,6 +456,7 @@ async function askJson(
   thinkingLevel: GeminiRequest["thinkingLevel"] = "MEDIUM"
 ): Promise<{ json: unknown; model: string }> {
   if (provider === "deepseek") return callDeepSeek(deps, userId, system, user);
+  if (provider === "codex") return callCodex(deps, system, user);
   const result = await callGemini(deps, userId, { model, system, turns: [{ role: "user", text: user, images }], grounded: false, json: true, maxOutputTokens: MAX_OUTPUT_TOKENS, thinkingLevel }, false);
   try {
     return { json: JSON.parse(result.text.replace(/^```(?:json)?\s*|\s*```$/g, "")), model };
@@ -456,6 +486,11 @@ export function checkers(deps: FollowUpDeps, primary: ProviderName): Checker[] {
     if (deps.deepseek) out.push({ provider: "deepseek" });
     if (deps.googleKey && deps.geminiCheckModel && deps.geminiCheckModel !== deps.geminiModel) out.push({ provider: "google", model: deps.geminiCheckModel });
     if (deps.googleKey) out.push({ provider: "google", model: deps.geminiModel, thinkingLevel: "HIGH", sameModel: true });
+  } else if (primary === "codex") {
+    // Another vendor when one is set up; otherwise a second, separate Codex run (least independent).
+    if (deps.googleKey) out.push({ provider: "google" });
+    if (deps.deepseek) out.push({ provider: "deepseek" });
+    if (deps.codex) out.push({ provider: "codex", sameModel: true });
   } else if (deps.googleKey) {
     out.push({ provider: "google" });
   }
@@ -635,6 +670,28 @@ export async function storedRecoveryLessons(userId: string, ids: string[]) {
   });
 }
 
+/**
+ * The question as plain text to paste into ChatGPT. Same access rules as the follow-up (they come from
+ * factsFor): a bank question only after the learner has answered it, a Made Easy question only for its owner.
+ */
+export async function questionForChatGpt(userId: string, input: { kind: unknown; id: unknown }): Promise<string> {
+  return chatGptPrompt(await factsFor(userId, input.kind, input.id));
+}
+
+/**
+ * The question as the learner may see it after answering, for their marked-questions list. Same access
+ * rules as the follow-up (from factsFor): throws 403 before a bank question is answered, and for a Made
+ * Easy question that belongs to another account.
+ */
+export async function questionFacts(userId: string, input: { kind: unknown; id: unknown }) {
+  const f = await factsFor(userId, input.kind, input.id);
+  return {
+    kind: f.kind, id: f.id, heading: f.heading, question: f.question, options: f.options, key: f.key,
+    keySource: f.keySource, learnerAnswer: f.learnerAnswer, explanation: f.explanation, incomplete: f.incomplete,
+    crop: f.crop ?? null,
+  };
+}
+
 export async function followUpContext(userId: string, input: { kind: unknown; id: unknown }) {
   const f = await factsFor(userId, input.kind, input.id);
   const { questionContext, recoveryContext } = await import("./question-context");
@@ -808,6 +865,13 @@ async function answerWith(deps: FollowUpDeps, userId: string, turns: GeminiTurn[
     const answer = typeof (json as { answer?: unknown })?.answer === "string" ? (json as { answer: string }).answer.trim() : "";
     if (!answer) throw new HttpError(502, "DeepSeek returned no answer.");
     return { answer, provider: "deepseek", model, grounded: false, sources: [], searchEntryPointHtml: null, aiGenerated: true };
+  }
+  if (deps.provider === "codex") {
+    const transcript = turns.map((t) => `${t.role === "user" ? "LEARNER" : "TUTOR"}:\n${t.text}`).join("\n\n");
+    const { json, model } = await callCodex(deps, `${SYSTEM}\nReturn JSON: {"answer": "<your reply to the learner's last message>"}.`, transcript);
+    const answer = typeof (json as { answer?: unknown })?.answer === "string" ? (json as { answer: string }).answer.trim() : "";
+    if (!answer) throw new HttpError(502, "ChatGPT (Codex) returned no answer.");
+    return { answer, provider: "codex", model, grounded: false, sources: [], searchEntryPointHtml: null, aiGenerated: true };
   }
   const result = await callGemini(deps, userId, { model: deps.geminiModel, system: SYSTEM, turns, grounded: true, maxOutputTokens: MAX_OUTPUT_TOKENS, thinkingLevel: "MEDIUM" }, true);
   return {

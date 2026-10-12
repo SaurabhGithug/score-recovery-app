@@ -9,6 +9,7 @@
  */
 import crypto from "node:crypto";
 import { getDatabase } from "../db";
+import { dbBool, dbDate, dbNumber, dbTimestamp } from "../db-values";
 import { contentFingerprint, madeForContent } from "../bank/content-fp";
 import { resolveAnswerKey, type AnswerAuthority, type AnswerEvidence, type KeyStatus, type ResolvedKey } from "../../bank/answer-key";
 import type {
@@ -135,7 +136,7 @@ function toExplanation(row: Row): BankExplanationRecord {
     lockedAnswer: String(row.locked_answer),
     note: String(row.note),
     model: String(row.model),
-    createdAt: String(row.created_at),
+    createdAt: dbTimestamp(row.created_at) ?? "",
     contentFp: String(row.content_fp ?? ""),
   };
 }
@@ -158,8 +159,9 @@ function str(value: unknown): string | null {
   return typeof value === "string" ? value : null;
 }
 
+/** Postgres returns int8/numeric as text; dbNumber reads it on both databases. */
 function num(value: unknown): number | null {
-  return typeof value === "number" ? value : typeof value === "bigint" ? Number(value) : null;
+  return dbNumber(value);
 }
 
 function toPaper(row: Row): BankPaperRecord {
@@ -170,7 +172,7 @@ function toPaper(row: Row): BankPaperRecord {
     branch: "CIVIL",
     paper: row.paper as BankPaperCode,
     cycleYear: num(row.cycle_year),
-    examDate: str(row.exam_date),
+    examDate: dbDate(row.exam_date),
     shift: str(row.shift),
     title: String(row.title),
     questionCount: num(row.question_count) ?? 0,
@@ -180,7 +182,7 @@ function toPaper(row: Row): BankPaperRecord {
     sourceUrl: str(row.source_url),
     sourceFile: str(row.source_file),
     sourceSha256: str(row.source_sha256),
-    capturedOn: String(row.captured_on),
+    capturedOn: dbDate(row.captured_on) ?? "",
     rightsNote: String(row.rights_note),
     ownerUserId: String(row.owner_user_id ?? ""),
     metadata: parseJson<Record<string, unknown>>(row.metadata, {}),
@@ -200,7 +202,7 @@ function toQuestion(row: Row): BankQuestionRecord {
     section: String(row.section),
     stem: String(row.stem ?? ""),
     options: parseJson<BankOption[]>(row.options, []),
-    hasVisual: num(row.has_visual) === 1,
+    hasVisual: dbBool(row.has_visual),
     visualPath: str(row.visual_path),
     sourcePage: num(row.source_page),
     sourceSolution: str(row.source_solution),
@@ -219,8 +221,8 @@ function toEvidence(row: Row): BankEvidenceRecord {
     sourceGroup: String(row.source_group),
     sourceLabel: String(row.source_label),
     answer: str(row.answer),
-    dropped: num(row.dropped) === 1,
-    observedAt: String(row.observed_at),
+    dropped: dbBool(row.dropped),
+    observedAt: dbTimestamp(row.observed_at) ?? "",
     detail: parseJson<Record<string, unknown>>(row.detail, {}),
   };
 }
@@ -233,8 +235,8 @@ function toAttempt(row: Row): BankAttemptRecord {
     mode: (str(row.mode) ?? "full") as BankAttemptMode,
     section: str(row.section),
     durationSeconds: num(row.duration_seconds),
-    startedAt: String(row.started_at),
-    submittedAt: str(row.submitted_at),
+    startedAt: dbTimestamp(row.started_at) ?? "",
+    submittedAt: dbTimestamp(row.submitted_at),
     responses: parseJson<BankResponses>(row.responses, {}),
     checked: parseJson<Record<string, string | null>>(row.checked, {}),
     stored: parseJson<StoredAttemptResult | null>(row.result, null),

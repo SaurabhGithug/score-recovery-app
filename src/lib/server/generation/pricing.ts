@@ -48,6 +48,8 @@ export function isPeak(at: Date): boolean {
 
 /** @param worst reservations: ignore introductory prices so a reservation never falls below the bill. */
 export function costUsd(model: string, usage: LlmUsage, at: Date = new Date(), worst = false): number {
+  // ChatGPT/Codex runs on the signed-in subscription: nothing is billed per call.
+  if (model === "codex" || model.startsWith("codex-") || model.startsWith("gpt-")) return 0;
   if (model.startsWith("gemini-")) {
     // Cached prompt tokens are charged at the full input rate: never under-counted.
     const rate = geminiRate(model, at, worst);

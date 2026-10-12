@@ -532,6 +532,34 @@ CREATE INDEX IF NOT EXISTS idx_recovery_practice_user ON recovery_practice(user_
         done_at TEXT
     );
     CREATE INDEX IF NOT EXISTS idx_standard_learn_later_user ON standard_learn_later(user_id, standard_id, status, created_at);
+
+    -- Question marks (Revise / Important / Super important): migrations/0013_question_marks.sql (src/lib/server/marks.ts).
+    CREATE TABLE IF NOT EXISTS question_marks (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        source_kind TEXT NOT NULL CHECK (source_kind IN ('bank', 'made_easy')),
+        source_id TEXT NOT NULL,
+        level TEXT NOT NULL CHECK (level IN ('revise', 'important', 'super_important')),
+        note TEXT NOT NULL DEFAULT '',
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        UNIQUE (user_id, source_kind, source_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_question_marks_user ON question_marks(user_id, level, updated_at);
+
+    -- Activity log: migrations/0014_activity_events.sql (src/lib/server/activity.ts).
+    CREATE TABLE IF NOT EXISTS activity_events (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        at TEXT NOT NULL,
+        type TEXT NOT NULL,
+        target_kind TEXT,
+        target_id TEXT,
+        detail TEXT NOT NULL DEFAULT '{}',
+        client TEXT NOT NULL DEFAULT ''
+    );
+    CREATE INDEX IF NOT EXISTS idx_activity_events_user ON activity_events(user_id, at);
+    CREATE INDEX IF NOT EXISTS idx_activity_events_target ON activity_events(user_id, target_kind, target_id);
   `;
 
   db.exec(schemaSql);

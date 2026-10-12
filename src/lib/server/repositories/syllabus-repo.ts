@@ -5,6 +5,7 @@
  * question COUNTS only, never keys, stems or solutions.
  */
 import { getDatabase } from "../db";
+import { dbDate, dbNumber } from "../db-values";
 import { learnerCommitted } from "../bank/commitment";
 import { contentFingerprint } from "../bank/content-fp";
 import { BankRepository } from "./bank-repo";
@@ -25,6 +26,7 @@ import {
   type FormulaInput,
   type Problems,
 } from "../../syllabus/validate";
+import { computeHotSubjects, type HotSubjectsResult } from "../../syllabus/hot-subjects";
 import type {
   EndpointType,
   ExamCycleRecord,
@@ -62,7 +64,8 @@ function parseJson<T>(raw: unknown, fallback: T): T {
   }
 }
 const str = (v: unknown): string | null => (typeof v === "string" ? v : null);
-const num = (v: unknown): number => (typeof v === "number" ? v : typeof v === "bigint" ? Number(v) : 0);
+/** Postgres returns COUNT(*) as text; dbNumber reads it on both databases. */
+const num = (v: unknown): number => dbNumber(v) ?? 0;
 const placeholders = (values: readonly unknown[]): string => values.map(() => "?").join(", ");
 
 function toNode(r: Row): SyllabusNodeRecord {
@@ -815,6 +818,39 @@ export class SyllabusRepository {
       workedExamples,
       questionCounts: { total: num(total.c), byPaperYear, byOrigin },
     };
+  }
+
+  /**
+   * "Most asked subjects" for a cycle's Paper-I Civil subjects, from PUBLIC Paper-I Civil PYPs that
+   * have an exam year (a private import never moves a shared ranking). Counts only. Each question
+   * counts once, under its primary subject tag.
+   */
+  public static async hotSubjects(cycleId: string): Promise<HotSubjectsResult | null> {
+    const civilPart = `${cycleId}:part:p1-civil`;
+    const subjects = (await this.listNodes(cycleId))
+      .filter((n) => n.kind === "subject" && n.parentId === civilPart)
+      .map((n) => ({ id: n.id, name: n.name, position: n.position }));
+    if (!subjects.length) return null;
+    const db = getDatabase();
+    const publicCivilP1 = `p.exam = 'SSC_JE' AND p.branch = 'CIVIL' AND p.paper = 'P1' AND p.kind = 'pyp' AND p.owner_user_id = '' AND p.cycle_year IS NOT NULL`;
+    const papers = (await db
+      .prepare(
+        `SELECT p.id, p.cycle_year, p.exam_date, p.shift,
+                (SELECT COUNT(*) FROM question_concepts pc JOIN bank_questions pq ON pq.id = pc.question_id
+                  WHERE pq.paper_id = p.id AND pc.node_id = ?) AS civil_questions
+           FROM bank_papers p WHERE ${publicCivilP1}`
+      )
+      .all<Row>(civilPart)).map((r) => ({ id: String(r.id), year: num(r.cycle_year), examDate: dbDate(r.exam_date), shift: str(r.shift), civilQuestions: num(r.civil_questions) }));
+    const tags = (await db
+      .prepare(
+        `SELECT q.paper_id, qc.node_id, qc.review_status FROM question_concepts qc
+           JOIN bank_questions q ON q.id = qc.question_id
+           JOIN bank_papers p ON p.id = q.paper_id
+           JOIN syllabus_nodes n ON n.id = qc.node_id
+          WHERE n.cycle_id = ? AND n.parent_id = ? AND n.kind = 'subject' AND qc.role = 'primary' AND ${publicCivilP1}`
+      )
+      .all<Row>(cycleId, civilPart)).map((r) => ({ paperId: String(r.paper_id), subjectId: String(r.node_id), reviewStatus: String(r.review_status) }));
+    return computeHotSubjects(subjects, papers, tags);
   }
 
   /** Counts for reporting: nodes by cycle/kind/origin, and tags by origin/kind. */

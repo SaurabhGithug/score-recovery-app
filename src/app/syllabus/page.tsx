@@ -9,6 +9,7 @@ import { getSyllabusTree, SyllabusApiError, type SyllabusTreePayload } from "@/c
 import { SyllabusTree } from "@/components/syllabus/SyllabusTree";
 import { NodeDetail } from "@/components/syllabus/NodeDetail";
 import { OriginBadge } from "@/components/syllabus/Badges";
+import { HotSubjects } from "@/components/syllabus/HotSubjects";
 
 function walk(nodes: SyllabusTreeNode[], fn: (n: SyllabusTreeNode, ancestors: string[]) => void, ancestors: string[] = []) {
   for (const n of nodes) {
@@ -151,6 +152,8 @@ function SyllabusContent() {
           </p>
         </div>
       )}
+
+      {tree && <HotSubjects cycleYear={year} onOpen={setOpenNode} />}
 
       {tree && tree.papers.length > 0 && (
         <div className="mt-3">

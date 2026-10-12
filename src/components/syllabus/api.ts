@@ -1,5 +1,6 @@
 /** Fetch wrappers for /api/syllabus/*. Throw SyllabusApiError with the server's message. */
 import type { ExamCycleRecord, SyllabusNodeDetail, SyllabusTreeResponse } from "@/lib/syllabus/types";
+import type { HotSubjectsResult } from "@/lib/syllabus/hot-subjects";
 
 export class SyllabusApiError extends Error {
   constructor(public readonly status: number, message: string) {
@@ -27,6 +28,10 @@ export type SyllabusTreePayload = SyllabusTreeResponse & { cycles: ExamCycleReco
 
 export function getSyllabusTree(cycleYear: number) {
   return call<SyllabusTreePayload>(`/api/syllabus/tree?cycle=${cycleYear}`);
+}
+
+export function getHotSubjects(cycleYear: number) {
+  return call<HotSubjectsResult>(`/api/syllabus/hot-subjects?cycle=${cycleYear}`);
 }
 
 export function getSyllabusNode(id: string) {

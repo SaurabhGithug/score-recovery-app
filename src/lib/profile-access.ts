@@ -1,6 +1,6 @@
 type ProfileIdentity = { normalized_name?: string | null } | null;
 
-const LEARNING_ONLY_PATHS = ["/learn", "/library", "/results", "/standards"];
+const LEARNING_ONLY_PATHS = ["/learn", "/library", "/results", "/standards", "/activity"];
 
 export function isLearningOnlyProfile(user: ProfileIdentity): boolean {
   return user?.normalized_name?.trim().toLowerCase() === "saurabh";

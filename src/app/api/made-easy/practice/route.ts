@@ -4,6 +4,7 @@ import { canReadMadeEasy, madeEasyQuestion } from "@/lib/server/made-easy";
 import { madeEasyReady } from "@/lib/madeeasy";
 import { getDatabase } from "@/lib/server/db";
 import { recoveryFingerprint } from "@/lib/server/followup/question-context";
+import { logActivity } from "@/lib/server/activity";
 export async function POST(req: Request) {
   return handle(async () => {
     const user = await requireUser(req);
@@ -14,6 +15,7 @@ export async function POST(req: Request) {
     if (!q || !madeEasyReady(q) || !q.options.some(o => o.id === body.selected)) throw new HttpError(400, "Invalid question or option.");
     await getDatabase().prepare("INSERT INTO recovery_practice (id, user_id, question_id, content_fp, correct, seconds, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)")
       .run(randomUUID(), user.id, q.id, recoveryFingerprint(q), body.selected === q.correctOption ? 1 : 0, body.seconds, new Date().toISOString());
+    await logActivity(req, user.id, "me.practice.answer", { kind: "made_easy", id: q.id }, { selected: body.selected, correct: body.selected === q.correctOption, seconds: Number(body.seconds) });
     return jsonOk({ saved: true });
   });
 }

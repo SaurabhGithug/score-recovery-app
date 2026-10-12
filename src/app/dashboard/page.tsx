@@ -61,7 +61,10 @@ function ProgressDashboard() {
     <section aria-labelledby="next-step" className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
       <h2 id="next-step" className="text-xl font-semibold text-slate-900">{t({ en: "One step at a time", hi: "एक समय में एक कदम" })}</h2>
       <p className="mt-2 max-w-lg text-sm leading-relaxed text-slate-600">{t({ en: "Practise questions and review your mistakes.", hi: "सवालों का अभ्यास करें और अपनी गलतियाँ समझें।" })}</p>
-      <Link href="/learn" className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 sm:w-auto">{t({ en: "Go to learning →", hi: "पढ़ाई शुरू करें →" })}</Link>
+      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <Link href="/learn" className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 sm:w-auto">{t({ en: "Go to learning →", hi: "पढ़ाई शुरू करें →" })}</Link>
+        <Link href="/marked" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50">{t({ en: "Marked questions →", hi: "चिह्नित प्रश्न →" })}</Link>
+      </div>
     </section>
 
     <section aria-labelledby="recorded-progress" className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">

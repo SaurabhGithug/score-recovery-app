@@ -9,6 +9,7 @@ import { getMadeEasyTest, loadDrillProgress, saveDrillProgress, MadeEasyRequestE
 import { AskFollowUp } from "@/components/ai/AskFollowUp";
 import { SourceHtml } from "@/components/madeeasy/SourceHtml";
 import { useDeclareAttemptMode } from "@/lib/attempt-mode";
+import { track } from "@/lib/activity-client";
 
 /** The question as the portal showed it (HTML with its images) when recaptured, else the saved text. */
 function QuestionBody({ question, className }: { question: MadeEasyQuestionWithTest; className: string }) {
@@ -119,11 +120,13 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
   function beginDrill(ids: string[], requestedIndex = 0) {
     if (!ids.length) return;
     const index = Math.max(0, Math.min(requestedIndex, ids.length - 1));
+    track("me.practice.start", { kind: "made_easy_test", id: test.code }, { questions: ids.length, from: index + 1 });
     setFocus(null);
     setDrill({ ids, index });
   }
 
   function leaveDrill() {
+    if (drill) track("me.practice.leave", { kind: "made_easy_test", id: test.code }, { questions: drill.ids.length, reached: drill.index + 1 });
     if (drill) setDrillResumeIndex(drill.index);
     setDrill(null);
   }
@@ -131,6 +134,7 @@ function TestView({ detail, userId }: { detail: MadeEasyTestDetail; userId: stri
   function advanceDrill(nextIndex: number) {
     if (!drill) return;
     if (nextIndex >= drill.ids.length) {
+      track("me.practice.finish", { kind: "made_easy_test", id: test.code }, { questions: drill.ids.length });
       setDrillResumeIndex(0);
       setDrill(null);
       return;
@@ -251,6 +255,10 @@ function QuestionCard({ question, mode, onMode, onPractise }: {
   const ready = madeEasyReady(question);
   const teaching = mode === "teach";
   const expanded = mode === "answer";
+  // Logged once each time this question's answer or lesson is opened.
+  useEffect(() => {
+    if (mode) track(mode === "answer" ? "me.answer.view" : "me.teach.open", { kind: "made_easy", id: question.id });
+  }, [mode, question.id]);
   return (
     <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs">
       <div className="p-4 sm:p-5">
