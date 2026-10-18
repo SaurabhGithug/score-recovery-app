@@ -56,6 +56,11 @@ interface RunResult {
   spawnError: NodeJS.ErrnoException | null;
 }
 
+/** cmd.exe splits on spaces, so on Windows any argument with a space (a user-name folder in temp, say) must be quoted. */
+export function quoteForWindows(arg: string): string {
+  return /[\s"]/.test(arg) ? `"${arg.replace(/"/g, '\\"')}"` : arg;
+}
+
 function run(args: string[], input: string | null, cwd: string, timeoutMs: number): Promise<RunResult> {
   return new Promise((resolve) => {
     let stdout = "";
@@ -70,7 +75,8 @@ function run(args: string[], input: string | null, cwd: string, timeoutMs: numbe
     };
     // On Windows the executable is codex.cmd, which only runs through a shell. Arguments here are
     // fixed flags and a model name read from our own environment, never learner input.
-    const child = spawn(codexBin(), args, { cwd, env: codexEnv(), shell: process.platform === "win32", stdio: ["pipe", "pipe", "pipe"] });
+    const win = process.platform === "win32";
+    const child = spawn(win ? quoteForWindows(codexBin()) : codexBin(), win ? args.map(quoteForWindows) : args, { cwd, env: codexEnv(), shell: win, stdio: ["pipe", "pipe", "pipe"] });
     const timer = setTimeout(() => {
       timedOut = true;
       child.kill("SIGKILL");

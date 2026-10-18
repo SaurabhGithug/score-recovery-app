@@ -5,8 +5,9 @@
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1")), "..");
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 process.chdir(root);
 const win = process.platform === "win32";
 const say = (m) => console.log(m);
@@ -27,9 +28,13 @@ if (!fs.existsSync("node_modules/next")) {
 }
 
 // 3. .env.local: private settings come from the file Saurabh sends (.env.civil-laptop). Never printed.
+// Phones and chat apps often rename a file that starts with a dot, so a few spellings are accepted.
+const ENV_NAMES = [".env.civil-laptop", "env.civil-laptop", ".env.civil-laptop.txt", "env.civil-laptop.txt", "civil-laptop.env", ".env.civil-laptop (1)"];
+const found = ENV_NAMES.find((n) => fs.existsSync(n));
+if (found && found !== ".env.civil-laptop") fs.copyFileSync(found, ".env.civil-laptop");
 if (!fs.existsSync(".env.local")) {
   if (!fs.existsSync(".env.civil-laptop")) {
-    stop("ENV_FILE", "The private settings file is missing. Ask Saurabh to send the file named .env.civil-laptop, put it in this folder (next to package.json), then run this again.");
+    stop("ENV_FILE", "The private settings file is missing. Ask Saurabh to send the file named .env.civil-laptop (if it arrives as env.civil-laptop or with .txt on the end, that works too), put it in this folder (next to package.json), then run this again.");
   }
   fs.copyFileSync(".env.civil-laptop", ".env.local");
   say("Created .env.local from .env.civil-laptop");

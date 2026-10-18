@@ -10,7 +10,7 @@ const log = path.join(tmpdir(), `fake-codex-${process.pid}.log`);
 process.env.CODEX_BIN = fake;
 process.env.FAKE_CODEX_LOG = log;
 
-const { CodexProvider, codexStatus, parseJsonObject } = await import("../src/lib/server/llm/codex-provider.ts");
+const { CodexProvider, codexStatus, parseJsonObject, quoteForWindows } = await import("../src/lib/server/llm/codex-provider.ts");
 const { costUsd } = await import("../src/lib/server/generation/pricing.ts");
 const { LlmError } = await import("../src/lib/server/llm/types.ts");
 
@@ -105,6 +105,12 @@ await test("parseJsonObject: plain, fenced, surrounded, braces inside strings, n
   assert.deepEqual(parseJsonObject('text {"a":"}{"} tail'), { a: "}{" });
   assert.equal(parseJsonObject("no json"), undefined);
   assert.equal(parseJsonObject('{"a":'), undefined);
+});
+
+await test("Windows quoting: spaces and quotes are protected, plain args untouched", () => {
+  assert.equal(quoteForWindows("exec"), "exec");
+  assert.equal(quoteForWindows("C:\\Users\\Some Name\\Temp\\reply.txt"), '"C:\\Users\\Some Name\\Temp\\reply.txt"');
+  assert.equal(quoteForWindows('model_reasoning_effort="low"'), '"model_reasoning_effort=\\"low\\""');
 });
 
 rmSync(log, { force: true });

@@ -3,11 +3,11 @@ You are Codex, running on a computer belonging to someone who is not technical. 
 APP: https://github.com/SaurabhGithug/score-recovery-app  (branch: claude/app-snapshot-2026-09-30)
 
 STEPS
-1. Check tools: run `git --version` and `node --version`. Node must be 22.13 or newer. If either is missing, install it (macOS: `brew install git node` or the installer from https://nodejs.org; Windows: `winget install Git.Git` and `winget install OpenJS.NodeJS.LTS`), then open a fresh terminal.
+1. Check tools: run `git --version` and `node --version`. Node must be 22.13 or newer. If either is missing, install it (macOS: `brew install git node` or the installer from https://nodejs.org; Windows: `winget install Git.Git` and `winget install OpenJS.NodeJS.LTS`), then open a fresh terminal. On Windows use PowerShell, and if winget is missing, use the installers from https://git-scm.com and https://nodejs.org (LTS).
 2. Pick a folder the person can find, such as Documents, and clone:
    git clone --branch claude/app-snapshot-2026-09-30 https://github.com/SaurabhGithug/score-recovery-app.git "Score Recovery"
    then work inside the "Score Recovery" folder.
-3. ASK: "Saurabh will send you a file called .env.civil-laptop. Please save it into the Score Recovery folder (the folder that contains package.json) and tell me when it is there." Wait until `.env.civil-laptop` exists in that folder. Never print, open, copy elsewhere, commit or upload that file: it holds private settings.
+3. ASK: "Saurabh will send you a file called .env.civil-laptop. Please save it into the Score Recovery folder (the folder that contains package.json) and tell me when it is there. If it arrived with a different name, such as env.civil-laptop or ending in .txt, that is fine." Wait until `.env.civil-laptop` exists in that folder. Never print, open, copy elsewhere, commit or upload that file: it holds private settings.
 4. Run:  node scripts/setup-second-laptop.mjs
    It ends with one line, "SETUP: READY" or "SETUP: NEEDS <thing>". Follow its message and run it again until it says READY.
    - If it says NEEDS CODEX_INSTALL, run `npm install -g @openai/codex`, then run the setup again.
